@@ -1,9 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gibbon_telegram/API/MainMethod/GMethod.dart';
-import 'package:gibbon_telegram/API/Models/HomePage/M_Promotion.dart';
-import 'package:gibbon_telegram/API/Models/NewHomePage/MV_Promotion.dart';
+import 'package:gibbon_music/API/MainMethod/GMethod.dart';
+import 'package:gibbon_music/API/Models/HomePage/M_Promotion.dart';
+import 'package:gibbon_music/API/Models/NewHomePage/MV_Promotion.dart';
 
 class PromotionItem extends StatefulWidget {
   const PromotionItem({Key? key, required this.promotion}) : super(key: key);

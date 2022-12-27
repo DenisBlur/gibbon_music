@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gibbon_telegram/API/MainMethod/GMethod.dart';
-import 'package:gibbon_telegram/API/Models/NewHomePage/MV_PlayContext.dart';
+import 'package:gibbon_music/API/MainMethod/GMethod.dart';
+import 'package:gibbon_music/API/Models/NewHomePage/MV_PlayContext.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class AlbumItem extends StatefulWidget {

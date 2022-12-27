@@ -1,12 +1,7 @@
 import 'dart:convert';
-import 'package:flutter/services.dart';
-import 'package:gibbon_telegram/API/Models/HomePage/M_Chart.dart';
-import 'package:gibbon_telegram/API/Models/NewHomePage/MV_HomePage.dart';
-import 'package:gibbon_telegram/API/Models/NewHomePage/MV_Promotion.dart';
 
-import 'Models/HomePage/M_HomePage.dart';
-import 'Models/HomePage/M_Promotion.dart';
-import 'Models/HomePage/M_PlayContext.dart';
+import 'package:gibbon_music/API/Models/NewHomePage/MV_HomePage.dart';
+import 'package:gibbon_music/API/Models/NewHomePage/MV_Promotion.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:yam_api/yam_api.dart';

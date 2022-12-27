@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:gibbon_telegram/Pages/MainPage/Sections/PlayContextSection.dart';
-import 'package:gibbon_telegram/Pages/MainPage/Sections/PromotionSection.dart';
+import 'package:gibbon_music/Pages/MainPage/Sections/PlayContextSection.dart';
+import 'package:gibbon_music/Pages/MainPage/Sections/PromotionSection.dart';
 
 import '../../main.dart';
 

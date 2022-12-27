@@ -1,8 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gibbon_telegram/API/Models/NewHomePage/MV_HomePage.dart';
-import 'package:gibbon_telegram/Pages/MainPage/MainPage.dart';
-import 'package:gibbon_telegram/Theme/ThemeCreater.dart';
+import 'package:gibbon_music/API/Models/NewHomePage/MV_HomePage.dart';
+import 'package:gibbon_music/Pages/MainPage/MainPage.dart';
+import 'package:gibbon_music/Theme/ThemeCreater.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';

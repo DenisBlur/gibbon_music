@@ -4,23 +4,23 @@ import 'package:gibbon_music/API/MainMethod/GMethod.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_PlayContext.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class ArtistItem extends StatefulWidget {
-  const ArtistItem({Key? key, required this.playContext}) : super(key: key);
+class PlaylistItem extends StatefulWidget {
+  const PlaylistItem({Key? key, required this.playContext}) : super(key: key);
 
   final MvPlayContext playContext;
 
   @override
-  State<ArtistItem> createState() => _ArtistItemState();
+  State<PlaylistItem> createState() => _PlaylistItemState();
 }
 
-class _ArtistItemState extends State<ArtistItem> {
+class _PlaylistItemState extends State<PlaylistItem> {
   @override
   Widget build(BuildContext context) {
     return HoverButton(
       onPressed: () {},
       builder: (p0, state) {
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             AnimatedContainer(
@@ -30,7 +30,7 @@ class _ArtistItemState extends State<ArtistItem> {
               duration: const Duration(milliseconds: 250),
               curve: Curves.fastLinearToSlowEaseIn,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(150),
+                borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                     color: FluentTheme.of(context)
                         .borderInputColor
@@ -39,7 +39,7 @@ class _ArtistItemState extends State<ArtistItem> {
                 color: FluentTheme.of(context).cardColor,
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(150),
+                borderRadius: BorderRadius.circular(8),
                 child: FadeInImage.memoryNetwork(
                   fit: BoxFit.cover,
                   image: linkImage(widget.playContext.coverUri, 200, 200),
@@ -48,7 +48,8 @@ class _ArtistItemState extends State<ArtistItem> {
               ),
             ),
             Text(widget.playContext.title),
-            Text(widget.playContext.counts),
+            Text(widget.playContext.description),
+            Text(widget.playContext.likesCount),
           ],
         );
       },

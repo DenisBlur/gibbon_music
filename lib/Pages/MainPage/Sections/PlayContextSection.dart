@@ -1,8 +1,10 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_telegram/API/Models/NewHomePage/MV_PlayContext.dart';
-import 'package:gibbon_telegram/DesignWidget/Audio/ListItems/AlbumItem.dart';
-import 'package:gibbon_telegram/DesignWidget/Audio/ListItems/ArtistItem.dart';
+import 'package:gibbon_music/API/Models/HomePage/Models/M_Playlist.dart';
+import 'package:gibbon_music/API/Models/NewHomePage/MV_PlayContext.dart';
+import 'package:gibbon_music/DesignWidget/Audio/ListItems/AlbumItem.dart';
+import 'package:gibbon_music/DesignWidget/Audio/ListItems/ArtistItem.dart';
+import 'package:gibbon_music/DesignWidget/Audio/ListItems/PlaylistItem.dart';
 
 class PlayContextSection extends StatefulWidget {
   const PlayContextSection({Key? key, required this.playContexts})
@@ -34,7 +36,9 @@ class _PlayContextSectionState extends State<PlayContextSection> {
                       ? ArtistItem(
                           playContext: widget.playContexts[index],
                         )
-                      : Text("Hi"));
+                      : PlaylistItem(
+                          playContext: widget.playContexts[index],
+                        ));
         },
         itemCount: widget.playContexts.length,
       ),

@@ -1,8 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gibbon_telegram/API/Models/NewHomePage/MV_Promotion.dart';
+import 'package:gibbon_music/API/Models/NewHomePage/MV_Promotion.dart';
 
-import '../../../API/Models/HomePage/M_Promotion.dart';
 import '../../../DesignWidget/Audio/ListItems/PromotionItem.dart';
 
 class PromotionSection extends StatefulWidget {
