@@ -1,13 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/API/Models/HomePage/Models/M_Playlist.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_PlayContext.dart';
 import 'package:gibbon_music/DesignWidget/Audio/ListItems/AlbumItem.dart';
 import 'package:gibbon_music/DesignWidget/Audio/ListItems/ArtistItem.dart';
 import 'package:gibbon_music/DesignWidget/Audio/ListItems/PlaylistItem.dart';
 
 class PlayContextSection extends StatefulWidget {
-  const PlayContextSection({Key? key, required this.playContexts})
+  const PlayContextSection({Key key, @required this.playContexts})
       : super(key: key);
 
   final List<MvPlayContext> playContexts;
@@ -43,6 +42,5 @@ class _PlayContextSectionState extends State<PlayContextSection> {
         itemCount: widget.playContexts.length,
       ),
     );
-    ;
   }
 }

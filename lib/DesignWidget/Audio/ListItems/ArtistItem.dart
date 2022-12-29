@@ -5,7 +5,7 @@ import 'package:gibbon_music/API/Models/NewHomePage/MV_PlayContext.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ArtistItem extends StatefulWidget {
-  const ArtistItem({Key? key, required this.playContext}) : super(key: key);
+  const ArtistItem({Key key, @required this.playContext}) : super(key: key);
 
   final MvPlayContext playContext;
 
@@ -20,26 +20,28 @@ class _ArtistItemState extends State<ArtistItem> {
       onPressed: () {},
       builder: (p0, state) {
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             AnimatedContainer(
               width: 150,
-              margin: EdgeInsets.only(right: 16),
+              margin: const EdgeInsets.only(right: 16),
               padding: EdgeInsets.all(state.isHovering ? 8 : 0),
               duration: const Duration(milliseconds: 250),
               curve: Curves.fastLinearToSlowEaseIn,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(150),
+                borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                     color: FluentTheme.of(context)
                         .borderInputColor
                         .withOpacity(state.isHovering ? .2 : 0),
                     width: .5),
-                color: FluentTheme.of(context).cardColor,
+                color: FluentTheme.of(context)
+                    .cardColor
+                    .withOpacity(state.isHovering ? 1 : 0),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(150),
+                borderRadius: BorderRadius.circular(8),
                 child: FadeInImage.memoryNetwork(
                   fit: BoxFit.cover,
                   image: linkImage(widget.playContext.coverUri, 200, 200),
@@ -47,8 +49,20 @@ class _ArtistItemState extends State<ArtistItem> {
                 ),
               ),
             ),
-            Text(widget.playContext.title),
-            Text(widget.playContext.counts),
+            const SizedBox(
+              height: 8,
+            ),
+            Text(
+              widget.playContext.title,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "Артист",
+              style: TextStyle(
+                  color: FluentTheme.of(context).accentColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12),
+            ),
           ],
         );
       },

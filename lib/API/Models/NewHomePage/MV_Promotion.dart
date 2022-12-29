@@ -1,13 +1,13 @@
 class MvPromotion {
   MvPromotion({
-    String? id,
-    String? type,
-    String? promoId,
-    String? title,
-    String? subTitle,
-    String? heading,
-    String? url,
-    String? image,
+    String id,
+    String type,
+    String promoId,
+    String title,
+    String subTitle,
+    String heading,
+    String url,
+    String image,
   }) {
     _id = id;
     _type = type;
@@ -30,24 +30,24 @@ class MvPromotion {
     _image = json['data']['image'];
   }
 
-  String? _id;
-  String? _type;
-  String? _promoId;
-  String? _title;
-  String? _subTitle;
-  String? _heading;
-  String? _url;
-  String? _image;
+  String _id;
+  String _type;
+  String _promoId;
+  String _title;
+  String _subTitle;
+  String _heading;
+  String _url;
+  String _image;
 
   MvPromotion copyWith({
-    String? id,
-    String? type,
-    String? promoId,
-    String? title,
-    String? subTitle,
-    String? heading,
-    String? url,
-    String? image,
+    String id,
+    String type,
+    String promoId,
+    String title,
+    String subTitle,
+    String heading,
+    String url,
+    String image,
   }) =>
       MvPromotion(
         id: id ?? _id,
@@ -60,20 +60,13 @@ class MvPromotion {
         image: image ?? _image,
       );
 
-  String? get id => _id;
-
-  String? get type => _type;
-
-  String? get promoId => _promoId;
-
-  String? get title => _title;
-
-  String? get subTitle => _subTitle;
-
-  String? get heading => _heading;
-
-  String? get url => _url;
-
-  String? get image => _image;
+  String get id => _id;
+  String get type => _type;
+  String get promoId => _promoId;
+  String get title => _title;
+  String get subTitle => _subTitle;
+  String get heading => _heading;
+  String get url => _url;
+  String get image => _image;
 
 }

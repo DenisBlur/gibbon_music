@@ -4,14 +4,13 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.6 <3.0.0"
+  sdk: ">=2.8.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  just_audio: any
-  just_audio_windows: any
+  audioplayers: ^1.1.1
   window_manager: ^0.2.3
   system_theme: ^2.0.0
   transparent_image: ^2.0.0
@@ -19,6 +18,7 @@ dependencies:
   path_provider: ^2.0.10
   fluent_ui: ^4.1.2
   animate_do: ^3.0.2
+  mouse_parallax: ^1.1.0
 
 dev_dependencies:
   flutter_test:

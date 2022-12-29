@@ -4,22 +4,24 @@ import 'package:system_theme/system_theme.dart';
 class GThemeCreator {
   static SystemAccentColor accentColor = SystemTheme.accentColor;
 
-  static Color? accentDarkBackgroundColor;
-  static Color? accentDarkMicaColor;
-  static Color? accentDarkCardColor;
+  static Color accentDarkBackgroundColor;
+  static Color accentDarkMicaColor;
+  static Color accentDarkCardColor;
 
-  static Color? accentLightBackgroundColor;
-  static Color? accentLightMicaColor;
-  static Color? accentLightCardColor;
+  static Color accentLightBackgroundColor;
+  static Color accentLightMicaColor;
+  static Color accentLightCardColor;
 
   static ThemeData darkNoColor = ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: Colors.black,
+    cardColor: alphaBlend(Colors.white.withOpacity(.1), Colors.black),
     accentColor: accentColor.accent.toAccentColor(),
   );
 
   static ThemeData lightNoColor = ThemeData(
     brightness: Brightness.light,
+    cardColor: alphaBlend(Colors.black.withOpacity(.1), Colors.white),
     scaffoldBackgroundColor: Colors.white,
     accentColor: accentColor.accent.toAccentColor(),
   );
@@ -66,22 +68,20 @@ class GThemeCreator {
     }
   }
 
-  static void setColors() {
-    accentColor = SystemTheme.accentColor;
-
+  static void setColors(Color userAccentColor) {
     accentDarkBackgroundColor =
-        alphaBlend(accentColor.accent.withOpacity(.2), Colors.black);
-    accentDarkMicaColor = alphaBlend(
-        accentColor.accent.withOpacity(.2), accentDarkBackgroundColor!);
-    accentDarkCardColor = alphaBlend(
-        accentColor.accent.withOpacity(.2), accentDarkBackgroundColor!);
+        alphaBlend(userAccentColor.withOpacity(.2), Colors.black);
+    accentDarkMicaColor =
+        alphaBlend(userAccentColor.withOpacity(.2), accentDarkBackgroundColor);
+    accentDarkCardColor =
+        alphaBlend(userAccentColor.withOpacity(.2), accentDarkBackgroundColor);
 
     accentLightBackgroundColor =
-        alphaBlend(accentColor.accent.withOpacity(.2), Colors.white);
-    accentLightMicaColor = alphaBlend(
-        accentColor.accent.withOpacity(.2), accentLightBackgroundColor!);
-    accentLightCardColor = alphaBlend(
-        accentColor.accent.withOpacity(.2), accentLightBackgroundColor!);
+        alphaBlend(userAccentColor.withOpacity(.2), Colors.white);
+    accentLightMicaColor =
+        alphaBlend(userAccentColor.withOpacity(.2), accentLightBackgroundColor);
+    accentLightCardColor =
+        alphaBlend(userAccentColor.withOpacity(.2), accentLightBackgroundColor);
 
     darkColor = ThemeData(
       brightness: Brightness.dark,
@@ -89,7 +89,7 @@ class GThemeCreator {
       scaffoldBackgroundColor: accentDarkBackgroundColor,
       micaBackgroundColor: accentDarkMicaColor,
       inactiveBackgroundColor: accentDarkMicaColor,
-      accentColor: accentColor.accent.toAccentColor(),
+      accentColor: userAccentColor.toAccentColor(),
     );
 
     lightColor = ThemeData(
@@ -98,7 +98,7 @@ class GThemeCreator {
       scaffoldBackgroundColor: accentLightBackgroundColor,
       micaBackgroundColor: accentLightMicaColor,
       inactiveBackgroundColor: accentLightMicaColor,
-      accentColor: accentColor.accent.toAccentColor(),
+      accentColor: userAccentColor.toAccentColor(),
     );
   }
 }

@@ -5,7 +5,7 @@ import 'package:gibbon_music/API/Models/NewHomePage/MV_PlayContext.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class PlaylistItem extends StatefulWidget {
-  const PlaylistItem({Key? key, required this.playContext}) : super(key: key);
+  const PlaylistItem({Key key, @required this.playContext}) : super(key: key);
 
   final MvPlayContext playContext;
 
@@ -25,7 +25,7 @@ class _PlaylistItemState extends State<PlaylistItem> {
           children: [
             AnimatedContainer(
               width: 150,
-              margin: EdgeInsets.only(right: 16),
+              margin: const EdgeInsets.only(right: 16),
               padding: EdgeInsets.all(state.isHovering ? 8 : 0),
               duration: const Duration(milliseconds: 250),
               curve: Curves.fastLinearToSlowEaseIn,
@@ -47,8 +47,20 @@ class _PlaylistItemState extends State<PlaylistItem> {
                 ),
               ),
             ),
-            Text(widget.playContext.title),
-            Text(widget.playContext.description),
+            const SizedBox(
+              height: 8,
+            ),
+            Text(
+              widget.playContext.title,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "Плейлист",
+              style: TextStyle(
+                  color: FluentTheme.of(context).accentColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12),
+            ),
             Text(widget.playContext.likesCount),
           ],
         );

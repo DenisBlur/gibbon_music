@@ -5,7 +5,7 @@ import 'package:gibbon_music/API/Models/NewHomePage/MV_PlayContext.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class AlbumItem extends StatefulWidget {
-  const AlbumItem({Key? key, required this.playContext}) : super(key: key);
+  const AlbumItem({Key key, @required this.playContext}) : super(key: key);
 
   final MvPlayContext playContext;
 
@@ -47,9 +47,22 @@ class _AlbumItemState extends State<AlbumItem> {
                 ),
               ),
             ),
+            SizedBox(height: 8,),
             Text(widget.playContext.title),
-            Text(widget.playContext.artists[0].name),
-            Text(widget.playContext.year),
+            Text(
+              "Альбом",
+              style: TextStyle(
+                  color: FluentTheme.of(context).accentColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("${widget.playContext.artists[0].name} • ${widget.playContext.year}"),
+              ],
+            )
           ],
         );
       },
