@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
+import 'package:gibbon_music/API/Models/GeneralModels.dart';
+import 'package:gibbon_music/API/Models/NewHomePage/MV_Track.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_HomePage.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_Promotion.dart';
 
@@ -14,11 +17,12 @@ void initYamApi(String token) {
 
 Future<MVHomePage> getYamApiHomePage(List<String> params) async {
   String result = await YamApi.promotions(params);
-
+  await Clipboard.setData(ClipboardData(text: result));
   var jsonResult = jsonDecode(result);
   List<dynamic> mp = jsonResult["result"]["blocks"];
   List<MvPromotion> promList = [];
   List<MvPlayContext> playContextList = [];
+  List<MvTrack> chartList = [];
 
   for (int i = 0; i < mp.length; i++) {
     if (jsonResult["result"]["blocks"][i]["type"] == "play-contexts") {
@@ -72,8 +76,6 @@ Future<MVHomePage> getYamApiHomePage(List<String> params) async {
             }
           }
         }
-
-        print(mvPlayContext.description);
         playContextList.add(mvPlayContext);
       }
     }
@@ -84,12 +86,20 @@ Future<MVHomePage> getYamApiHomePage(List<String> params) async {
             jsonResult["result"]["blocks"][i]["entities"][p]));
       }
     }
-    if (jsonResult["result"]["blocks"][i]["type"] == "chart") {}
+    if (jsonResult["result"]["blocks"][i]["type"] == "chart") {
+      List<dynamic> list = jsonResult["result"]["blocks"][i]["entities"];
+      for (int p = 0; p < list.length; p++) {
+        MvTrack track = MvTrack.fromJson(list[p]["data"]);
+        print(track.track.title);
+        chartList.add(track);
+      }
+    }
   }
 
   MVHomePage homePage = MVHomePage();
   homePage.listMVPromotion = promList;
   homePage.listMVPlayContext = playContextList;
+  homePage.listMVTrack = chartList;
 
   return homePage;
 }

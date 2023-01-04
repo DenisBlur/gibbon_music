@@ -1,3 +1,5 @@
+import 'package:gibbon_music/API/Models/GeneralModels.dart';
+
 class MvPlayContext {
 
   String id = "";
@@ -18,10 +20,4 @@ class MvPlayContext {
   String year = "";
   List<MvArtist> artists = [];
 
-}
-
-class MvArtist {
-  String id = "";
-  String name = "";
-  String cover = "";
 }

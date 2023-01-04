@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as mIcon;
 
-import 'AudioPlayer.dart';
+import 'WinAudioPlayer.dart';
 
 class AudioSecondControl extends StatefulWidget {
   const AudioSecondControl({Key key}) : super(key: key);
@@ -22,6 +22,7 @@ class _AudioSecondControlState extends State<AudioSecondControl> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         IconButton(
           icon: const Icon(mIcon.Icons.volume_up_rounded, size: 24),

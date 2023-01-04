@@ -3,7 +3,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as mIcon;
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
 
-import 'AudioPlayer.dart';
+import 'WinAudioPlayer.dart';
 
 class AudioControl extends StatefulWidget {
   const AudioControl({Key key}) : super(key: key);
@@ -84,25 +84,30 @@ class _AudioControlState extends State<AudioControl> {
           ],
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width / 3,
-          child: Row(
-            children: [
-              Text(timeTrack(position)),
-              const SizedBox(width: 16,),
-              Expanded(child: Slider(
-                label: timeTrack(position),
-                value: position.toDouble(),
-                max: duration.toDouble(),
-                min: 0,
-                onChanged: (value) {
-                  player.setSeek(value.toInt());
-                },
-              ),),
-              const SizedBox(width: 16,),
-              Text(timeTrack(duration)),
-            ],
-          )
-        ),
+            width: MediaQuery.of(context).size.width / 3,
+            child: Row(
+              children: [
+                Text(timeTrack(position)),
+                const SizedBox(
+                  width: 16,
+                ),
+                Expanded(
+                  child: Slider(
+                    label: timeTrack(position),
+                    value: position.toDouble(),
+                    max: duration.toDouble(),
+                    min: 0,
+                    onChanged: (value) {
+                      player.setSeek(value.toInt());
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                Text(timeTrack(duration)),
+              ],
+            )),
       ],
     );
   }

@@ -1,10 +1,10 @@
+import 'dart:io';
+
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/DesignWidget/Audio/Player/AudioPlayer.dart';
+import 'package:gibbon_music/DesignWidget/Audio/Player/Windows/WinAudioPlayer.dart';
 import 'package:gibbon_music/DesignWidget/Navigation/NavigationBar.dart';
 import 'package:gibbon_music/DesignWidget/Navigation/WindowHeader.dart';
 import 'package:gibbon_music/Pages/MainPage/MainPage.dart';
-import 'package:gibbon_music/Theme/ThemeModel.dart';
-import 'package:provider/provider.dart';
 
 import '../../API/YAM_Functions.dart';
 import '../../DesignWidget/Effects/Snowfall.dart';
@@ -24,7 +24,7 @@ class _WindowsBuilderFileState extends State<WindowsBuilderFile> {
   Future<void> initAPI() async {
     initYamApi("AQAAAAAV_ACCAAG8XkFW219h4UiInu2aEV4ZGL4");
     mHomePage =
-        await getYamApiHomePage(["play_contexts", "chart", "promotions"]);
+        await getYamApiHomePage(["play_contexts", "chart", "promotions", "mixes"]);
   }
 
   @override
@@ -44,52 +44,48 @@ class _WindowsBuilderFileState extends State<WindowsBuilderFile> {
     return SafeArea(
       child: ScaffoldPage(
         padding: const EdgeInsets.all(0),
-        content: Consumer<ThemeModel>(
-          builder: (context, value, child) {
-            return Stack(
+        content: Stack(
+          children: [
+            const SnowFallBG(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SnowFallBG(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const WindowHeader(
-                        title: 'Yandex Music',
-                        backArrow: false,
-                        setting: false),
-                    Expanded(
-                      child: FutureBuilder(
-                        future: initAPI(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<void> snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return const Padding(
-                              padding: EdgeInsets.only(left: 72, right: 16),
-                              child: CustomScrollView(
-                                slivers: [
-                                  MainPage(),
-                                ],
-                              ),
-                            );
-                          } else {
-                            return const Center(
-                              child: ProgressRing(),
-                            );
-                          }
-                        },
-                      ),
-                    )
-                  ],
-                ),
-                const Align(
-                  alignment: Alignment.bottomCenter,
-                  child: AudioPlayerWidget(),
-                ),
-                const NavigationBar(),
+                Platform.isAndroid ? const SizedBox() : const WindowHeader(
+                    title: 'Yandex Music',
+                    backArrow: false,
+                    setting: false),
+                Expanded(
+                  child: FutureBuilder(
+                    future: initAPI(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<void> snapshot) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.done) {
+                        return const Padding(
+                          padding: EdgeInsets.only(left: 72, right: 16),
+                          child: CustomScrollView(
+                            slivers: [
+                              MainPage(),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return const Center(
+                          child: ProgressRing(),
+                        );
+                      }
+                    },
+                  ),
+                )
               ],
-            );
-          },
+            ),
+            const Align(
+              alignment: Alignment.bottomCenter,
+              child: AudioPlayerWidget(),
+            ),
+            const NavigationBar(),
+          ],
         ),
       ),
     );

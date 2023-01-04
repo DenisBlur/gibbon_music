@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
 
@@ -22,7 +23,8 @@ class SnowFallBG extends StatefulWidget {
   State<SnowFallBG> createState() => _SnowFallBGState();
 }
 
-class _SnowFallBGState extends State<SnowFallBG> with SingleTickerProviderStateMixin {
+class _SnowFallBGState extends State<SnowFallBG>
+    with SingleTickerProviderStateMixin {
   final List<BobbleBean> _list = [];
   final Random _random = Random(DateTime.now().microsecondsSinceEpoch);
   AnimationController _animationController;
@@ -31,7 +33,8 @@ class _SnowFallBGState extends State<SnowFallBG> with SingleTickerProviderStateM
   void initState() {
     super.initState();
 
-    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _animationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
 
     Future.delayed(Duration.zero, () {
       initData();
@@ -45,7 +48,7 @@ class _SnowFallBGState extends State<SnowFallBG> with SingleTickerProviderStateM
   }
 
   void initData() {
-    for (int i = 0; i < 2000; i++) {
+    for (int i = 0; i < 500; i++) {
       BobbleBean bean = BobbleBean();
       bean.color = getRandomWhiteColor(_random);
       double x = _random.nextDouble() * MediaQuery.of(context).size.width;
@@ -61,9 +64,16 @@ class _SnowFallBGState extends State<SnowFallBG> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-        size: MediaQuery.of(context).size,
-        painter: SnowCustomMyPainter(list: _list, random: _random));
+    return Stack(
+      children: [
+        CustomPaint(
+            size: MediaQuery.of(context).size,
+            painter: SnowCustomMyPainter(list: _list, random: _random)),
+        BackdropFilter(
+            filter: ImageFilter.blur(sigmaY: 0, sigmaX: 0),
+            child: Container()),
+      ],
+    );
   }
 }
 
@@ -72,6 +82,7 @@ class SnowCustomMyPainter extends CustomPainter {
   Random random;
 
   SnowCustomMyPainter({@required this.list, @required this.random});
+
   final Paint _paint = Paint()..isAntiAlias = true;
 
   @override
