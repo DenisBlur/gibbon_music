@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/DesignWidget/Audio/Player/Windows/WinAudioPlayer.dart';
 import 'package:gibbon_music/DesignWidget/Navigation/NavigationBar.dart';
-import 'package:gibbon_music/DesignWidget/Navigation/WindowHeader.dart';
 import 'package:gibbon_music/Pages/MainPage/MainPage.dart';
 
 import '../../API/YAM_Functions.dart';
@@ -23,8 +21,8 @@ class _WindowsBuilderFileState extends State<WindowsBuilderFile> {
   //Инициализация Яндекс Музыки, с передачей токена
   Future<void> initAPI() async {
     initYamApi("AQAAAAAV_ACCAAG8XkFW219h4UiInu2aEV4ZGL4");
-    mHomePage =
-        await getYamApiHomePage(["play_contexts", "chart", "promotions", "mixes"]);
+    mHomePage = await getYamApiHomePage(
+        ["play_contexts", "chart", "promotions", "mixes"]);
   }
 
   @override
@@ -51,17 +49,13 @@ class _WindowsBuilderFileState extends State<WindowsBuilderFile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Platform.isAndroid ? const SizedBox() : const WindowHeader(
-                    title: 'Yandex Music',
-                    backArrow: false,
-                    setting: false),
+                SizedBox(height: Platform.isAndroid ? 0 : 36),
                 Expanded(
                   child: FutureBuilder(
                     future: initAPI(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<void> snapshot) {
-                      if (snapshot.connectionState ==
-                          ConnectionState.done) {
+                    builder:
+                        (BuildContext context, AsyncSnapshot<void> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
                         return const Padding(
                           padding: EdgeInsets.only(left: 72, right: 16),
                           child: CustomScrollView(
@@ -79,10 +73,6 @@ class _WindowsBuilderFileState extends State<WindowsBuilderFile> {
                   ),
                 )
               ],
-            ),
-            const Align(
-              alignment: Alignment.bottomCenter,
-              child: AudioPlayerWidget(),
             ),
             const NavigationBar(),
           ],

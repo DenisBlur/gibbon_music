@@ -1,17 +1,14 @@
 import 'package:fluent_ui/fluent_ui.dart';
+// ignore: library_prefixes
+import 'package:flutter/material.dart' as mIcon;
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_Track.dart';
 import 'package:gibbon_music/DesignWidget/ContextMenu.dart';
 import 'package:gibbon_music/DesignWidget/GButtons.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:transparent_image/transparent_image.dart';
-
-// ignore: library_prefixes
-import 'package:flutter/material.dart' as mIcon;
-
 // ignore: depend_on_referenced_packages
 import 'package:yam_api/yam_api.dart';
-import 'package:gibbon_music/DesignWidget/Audio/Player/Windows/WinAudioPlayer.dart';
 
 class TrackItem extends StatelessWidget {
   const TrackItem({Key key, @required this.track, this.isChart = false})
@@ -22,7 +19,7 @@ class TrackItem extends StatelessWidget {
 
   void playTrack() async {
     String urlTrack = await YamApi.downloadTrack(track.track.id);
-    playerNotifyModel.mTrack = track;
+    generalNotifyModel.mTrack = track;
     player.setAudio(urlTrack);
   }
 
@@ -38,8 +35,8 @@ class TrackItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               color: FluentTheme.of(context)
                   .cardColor
-                  .withOpacity(state.isHovering ? .5 : 0)),
-          duration: const Duration(milliseconds: 250),
+                  .withOpacity(state.isHovering || state.isPressing ? .5 : 0)),
+          duration: const Duration(milliseconds: 150),
           child: Row(
             children: [
               isChart ? ChartInfoWidget(chart: track.chart) : const SizedBox(),
@@ -104,8 +101,7 @@ class ArtistsWidget extends StatelessWidget {
       artists.add(GTextButton(
         text: element.name,
         onPress: () {
-          //TODO Прописать логику перехода на страницу артиста
-          print("Hello");
+          goToArtist(context, element.id);
         },
       ));
     }
@@ -119,13 +115,17 @@ class ArtistsWidget extends StatelessWidget {
             verticalPadding: 0,
             child: GTextButton(
               text: title,
-              onPress: () {},
+              onPress: () {
+
+              },
             ),
             builder: (context) => artists,
           )
         : GTextButton(
             text: listArtists.first.name,
-            onPress: () {},
+            onPress: () {
+              goToArtist(context, listArtists.first.id);
+            },
           );
   }
 }

@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart' as mIcon;
+import 'package:flutter/material.dart' as m;
+import 'package:gibbon_music/main.dart';
 import 'package:window_manager/window_manager.dart';
 
 class WindowHeader extends StatelessWidget {
@@ -18,29 +19,29 @@ class WindowHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Color borderColor =
+        FluentTheme.of(context).borderInputColor.withOpacity(.2);
+
     return Container(
-      height: 28,
+      height: 36,
       decoration: BoxDecoration(
           color: FluentTheme.of(context).cardColor,
-          border: Border(
-              bottom: BorderSide(
-                  color:
-                      FluentTheme.of(context).borderInputColor.withOpacity(.2),
-                  width: .8))),
+          border: Border(bottom: BorderSide(color: borderColor, width: .8))),
       child: Padding(
           padding: const EdgeInsets.only(left: 16, right: 0),
           child: Row(
             children: [
               backArrow
                   ? IconButton(
-                      icon:
-                          const Icon(mIcon.Icons.arrow_back_rounded, size: 16),
+                      icon: const Icon(m.Icons.arrow_back_rounded, size: 16),
                       onPressed: () async {
                         Navigator.pop(context);
+                        generalNotifyModel.backArrow = false;
                       })
                   : const SizedBox(),
               SizedBox(
-                width: backArrow ? 4 : 0,
+                width: backArrow ? 8 : 0,
               ),
               Expanded(
                   child: DragToMoveArea(
@@ -52,19 +53,20 @@ class WindowHeader extends StatelessWidget {
               )),
               setting
                   ? IconButton(
-                      icon: const Icon(mIcon.Icons.settings, size: 16),
+                      icon: const Icon(m.Icons.settings, size: 16),
                       onPressed: () async {})
                   : const SizedBox(),
               const SizedBox(
                 width: 16,
               ),
               IconButton(
-                  icon: const Icon(mIcon.Icons.minimize_rounded, size: 16),
+                  icon: const Icon(m.Icons.minimize_rounded, size: 16),
                   onPressed: () async {
                     await windowManager.minimize();
                   }),
+              const SizedBox(width: 8,),
               IconButton(
-                  icon: const Icon(mIcon.Icons.check_box_outline_blank_rounded,
+                  icon: const Icon(m.Icons.check_box_outline_blank_rounded,
                       size: 16),
                   onPressed: () async {
                     if (await windowManager.isMaximized()) {
@@ -73,11 +75,13 @@ class WindowHeader extends StatelessWidget {
                       await windowManager.maximize();
                     }
                   }),
+              const SizedBox(width: 8,),
               IconButton(
-                  icon: const Icon(mIcon.Icons.close_rounded, size: 16),
+                  icon: const Icon(m.Icons.close_rounded, size: 16),
                   onPressed: () {
                     exit(0);
-                  })
+                  }),
+              const SizedBox(width: 8,),
             ],
           )),
     );

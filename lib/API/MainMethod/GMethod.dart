@@ -1,10 +1,13 @@
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gibbon_music/Pages/ArtistPage/ArtistPage.dart';
+import 'package:gibbon_music/main.dart';
+
 String linkImage(String url, int sizeX, int sizeY) {
   url = url.substring(0, url.indexOf("%"));
   return url = "https://$url${sizeX}x$sizeY";
 }
 
 String timeTrack(int ms) {
-
   Duration duration = Duration(milliseconds: ms);
 
   int minuteInt = duration.inSeconds ~/ 60;
@@ -14,5 +17,13 @@ String timeTrack(int ms) {
   String stS = secondsInt < 10 ? "0$secondsInt" : "$secondsInt";
 
   return "$stM:$stS";
+}
 
+goToArtist(BuildContext context, int artistId) {
+  Navigator.push(context, FluentPageRoute(
+    builder: (context) {
+      return ArtistPage(artistId: artistId);
+    },
+  ));
+  generalNotifyModel.backArrow = true;
 }

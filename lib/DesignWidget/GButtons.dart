@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fluent_ui/fluent_ui.dart';
 
 class GTextButton extends StatelessWidget {
@@ -14,7 +16,8 @@ class GTextButton extends StatelessWidget {
       builder: (p0, state) {
         return AnimatedDefaultTextStyle(
             style: TextStyle(
-              color: state.isHovering
+              fontSize: Platform.isAndroid ? 18 : 16,
+              color: state.isHovering || state.isPressing
                   ? FluentTheme.of(context).accentColor
                   : FluentTheme.of(context).uncheckedColor.withOpacity(.5),
             ),

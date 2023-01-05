@@ -1,12 +1,15 @@
+import 'dart:io';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_Promotion.dart';
 import 'package:mouse_parallax/mouse_parallax.dart';
 
 class PromotionItem extends StatefulWidget {
-  const PromotionItem({Key key, @required this.promotion}) : super(key: key);
+  const PromotionItem({Key key, @required this.promotion, @required this.index}) : super(key: key);
 
   final MvPromotion promotion;
+  final int index;
 
   @override
   State<PromotionItem> createState() => _PromotionItemState();
@@ -24,14 +27,14 @@ class _PromotionItemState extends State<PromotionItem> {
       onPressed: () {},
       builder: (p0, state) {
         return Container(
-          margin: const EdgeInsets.only(right: 16),
+          margin: EdgeInsets.only(right: 16, left: widget.index == 0 ? 16 : 0),
           width: 350,
           child: ParallaxStack(
             layers: [
               ParallaxLayer(
-                yRotation: 0.25,
-                xOffset: 10,
-                xRotation: .25,
+                yRotation: Platform.isWindows ? 0.25 : 0,
+                xOffset: Platform.isWindows ? 10 : 0,
+                xRotation: Platform.isWindows ? .25 : 0,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Image.network(
@@ -43,9 +46,9 @@ class _PromotionItemState extends State<PromotionItem> {
                 ),
               ),
               ParallaxLayer(
-                  yRotation: 0.25,
-                  xOffset: 10,
-                  xRotation: .25,
+                  yRotation: Platform.isWindows ? 0.25 : 0,
+                  xOffset: Platform.isWindows ? 10 : 0,
+                  xRotation: Platform.isWindows ? .25 : 0,
                   child: Container(
                     width: 450,
                     decoration: BoxDecoration(

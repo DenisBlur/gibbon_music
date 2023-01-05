@@ -70,7 +70,7 @@ class _SnowFallBGState extends State<SnowFallBG>
             size: MediaQuery.of(context).size,
             painter: SnowCustomMyPainter(list: _list, random: _random)),
         BackdropFilter(
-            filter: ImageFilter.blur(sigmaY: 0, sigmaX: 0),
+            filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
             child: Container()),
       ],
     );

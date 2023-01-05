@@ -24,8 +24,13 @@ class MvAudioPlayer {
   }
 
   setAudio(String urlTrack) async {
-    await player.setSourceUrl(urlTrack);
-    playAudio();
+    if (player == null) {
+      initAudio();
+      setAudio(urlTrack);
+    } else {
+      await player.setSourceUrl(urlTrack);
+      playAudio();
+    }
   }
 
   setPlaylistAudio(List<MvTrack> listTracks) {

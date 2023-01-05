@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/DesignWidget/Audio/ListItems/TrackItem.dart';
+import 'package:gibbon_music/DesignWidget/ListItems/TrackItem.dart';
 
 import '../../../API/Models/NewHomePage/MV_Track.dart';
 
@@ -12,14 +14,16 @@ class ChartSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      margin: EdgeInsets.only(left: Platform.isAndroid ? 16 : 0, right: Platform.isAndroid ? 16 : 0 ),
       width: MediaQuery.of(context).size.width,
-      height: (chartTrackList.length * 64).toDouble(),
+      height: (chartTrackList.length * (Platform.isAndroid ? 86 : 32)).toDouble(),
       child: GridView.count(
-        crossAxisCount: 2,
+        physics: const NeverScrollableScrollPhysics(),
+        crossAxisCount: Platform.isAndroid ? 1 : 2,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
-        childAspectRatio: 10,
+        childAspectRatio: Platform.isAndroid ? 6 : 10,
         children: List.generate(
           chartTrackList.length,
           (index) => FadeInRight(

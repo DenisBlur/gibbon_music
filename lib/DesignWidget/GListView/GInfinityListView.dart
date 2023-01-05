@@ -27,6 +27,7 @@ class _GListViewState extends State<GListView> {
     return Stack(
       children: [
         ListView.builder(
+          physics: const BouncingScrollPhysics(),
           controller: _scrollController,
           scrollDirection: widget.scrollDirection,
           itemBuilder: widget.itemBuilder,

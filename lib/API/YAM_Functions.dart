@@ -1,23 +1,28 @@
 import 'dart:convert';
 
-import 'package:flutter/services.dart';
 import 'package:gibbon_music/API/Models/GeneralModels.dart';
-import 'package:gibbon_music/API/Models/NewHomePage/MV_Track.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_HomePage.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_Promotion.dart';
-
+import 'package:gibbon_music/API/Models/NewHomePage/MV_Track.dart';
 // ignore: depend_on_referenced_packages
 import 'package:yam_api/yam_api.dart';
 
+import 'Models/ArtistPage/MV_ArtistPage.dart';
 import 'Models/NewHomePage/MV_PlayContext.dart';
 
 void initYamApi(String token) {
   YamApi.init(token);
 }
 
+Future<MvArtistPage> getYamApiArtist(int id) async {
+  String result = await YamApi.getArtist(id);
+  var jsonResult = jsonDecode(result);
+  MvArtistPage artistPage = MvArtistPage.fromJson(jsonResult["result"]);
+  return artistPage;
+}
+
 Future<MVHomePage> getYamApiHomePage(List<String> params) async {
   String result = await YamApi.promotions(params);
-  await Clipboard.setData(ClipboardData(text: result));
   var jsonResult = jsonDecode(result);
   List<dynamic> mp = jsonResult["result"]["blocks"];
   List<MvPromotion> promList = [];

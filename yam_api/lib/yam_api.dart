@@ -3,17 +3,14 @@ library yam_api;
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
-import 'package:yam_api/models/AlbumModel.dart';
+import 'package:xml/xml.dart';
 import 'package:yam_api/models/Landing/Charts.dart';
 
 import 'models/Account/account_settings.dart';
 import 'models/Account/account_status.dart';
 import 'models/Download/DownloadInfo.dart';
-import 'package:xml/xml.dart';
-import 'package:crypto/crypto.dart';
-import 'models/Landing/Landing.dart';
-import 'models/TrackModel.dart';
 
 class YamApi {
   static String tokenMain = "AQAAAAAV_ACCAAG8XkFW219h4UiInu2aEV4ZGL4";
