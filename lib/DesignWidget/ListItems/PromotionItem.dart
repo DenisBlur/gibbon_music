@@ -27,7 +27,7 @@ class _PromotionItemState extends State<PromotionItem> {
       onPressed: () {},
       builder: (p0, state) {
         return Container(
-          margin: EdgeInsets.only(right: 16, left: widget.index == 0 ? 16 : 0),
+          margin: EdgeInsets.only(right: 16, left: widget.index == 0 && Platform.isAndroid ? 16 : 0),
           width: 350,
           child: ParallaxStack(
             layers: [

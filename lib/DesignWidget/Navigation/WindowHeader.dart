@@ -19,7 +19,6 @@ class WindowHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     Color borderColor =
         FluentTheme.of(context).borderInputColor.withOpacity(.2);
 
@@ -28,62 +27,77 @@ class WindowHeader extends StatelessWidget {
       decoration: BoxDecoration(
           color: FluentTheme.of(context).cardColor,
           border: Border(bottom: BorderSide(color: borderColor, width: .8))),
-      child: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 0),
-          child: Row(
-            children: [
-              backArrow
-                  ? IconButton(
-                      icon: const Icon(m.Icons.arrow_back_rounded, size: 16),
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        generalNotifyModel.backArrow = false;
-                      })
-                  : const SizedBox(),
-              SizedBox(
-                width: backArrow ? 8 : 0,
-              ),
-              Expanded(
-                  child: DragToMoveArea(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 12),
-                ),
-              )),
-              setting
-                  ? IconButton(
-                      icon: const Icon(m.Icons.settings, size: 16),
-                      onPressed: () async {})
-                  : const SizedBox(),
-              const SizedBox(
-                width: 16,
-              ),
-              IconButton(
-                  icon: const Icon(m.Icons.minimize_rounded, size: 16),
+      child: Row(
+        children: [
+          AnimatedContainer(
+            margin: EdgeInsets.only(
+              left: 8,
+              right: backArrow ? 8 : 0,
+            ),
+            width: backArrow ? 32 : 0,
+            duration: const Duration(milliseconds: 850),
+            curve: Curves.fastLinearToSlowEaseIn,
+            child: ClipRRect(
+              child: IconButton(
+                  icon: const Icon(m.Icons.arrow_back_rounded, size: 16),
                   onPressed: () async {
-                    await windowManager.minimize();
+                    Navigator.pop(context);
+                    generalNotifyModel.removeNavList();
+                    generalNotifyModel.backArrow = false;
                   }),
-              const SizedBox(width: 8,),
-              IconButton(
-                  icon: const Icon(m.Icons.check_box_outline_blank_rounded,
-                      size: 16),
-                  onPressed: () async {
-                    if (await windowManager.isMaximized()) {
-                      await windowManager.unmaximize();
-                    } else {
-                      await windowManager.maximize();
-                    }
-                  }),
-              const SizedBox(width: 8,),
-              IconButton(
-                  icon: const Icon(m.Icons.close_rounded, size: 16),
-                  onPressed: () {
-                    exit(0);
-                  }),
-              const SizedBox(width: 8,),
-            ],
-          )),
+            ),
+          ),
+          Expanded(
+              child: DragToMoveArea(
+                  child: SizedBox(
+                      height: 36,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
+                      )))),
+          setting
+              ? IconButton(
+                  icon: const Icon(m.Icons.settings, size: 16),
+                  onPressed: () async {})
+              : const SizedBox(),
+          const SizedBox(
+            width: 16,
+          ),
+          IconButton(
+              icon: const Icon(m.Icons.minimize_rounded, size: 16),
+              onPressed: () async {
+                await windowManager.minimize();
+              }),
+          const SizedBox(
+            width: 8,
+          ),
+          IconButton(
+              icon:
+                  const Icon(m.Icons.check_box_outline_blank_rounded, size: 16),
+              onPressed: () async {
+                if (await windowManager.isMaximized()) {
+                  await windowManager.unmaximize();
+                } else {
+                  await windowManager.maximize();
+                }
+              }),
+          const SizedBox(
+            width: 8,
+          ),
+          IconButton(
+              icon: const Icon(m.Icons.close_rounded, size: 16),
+              onPressed: () {
+                exit(0);
+              }),
+          const SizedBox(
+            width: 8,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_PlayContext.dart';
@@ -30,7 +32,7 @@ class AAPItem extends StatelessWidget {
       onPressed: () {},
       builder: (p0, state) {
         return Padding(
-          padding: EdgeInsets.only(right: 16, left: index == 0 ? 16 : 0),
+          padding: EdgeInsets.only(right: 16, left: index == 0 && Platform.isAndroid ? 16 : 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,

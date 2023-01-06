@@ -26,4 +26,5 @@ goToArtist(BuildContext context, int artistId) {
     },
   ));
   generalNotifyModel.backArrow = true;
+  generalNotifyModel.addNavList("ArtistPage");
 }

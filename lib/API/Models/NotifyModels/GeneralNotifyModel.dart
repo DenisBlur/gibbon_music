@@ -6,6 +6,8 @@ class GeneralNotifyModel extends ChangeNotifier {
   MvTrack _mTrack;
   List<MvTrack> _mPlaylist = [];
 
+  List<String> mNavList = [];
+
   List<MvTrack> get mPlaylist => _mPlaylist;
 
   MvTrack get mTrack => _mTrack;
@@ -13,7 +15,13 @@ class GeneralNotifyModel extends ChangeNotifier {
   bool get backArrow => _backArrow;
 
   set backArrow(bool value) {
-    _backArrow = value;
+    if (!value) {
+      if (mNavList.isEmpty) {
+        _backArrow = value;
+      }
+    } else {
+      _backArrow = value;
+    }
     notifyListeners();
   }
 
@@ -24,6 +32,16 @@ class GeneralNotifyModel extends ChangeNotifier {
 
   set mTrack(MvTrack value) {
     _mTrack = value;
+    notifyListeners();
+  }
+
+  addNavList(String value) {
+    mNavList.add(value);
+    notifyListeners();
+  }
+
+  removeNavList() {
+    mNavList.removeLast();
     notifyListeners();
   }
 }

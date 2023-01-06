@@ -1,5 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gibbon_music/API/MainMethod/GMethod.dart';
 import 'package:gibbon_music/API/YAM_Functions.dart';
+import 'package:gibbon_music/DesignWidget/GButtons.dart';
 
 import '../../API/Models/ArtistPage/MV_ArtistPage.dart';
 
@@ -7,8 +9,6 @@ class ArtistPage extends StatelessWidget {
   const ArtistPage({Key key, @required this.artistId}) : super(key: key);
 
   final int artistId;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,12 @@ class ArtistPage extends StatelessWidget {
             return CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
-                // SliverToBoxAdapter(child: Text(artistPage.artist.name),),
+                SliverToBoxAdapter(
+                    child: GTextButton(
+                        onPress: () {
+                          goToArtist(context, artistId);
+                        },
+                        text: artistPage.artist.name)),
               ],
             );
           } else {
