@@ -20,18 +20,21 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   double separate = Platform.isWindows ? 16 : 32;
-
   final controller = ScrollController();
 
+  OverlayState overlayState;
+  OverlayEntry overlayEntry;
+
   showOverlay(BuildContext context) async {
-    OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
+    overlayState = Overlay.of(context);
+    overlayEntry = OverlayEntry(
       opaque: false,
       builder: (context) {
         return const Positioned(
             top: 0, left: 0, bottom: 0, right: 0, child: OverlayWidgets());
       },
     );
+    print(overlayState.mounted);
     overlayState.insert(overlayEntry);
   }
 
@@ -44,7 +47,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: Platform.isAndroid ? 0 : 72,  right: Platform.isAndroid ? 0 : 16),
+        padding: EdgeInsets.only(left: Platform.isAndroid ? 0 : 72,  right: Platform.isAndroid ? 0 : 72),
         child: ImprovedScrolling(
           scrollController: controller,
           enableCustomMouseWheelScrolling: true,

@@ -47,7 +47,6 @@ class GeneralNotifyModel extends ChangeNotifier {
   set mTrack(Track value) {
     _mTrack = value;
     trackChanged.broadcast(TrackChangedArgs(mTrack));
-    print("HEEELOO track");
     notifyListeners();
   }
 
@@ -64,6 +63,14 @@ class GeneralNotifyModel extends ChangeNotifier {
 
   next() {
     playTrack(currentIndex + 1);
+  }
+
+  bool canNext() {
+    return _checkRange(currentIndex + 1);
+  }
+
+  bool canPrevious() {
+    return _checkRange(currentIndex - 1);
   }
 
   previous() {
@@ -84,7 +91,5 @@ class GeneralNotifyModel extends ChangeNotifier {
 class TrackChangedArgs extends EventArgs {
   Track track;
 
-  TrackChangedArgs(this.track) {
-    print("args created");
-  }
+  TrackChangedArgs(this.track);
 }

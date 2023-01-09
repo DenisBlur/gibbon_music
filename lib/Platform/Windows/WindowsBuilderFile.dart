@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/DesignWidget/Navigation/NavigationBar.dart';
+import 'package:gibbon_music/NewAPI/mainYamFunction.dart';
 import 'package:gibbon_music/Pages/MainPage/MainPage.dart';
 
 import '../../API/YAM_Functions.dart';
@@ -22,8 +23,17 @@ class _WindowsBuilderFileState extends State<WindowsBuilderFile> {
   //Инициализация Яндекс Музыки, с передачей токена
   Future<void> initAPI() async {
     initYamApi("AQAAAAAV_ACCAAG8XkFW219h4UiInu2aEV4ZGL4");
+
+    // TODO: Old Method
     mHomePage = await getYamApiHomePage(
         ["play_contexts", "chart", "promotions", "mixes"]);
+
+    /* TODO: New API methods, with fully tested and working models, switch to them
+    await getHomePage(["play_contexts", "chart", "promotions", "mixes"]);
+    await getArtist(7461723);
+    await getAlbum(24375438);
+    await getPlaylist("368836738", 1001);
+     */
   }
 
   @override
