@@ -2,7 +2,9 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
+import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
 import 'package:gibbon_music/main.dart';
+import 'package:provider/provider.dart';
 
 class AudioControl extends StatefulWidget {
   const AudioControl({Key key}) : super(key: key);
@@ -54,6 +56,9 @@ class _AudioControlState extends State<AudioControl> {
 
   @override
   Widget build(BuildContext context) {
+    bool canPrevious = context.watch<GeneralNotifyModel>().canPrevious();
+    bool canNext = context.watch<GeneralNotifyModel>().canNext();
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,11 +68,12 @@ class _AudioControlState extends State<AudioControl> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             IconButton(
-              icon: const Icon(m.Icons.skip_previous_rounded, size: 28),
-              onPressed: () {
-                player.previousAudio();
-              },
-            ),
+                icon: const Icon(m.Icons.skip_previous_rounded, size: 28),
+                onPressed: canPrevious
+                    ? () {
+                        player.previousAudio();
+                      }
+                    : null),
             IconButton(
               icon: Icon(mainIcon, size: 28),
               onPressed: () {
@@ -80,9 +86,11 @@ class _AudioControlState extends State<AudioControl> {
             ),
             IconButton(
               icon: const Icon(m.Icons.skip_next_rounded, size: 28),
-              onPressed: () {
-                player.nextAudio();
-              },
+              onPressed: canNext
+                  ? () {
+                      player.nextAudio();
+                    }
+                  : null,
             ),
           ],
         ),

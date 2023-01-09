@@ -8,10 +8,8 @@ class MvAudioPlayer {
 
   initAudio() async {
     player = AudioPlayer();
-    print("HEEELOO init");
 
     generalNotifyModel.trackChanged.subscribe((args) async {
-      print("HEEELOO");
       String urlTrack = await YamApi.downloadTrack(args.track.id);
       setAudio(urlTrack);
     });
