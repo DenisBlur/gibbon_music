@@ -1,16 +1,17 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/API/Models/NewHomePage/MV_Track.dart';
+
+import '../ArtistPage/MV_ArtistPage.dart';
 
 class GeneralNotifyModel extends ChangeNotifier {
   bool _backArrow = false;
-  MvTrack _mTrack;
-  List<MvTrack> _mPlaylist = [];
+  Track _mTrack;
+  List<Track> _mPlaylist = [];
 
   List<String> mNavList = [];
 
-  List<MvTrack> get mPlaylist => _mPlaylist;
+  List<Track> get mPlaylist => _mPlaylist;
 
-  MvTrack get mTrack => _mTrack;
+  Track get mTrack => _mTrack;
 
   bool get backArrow => _backArrow;
 
@@ -25,12 +26,12 @@ class GeneralNotifyModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  set mPlaylist(List<MvTrack> value) {
+  set mPlaylist(List<Track> value) {
     _mPlaylist = value;
     notifyListeners();
   }
 
-  set mTrack(MvTrack value) {
+  set mTrack(Track value) {
     _mTrack = value;
     notifyListeners();
   }

@@ -18,13 +18,13 @@ class AAPItem extends StatelessWidget {
 
     switch (playContext.context) {
       case "album":
-        lowerText = "${playContext.artists[0].name} • ${playContext.year}";
+        lowerText = "${playContext.payload.artists[0].name} • ${playContext.payload.year}";
         break;
       case "artist":
         lowerText = "";
         break;
       default:
-        lowerText = "Треков: ${playContext.counts}";
+        lowerText = "Треков: ${playContext.payload.counts}";
         break;
     }
 
@@ -57,7 +57,7 @@ class AAPItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   child: FadeInImage.memoryNetwork(
                     fit: BoxFit.cover,
-                    image: linkImage(playContext.coverUri, 200, 200),
+                    image: linkImage(playContext.payload.coverUri, 200),
                     placeholder: kTransparentImage,
                   ),
                 ),
@@ -65,7 +65,7 @@ class AAPItem extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
-              Text(playContext.title),
+              Text(playContext.payload.title),
               Text(
                 "Альбом",
                 style: TextStyle(

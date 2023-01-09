@@ -21,7 +21,7 @@ dependencies:
   mouse_parallax: ^1.1.0
   anitex: ^3.0.1
   contextmenu: ^3.0.0
-  draggable_bottom_sheet: ^1.0.2
+  flutter_improved_scrolling: ^0.0.3
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 // ignore: library_prefixes
 import 'package:flutter/material.dart' as mIcon;
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
+import 'package:gibbon_music/API/Models/ArtistPage/MV_ArtistPage.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_Track.dart';
 import 'package:gibbon_music/DesignWidget/ContextMenu.dart';
 import 'package:gibbon_music/DesignWidget/GButtons.dart';
@@ -11,14 +12,15 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:yam_api/yam_api.dart';
 
 class TrackItem extends StatelessWidget {
-  const TrackItem({Key key, @required this.track, this.isChart = false})
+  const TrackItem({Key key, @required this.track, this.chart, this.imageSize = 56})
       : super(key: key);
 
-  final bool isChart;
-  final MvTrack track;
+  final Chart chart;
+  final Track track;
+  final double imageSize;
 
   void playTrack() async {
-    String urlTrack = await YamApi.downloadTrack(track.track.id);
+    String urlTrack = await YamApi.downloadTrack(track.id);
     generalNotifyModel.mTrack = track;
     player.setAudio(urlTrack);
   }
@@ -39,15 +41,15 @@ class TrackItem extends StatelessWidget {
           duration: const Duration(milliseconds: 150),
           child: Row(
             children: [
-              isChart ? ChartInfoWidget(chart: track.chart) : const SizedBox(),
+              chart != null ? ChartInfoWidget(chart: chart) : const SizedBox(),
               SizedBox(
-                width: 56,
-                height: 56,
+                width: imageSize,
+                height: imageSize,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: FadeInImage.memoryNetwork(
                       placeholder: kTransparentImage,
-                      image: linkImage(track.track.coverUri, 100, 100)),
+                      image: linkImage(track.coverUri, 100)),
                 ),
               ),
               const SizedBox(
@@ -58,17 +60,17 @@ class TrackItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    track.track.title,
+                    track.title,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                  ArtistsWidget(listArtists: track.track.artists)
+                  ArtistsWidget(listArtists: track.artists)
                 ],
               ),
               const Expanded(
                 child: SizedBox(),
               ),
-              Text(timeTrack(track.track.durationMs)),
+              Text(timeTrack(track.durationMs)),
             ],
           ),
         );
@@ -101,6 +103,7 @@ class ArtistsWidget extends StatelessWidget {
       artists.add(GTextButton(
         text: element.name,
         onPress: () {
+          Navigator.pop(context);
           goToArtist(context, element.id);
         },
       ));

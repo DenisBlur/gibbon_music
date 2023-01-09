@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
+import 'package:gibbon_music/API/Models/ArtistPage/MV_ArtistPage.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_Track.dart';
 import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
 import 'package:gibbon_music/DesignWidget/ListItems/TrackItem.dart';
@@ -23,8 +24,8 @@ class AudioInfo extends StatelessWidget {
     List<Artists> artist = [];
 
     if (context.watch<GeneralNotifyModel>().mTrack != null) {
-      Track track = context.watch<GeneralNotifyModel>().mTrack.track;
-      image = linkImage(track.coverUri, 150, 150);
+      Track track = context.watch<GeneralNotifyModel>().mTrack;
+      image = linkImage(track.coverUri, 150);
       title = track.title;
       artist = track.artists;
     }

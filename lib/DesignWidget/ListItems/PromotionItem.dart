@@ -38,7 +38,7 @@ class _PromotionItemState extends State<PromotionItem> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Image.network(
-                    linkImage(widget.promotion.image, 800, 800),
+                    linkImage(widget.promotion.image, 800),
                     width: 450,
                     height: 450,
                     fit: BoxFit.cover,

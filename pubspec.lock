@@ -134,13 +134,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
-  draggable_bottom_sheet:
-    dependency: "direct main"
-    description:
-      name: draggable_bottom_sheet
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
   fake_async:
     dependency: transitive
     description:
@@ -174,6 +167,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_improved_scrolling:
+    dependency: "direct main"
+    description:
+      name: flutter_improved_scrolling
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -510,5 +510,5 @@ packages:
     source: path
     version: "0.0.1"
 sdks:
-  dart: ">=2.17.6 <3.0.0"
+  dart: ">=2.17.0 <3.0.0"
   flutter: ">=3.0.0"

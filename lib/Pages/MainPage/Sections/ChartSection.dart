@@ -15,24 +15,11 @@ class ChartSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: Platform.isAndroid ? 16 : 0, right: Platform.isAndroid ? 16 : 0 ),
+      margin: EdgeInsets.only(
+          left: Platform.isAndroid ? 16 : 0,
+          right: Platform.isAndroid ? 16 : 0),
       width: MediaQuery.of(context).size.width,
-      height: (chartTrackList.length * (Platform.isAndroid ? 86 : 32)).toDouble(),
-      child: GridView.count(
-        physics: const NeverScrollableScrollPhysics(),
-        crossAxisCount: Platform.isAndroid ? 1 : 2,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-        childAspectRatio: Platform.isAndroid ? 6 : 10,
-        children: List.generate(
-          chartTrackList.length,
-          (index) => FadeInRight(
-            duration: const Duration(milliseconds: 250),
-            delay: Duration(milliseconds: 50 * index),
-            child: TrackItem(track: chartTrackList[index], isChart: true),
-          ),
-        ),
-      ),
+      child: Row()
     );
   }
 }

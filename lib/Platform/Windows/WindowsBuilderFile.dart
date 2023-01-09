@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/DesignWidget/Navigation/NavigationBar.dart';
 import 'package:gibbon_music/Pages/MainPage/MainPage.dart';
 
@@ -56,14 +57,7 @@ class _WindowsBuilderFileState extends State<WindowsBuilderFile> {
                     builder:
                         (BuildContext context, AsyncSnapshot<void> snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        return const Padding(
-                          padding: EdgeInsets.only(left: 72, right: 16),
-                          child: CustomScrollView(
-                            slivers: [
-                              MainPage(),
-                            ],
-                          ),
-                        );
+                        return const MainPage();
                       } else {
                         return const Center(
                           child: ProgressRing(),
@@ -74,7 +68,6 @@ class _WindowsBuilderFileState extends State<WindowsBuilderFile> {
                 )
               ],
             ),
-            const NavigationBar(),
           ],
         ),
       ),

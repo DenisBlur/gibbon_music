@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/DesignWidget/GStyles.dart';
+import 'package:gibbon_music/DesignWidget/ListItems/TrackItem.dart';
 import 'package:gibbon_music/Pages/MainPage/Sections/PlayContextSection.dart';
 import 'package:gibbon_music/Pages/MainPage/Sections/PromotionSection.dart';
 
@@ -17,8 +19,9 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
   double separate = Platform.isWindows ? 16 : 32;
+
+  final controller = ScrollController();
 
   showOverlay(BuildContext context) async {
     OverlayState overlayState = Overlay.of(context);
@@ -40,37 +43,66 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: Platform.isWindows ? CrossAxisAlignment.start : CrossAxisAlignment.center,
-        children: [
-          Text("Интересно сейчас", style: titleTextStyle),
-          SizedBox(
-            height: separate,
+    return Padding(
+        padding: const EdgeInsets.only(left: 72, right: 16),
+        child: ImprovedScrolling(
+          scrollController: controller,
+          enableCustomMouseWheelScrolling: true,
+          customMouseWheelScrollConfig: const CustomMouseWheelScrollConfig(
+            scrollAmountMultiplier: 45.0,
           ),
-          PromotionSection(promotions: mHomePage.listMVPromotion),
-          SizedBox(
-            height: separate,
+          child: CustomScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: controller,
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: Platform.isWindows
+                      ? CrossAxisAlignment.start
+                      : CrossAxisAlignment.center,
+                  children: [
+                    Text("Интересно сейчас", style: titleTextStyle),
+                    SizedBox(
+                      height: separate,
+                    ),
+                    PromotionSection(promotions: mHomePage.listMVPromotion),
+                    SizedBox(
+                      height: separate,
+                    ),
+                    Text("Вы недавно слушали", style: titleTextStyle),
+                    SizedBox(
+                      height: separate,
+                    ),
+                    PlayContextSection(
+                        playContexts: mHomePage.listMVPlayContext),
+                    SizedBox(
+                      height: separate,
+                    ),
+                    Text("Чарт", style: titleTextStyle),
+                    ChartSection(chartTrackList: mHomePage.listMVTrack),
+                    SizedBox(
+                      height: separate,
+                    ),
+                  ],
+                ),
+              ),
+              SliverGrid(
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  return TrackItem(
+                    track: mHomePage.listMVTrack[index].track,
+                    chart: mHomePage.listMVTrack[index].chart,
+                  );
+                }, childCount: mHomePage.listMVTrack.length, addSemanticIndexes: true),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisExtent: 56,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    crossAxisCount: 2),
+              ),
+              const SliverToBoxAdapter(child: SizedBox(height: 150),),
+            ],
           ),
-          Text("Вы недавно слушали", style: titleTextStyle),
-          SizedBox(
-            height: separate,
-          ),
-          PlayContextSection(playContexts: mHomePage.listMVPlayContext),
-          SizedBox(
-            height: separate,
-          ),
-          Text("Чарт", style: titleTextStyle),
-          SizedBox(
-            height: separate,
-          ),
-          ChartSection(chartTrackList: mHomePage.listMVTrack),
-          const SizedBox(
-            height: 116,
-          ),
-        ],
-      ),
-    );
+        ));
   }
 }

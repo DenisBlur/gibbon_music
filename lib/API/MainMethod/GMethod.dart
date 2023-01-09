@@ -2,9 +2,9 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/Pages/ArtistPage/ArtistPage.dart';
 import 'package:gibbon_music/main.dart';
 
-String linkImage(String url, int sizeX, int sizeY) {
+String linkImage(String url, int size) {
   url = url.substring(0, url.indexOf("%"));
-  return url = "https://$url${sizeX}x$sizeY";
+  return url = "https://$url${size}x$size";
 }
 
 String timeTrack(int ms) {

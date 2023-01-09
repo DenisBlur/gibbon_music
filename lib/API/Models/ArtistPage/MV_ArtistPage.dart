@@ -38,7 +38,7 @@ class MvArtistPage {
     if (json['popularTracks'] != null) {
       popularTracks = [];
       json['popularTracks'].forEach((v) {
-        popularTracks.add(PopularTracks.fromJson(v));
+        popularTracks.add(Track.fromJson(v));
       });
     }
     if (json['similarArtists'] != null) {
@@ -100,7 +100,7 @@ class MvArtistPage {
   List<Albums> albums;
   List<AlsoAlbums> alsoAlbums;
   List<num> lastReleaseIds;
-  List<PopularTracks> popularTracks;
+  List<Track> popularTracks;
   List<SimilarArtists> similarArtists;
   List<AllCovers> allCovers;
   List<Concerts> concerts;
@@ -886,8 +886,8 @@ class SimilarArtists {
   }
 }
 
-class PopularTracks {
-  PopularTracks({
+class Track {
+  Track({
     this.id,
     this.realId,
     this.title,
@@ -913,7 +913,7 @@ class PopularTracks {
     this.trackSource,
   });
 
-  PopularTracks.fromJson(dynamic json) {
+  Track.fromJson(dynamic json) {
     id = json['id'];
     realId = json['realId'];
     title = json['title'];

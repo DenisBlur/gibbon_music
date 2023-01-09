@@ -19,8 +19,8 @@ class _NavigationBarState extends State<NavigationBar> {
         double top = state.isHovering ? 60 : 44;
         double bottom = state.isHovering ? 132 : 116;
         double left = state.isHovering ? 16 : 0;
-        double width = state.isHovering ? 256 : 56 ;
-        Color bgColor = state.isHovering ? FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(.4) : FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1);
+        double width = state.isHovering ? 56 : 56 ;
+        Color bgColor = state.isHovering ? FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(.1) : FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1);
 
         return AnimatedContainer(
           width: width,
@@ -32,7 +32,9 @@ class _NavigationBarState extends State<NavigationBar> {
             borderRadius: BorderRadius.circular(16),
             child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaY: 50, sigmaX: 50),
-                child: Container(
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 650),
+                  curve: Curves.fastLinearToSlowEaseIn,
                   decoration: BoxDecoration(
                       color: bgColor,
                   ),

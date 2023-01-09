@@ -31,3 +31,4 @@ class MvChart {
 
   String progress;
 }
+

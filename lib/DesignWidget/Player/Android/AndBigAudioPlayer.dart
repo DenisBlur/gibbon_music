@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
+import 'package:gibbon_music/API/Models/ArtistPage/MV_ArtistPage.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_Track.dart';
 import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
 import 'package:gibbon_music/DesignWidget/ListItems/TrackItem.dart';
@@ -66,13 +67,13 @@ class _BigAudioWidgetState extends State<BigAudioWidget> {
     List<Artists> artist = [];
 
     if (context.watch<GeneralNotifyModel>().mTrack != null) {
-      Track track = context.watch<GeneralNotifyModel>().mTrack.track;
-      image = linkImage(track.coverUri, 400, 400);
+      Track track = context.watch<GeneralNotifyModel>().mTrack;
+      image = linkImage(track.coverUri, 400);
       title = track.title;
       artist = track.artists;
     }
 
-    return Column(
+    return context.watch<GeneralNotifyModel>().mTrack != null ? Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(24),
@@ -141,6 +142,6 @@ class _BigAudioWidgetState extends State<BigAudioWidget> {
           ],
         ),
       ],
-    );
+    ) : const Text("Hi)");
   }
 }

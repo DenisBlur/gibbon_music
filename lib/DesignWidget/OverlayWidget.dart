@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
 import 'package:gibbon_music/DesignWidget/GDragWidget.dart';
+import 'package:gibbon_music/DesignWidget/Navigation/NavigationBar.dart';
 import 'package:gibbon_music/DesignWidget/Player/Windows/WinAudioPlayer.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,7 @@ class _OverlayWidgetsState extends State<OverlayWidgets> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        Platform.isAndroid ? const SizedBox() : const NavigationBar(),
         Platform.isAndroid
             ? const SizedBox()
             : WindowHeader(
