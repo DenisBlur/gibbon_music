@@ -6,6 +6,7 @@ import 'package:gibbon_music/API/Models/ArtistPage/MV_ArtistPage.dart';
 import 'package:gibbon_music/DesignWidget/GListView/GInfinityListView.dart';
 import 'package:gibbon_music/DesignWidget/ListItems/TrackItem.dart';
 import 'package:darq/darq.dart';
+import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
 import '../../../API/Models/NewHomePage/MV_Track.dart';
 import '../../../main.dart';
 
@@ -21,9 +22,7 @@ class ChartSection extends StatelessWidget {
 
     return Container(
         height: 2000,
-        margin: EdgeInsets.only(
-            left: Platform.isAndroid ? 16 : 0,
-            right: Platform.isAndroid ? 16 : 0),
+        margin: sectionInsets,
         width: MediaQuery.of(context).size.width,
         child: GListView(
           scrollDirection: Axis.vertical,

@@ -8,6 +8,8 @@ import 'package:gibbon_music/DesignWidget/ContextMenu.dart';
 import 'package:gibbon_music/DesignWidget/GButtons.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../Styles/ConstValue.dart';
+
 class TrackItem extends StatelessWidget {
   const TrackItem({Key key, @required this.track, this.chart, this.imageSize = 56, this.callback})
       : super(key: key);
@@ -27,7 +29,7 @@ class TrackItem extends StatelessWidget {
               color: FluentTheme.of(context)
                   .cardColor
                   .withOpacity(state.isHovering || state.isPressing ? .5 : 0)),
-          duration: const Duration(milliseconds: 150),
+          duration: fastAnimation,
           child: Row(
             children: [
               chart != null ? ChartInfoWidget(chart: chart) : const SizedBox(),

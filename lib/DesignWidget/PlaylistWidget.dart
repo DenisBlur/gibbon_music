@@ -5,6 +5,7 @@ import 'package:gibbon_music/API/MainMethod/GMethod.dart';
 import 'package:gibbon_music/API/Models/ArtistPage/MV_ArtistPage.dart';
 import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
 import 'package:gibbon_music/DesignWidget/ListItems/TrackItem.dart';
+import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -30,7 +31,7 @@ class PlaylistWidget extends StatelessWidget {
           return AnimatedContainer(
               width: width,
               height: MediaQuery.of(context).size.height - bottom,
-              duration: const Duration(milliseconds: 650),
+              duration: slowAnimation,
               curve: Curves.fastLinearToSlowEaseIn,
               margin: EdgeInsets.only(top: top, right: right),
               child: ClipRRect(
@@ -60,6 +61,9 @@ class PlaylistTrack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isSelected = context.watch<GeneralNotifyModel>().currentIndex == index;
+
     return HoverButton(
       onPressed: () {
         generalNotifyModel.playTrack(index);
@@ -69,11 +73,12 @@ class PlaylistTrack extends StatelessWidget {
           margin: const EdgeInsets.only(top: 8, left: 8),
           height: stateHover ? 64 : 40,
           width: stateHover ? 64 : 40,
+          padding: EdgeInsets.all(isSelected ? 4 : 0),
           curve: Curves.fastLinearToSlowEaseIn,
           duration: const Duration(milliseconds: 350),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: FluentTheme.of(context).cardColor.withOpacity(state.isHovering ? .4 : 0),
+              borderRadius: BorderRadius.circular(isSelected ? 12 : 8),
+              color: FluentTheme.of(context).cardColor.withOpacity(state.isHovering || isSelected ? .4 : 0),
               border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(state.isHovering ? .4 : 0), width: .2)),
           child: Row(
             children: [

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/DesignWidget/Player/Android/AndAudioPlayer.dart';
 import 'package:gibbon_music/DesignWidget/Player/Android/AndBigAudioPlayer.dart';
+import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
 
 class GDragWidget extends StatefulWidget {
   const GDragWidget({Key key}) : super(key: key);
@@ -55,7 +56,7 @@ class _GDragWidgetState extends State<GDragWidget> {
             minHeight: minHeight,
           ),
           curve: Curves.fastLinearToSlowEaseIn,
-          duration: const Duration(milliseconds: 650),
+          duration: slowAnimation,
           width: MediaQuery.of(context).size.width,
           height: height,
           decoration: BoxDecoration(
@@ -76,13 +77,13 @@ class _GDragWidgetState extends State<GDragWidget> {
                   children: [
                     SizedBox(height: minHeight, child: AnimatedOpacity(
                       opacity: (1-((height) / maxHeight)).clamp(0.0, 1.0),
-                      duration: const Duration(milliseconds: 25),
+                      duration: dragAnimation,
                       child: const AudioPlayerWidget(),
                     ),),
                     Expanded(
                       child: AnimatedOpacity(
                         opacity: ((height-minHeight) / maxHeight).clamp(0.0, 1.0),
-                        duration: const Duration(milliseconds: 25),
+                        duration: dragAnimation,
                         child: const BigAudioWidget(),
                       ),
                     ),

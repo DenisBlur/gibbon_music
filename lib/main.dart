@@ -3,14 +3,13 @@ import 'dart:io' show Platform;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_HomePage.dart';
 import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
-import 'package:gibbon_music/Platform/Windows/WindowsBuilderFile.dart';
+import 'package:gibbon_music/Platform/WindowsBuilderFile.dart';
 import 'package:gibbon_music/Theme/ThemeCreater.dart';
 import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'API/MainMethod/MV_AudioPlayer.dart';
-import 'Platform/Andorid/AndroidBuilderFile.dart';
 
 //Просто акцент
 SystemAccentColor accentColor = SystemTheme.accentColor;
@@ -59,7 +58,7 @@ class MyApp extends StatelessWidget {
       child: FluentApp(
         title: "Music",
         theme: GThemeCreator.darkColor,
-        home: Platform.isAndroid ? const AndroidBuilderFile() : const WindowsBuilderFile(),
+        home: const WindowsBuilderFile(),
       ),
     );
   }

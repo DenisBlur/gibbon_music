@@ -1,14 +1,10 @@
-import 'dart:io';
-
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
-import 'package:gibbon_music/DesignWidget/Navigation/NavigationBar.dart';
-import 'package:gibbon_music/NewAPI/mainYamFunction.dart';
+import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
 import 'package:gibbon_music/Pages/MainPage/MainPage.dart';
 
-import '../../API/YAM_Functions.dart';
-import '../../DesignWidget/Effects/Snowfall.dart';
-import '../../main.dart';
+import '../API/YAM_Functions.dart';
+import '../DesignWidget/Effects/Snowfall.dart';
+import '../main.dart';
 
 class WindowsBuilderFile extends StatefulWidget {
   const WindowsBuilderFile({Key key}) : super(key: key);
@@ -60,7 +56,7 @@ class _WindowsBuilderFileState extends State<WindowsBuilderFile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 36),
+                SizedBox(height: windowHeader),
                 Expanded(
                   child: FutureBuilder(
                     future: initAPI(),

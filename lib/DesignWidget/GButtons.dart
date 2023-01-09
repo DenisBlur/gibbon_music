@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
 
+import 'Styles/ConstValue.dart';
+
 class GTextButton extends StatelessWidget {
   const GTextButton({Key key, @required this.onPress, @required this.text})
       : super(key: key);
@@ -21,7 +23,7 @@ class GTextButton extends StatelessWidget {
                   ? FluentTheme.of(context).accentColor
                   : FluentTheme.of(context).uncheckedColor.withOpacity(.5),
             ),
-            duration: const Duration(milliseconds: 100),
+            duration: fastAnimation,
             child: Text(text));
       },
     );

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_PlayContext.dart';
+import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class AAPItem extends StatelessWidget {
@@ -41,7 +42,7 @@ class AAPItem extends StatelessWidget {
                 width: 150,
                 padding: EdgeInsets.all(
                     state.isHovering || state.isPressing ? 8 : 0),
-                duration: const Duration(milliseconds: 150),
+                duration: fastAnimation,
                 curve: Curves.fastLinearToSlowEaseIn,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),

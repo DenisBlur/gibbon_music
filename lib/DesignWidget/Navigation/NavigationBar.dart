@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
+import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,7 @@ class _NavigationBarState extends State<NavigationBar> {
         return AnimatedContainer(
           width: width,
           height: MediaQuery.of(context).size.height,
-          duration: const Duration(milliseconds: 650),
+          duration: slowAnimation,
           curve: Curves.fastLinearToSlowEaseIn,
           margin: EdgeInsets.only(top: top, bottom: bottom, left: left),
           child: ClipRRect(
@@ -37,7 +38,7 @@ class _NavigationBarState extends State<NavigationBar> {
             child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaY: 50, sigmaX: 50),
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 650),
+                  duration: slowAnimation,
                   curve: Curves.fastLinearToSlowEaseIn,
                   decoration: BoxDecoration(
                     color: bgColor,

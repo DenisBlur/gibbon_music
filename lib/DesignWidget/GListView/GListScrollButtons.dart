@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as mIcon;
+import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
 
 class GListScrollButtons extends StatefulWidget {
   const GListScrollButtons({Key key, @required this.scrollController})
@@ -34,6 +35,9 @@ class _GListButtonsState extends State<GListScrollButtons> {
 
   @override
   Widget build(BuildContext context) {
+    widget.scrollController.addListener(() {
+      toggleButtons(widget.scrollController.offset);
+    });
     return Row(
       children: [
         const SizedBox(
@@ -43,10 +47,9 @@ class _GListButtonsState extends State<GListScrollButtons> {
             ? IconButton(
                 icon: const Icon(mIcon.Icons.arrow_back_rounded),
                 onPressed: () {
-                  toggleButtons(widget.scrollController.offset - 360);
                   widget.scrollController.animateTo(
                       widget.scrollController.offset - 360,
-                      duration: const Duration(milliseconds: 650),
+                      duration: slowAnimation,
                       curve: Curves.fastLinearToSlowEaseIn);
                 },
               )
@@ -56,10 +59,9 @@ class _GListButtonsState extends State<GListScrollButtons> {
             ? IconButton(
                 icon: const Icon(mIcon.Icons.arrow_forward_rounded),
                 onPressed: () {
-                  toggleButtons(widget.scrollController.offset + 360);
                   widget.scrollController.animateTo(
                       widget.scrollController.offset + 360,
-                      duration: const Duration(milliseconds: 650),
+                      duration: slowAnimation,
                       curve: Curves.fastLinearToSlowEaseIn);
                 },
               )

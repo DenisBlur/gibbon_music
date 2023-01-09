@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -23,7 +24,7 @@ class WindowHeader extends StatelessWidget {
         FluentTheme.of(context).borderInputColor.withOpacity(.2);
 
     return Container(
-      height: 36,
+      height: windowHeader,
       decoration: BoxDecoration(
           color: FluentTheme.of(context).cardColor,
           border: Border(bottom: BorderSide(color: borderColor, width: .8))),
@@ -35,7 +36,7 @@ class WindowHeader extends StatelessWidget {
               right: backArrow ? 8 : 0,
             ),
             width: backArrow ? 32 : 0,
-            duration: const Duration(milliseconds: 850),
+            duration: slowAnimation,
             curve: Curves.fastLinearToSlowEaseIn,
             child: ClipRRect(
               child: IconButton(

@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/DesignWidget/GStyles.dart';
 import 'package:gibbon_music/DesignWidget/ListItems/TrackItem.dart';
+import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
 import 'package:gibbon_music/Pages/MainPage/Sections/PlayContextSection.dart';
 import 'package:gibbon_music/Pages/MainPage/Sections/PromotionSection.dart';
 
@@ -19,7 +20,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  double separate = Platform.isWindows ? 16 : 32;
   final controller = ScrollController();
 
   OverlayState overlayState;
@@ -30,11 +30,9 @@ class _MainPageState extends State<MainPage> {
     overlayEntry = OverlayEntry(
       opaque: false,
       builder: (context) {
-        return const Positioned(
-            top: 0, left: 0, bottom: 0, right: 0, child: OverlayWidgets());
+        return const Positioned(top: 0, left: 0, bottom: 0, right: 0, child: OverlayWidgets());
       },
     );
-    print(overlayState.mounted);
     overlayState.insert(overlayEntry);
   }
 
@@ -47,46 +45,43 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: Platform.isAndroid ? 0 : 72,  right: Platform.isAndroid ? 0 : 72),
+        padding: pageInsets,
         child: ImprovedScrolling(
           scrollController: controller,
           enableCustomMouseWheelScrolling: true,
           enableKeyboardScrolling: true,
           customMouseWheelScrollConfig: const CustomMouseWheelScrollConfig(
-            scrollAmountMultiplier: 25.0,
+            scrollAmountMultiplier: scrollMultiplier,
           ),
           child: CustomScrollView(
-            physics: Platform.isAndroid ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
+            physics: scrollPhysics,
             controller: controller,
             slivers: [
               SliverToBoxAdapter(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: Platform.isWindows
-                      ? CrossAxisAlignment.start
-                      : CrossAxisAlignment.center,
+                  crossAxisAlignment: textPageAlignment,
                   children: [
                     Text("Интересно сейчас", style: titleTextStyle),
                     SizedBox(
-                      height: separate,
+                      height: sectionSeparate,
                     ),
                     PromotionSection(promotions: mHomePage.listMVPromotion),
                     SizedBox(
-                      height: separate,
+                      height: sectionSeparate,
                     ),
                     Text("Вы недавно слушали", style: titleTextStyle),
                     SizedBox(
-                      height: separate,
+                      height: sectionSeparate,
                     ),
-                    PlayContextSection(
-                        playContexts: mHomePage.listMVPlayContext),
+                    PlayContextSection(playContexts: mHomePage.listMVPlayContext),
                     SizedBox(
-                      height: separate,
+                      height: sectionSeparate,
                     ),
                     Text("Чарт", style: titleTextStyle),
                     ChartSection(chartTrackList: mHomePage.listMVTrack),
                     SizedBox(
-                      height: separate,
+                      height: sectionSeparate,
                     ),
                   ],
                 ),

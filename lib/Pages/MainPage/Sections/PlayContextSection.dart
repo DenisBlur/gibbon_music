@@ -6,6 +6,8 @@ import 'package:gibbon_music/API/Models/NewHomePage/MV_PlayContext.dart';
 import 'package:gibbon_music/DesignWidget/GListView/GInfinityListView.dart';
 import 'package:gibbon_music/DesignWidget/ListItems/AAPItem.dart';
 
+import '../../../DesignWidget/Styles/ConstValue.dart';
+
 class PlayContextSection extends StatelessWidget {
   const PlayContextSection({Key key, @required this.playContexts})
       : super(key: key);
@@ -22,7 +24,7 @@ class PlayContextSection extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return FadeIn(
-            duration: const Duration(milliseconds: 250),
+            duration: fastAnimation,
             delay: Duration(milliseconds: 50 * index),
             child: AAPItem(
               playContext: playContexts[index], index: index,

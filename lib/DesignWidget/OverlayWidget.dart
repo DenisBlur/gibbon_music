@@ -10,14 +10,9 @@ import 'package:provider/provider.dart';
 
 import 'Navigation/WindowHeader.dart';
 
-class OverlayWidgets extends StatefulWidget {
+class OverlayWidgets extends StatelessWidget {
   const OverlayWidgets({Key key}) : super(key: key);
 
-  @override
-  State<OverlayWidgets> createState() => _OverlayWidgetsState();
-}
-
-class _OverlayWidgetsState extends State<OverlayWidgets> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -27,18 +22,18 @@ class _OverlayWidgetsState extends State<OverlayWidgets> {
         Platform.isAndroid
             ? const SizedBox()
             : WindowHeader(
-                title: 'Yandex Music',
-                backArrow: context.watch<GeneralNotifyModel>().backArrow,
-                setting: false),
+            title: 'Yandex Music',
+            backArrow: context.watch<GeneralNotifyModel>().backArrow,
+            setting: false),
         Platform.isAndroid
             ? const Align(
-                alignment: Alignment.bottomCenter,
-                child: GDragWidget(),
-              )
+          alignment: Alignment.bottomCenter,
+          child: GDragWidget(),
+        )
             : const Align(
-                alignment: Alignment.bottomCenter,
-                child: AudioPlayerWidget(),
-              ),
+          alignment: Alignment.bottomCenter,
+          child: AudioPlayerWidget(),
+        ),
       ],
     );
   }
