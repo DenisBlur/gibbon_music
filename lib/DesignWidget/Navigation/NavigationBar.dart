@@ -42,38 +42,6 @@ class _NavigationBarState extends State<NavigationBar> {
                   decoration: BoxDecoration(
                     color: bgColor,
                   ),
-                  child: Column(
-                    children: [
-                      for (int i = 0;
-                          i <
-                              context
-                                  .watch<GeneralNotifyModel>()
-                                  .mPlaylist
-                                  .length;
-                          i++)
-                        HoverButton(
-                          onPressed: () {
-                            generalNotifyModel.playTrack(i);
-                          },
-                          builder: (p0, state) {
-                            return AnimatedContainer(
-                              decoration: BoxDecoration(
-                                  color: context
-                                              .watch<GeneralNotifyModel>()
-                                              .currentIndex ==
-                                          i
-                                      ? Colors.blue
-                                      : Colors.transparent),
-                              duration: Duration(milliseconds: 250),
-                              child: Text(context
-                                  .watch<GeneralNotifyModel>()
-                                  .mPlaylist[i]
-                                  .title),
-                            );
-                          },
-                        )
-                    ],
-                  ),
                 )),
           ),
         );

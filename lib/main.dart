@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
       create: (context) => generalNotifyModel = GeneralNotifyModel(),
       child: FluentApp(
         title: "Music",
-        theme: GThemeCreator.darkNoColor,
+        theme: GThemeCreator.darkColor,
         home: Platform.isAndroid ? const AndroidBuilderFile() : const WindowsBuilderFile(),
       ),
     );

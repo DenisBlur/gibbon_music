@@ -12,6 +12,8 @@ class GThemeCreator {
   static Color accentLightMicaColor;
   static Color accentLightCardColor;
 
+  static const double blendValue = 0.08;
+
   static ThemeData darkNoColor = ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: Colors.black,
@@ -70,18 +72,18 @@ class GThemeCreator {
 
   static void setColors(Color userAccentColor) {
     accentDarkBackgroundColor =
-        alphaBlend(userAccentColor.withOpacity(.2), Colors.black);
+        alphaBlend(userAccentColor.withOpacity(blendValue), Colors.black);
     accentDarkMicaColor =
-        alphaBlend(userAccentColor.withOpacity(.2), accentDarkBackgroundColor);
+        alphaBlend(userAccentColor.withOpacity(blendValue), accentDarkBackgroundColor);
     accentDarkCardColor =
-        alphaBlend(userAccentColor.withOpacity(.2), accentDarkBackgroundColor);
+        alphaBlend(userAccentColor.withOpacity(blendValue), accentDarkBackgroundColor);
 
     accentLightBackgroundColor =
-        alphaBlend(userAccentColor.withOpacity(.2), Colors.white);
+        alphaBlend(userAccentColor.withOpacity(blendValue), Colors.white);
     accentLightMicaColor =
-        alphaBlend(userAccentColor.withOpacity(.2), accentLightBackgroundColor);
+        alphaBlend(userAccentColor.withOpacity(blendValue), accentLightBackgroundColor);
     accentLightCardColor =
-        alphaBlend(userAccentColor.withOpacity(.2), accentLightBackgroundColor);
+        alphaBlend(userAccentColor.withOpacity(blendValue), accentLightBackgroundColor);
 
     darkColor = ThemeData(
       brightness: Brightness.dark,
