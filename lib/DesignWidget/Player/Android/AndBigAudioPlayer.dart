@@ -121,7 +121,9 @@ class _BigAudioWidgetState extends State<BigAudioWidget> {
           children: [
             IconButton(
               icon: const Icon(m.Icons.skip_previous_rounded, size: 36),
-              onPressed: () {},
+              onPressed: () {
+                player.previousAudio();
+              },
             ),
             const SizedBox(width: 32,),
             IconButton(
@@ -137,7 +139,9 @@ class _BigAudioWidgetState extends State<BigAudioWidget> {
             const SizedBox(width: 32,),
             IconButton(
               icon: const Icon(m.Icons.skip_next_rounded, size: 36),
-              onPressed: () {},
+              onPressed: () {
+                player.nextAudio();
+              },
             ),
           ],
         ),

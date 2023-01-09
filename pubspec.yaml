@@ -22,6 +22,8 @@ dependencies:
   anitex: ^3.0.1
   contextmenu: ^3.0.0
   flutter_improved_scrolling: ^0.0.3
+  darq: ^1.2.1
+  event: any
 
 dev_dependencies:
   flutter_test:

@@ -44,15 +44,16 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 72, right: 16),
+        padding: EdgeInsets.only(left: Platform.isAndroid ? 0 : 72,  right: Platform.isAndroid ? 0 : 16),
         child: ImprovedScrolling(
           scrollController: controller,
           enableCustomMouseWheelScrolling: true,
+          enableKeyboardScrolling: true,
           customMouseWheelScrollConfig: const CustomMouseWheelScrollConfig(
-            scrollAmountMultiplier: 45.0,
+            scrollAmountMultiplier: 25.0,
           ),
           child: CustomScrollView(
-            physics: const NeverScrollableScrollPhysics(),
+            physics: Platform.isAndroid ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
             controller: controller,
             slivers: [
               SliverToBoxAdapter(
@@ -87,20 +88,9 @@ class _MainPageState extends State<MainPage> {
                   ],
                 ),
               ),
-              SliverGrid(
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  return TrackItem(
-                    track: mHomePage.listMVTrack[index].track,
-                    chart: mHomePage.listMVTrack[index].chart,
-                  );
-                }, childCount: mHomePage.listMVTrack.length, addSemanticIndexes: true),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  mainAxisExtent: 56,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    crossAxisCount: 2),
+              const SliverToBoxAdapter(
+                child: SizedBox(height: 150),
               ),
-              const SliverToBoxAdapter(child: SizedBox(height: 150),),
             ],
           ),
         ));
