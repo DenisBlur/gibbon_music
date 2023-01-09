@@ -6,31 +6,20 @@ import 'package:gibbon_music/API/Models/ArtistPage/MV_ArtistPage.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_Track.dart';
 import 'package:gibbon_music/DesignWidget/ContextMenu.dart';
 import 'package:gibbon_music/DesignWidget/GButtons.dart';
-import 'package:gibbon_music/main.dart';
 import 'package:transparent_image/transparent_image.dart';
-// ignore: depend_on_referenced_packages
-import 'package:yam_api/yam_api.dart';
 
 class TrackItem extends StatelessWidget {
-  const TrackItem({Key key, @required this.track, this.chart, this.imageSize = 56})
+  const TrackItem({Key key, @required this.track, this.chart, this.imageSize = 56, this.callback})
       : super(key: key);
-
   final Chart chart;
   final Track track;
   final double imageSize;
-
-  void playTrack() async {
-    String urlTrack = await YamApi.downloadTrack(track.id);
-    generalNotifyModel.mTrack = track;
-    player.setAudio(urlTrack);
-  }
+  final VoidCallback callback;
 
   @override
   Widget build(BuildContext context) {
     return HoverButton(
-      onPressed: () {
-        playTrack();
-      },
+      onPressed: callback,
       builder: (p0, state) {
         return AnimatedContainer(
           decoration: BoxDecoration(

@@ -64,7 +64,9 @@ class _AudioControlState extends State<AudioControl> {
           children: [
             IconButton(
               icon: const Icon(m.Icons.skip_previous_rounded, size: 28),
-              onPressed: () {},
+              onPressed: () {
+                player.previousAudio();
+              },
             ),
             IconButton(
               icon: Icon(mainIcon, size: 28),
@@ -78,7 +80,9 @@ class _AudioControlState extends State<AudioControl> {
             ),
             IconButton(
               icon: const Icon(m.Icons.skip_next_rounded, size: 28),
-              onPressed: () {},
+              onPressed: () {
+                player.nextAudio();
+              },
             ),
           ],
         ),

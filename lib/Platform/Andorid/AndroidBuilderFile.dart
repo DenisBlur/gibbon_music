@@ -24,6 +24,7 @@ class _AndroidBuilderFileState extends State<AndroidBuilderFile> {
   void initState() {
     super.initState();
     player.initAudio();
+    print(player.player);
   }
 
   @override
@@ -39,31 +40,18 @@ class _AndroidBuilderFileState extends State<AndroidBuilderFile> {
       content: SafeArea(child: Stack(
         children: [
           const SnowFallBG(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: FutureBuilder(
-                  future: initAPI(),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<void> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return const CustomScrollView(
-                        physics: BouncingScrollPhysics(),
-                        slivers: [
-                          MainPage(),
-                        ],
-                      );
-                    } else {
-                      return const Center(
-                        child: ProgressRing(),
-                      );
-                    }
-                  },
-                ),
-              )
-            ],
+          FutureBuilder(
+            future: initAPI(),
+            builder:
+                (BuildContext context, AsyncSnapshot<void> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return const MainPage();
+              } else {
+                return const Center(
+                  child: ProgressRing(),
+                );
+              }
+            },
           ),
         ],
       ),),

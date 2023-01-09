@@ -57,7 +57,9 @@ class _MiniAudioControlState extends State<MiniAudioControl> {
             ),
             IconButton(
               icon: const Icon(m.Icons.skip_next_rounded, size: 28),
-              onPressed: () {},
+              onPressed: () {
+                player.nextAudio();
+              },
             ),
           ],
         ),

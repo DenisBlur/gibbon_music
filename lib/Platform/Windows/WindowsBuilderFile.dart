@@ -50,7 +50,7 @@ class _WindowsBuilderFileState extends State<WindowsBuilderFile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: Platform.isAndroid ? 0 : 36),
+                const SizedBox(height: 36),
                 Expanded(
                   child: FutureBuilder(
                     future: initAPI(),

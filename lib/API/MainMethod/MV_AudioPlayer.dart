@@ -1,14 +1,25 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_Track.dart';
+import 'package:gibbon_music/main.dart';
+import 'package:yam_api/yam_api.dart';
 
 class MvAudioPlayer {
   AudioPlayer player;
 
-  MvTrack mTrack;
-  List<MvTrack> mListTrack;
-
   initAudio() async {
     player = AudioPlayer();
+    print("HEEELOO init");
+
+    generalNotifyModel.trackChanged.subscribe((args) async {
+      print("HEEELOO");
+      String urlTrack = await YamApi.downloadTrack(args.track.id);
+      setAudio(urlTrack);
+    });
+    player.onPlayerComplete.listen((event) {
+        nextAudio();
+    });
+
+    print("subs count${generalNotifyModel.trackChanged.subscriberCount}");
 
     //TODO удалить в будущем
     // setAudio("https://s175vlx.storage.yandex.net/get-mp3/4438022348459f073e0c78d0456fc03f/0005f146e10d1f97/rmusic/U2FsdGVkX19vLLS-a9fZy_AXbCnFCf1bUcqFz22flN9P_29g2ufnPsxJO0MCrYfJXYRLurubY0tkC_BTeNvgrLUNhWA5yRBb5kp-etbba4s/7573bcea2f4ab0f63f42346e12b741cf1b3406b055ff09c5bb8ae48c71abb786/19083");
@@ -16,6 +27,7 @@ class MvAudioPlayer {
 
   disposeAudio() {
     player.stop();
+    generalNotifyModel.trackChanged.unsubscribeAll();
     player.dispose();
   }
 
@@ -33,16 +45,20 @@ class MvAudioPlayer {
     }
   }
 
-  setPlaylistAudio(List<MvTrack> listTracks) {
-    mListTrack = listTracks;
-  }
-
   playAudio() async {
     await player.resume();
   }
 
   pauseAudio() async {
     await player.pause();
+  }
+
+  nextAudio() {
+    generalNotifyModel.next();
+  }
+
+  previousAudio() {
+    generalNotifyModel.previous();
   }
 
   setSeek(int ms) async {

@@ -5,10 +5,9 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
 import 'package:gibbon_music/API/YAM_Functions.dart';
-import 'package:gibbon_music/DesignWidget/GButtons.dart';
 import 'package:gibbon_music/DesignWidget/GStyles.dart';
-import 'package:gibbon_music/DesignWidget/ListItems/AAPItem.dart';
 import 'package:gibbon_music/DesignWidget/ListItems/TrackItem.dart';
+import 'package:gibbon_music/main.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../API/Models/ArtistPage/MV_ArtistPage.dart';
@@ -48,7 +47,7 @@ class ArtistPage extends StatelessWidget {
                     ),
                     child: CustomScrollView(
                       controller: controller,
-                      physics: const NeverScrollableScrollPhysics(),
+                      physics: Platform.isAndroid ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
                       slivers: [
                         SliverToBoxAdapter(
                           child: Column(
@@ -135,6 +134,11 @@ class ArtistPage extends StatelessWidget {
                               return Padding(
                                   padding: const EdgeInsets.only(bottom: 16),
                                   child: TrackItem(
+                                    callback: () {
+                                      generalNotifyModel.mPlaylist =
+                                          artistPage.popularTracks;
+                                      generalNotifyModel.playTrack(index);
+                                    },
                                     track: artistPage.popularTracks[index],
                                     imageSize: 48,
                                   ));
@@ -145,8 +149,8 @@ class ArtistPage extends StatelessWidget {
                           child: Padding(
                             padding:
                                 const EdgeInsets.only(left: 16, bottom: 16),
-                            child:
-                                Text("Популярные альбомы", style: titleTextStyle),
+                            child: Text("Популярные альбомы",
+                                style: titleTextStyle),
                           ),
                         ),
                         // SliverPadding(
