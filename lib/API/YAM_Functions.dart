@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/services.dart';
-import 'package:gibbon_music/API/Models/GeneralModels.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_HomePage.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_Promotion.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_Track.dart';
@@ -25,7 +23,6 @@ Future<MvArtistPage> getYamApiArtist(int id) async {
 Future<MVHomePage> getYamApiHomePage(List<String> params) async {
   String result = await YamApi.promotions(params);
   var jsonResult = jsonDecode(result);
-  await Clipboard.setData(ClipboardData(text: result));
   List<dynamic> mp = jsonResult["result"]["blocks"];
   List<MvPromotion> promList = [];
   List<MvPlayContext> playContextList = [];
@@ -36,7 +33,6 @@ Future<MVHomePage> getYamApiHomePage(List<String> params) async {
       List<dynamic> list = jsonResult["result"]["blocks"][i]["entities"];
       for (int p = 0; p < list.length; p++) {
         var playContext = jsonResult["result"]["blocks"][i]["entities"][p];
-        var payloadContext = playContext["data"];
         // MvPlayContext mvPlayContext = MvPlayContext.fromJson(payloadContext);
         print(playContext["data"]["context"]);
         // playContextList.add(mvPlayContext);

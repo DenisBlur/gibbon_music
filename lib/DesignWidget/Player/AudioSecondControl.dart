@@ -41,7 +41,13 @@ class _AudioSecondControlState extends State<AudioSecondControl> {
               });
             },
           ),
-        )
+        ),
+        IconButton(
+          icon: const Icon(m.Icons.playlist_add_check, size: 24),
+          onPressed: () {
+            uxNotifyModel.changePlaylistState();
+          },
+        ),
       ],
     );
   }

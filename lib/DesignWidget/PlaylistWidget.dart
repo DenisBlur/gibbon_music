@@ -1,9 +1,11 @@
 import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
 import 'package:gibbon_music/API/Models/ArtistPage/MV_ArtistPage.dart';
 import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
+import 'package:gibbon_music/API/Models/NotifyModels/UxNotifyModel.dart';
 import 'package:gibbon_music/DesignWidget/ListItems/TrackItem.dart';
 import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
 import 'package:gibbon_music/main.dart';
@@ -15,40 +17,59 @@ class PlaylistWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HoverButton(
-        onPressed: () {},
-        builder: (p0, state) {
-          double top = state.isHovering ? 60 : 44;
-          double bottom = state.isHovering ? 192 : 180;
-          double right = state.isHovering ? 16 : 0;
-          double width = state.isHovering ? 300 : 56;
-          Color bgColor = state.isHovering
-              ? FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(.1)
-              : FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1);
+    final controller = ScrollController();
+    return Consumer<UxNotifyModel>(
+      builder: (context, value, child) {
+        bool isOpenPlaylist = context.watch<UxNotifyModel>().isOpenPlaylist;
+        var trackList = context.watch<GeneralNotifyModel>().mPlaylist;
 
-          var trackList = context.watch<GeneralNotifyModel>().mPlaylist;
+        double top = isOpenPlaylist ? 60 : 44;
+        double bottom = isOpenPlaylist ? 192 : 180;
+        double right = isOpenPlaylist ? 16 : 0;
+        double width = isOpenPlaylist ? 300 : 56;
+        Color bgColor = isOpenPlaylist
+            ? FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(.1)
+            : FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1);
 
-          return AnimatedContainer(
-              width: width,
-              height: MediaQuery.of(context).size.height - bottom,
-              duration: slowAnimation,
-              curve: Curves.fastLinearToSlowEaseIn,
-              margin: EdgeInsets.only(top: top, right: right),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaY: 50, sigmaX: 50),
-                    child: ListView.builder(
-                      itemBuilder: (context, index) {
-                        return PlaylistTrack(
-                          track: trackList[index],
-                          stateHover: state.isHovering, index: index,
-                        );
-                      },
-                      itemCount: trackList.length,
-                    ),
-                  )));
-        });
+        return AnimatedContainer(
+          width: width,
+          height: MediaQuery.of(context).size.height - bottom,
+          duration: slowAnimation,
+          curve: Curves.fastLinearToSlowEaseIn,
+          margin: EdgeInsets.only(top: top, right: right),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaY: 50, sigmaX: 50),
+              child: AnimatedContainer(
+                decoration: BoxDecoration(color: bgColor),
+                duration: slowAnimation,
+                child: ImprovedScrolling(
+                  scrollController: controller,
+                  enableCustomMouseWheelScrolling: true,
+                  enableKeyboardScrolling: true,
+                  customMouseWheelScrollConfig: const CustomMouseWheelScrollConfig(
+                    scrollAmountMultiplier: scrollMultiplier,
+                  ),
+                  child: ListView.builder(
+                    physics: scrollPhysics,
+                    controller: controller,
+                    itemBuilder: (context, index) {
+                      return PlaylistTrack(
+                        track: trackList[index],
+                        stateHover: isOpenPlaylist,
+                        index: index,
+                      );
+                    },
+                    itemCount: trackList.length,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -61,7 +82,6 @@ class PlaylistTrack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     bool isSelected = context.watch<GeneralNotifyModel>().currentIndex == index;
 
     return HoverButton(

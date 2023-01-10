@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
+import 'package:gibbon_music/API/Models/NotifyModels/UxNotifyModel.dart';
 import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:provider/provider.dart';
@@ -16,17 +16,16 @@ class NavigationBar extends StatefulWidget {
 class _NavigationBarState extends State<NavigationBar> {
   @override
   Widget build(BuildContext context) {
-    return HoverButton(
-      onPressed: () {},
-      builder: (p0, state) {
-        double top = state.isHovering ? 60 : 44;
-        double bottom = state.isHovering ? 132 : 116;
-        double left = state.isHovering ? 16 : 0;
-        double width = state.isHovering ? 300 : 56;
-        Color bgColor = state.isHovering
+    return Consumer<UxNotifyModel>(
+      builder: (context, value, child) {
+        bool isOpenNavigationBar = context.read<UxNotifyModel>().isOpenNavigationBar;
+        double top = isOpenNavigationBar ? 60 : 44;
+        double bottom = isOpenNavigationBar ? 132 : 116;
+        double left = isOpenNavigationBar ? 16 : 0;
+        double width = isOpenNavigationBar ? 300 : 56;
+        Color bgColor = isOpenNavigationBar
             ? FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(.1)
             : FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1);
-
         return AnimatedContainer(
           width: width,
           height: MediaQuery.of(context).size.height,
@@ -42,6 +41,12 @@ class _NavigationBarState extends State<NavigationBar> {
                   curve: Curves.fastLinearToSlowEaseIn,
                   decoration: BoxDecoration(
                     color: bgColor,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(FluentIcons.add),
+                    onPressed: () {
+                      uxNotifyModel.changeNavigationBarState();
+                    },
                   ),
                 )),
           ),

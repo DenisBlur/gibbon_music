@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/API/Models/NewHomePage/MV_HomePage.dart';
 import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
+import 'package:gibbon_music/API/Models/NotifyModels/UxNotifyModel.dart';
 import 'package:gibbon_music/Platform/WindowsBuilderFile.dart';
 import 'package:gibbon_music/Theme/ThemeCreater.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,7 @@ MVHomePage mHomePage = MVHomePage();
 GThemeCreator mThemeCreator = GThemeCreator();
 
 GeneralNotifyModel generalNotifyModel = GeneralNotifyModel();
+UxNotifyModel uxNotifyModel = UxNotifyModel();
 
 MvAudioPlayer player = MvAudioPlayer();
 
@@ -53,11 +55,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //Инициализация тем приложения
     GThemeCreator.setColors(SystemTheme.accentColor.accent);
-    return ChangeNotifierProvider(
-      create: (context) => generalNotifyModel = GeneralNotifyModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => generalNotifyModel = GeneralNotifyModel()),
+        ChangeNotifierProvider(create: (context) => uxNotifyModel = UxNotifyModel()),
+      ],
       child: FluentApp(
         title: "Music",
-        theme: GThemeCreator.darkColor,
+        theme: GThemeCreator.lightNoColor,
         home: const WindowsBuilderFile(),
       ),
     );
