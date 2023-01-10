@@ -1,3 +1,5 @@
+import 'M_Entities.dart';
+
 class MBlock {
   MBlock({
       this.id, 
@@ -14,7 +16,7 @@ class MBlock {
     if (json['entities'] != null) {
       entities = [];
       json['entities'].forEach((v) {
-        entities.add(Entities.fromJson(v));
+        entities.add(MEntities.fromJson(v));
       });
     }
   }
@@ -22,7 +24,7 @@ class MBlock {
   String type;
   String typeForFrom;
   String title;
-  List<Entities> entities;
+  List<MEntities> entities;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -37,27 +39,3 @@ class MBlock {
   }
 }
 
-class Entities {
-  Entities({
-    this.id,
-    this.type,
-    this.data,});
-
-  Entities.fromJson(dynamic json) {
-    id = json['id'];
-    type = json['type'];
-    data = json['data'];
-  }
-  String id;
-  String type;
-  dynamic data;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = id;
-    map['type'] = type;
-    map['data'] = data;
-    return map;
-  }
-
-}

@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/API/Models/NotifyModels/UxNotifyModel.dart';
+import 'package:gibbon_music/API/NotifyModels/UxNotifyModel.dart';
 import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:provider/provider.dart';
@@ -20,11 +20,11 @@ class _NavigationBarState extends State<NavigationBar> {
       builder: (context, value, child) {
         bool isOpenNavigationBar = context.read<UxNotifyModel>().isOpenNavigationBar;
         double top = isOpenNavigationBar ? 60 : 44;
-        double bottom = isOpenNavigationBar ? 132 : 116;
+        double bottom = isOpenNavigationBar ? 116 : 100;
         double left = isOpenNavigationBar ? 16 : 0;
         double width = isOpenNavigationBar ? 300 : 56;
         Color bgColor = isOpenNavigationBar
-            ? FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(.1)
+            ? FluentTheme.of(context).cardColor.withOpacity(.5)
             : FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1);
         return AnimatedContainer(
           width: width,
@@ -37,7 +37,7 @@ class _NavigationBarState extends State<NavigationBar> {
             child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaY: 50, sigmaX: 50),
                 child: AnimatedContainer(
-                  duration: slowAnimation,
+                  duration: fastAnimation,
                   curve: Curves.fastLinearToSlowEaseIn,
                   decoration: BoxDecoration(
                     color: bgColor,

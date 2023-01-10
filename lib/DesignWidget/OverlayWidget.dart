@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
 import 'package:gibbon_music/DesignWidget/GDragWidget.dart';
 import 'package:gibbon_music/DesignWidget/Navigation/NavigationBar.dart';
 import 'package:gibbon_music/DesignWidget/Player/Windows/WinAudioPlayer.dart';
-import 'package:gibbon_music/DesignWidget/PlaylistWidget.dart';
+import 'package:gibbon_music/DesignWidget/Navigation/PlaylistWidget.dart';
 import 'package:provider/provider.dart';
 
+import '../API/NotifyModels/GeneralNotifyModel.dart';
 import 'Navigation/WindowHeader.dart';
 
 class OverlayWidgets extends StatelessWidget {

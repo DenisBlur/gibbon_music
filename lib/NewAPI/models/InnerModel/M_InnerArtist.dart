@@ -1,4 +1,3 @@
-import '../M_Artist.dart';
 import '../M_Cover.dart';
 
 class MInnerArtist {

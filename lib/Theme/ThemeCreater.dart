@@ -12,7 +12,7 @@ class GThemeCreator {
   static Color accentLightMicaColor;
   static Color accentLightCardColor;
 
-  static const double blendValue = 0.08;
+  static const double blendValue = 0.2;
 
   static ThemeData darkNoColor = ThemeData(
     brightness: Brightness.dark,
@@ -70,20 +70,24 @@ class GThemeCreator {
     }
   }
 
-  static void setColors(Color userAccentColor) {
+  static void setColors(SystemAccentColor systemAccentColor) {
+
+    Color userAccentColorLight = systemAccentColor.lightest;
+    Color userAccentColorDark = systemAccentColor.darkest;
+
     accentDarkBackgroundColor =
-        alphaBlend(userAccentColor.withOpacity(blendValue), Colors.black);
+        alphaBlend(userAccentColorDark.withOpacity(blendValue), Colors.black);
     accentDarkMicaColor =
-        alphaBlend(userAccentColor.withOpacity(blendValue), accentDarkBackgroundColor);
+        alphaBlend(userAccentColorDark.withOpacity(blendValue), accentDarkBackgroundColor);
     accentDarkCardColor =
-        alphaBlend(userAccentColor.withOpacity(blendValue), accentDarkBackgroundColor);
+        alphaBlend(userAccentColorDark.withOpacity(blendValue), accentDarkBackgroundColor);
 
     accentLightBackgroundColor =
-        alphaBlend(userAccentColor.withOpacity(blendValue), Colors.white);
+        alphaBlend(userAccentColorLight.withOpacity(blendValue), Colors.white);
     accentLightMicaColor =
-        alphaBlend(userAccentColor.withOpacity(blendValue), accentLightBackgroundColor);
+        alphaBlend(userAccentColorLight.withOpacity(blendValue), accentLightBackgroundColor);
     accentLightCardColor =
-        alphaBlend(userAccentColor.withOpacity(blendValue), accentLightBackgroundColor);
+        alphaBlend(userAccentColorLight.withOpacity(blendValue), accentLightBackgroundColor);
 
     darkColor = ThemeData(
       brightness: Brightness.dark,
@@ -91,7 +95,7 @@ class GThemeCreator {
       scaffoldBackgroundColor: accentDarkBackgroundColor,
       micaBackgroundColor: accentDarkMicaColor,
       inactiveBackgroundColor: accentDarkMicaColor,
-      accentColor: userAccentColor.toAccentColor(),
+      accentColor: systemAccentColor.accent.toAccentColor(),
     );
 
     lightColor = ThemeData(
@@ -100,7 +104,7 @@ class GThemeCreator {
       scaffoldBackgroundColor: accentLightBackgroundColor,
       micaBackgroundColor: accentLightMicaColor,
       inactiveBackgroundColor: accentLightMicaColor,
-      accentColor: userAccentColor.toAccentColor(),
+      accentColor: systemAccentColor.accent.toAccentColor(),
     );
   }
 }

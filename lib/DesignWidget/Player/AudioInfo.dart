@@ -1,16 +1,15 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
-import 'package:gibbon_music/API/Models/ArtistPage/MV_ArtistPage.dart';
-import 'package:gibbon_music/API/Models/NewHomePage/MV_Track.dart';
-import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
 import 'package:gibbon_music/DesignWidget/ListItems/TrackItem.dart';
+import 'package:gibbon_music/NewAPI/models/InnerModel/M_InnerArtist.dart';
+import 'package:gibbon_music/NewAPI/models/M_Track.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../../API/NotifyModels/GeneralNotifyModel.dart';
+
 class AudioInfo extends StatelessWidget {
-  const AudioInfo(
-      {Key key, this.height = 64, this.width = 64, this.hasImage = true})
-      : super(key: key);
+  const AudioInfo({Key key, this.height = 64, this.width = 64, this.hasImage = true}) : super(key: key);
 
   final double height;
   final double width;
@@ -18,13 +17,12 @@ class AudioInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String image =
-        "https://avatars.yandex.net/get-music-content/5502420/7e294c2d.a.18837614-4/200x200";
+    String image = "https://avatars.yandex.net/get-music-content/5502420/7e294c2d.a.18837614-4/200x200";
     String title = "";
-    List<Artists> artist = [];
+    List<MInnerArtist> artist = [];
 
     if (context.watch<GeneralNotifyModel>().mTrack != null) {
-      Track track = context.watch<GeneralNotifyModel>().mTrack;
+      MTrack track = context.watch<GeneralNotifyModel>().mTrack;
       image = linkImage(track.coverUri, 150);
       title = track.title;
       artist = track.artists;

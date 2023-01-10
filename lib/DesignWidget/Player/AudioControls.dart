@@ -2,9 +2,10 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
-import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:provider/provider.dart';
+
+import '../../API/NotifyModels/GeneralNotifyModel.dart';
 
 class AudioControl extends StatefulWidget {
   const AudioControl({Key key}) : super(key: key);

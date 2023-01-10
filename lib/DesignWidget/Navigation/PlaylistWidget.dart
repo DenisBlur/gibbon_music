@@ -3,14 +3,15 @@ import 'dart:ui';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
-import 'package:gibbon_music/API/Models/ArtistPage/MV_ArtistPage.dart';
-import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
-import 'package:gibbon_music/API/Models/NotifyModels/UxNotifyModel.dart';
 import 'package:gibbon_music/DesignWidget/ListItems/TrackItem.dart';
 import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
+import 'package:gibbon_music/NewAPI/models/M_Track.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
+
+import '../../API/NotifyModels/GeneralNotifyModel.dart';
+import '../../API/NotifyModels/UxNotifyModel.dart';
 
 class PlaylistWidget extends StatelessWidget {
   const PlaylistWidget({Key key}) : super(key: key);
@@ -24,11 +25,11 @@ class PlaylistWidget extends StatelessWidget {
         var trackList = context.watch<GeneralNotifyModel>().mPlaylist;
 
         double top = isOpenPlaylist ? 60 : 44;
-        double bottom = isOpenPlaylist ? 192 : 180;
+        double bottom = isOpenPlaylist ? 180 : 148;
         double right = isOpenPlaylist ? 16 : 0;
-        double width = isOpenPlaylist ? 300 : 56;
+        double width = isOpenPlaylist ? 450 : 56;
         Color bgColor = isOpenPlaylist
-            ? FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(.1)
+            ? FluentTheme.of(context).cardColor.withOpacity(.5)
             : FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1);
 
         return AnimatedContainer(
@@ -77,7 +78,7 @@ class PlaylistTrack extends StatelessWidget {
   const PlaylistTrack({Key key, @required this.track, this.stateHover, @required this.index}) : super(key: key);
 
   final int index;
-  final Track track;
+  final MTrack track;
   final bool stateHover;
 
   @override
@@ -93,12 +94,12 @@ class PlaylistTrack extends StatelessWidget {
           margin: const EdgeInsets.only(top: 8, left: 8),
           height: stateHover ? 64 : 40,
           width: stateHover ? 64 : 40,
-          padding: EdgeInsets.all(isSelected ? 4 : 0),
+          padding: EdgeInsets.all(isSelected || state.isHovering ? 4 : 0),
           curve: Curves.fastLinearToSlowEaseIn,
           duration: const Duration(milliseconds: 350),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(isSelected ? 12 : 8),
-              color: FluentTheme.of(context).cardColor.withOpacity(state.isHovering || isSelected ? .4 : 0),
+              borderRadius: BorderRadius.circular(12),
+              color: FluentTheme.of(context).accentColor.withOpacity(state.isHovering || isSelected ? .4 : 0),
               border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(state.isHovering ? .4 : 0), width: .2)),
           child: Row(
             children: [

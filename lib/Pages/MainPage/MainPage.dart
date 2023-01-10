@@ -1,16 +1,15 @@
-import 'dart:io';
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
-import 'package:gibbon_music/DesignWidget/GStyles.dart';
-import 'package:gibbon_music/DesignWidget/ListItems/TrackItem.dart';
 import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
+import 'package:gibbon_music/DesignWidget/Styles/GStyles.dart';
 import 'package:gibbon_music/Pages/MainPage/Sections/PlayContextSection.dart';
 import 'package:gibbon_music/Pages/MainPage/Sections/PromotionSection.dart';
 
 import '../../DesignWidget/OverlayWidget.dart';
 import '../../main.dart';
 import 'Sections/ChartSection.dart';
+
+bool overlayCreated = false;
 
 class MainPage extends StatefulWidget {
   const MainPage({Key key}) : super(key: key);
@@ -20,10 +19,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final controller = ScrollController();
 
   OverlayState overlayState;
   OverlayEntry overlayEntry;
+  final controller = ScrollController();
 
   showOverlay(BuildContext context) async {
     overlayState = Overlay.of(context);
@@ -33,9 +32,11 @@ class _MainPageState extends State<MainPage> {
         return const Positioned(top: 0, left: 0, bottom: 0, right: 0, child: OverlayWidgets());
       },
     );
-    overlayState.insert(overlayEntry);
+    if(!overlayCreated) {
+      overlayState.insert(overlayEntry);
+      overlayCreated = true;
+    }
   }
-
   @override
   void initState() {
     super.initState();
@@ -66,7 +67,7 @@ class _MainPageState extends State<MainPage> {
                     SizedBox(
                       height: sectionSeparate,
                     ),
-                    PromotionSection(promotions: mHomePage.listMVPromotion),
+                    PromotionSection(promotions: mHomePage.promotionList),
                     SizedBox(
                       height: sectionSeparate,
                     ),
@@ -74,12 +75,12 @@ class _MainPageState extends State<MainPage> {
                     SizedBox(
                       height: sectionSeparate,
                     ),
-                    PlayContextSection(playContexts: mHomePage.listMVPlayContext),
+                    PlayContextSection(playContexts: mHomePage.playContextList),
                     SizedBox(
                       height: sectionSeparate,
                     ),
                     Text("Чарт", style: titleTextStyle),
-                    ChartSection(chartTrackList: mHomePage.listMVTrack),
+                    ChartSection(chartTrackList: mHomePage.chartList),
                     SizedBox(
                       height: sectionSeparate,
                     ),

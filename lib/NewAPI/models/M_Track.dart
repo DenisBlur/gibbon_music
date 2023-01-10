@@ -1,7 +1,7 @@
 import 'InnerModel/M_InnerAlbum.dart';
+import 'InnerModel/M_InnerArtist.dart';
 import 'M_Album.dart';
 import 'M_Artist.dart';
-import 'InnerModel/M_InnerArtist.dart';
 
 class MTrack {
   MTrack({

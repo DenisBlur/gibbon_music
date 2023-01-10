@@ -1,11 +1,12 @@
 import 'package:fluent_ui/fluent_ui.dart';
 // ignore: library_prefixes
-import 'package:flutter/material.dart' as mIcon;
+import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
-import 'package:gibbon_music/API/Models/ArtistPage/MV_ArtistPage.dart';
-import 'package:gibbon_music/API/Models/NewHomePage/MV_Track.dart';
 import 'package:gibbon_music/DesignWidget/ContextMenu.dart';
 import 'package:gibbon_music/DesignWidget/GButtons.dart';
+import 'package:gibbon_music/NewAPI/models/InnerModel/M_InnerArtist.dart';
+import 'package:gibbon_music/NewAPI/models/M_ChartPosition.dart';
+import 'package:gibbon_music/NewAPI/models/M_Track.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../Styles/ConstValue.dart';
@@ -13,8 +14,8 @@ import '../Styles/ConstValue.dart';
 class TrackItem extends StatelessWidget {
   const TrackItem({Key key, @required this.track, this.chart, this.imageSize = 56, this.callback})
       : super(key: key);
-  final Chart chart;
-  final Track track;
+  final MChartPosition chart;
+  final MTrack track;
   final double imageSize;
   final VoidCallback callback;
 
@@ -75,7 +76,7 @@ class ArtistsWidget extends StatelessWidget {
       {Key key, @required this.listArtists, this.shortText = true})
       : super(key: key);
 
-  final List<Artists> listArtists;
+  final List<MInnerArtist> listArtists;
   final bool shortText;
 
   @override
@@ -127,23 +128,23 @@ class ArtistsWidget extends StatelessWidget {
 class ChartInfoWidget extends StatelessWidget {
   const ChartInfoWidget({Key key, @required this.chart}) : super(key: key);
 
-  final Chart chart;
+  final MChartPosition chart;
 
   @override
   Widget build(BuildContext context) {
     Color iconColor = FluentTheme.of(context).uncheckedColor;
-    IconData data = mIcon.Icons.arrow_drop_down_rounded;
+    IconData data = m.Icons.arrow_drop_down_rounded;
     String progress = chart.progress;
     switch (progress) {
       case "same":
-        data = mIcon.Icons.remove;
+        data = m.Icons.remove;
         break;
       case "up":
-        data = mIcon.Icons.arrow_drop_up_rounded;
+        data = m.Icons.arrow_drop_up_rounded;
         iconColor = Colors.green;
         break;
       default:
-        data = mIcon.Icons.arrow_drop_down_rounded;
+        data = m.Icons.arrow_drop_down_rounded;
         iconColor = Colors.red;
         break;
     }

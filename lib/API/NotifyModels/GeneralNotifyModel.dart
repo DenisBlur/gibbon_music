@@ -1,17 +1,16 @@
 import 'package:event/event.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-
-import '../ArtistPage/MV_ArtistPage.dart';
+import 'package:gibbon_music/NewAPI/models/M_Track.dart';
 
 class GeneralNotifyModel extends ChangeNotifier {
   final trackChanged = Event<TrackChangedArgs>();
 
   bool _backArrow = false;
 
-  Track _mTrack;
+  MTrack _mTrack;
   int _currentIndex;
 
-  List<Track> _mPlaylist = [];
+  List<MTrack> _mPlaylist = [];
 
   int get currentIndex => _currentIndex;
 
@@ -22,9 +21,9 @@ class GeneralNotifyModel extends ChangeNotifier {
 
   List<String> mNavList = [];
 
-  List<Track> get mPlaylist => _mPlaylist;
+  List<MTrack> get mPlaylist => _mPlaylist;
 
-  Track get mTrack => _mTrack;
+  MTrack get mTrack => _mTrack;
 
   bool get backArrow => _backArrow;
 
@@ -39,12 +38,12 @@ class GeneralNotifyModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  set mPlaylist(List<Track> value) {
+  set mPlaylist(List<MTrack> value) {
     _mPlaylist = value;
     notifyListeners();
   }
 
-  set mTrack(Track value) {
+  set mTrack(MTrack value) {
     _mTrack = value;
     trackChanged.broadcast(TrackChangedArgs(mTrack));
     notifyListeners();
@@ -89,7 +88,7 @@ class GeneralNotifyModel extends ChangeNotifier {
 }
 
 class TrackChangedArgs extends EventArgs {
-  Track track;
+  MTrack track;
 
   TrackChangedArgs(this.track);
 }

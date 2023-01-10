@@ -1,9 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/API/Models/NewHomePage/MV_HomePage.dart';
-import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
-import 'package:gibbon_music/API/Models/NotifyModels/UxNotifyModel.dart';
+import 'package:gibbon_music/NewAPI/models/PageModels/M_PageHome.dart';
 import 'package:gibbon_music/Platform/WindowsBuilderFile.dart';
 import 'package:gibbon_music/Theme/ThemeCreater.dart';
 import 'package:provider/provider.dart';
@@ -11,11 +9,13 @@ import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'API/MainMethod/MV_AudioPlayer.dart';
+import 'API/NotifyModels/GeneralNotifyModel.dart';
+import 'API/NotifyModels/UxNotifyModel.dart';
 
 //Просто акцент
 SystemAccentColor accentColor = SystemTheme.accentColor;
 //Модель с HomePage яндекс музыки
-MVHomePage mHomePage = MVHomePage();
+MPageHome mHomePage = MPageHome();
 //Основные темы
 GThemeCreator mThemeCreator = GThemeCreator();
 
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //Инициализация тем приложения
-    GThemeCreator.setColors(SystemTheme.accentColor.accent);
+    GThemeCreator.setColors(SystemTheme.accentColor);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => generalNotifyModel = GeneralNotifyModel()),
@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
       ],
       child: FluentApp(
         title: "Music",
-        theme: GThemeCreator.lightNoColor,
+        theme: GThemeCreator.lightColor ,
         home: const WindowsBuilderFile(),
       ),
     );

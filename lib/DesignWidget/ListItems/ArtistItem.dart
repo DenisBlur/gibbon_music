@@ -2,32 +2,20 @@ import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
-import 'package:gibbon_music/API/Models/NewHomePage/MV_PlayContext.dart';
 import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
+import 'package:gibbon_music/NewAPI/models/M_Artist.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class AAPItem extends StatelessWidget {
-  const AAPItem({Key key, @required this.playContext, @required this.index})
+class ArtistItem extends StatelessWidget {
+  const ArtistItem({Key key, @required this.artist, @required this.index})
       : super(key: key);
 
-  final MvPlayContext playContext;
+  final MArtist artist;
   final int index;
 
   @override
   Widget build(BuildContext context) {
     String lowerText = "";
-
-    switch (playContext.context) {
-      case "album":
-        lowerText = "${playContext.payload.artists[0].name} • ${playContext.payload.year}";
-        break;
-      case "artist":
-        lowerText = "";
-        break;
-      default:
-        lowerText = "Треков: ${playContext.payload.counts}";
-        break;
-    }
 
     return HoverButton(
       onPressed: () {},
@@ -58,7 +46,7 @@ class AAPItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   child: FadeInImage.memoryNetwork(
                     fit: BoxFit.cover,
-                    image: linkImage(playContext.payload.coverUri, 200),
+                    image: linkImage(artist.cover.uri, 200),
                     placeholder: kTransparentImage,
                   ),
                 ),
@@ -66,9 +54,9 @@ class AAPItem extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
-              Text(playContext.payload.title),
+              Text(artist.name),
               Text(
-                "Альбом",
+                "Артист",
                 style: TextStyle(
                     color: FluentTheme.of(context).accentColor,
                     fontWeight: FontWeight.bold,

@@ -1,10 +1,10 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/API/Models/NotifyModels/GeneralNotifyModel.dart';
 import 'package:gibbon_music/DesignWidget/Player/AudioInfo.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:provider/provider.dart';
 
+import '../../../API/NotifyModels/GeneralNotifyModel.dart';
 import '../AudioMiniControls.dart';
 
 class AudioPlayerWidget extends StatefulWidget {

@@ -2,16 +2,16 @@ import 'dart:io';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gibbon_music/API/Models/NewHomePage/MV_Promotion.dart';
 import 'package:gibbon_music/DesignWidget/GListView/GInfinityListView.dart';
 import 'package:gibbon_music/DesignWidget/ListItems/PromotionItem.dart';
+import 'package:gibbon_music/NewAPI/models/M_Promotion.dart';
 
 import '../../../DesignWidget/Styles/ConstValue.dart';
 
 class PromotionSection extends StatelessWidget {
   const PromotionSection({Key key, @required this.promotions}) : super(key: key);
 
-  final List<MvPromotion> promotions;
+  final List<MPromotion> promotions;
 
   @override
   Widget build(BuildContext context) {

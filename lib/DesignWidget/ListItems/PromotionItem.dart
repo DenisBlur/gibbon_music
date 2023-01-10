@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
-import 'package:gibbon_music/API/Models/NewHomePage/MV_Promotion.dart';
+import 'package:gibbon_music/NewAPI/models/M_Promotion.dart';
 import 'package:mouse_parallax/mouse_parallax.dart';
 
 class PromotionItem extends StatefulWidget {
   const PromotionItem({Key key, @required this.promotion, @required this.index}) : super(key: key);
 
-  final MvPromotion promotion;
+  final MPromotion promotion;
   final int index;
 
   @override
@@ -62,7 +62,7 @@ class _PromotionItemState extends State<PromotionItem> {
                             ],
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter)),
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -80,7 +80,7 @@ class _PromotionItemState extends State<PromotionItem> {
                             style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                         Text(
-                          widget.promotion.subTitle.toString(),
+                          widget.promotion.subtitle.toString(),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),

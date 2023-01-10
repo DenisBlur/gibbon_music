@@ -15,7 +15,7 @@ final CrossAxisAlignment textPageAlignment = Platform.isWindows ? CrossAxisAlign
 
 
 ///Static value
-const double scrollMultiplier = 25.0;
+const double scrollMultiplier = 15.0;
 
 ///Animations
 const Duration dragAnimation = Duration(milliseconds: 25);
