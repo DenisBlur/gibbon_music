@@ -1,21 +1,35 @@
+import 'dart:collection';
+
 import 'package:event/event.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gibbon_music/API/Interfaces/IQueueStrategy.dart';
+import 'package:gibbon_music/API/MainMethod/Player/QueueStrategy.dart';
 import 'package:gibbon_music/NewAPI/models/M_Track.dart';
 
 class GeneralNotifyModel extends ChangeNotifier {
   final trackChanged = Event<TrackChangedArgs>();
 
+  IQueueStrategy _queueStrategy = QueueStrategy();
+
+  IQueueStrategy get queueStrategy => _queueStrategy;
+
+  set queueStrategy(IQueueStrategy value) {
+    value.size = queueStrategy.size;
+    value.currentIndex = queueStrategy.currentIndex;
+    _queueStrategy = value;
+    notifyListeners();
+  }
+
   bool _backArrow = false;
 
   MTrack _mTrack;
-  int _currentIndex;
 
   List<MTrack> _mPlaylist = [];
 
-  int get currentIndex => _currentIndex;
+  int get currentIndex => queueStrategy.currentIndex;
 
   set currentIndex(int value) {
-    _currentIndex = value;
+    queueStrategy.currentIndex = value;
     notifyListeners();
   }
 
@@ -40,7 +54,12 @@ class GeneralNotifyModel extends ChangeNotifier {
 
   set mPlaylist(List<MTrack> value) {
     _mPlaylist = value;
+    queueStrategy.size = value.length;
     notifyListeners();
+  }
+
+  bool _checkRange(int index) {
+    return index > -1 && index < queueStrategy.size;
   }
 
   set mTrack(MTrack value) {
@@ -56,21 +75,13 @@ class GeneralNotifyModel extends ChangeNotifier {
     }
   }
 
-  bool _checkRange(int index) {
-    return index > -1 && index < _mPlaylist.length;
-  }
-
   next() {
-    playTrack(currentIndex + 1);
+    playTrack(queueStrategy.next());
   }
 
-  bool canNext() {
-    return _checkRange(currentIndex + 1);
-  }
+  bool canNext() => queueStrategy.canNext();
 
-  bool canPrevious() {
-    return _checkRange(currentIndex - 1);
-  }
+  bool canPrevious() => queueStrategy.canPrevious();
 
   previous() {
     playTrack(currentIndex - 1);
