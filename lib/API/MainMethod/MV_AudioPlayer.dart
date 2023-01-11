@@ -1,19 +1,27 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:gibbon_music/NewAPI/models/M_Track.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:yam_api/yam_api.dart';
 
 class MvAudioPlayer {
   AudioPlayer player;
 
+  void getTrack(MTrack track) async {
+    await YamApi.downloadTrack(track.id).then((value) {
+      setAudio(value);
+    });
+  }
+
   initAudio() async {
     player = AudioPlayer();
 
-    generalNotifyModel.trackChanged.subscribe((args) async {
-      String urlTrack = await YamApi.downloadTrack(args.track.id);
-      setAudio(urlTrack);
+    generalNotifyModel.trackChanged.subscribe((args) {
+      print("subscribed");
+      getTrack(args.track);
     });
+
     player.onPlayerComplete.listen((event) {
-        nextAudio();
+      nextAudio();
     });
 
     print("subs count${generalNotifyModel.trackChanged.subscriberCount}");
@@ -33,13 +41,8 @@ class MvAudioPlayer {
   }
 
   setAudio(String urlTrack) async {
-    if (player == null) {
-      initAudio();
-      setAudio(urlTrack);
-    } else {
-      await player.setSourceUrl(urlTrack);
-      playAudio();
-    }
+    await player.setSourceUrl(urlTrack);
+    playAudio();
   }
 
   playAudio() async {
