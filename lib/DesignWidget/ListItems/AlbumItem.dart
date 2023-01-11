@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:gibbon_music/API/MainMethod/GMethod.dart';
 import 'package:gibbon_music/NewAPI/models/M_Album.dart';
 
 import 'AAPMain.dart';
@@ -12,7 +13,9 @@ class AlbumItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AAPMain(
-      onPressed: () {},
+      onPressed: () {
+        goToAlbum(context, album.id);
+      },
       index: index,
       icon: m.Icons.album,
       bottomTitle: album.year.toString(),
