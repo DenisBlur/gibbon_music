@@ -1,5 +1,9 @@
+import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:gibbon_music/API/Interfaces/IQueueStrategy.dart';
+import 'package:gibbon_music/API/MainMethod/Player/BoundedQueue.dart';
+import 'package:gibbon_music/API/MainMethod/Player/QueueStrategy.dart';
 import 'package:gibbon_music/main.dart';
 
 class AudioSecondControl extends StatefulWidget {
@@ -10,13 +14,14 @@ class AudioSecondControl extends StatefulWidget {
 }
 
 class _AudioSecondControlState extends State<AudioSecondControl> {
-
   double volume = 1;
 
   @override
   void initState() {
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,9 @@ class _AudioSecondControlState extends State<AudioSecondControl> {
           icon: const Icon(m.Icons.volume_up_rounded, size: 24),
           onPressed: () {},
         ),
-        const SizedBox(width: 8,),
+        const SizedBox(
+          width: 8,
+        ),
         SizedBox(
           width: 100,
           child: Slider(
@@ -41,6 +48,9 @@ class _AudioSecondControlState extends State<AudioSecondControl> {
               });
             },
           ),
+        ),
+        const SizedBox(
+          width: 16,
         ),
         IconButton(
           icon: const Icon(m.Icons.playlist_add_check, size: 24),
