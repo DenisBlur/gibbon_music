@@ -7,6 +7,7 @@ abstract class IQueueStrategy {
   bool canNext();
   bool canPrevious();
 
+  int end();
   int get size => _size;
   set size(int value) {
     _size = value;

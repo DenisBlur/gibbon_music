@@ -1,6 +1,6 @@
 import 'package:gibbon_music/API/Interfaces/IQueueStrategy.dart';
 
-class QueueStrategy implements IQueueStrategy {
+class OneTrackQueueStrategy implements IQueueStrategy {
   @override
   int currentIndex;
 
@@ -8,9 +8,14 @@ class QueueStrategy implements IQueueStrategy {
   int size;
 
   @override
+  int end() {
+    return currentIndex;
+  }
+
+  @override
   int next() {
     if (canNext()) currentIndex++;
-    return currentIndex = 0;
+    return currentIndex;
   }
 
   @override
@@ -21,10 +26,5 @@ class QueueStrategy implements IQueueStrategy {
   @override
   bool canPrevious() {
     return currentIndex != 0;
-  }
-
-  @override
-  int end() {
-    return next();
   }
 }

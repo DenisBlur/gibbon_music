@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/API/Interfaces/IQueueStrategy.dart';
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
 import 'package:gibbon_music/API/MainMethod/Player/BoundedQueue.dart';
+import 'package:gibbon_music/API/MainMethod/Player/OneTrackQueueStrategy.dart';
 import 'package:gibbon_music/API/MainMethod/Player/QueueStrategy.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
@@ -50,6 +51,7 @@ class _AudioControlState extends State<AudioControl> {
             mainIcon = m.Icons.pause;
             break;
           case PlayerState.completed:
+            generalNotifyModel.end();
             mainIcon = m.Icons.play_arrow_rounded;
             break;
           case PlayerState.stopped:
@@ -60,10 +62,10 @@ class _AudioControlState extends State<AudioControl> {
     });
   }
 
-  Map<IQueueStrategy, Icon> queueIcons = {};
   List<Tuple2<IQueueStrategy, IconData>> queueStrategies = <Tuple2<IQueueStrategy, IconData>>[
-    Tuple2(QueueStrategy(), FluentIcons.repeat_one),
-    Tuple2(BoundedQueueStrategy(), FluentIcons.repeat_all),
+    Tuple2(QueueStrategy(), m.Icons.repeat_rounded),
+    Tuple2(BoundedQueueStrategy(), m.Icons.repeat_on_rounded),
+    Tuple2(OneTrackQueueStrategy(), m.Icons.repeat_one_on_rounded),
   ];
 
   int currentQueueStrategy = 0;

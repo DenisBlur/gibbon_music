@@ -8,6 +8,10 @@ class BoundedQueueStrategy implements IQueueStrategy {
   int size;
 
   @override
+  int end(){
+    return next();
+  }
+  @override
   int next() {
     currentIndex = (currentIndex + 1) % size;
     return currentIndex;
