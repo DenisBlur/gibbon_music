@@ -16,6 +16,12 @@ class AudioPlayerWidget extends StatefulWidget {
 
 class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   @override
+  void initState() {
+    super.initState();
+    player.initAudio();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.all(4),

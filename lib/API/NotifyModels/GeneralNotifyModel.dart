@@ -76,7 +76,7 @@ class GeneralNotifyModel extends ChangeNotifier {
   }
 
   next() {
-    if (queueStrategy.canNext()) playTrack(queueStrategy.next());
+    playTrack(queueStrategy.next());
   }
 
   bool canNext() => queueStrategy.canNext();
