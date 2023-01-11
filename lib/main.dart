@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
       ],
       child: FluentApp(
         title: "Music",
-        theme: GThemeCreator.lightColor ,
+        theme: GThemeCreator.darkNoColor,
         home: const WindowsBuilderFile(),
       ),
     );

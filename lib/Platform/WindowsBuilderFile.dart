@@ -44,6 +44,7 @@ class _WindowsBuilderFileState extends State<WindowsBuilderFile> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: ScaffoldPage(
+        bottomBar: Text("HELLLLO"),
         padding: const EdgeInsets.all(0),
         content: Stack(
           children: [
@@ -59,7 +60,7 @@ class _WindowsBuilderFileState extends State<WindowsBuilderFile> {
                     builder:
                         (BuildContext context, AsyncSnapshot<void> snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        return const MainPage();
+                        return MainPage();
                       } else {
                         return const Center(
                           child: ProgressRing(),

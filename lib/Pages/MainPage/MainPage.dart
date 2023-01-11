@@ -28,6 +28,7 @@ class _MainPageState extends State<MainPage> {
     overlayState = Overlay.of(context);
     overlayEntry = OverlayEntry(
       opaque: false,
+      maintainState: true,
       builder: (context) {
         return const Positioned(top: 0, left: 0, bottom: 0, right: 0, child: OverlayWidgets());
       },

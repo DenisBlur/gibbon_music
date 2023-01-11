@@ -23,7 +23,7 @@ class PlayContextSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: 212,
+      height: 200,
       child: GListView(
         scrollButtons: Platform.isWindows,
         scrollDirection: Axis.horizontal,
