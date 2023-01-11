@@ -13,7 +13,7 @@ class MvAudioPlayer {
       setAudio(urlTrack);
     });
     player.onPlayerComplete.listen((event) {
-        nextAudio();
+        generalNotifyModel.end();
     });
 
     print("subs count${generalNotifyModel.trackChanged.subscriberCount}");
