@@ -10,7 +10,8 @@ class QueueStrategy implements IQueueStrategy {
   @override
   int next() {
     if (canNext()) currentIndex++;
-    return currentIndex = 0;
+    else currentIndex = 0;
+    return currentIndex;
   }
 
   @override

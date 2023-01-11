@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
+import 'package:gibbon_music/API/Extensions/StringeExtensions.dart';
 import 'package:gibbon_music/DesignWidget/GListView/GInfinityListView.dart';
 import 'package:gibbon_music/DesignWidget/ListItems/AlbumItem.dart';
 import 'package:gibbon_music/DesignWidget/Styles/ConstValue.dart';
@@ -19,7 +20,7 @@ class ArtistPage extends StatelessWidget {
   ArtistPage({Key key, @required this.artistId}) : super(key: key);
 
   final int artistId;
-  final double hei = 250;
+  final double hei = 200;
 
   final controller = ScrollController();
 
@@ -84,24 +85,31 @@ class ArtistPage extends StatelessWidget {
                                     left: 16,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
-                                      child:
-                                          FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: linkImage(artistPage.artist.ogImage, 150)),
+                                      child: FadeInImage.memoryNetwork(
+                                          placeholder: kTransparentImage, image: linkImage(artistPage.artist.ogImage, 150), width: 100, height: 100),
                                     ),
                                   ),
                                   Positioned(
-                                      bottom: 56,
-                                      left: 198,
+                                      bottom: 28,
+                                      left: 148,
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text("Исполнитель", style: TextStyle(color: FluentTheme.of(context).borderInputColor)),
                                           Text(artistPage.artist.name, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+                                          Text("${artistPage.stats.lastMonthListeners} слушателей за месяц".spaceSeparateNumbers())
                                         ],
                                       ))
                                 ],
                               ),
                             ],
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 16,left: 16, bottom: 16),
+                            child: Text("Популярные треки", style: titleTextStyle),
                           ),
                         ),
                         SliverPadding(

@@ -105,7 +105,7 @@ class PlaylistTrack extends StatelessWidget {
             children: [
               ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: linkImage(track.coverUri, 80))),
+                  child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: track.coverUri != null ? linkImage(track.coverUri, 80) : "https://avatars.githubusercontent.com/u/15520314?s=48&v=4")),
               const SizedBox(
                 width: 16,
               ),

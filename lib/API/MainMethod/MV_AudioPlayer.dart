@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:yam_api/yam_api.dart';
@@ -5,13 +6,16 @@ import 'package:yam_api/yam_api.dart';
 class MvAudioPlayer {
   AudioPlayer player;
 
+  CancelableOperation<String> _getTrackOperationAsync;
+
   initAudio() async {
     player = AudioPlayer();
-
     generalNotifyModel.trackChanged.subscribe((args) async {
-      String urlTrack = await YamApi.downloadTrack(args.track.id);
-      setAudio(urlTrack);
+      _getTrackOperationAsync?.cancel();
+      _getTrackOperationAsync = CancelableOperation.fromFuture(YamApi.downloadTrack(args.track.id));
+      _getTrackOperationAsync.then((urlTrack) => setAudio(urlTrack));
     });
+
     player.onPlayerComplete.listen((event) {
         generalNotifyModel.end();
     });

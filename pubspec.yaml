@@ -24,6 +24,7 @@ dependencies:
   flutter_improved_scrolling: ^0.0.3
   darq: ^1.2.1
   event: any
+  async: any
 
 dev_dependencies:
   flutter_test:

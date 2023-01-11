@@ -41,7 +41,7 @@ class TrackItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   child: FadeInImage.memoryNetwork(
                       placeholder: kTransparentImage,
-                      image: linkImage(track.coverUri, 100)),
+                      image: track.coverUri != null ? linkImage(track.coverUri, 100) : "https://avatars.githubusercontent.com/u/15520314?s=48&v=4"),
                 ),
               ),
               const SizedBox(
@@ -62,7 +62,7 @@ class TrackItem extends StatelessWidget {
               const Expanded(
                 child: SizedBox(),
               ),
-              Text(timeTrack(track.durationMs)),
+              Text(track.durationMs != null ? timeTrack(track.durationMs) : ""),
             ],
           ),
         );
