@@ -1,28 +1,9 @@
 import 'dart:io' show Platform;
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/NewAPI/models/PageModels/M_PageHome.dart';
-import 'package:gibbon_music/Platform/WindowsBuilderFile.dart';
 import 'package:gibbon_music/Theme/ThemeCreater.dart';
-import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
-
-import 'API/MainMethod/MV_AudioPlayer.dart';
-import 'API/NotifyModels/GeneralNotifyModel.dart';
-import 'API/NotifyModels/UxNotifyModel.dart';
-
-//Просто акцент
-SystemAccentColor accentColor = SystemTheme.accentColor;
-//Модель с HomePage яндекс музыки
-MPageHome mHomePage = MPageHome();
-//Основные темы
-GThemeCreator mThemeCreator = GThemeCreator();
-
-GeneralNotifyModel generalNotifyModel = GeneralNotifyModel();
-UxNotifyModel uxNotifyModel = UxNotifyModel();
-
-MvAudioPlayer player = MvAudioPlayer();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,16 +36,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //Инициализация тем приложения
     GThemeCreator.setColors(SystemTheme.accentColor);
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => generalNotifyModel = GeneralNotifyModel()),
-        ChangeNotifierProvider(create: (context) => uxNotifyModel = UxNotifyModel()),
-      ],
-      child: FluentApp(
+    return FluentApp(
         title: "Music",
         theme: GThemeCreator.darkNoColor,
-        home: const WindowsBuilderFile(),
-      ),
+        home: SizedBox(),
     );
   }
 }

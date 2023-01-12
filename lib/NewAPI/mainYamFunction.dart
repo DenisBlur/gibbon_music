@@ -10,11 +10,9 @@ import 'package:gibbon_music/NewAPI/models/PageModels/M_PageArtist.dart';
 import 'package:gibbon_music/NewAPI/models/PageModels/M_PageHome.dart';
 import 'package:gibbon_music/NewAPI/models/PageModels/M_PagePlaylist.dart';
 import 'package:gibbon_music/NewAPI/models/SearchModels/M_SearchSuggest.dart';
-
 // ignore: depend_on_referenced_packages
 import 'package:yam_api/yam_api.dart';
 
-import '../main.dart';
 import 'models/SearchModels/M_Search.dart';
 
 void initYamApi(String token) {
@@ -33,7 +31,7 @@ Future<MSearch> getSearchResult(String text) async {
       result = value;
       var jsonResult = jsonDecode(result);
       MSearch mSearch = MSearch.fromJson(jsonResult["result"]);
-      uxNotifyModel.mSearch = mSearch;
+      // uxNotifyModel.mSearch = mSearch;
       return mSearch;
     }
   });
@@ -52,7 +50,7 @@ Future<MSearchSuggest> getSearchSuggest(String text) async {
       result = value;
       var jsonResult = jsonDecode(result);
       MSearchSuggest mSearchSuggest = MSearchSuggest.fromJson(jsonResult["result"]);
-      uxNotifyModel.mSearchSuggest = mSearchSuggest;
+      // uxNotifyModel.mSearchSuggest = mSearchSuggest;
       return mSearchSuggest;
     }
   });
