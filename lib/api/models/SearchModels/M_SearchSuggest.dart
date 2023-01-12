@@ -1,4 +1,4 @@
-import 'package:gibbon_music/NewAPI/models/M_Artist.dart';
+import 'package:gibbon_music/api/models/M_Artist.dart';
 
 class MSearchSuggest {
   MSearchSuggest({

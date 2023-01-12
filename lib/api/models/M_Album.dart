@@ -1,4 +1,4 @@
-import 'package:gibbon_music/NewAPI/models/InnerModel/M_InnerArtist.dart';
+import 'package:gibbon_music/api/models/InnerModel/M_InnerArtist.dart';
 
 import 'M_Artist.dart';
 

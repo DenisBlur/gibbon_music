@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 import 'package:async/async.dart';
-import 'package:gibbon_music/NewAPI/models/CombineModel/M_CombineChartTrack.dart';
-import 'package:gibbon_music/NewAPI/models/M_Block.dart';
-import 'package:gibbon_music/NewAPI/models/M_Entities.dart';
-import 'package:gibbon_music/NewAPI/models/M_Promotion.dart';
-import 'package:gibbon_music/NewAPI/models/PageModels/M_PageAlbum.dart';
-import 'package:gibbon_music/NewAPI/models/PageModels/M_PageArtist.dart';
-import 'package:gibbon_music/NewAPI/models/PageModels/M_PageHome.dart';
-import 'package:gibbon_music/NewAPI/models/PageModels/M_PagePlaylist.dart';
-import 'package:gibbon_music/NewAPI/models/SearchModels/M_SearchSuggest.dart';
+import 'package:gibbon_music/api/models/CombineModel/M_CombineChartTrack.dart';
+import 'package:gibbon_music/api/models/M_Block.dart';
+import 'package:gibbon_music/api/models/M_Entities.dart';
+import 'package:gibbon_music/api/models/M_Promotion.dart';
+import 'package:gibbon_music/api/models/PageModels/M_PageAlbum.dart';
+import 'package:gibbon_music/api/models/PageModels/M_PageArtist.dart';
+import 'package:gibbon_music/api/models/PageModels/M_PageDashboard.dart';
+import 'package:gibbon_music/api/models/PageModels/M_PagePlaylist.dart';
+import 'package:gibbon_music/api/models/SearchModels/M_SearchSuggest.dart';
 // ignore: depend_on_referenced_packages
 import 'package:yam_api/yam_api.dart';
 
@@ -78,11 +78,11 @@ Future<MPageArtist> getArtist(int id) async {
   return mPageArtist;
 }
 
-Future<MPageHome> getHomePage(List<String> params) async {
+Future<MPageDashboard> getPageDashboard(List<String> params) async {
   String result = await YamApi.promotions(params);
   var jsonResult = jsonDecode(result);
 
-  MPageHome mPageHome = MPageHome();
+  MPageDashboard mPageHome = MPageDashboard();
 
   List<MPromotion> promotionList = [];
   List<MCombineChartTrack> combineChartTrackList = [];

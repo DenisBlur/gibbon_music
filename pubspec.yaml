@@ -25,6 +25,7 @@ dependencies:
   darq: ^1.2.1
   event: any
   async: any
+  go_router: ^6.0.1
 
 dev_dependencies:
   flutter_test:

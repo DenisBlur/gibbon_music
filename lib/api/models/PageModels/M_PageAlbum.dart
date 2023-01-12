@@ -1,6 +1,6 @@
-import 'package:gibbon_music/NewAPI/models/InnerModel/M_InnerArtist.dart';
-import 'package:gibbon_music/NewAPI/models/M_Track.dart';
-import 'package:gibbon_music/NewAPI/models/PageModels/M_Labels.dart';
+import 'package:gibbon_music/api/models/InnerModel/M_InnerArtist.dart';
+import 'package:gibbon_music/api/models/M_Track.dart';
+import 'package:gibbon_music/api/models/PageModels/M_Labels.dart';
 
 import '../M_Album.dart';
 import 'M_CustomWave.dart';

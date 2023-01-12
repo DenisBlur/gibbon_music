@@ -1,5 +1,5 @@
-import 'package:gibbon_music/NewAPI/models/M_Playlist.dart';
-import 'package:gibbon_music/NewAPI/models/M_Track.dart';
+import 'package:gibbon_music/api/models/M_Playlist.dart';
+import 'package:gibbon_music/api/models/M_Track.dart';
 
 import '../M_Cover.dart';
 import 'M_CustomWave.dart';

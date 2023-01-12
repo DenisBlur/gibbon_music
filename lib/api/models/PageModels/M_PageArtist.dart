@@ -1,4 +1,4 @@
-import 'package:gibbon_music/NewAPI/models/M_Track.dart';
+import 'package:gibbon_music/api/models/M_Track.dart';
 
 import '../M_Album.dart';
 import 'M_CustomWave.dart';

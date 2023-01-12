@@ -1,4 +1,4 @@
-import 'package:gibbon_music/NewAPI/models/M_ChartPosition.dart';
+import 'package:gibbon_music/api/models/M_ChartPosition.dart';
 
 import '../M_Track.dart';
 

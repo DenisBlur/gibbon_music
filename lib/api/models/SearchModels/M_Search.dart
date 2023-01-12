@@ -1,7 +1,7 @@
-import 'package:gibbon_music/NewAPI/models/M_Album.dart';
-import 'package:gibbon_music/NewAPI/models/M_Artist.dart';
-import 'package:gibbon_music/NewAPI/models/M_Playlist.dart';
-import 'package:gibbon_music/NewAPI/models/M_Track.dart';
+import 'package:gibbon_music/api/models/M_Album.dart';
+import 'package:gibbon_music/api/models/M_Artist.dart';
+import 'package:gibbon_music/api/models/M_Playlist.dart';
+import 'package:gibbon_music/api/models/M_Track.dart';
 
 class MSearch {
   MSearch({
