@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:async/async.dart';
 import 'package:gibbon_music/NewAPI/models/CombineModel/M_CombineChartTrack.dart';
 import 'package:gibbon_music/NewAPI/models/M_Block.dart';
 import 'package:gibbon_music/NewAPI/models/M_Entities.dart';
@@ -8,11 +9,54 @@ import 'package:gibbon_music/NewAPI/models/PageModels/M_PageAlbum.dart';
 import 'package:gibbon_music/NewAPI/models/PageModels/M_PageArtist.dart';
 import 'package:gibbon_music/NewAPI/models/PageModels/M_PageHome.dart';
 import 'package:gibbon_music/NewAPI/models/PageModels/M_PagePlaylist.dart';
+import 'package:gibbon_music/NewAPI/models/SearchModels/M_SearchSuggest.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:yam_api/yam_api.dart';
 
+import '../main.dart';
+import 'models/SearchModels/M_Search.dart';
+
 void initYamApi(String token) {
   YamApi.init(token);
+}
+
+Future<MSearch> getSearchResult(String text) async {
+  String result = "";
+  CancelableOperation<String> getTrackOperationAsync;
+  getTrackOperationAsync?.cancel();
+  getTrackOperationAsync = CancelableOperation.fromFuture(YamApi.getSearch(text));
+  getTrackOperationAsync.then((value) {
+    if(getTrackOperationAsync.isCanceled) {
+      return null;
+    } else {
+      result = value;
+      var jsonResult = jsonDecode(result);
+      MSearch mSearch = MSearch.fromJson(jsonResult["result"]);
+      uxNotifyModel.mSearch = mSearch;
+      return mSearch;
+    }
+  });
+  return null;
+}
+
+Future<MSearchSuggest> getSearchSuggest(String text) async {
+  String result = "";
+  CancelableOperation<String> getTrackOperationAsync;
+  getTrackOperationAsync?.cancel();
+  getTrackOperationAsync = CancelableOperation.fromFuture(YamApi.getSearchSuggest(text));
+  getTrackOperationAsync.then((value) {
+    if(getTrackOperationAsync.isCanceled) {
+      return null;
+    } else {
+      result = value;
+      var jsonResult = jsonDecode(result);
+      MSearchSuggest mSearchSuggest = MSearchSuggest.fromJson(jsonResult["result"]);
+      uxNotifyModel.mSearchSuggest = mSearchSuggest;
+      return mSearchSuggest;
+    }
+  });
+  return null;
 }
 
 Future<MPagePlaylist> getPlaylist(String uid, int kind) async {
@@ -67,5 +111,4 @@ Future<MPageHome> getHomePage(List<String> params) async {
   mPageHome.playContextList = playContextList;
 
   return mPageHome;
-
 }

@@ -28,9 +28,8 @@ class PlaylistWidget extends StatelessWidget {
         double bottom = isOpenPlaylist ? 180 : 148;
         double right = isOpenPlaylist ? 16 : 0;
         double width = isOpenPlaylist ? 450 : 56;
-        Color bgColor = isOpenPlaylist
-            ? FluentTheme.of(context).cardColor.withOpacity(.5)
-            : FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1);
+        Color bgColor =
+            isOpenPlaylist ? FluentTheme.of(context).cardColor.withOpacity(.5) : FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1);
 
         return AnimatedContainer(
           width: width,
@@ -105,7 +104,8 @@ class PlaylistTrack extends StatelessWidget {
             children: [
               ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: track.coverUri != null ? linkImage(track.coverUri, 80) : "https://avatars.githubusercontent.com/u/15520314?s=48&v=4")),
+                  child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage, image: track.coverUri != null ? linkImage(track.coverUri, 80) : imagePlaceholder)),
               const SizedBox(
                 width: 16,
               ),

@@ -15,7 +15,7 @@ class MArtist {
       this.links,});
 
   MArtist.fromJson(dynamic json) {
-    id = json['id'];
+    id = json['id'].toString();
     name = json['name'];
     various = json['various'];
     composer = json['composer'];

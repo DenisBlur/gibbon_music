@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+
 // ignore: library_prefixes
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/API/MainMethod/GMethod.dart';
@@ -12,8 +13,7 @@ import 'package:transparent_image/transparent_image.dart';
 import '../Styles/ConstValue.dart';
 
 class TrackItem extends StatelessWidget {
-  const TrackItem({Key key, @required this.track, this.chart, this.imageSize = 56, this.callback})
-      : super(key: key);
+  const TrackItem({Key key, @required this.track, this.chart, this.imageSize = 56, this.callback}) : super(key: key);
   final MChartPosition chart;
   final MTrack track;
   final double imageSize;
@@ -27,9 +27,7 @@ class TrackItem extends StatelessWidget {
         return AnimatedContainer(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: FluentTheme.of(context)
-                  .cardColor
-                  .withOpacity(state.isHovering || state.isPressing ? .5 : 0)),
+              color: FluentTheme.of(context).cardColor.withOpacity(state.isHovering || state.isPressing ? .5 : 0)),
           duration: fastAnimation,
           child: Row(
             children: [
@@ -40,8 +38,7 @@ class TrackItem extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      image: track.coverUri != null ? linkImage(track.coverUri, 100) : "https://avatars.githubusercontent.com/u/15520314?s=48&v=4"),
+                      placeholder: kTransparentImage, image: track.coverUri != null ? linkImage(track.coverUri, 100) : imagePlaceholder),
                 ),
               ),
               const SizedBox(
@@ -53,8 +50,7 @@ class TrackItem extends StatelessWidget {
                 children: [
                   Text(
                     track.title,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   ArtistsWidget(listArtists: track.artists)
                 ],
@@ -72,9 +68,7 @@ class TrackItem extends StatelessWidget {
 }
 
 class ArtistsWidget extends StatelessWidget {
-  const ArtistsWidget(
-      {Key key, @required this.listArtists, this.shortText = true})
-      : super(key: key);
+  const ArtistsWidget({Key key, @required this.listArtists, this.shortText = true}) : super(key: key);
 
   final List<MInnerArtist> listArtists;
   final bool shortText;
@@ -89,39 +83,20 @@ class ArtistsWidget extends StatelessWidget {
       if (i == 0) {
         title = element.name;
       } else {
-        title = "$title, ${element.name}";
+        title = ", ${element.name}";
       }
 
       artists.add(GTextButton(
-        text: element.name,
+        text: title,
         onPress: () {
-          Navigator.pop(context);
           goToArtist(context, element.id);
         },
       ));
     }
 
-    if (shortText) {
-      title = "${listArtists.first.name} и еще ${artists.length - 1}";
-    }
-
-    return artists.length > 1
-        ? ContextMenuArea(
-            verticalPadding: 0,
-            child: GTextButton(
-              text: title,
-              onPress: () {
-
-              },
-            ),
-            builder: (context) => artists,
-          )
-        : GTextButton(
-            text: listArtists.first.name,
-            onPress: () {
-              goToArtist(context, listArtists.first.id);
-            },
-          );
+    return Row(
+      children: artists,
+    );
   }
 }
 

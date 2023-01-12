@@ -16,12 +16,10 @@ class MInnerAlbum {
       this.recent, 
       this.veryImportant, 
       this.artists,
-      this.labels, 
       this.available, 
       this.availableForPremiumUsers, 
       this.availableForOptions, 
-      this.availableForMobile, 
-      this.availablePartially, 
+      this.availableForMobile,
       this.bests, 
       this.trackPosition,});
 
@@ -45,17 +43,10 @@ class MInnerAlbum {
         artists.add(MInnerArtist.fromJson(v));
       });
     }
-    if (json['labels'] != null) {
-      labels = [];
-      json['labels'].forEach((v) {
-        labels.add(Labels.fromJson(v));
-      });
-    }
     available = json['available'];
     availableForPremiumUsers = json['availableForPremiumUsers'];
     availableForOptions = json['availableForOptions'] != null ? json['availableForOptions'].cast<String>() : [];
     availableForMobile = json['availableForMobile'];
-    availablePartially = json['availablePartially'];
     bests = json['bests'] != null ? json['bests'].cast<num>() : [];
     trackPosition = json['trackPosition'] != null ? TrackPosition.fromJson(json['trackPosition']) : null;
   }
@@ -73,12 +64,10 @@ class MInnerAlbum {
   bool recent;
   bool veryImportant;
   List<MInnerArtist> artists;
-  List<Labels> labels;
   bool available;
   bool availableForPremiumUsers;
   List<String> availableForOptions;
   bool availableForMobile;
-  bool availablePartially;
   List<num> bests;
   TrackPosition trackPosition;
 MInnerAlbum copyWith({  num id,
@@ -100,7 +89,6 @@ MInnerAlbum copyWith({  num id,
   bool availableForPremiumUsers,
   List<String> availableForOptions,
   bool availableForMobile,
-  bool availablePartially,
   List<num> bests,
   TrackPosition trackPosition,
 }) => MInnerAlbum(  id: id ?? this.id,
@@ -117,12 +105,10 @@ MInnerAlbum copyWith({  num id,
   recent: recent ?? this.recent,
   veryImportant: veryImportant ?? this.veryImportant,
   artists: artists ?? this.artists,
-  labels: labels ?? this.labels,
   available: available ?? this.available,
   availableForPremiumUsers: availableForPremiumUsers ?? this.availableForPremiumUsers,
   availableForOptions: availableForOptions ?? this.availableForOptions,
   availableForMobile: availableForMobile ?? this.availableForMobile,
-  availablePartially: availablePartially ?? this.availablePartially,
   bests: bests ?? this.bests,
   trackPosition: trackPosition ?? this.trackPosition,
 );
@@ -144,14 +130,10 @@ MInnerAlbum copyWith({  num id,
     if (artists != null) {
       map['artists'] = artists.map((v) => v.toJson()).toList();
     }
-    if (labels != null) {
-      map['labels'] = labels.map((v) => v.toJson()).toList();
-    }
     map['available'] = available;
     map['availableForPremiumUsers'] = availableForPremiumUsers;
     map['availableForOptions'] = availableForOptions;
     map['availableForMobile'] = availableForMobile;
-    map['availablePartially'] = availablePartially;
     map['bests'] = bests;
     if (trackPosition != null) {
       map['trackPosition'] = trackPosition.toJson();

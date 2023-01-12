@@ -4,26 +4,26 @@ import 'M_Artist.dart';
 
 class MAlbum {
   MAlbum({
-      this.id, 
-      this.title, 
-      this.metaType, 
-      this.year, 
-      this.releaseDate, 
-      this.coverUri, 
-      this.ogImage, 
-      this.genre, 
-      this.trackCount, 
-      this.likesCount, 
-      this.recent, 
-      this.veryImportant, 
-      this.artists, 
-      this.labels, 
-      this.available, 
-      this.availableForPremiumUsers, 
-      this.availableForOptions, 
-      this.availableForMobile, 
-      this.availablePartially, 
-      this.bests,});
+    this.id,
+    this.title,
+    this.metaType,
+    this.year,
+    this.releaseDate,
+    this.coverUri,
+    this.ogImage,
+    this.genre,
+    this.trackCount,
+    this.likesCount,
+    this.recent,
+    this.veryImportant,
+    this.artists,
+    this.available,
+    this.availableForPremiumUsers,
+    this.availableForOptions,
+    this.availableForMobile,
+    this.availablePartially,
+    this.bests,
+  });
 
   MAlbum.fromJson(dynamic json) {
     id = json['id'];
@@ -44,12 +44,6 @@ class MAlbum {
         artists.add(MInnerArtist.fromJson(v));
       });
     }
-    if (json['labels'] != null) {
-      labels = [];
-      json['labels'].forEach((v) {
-        labels.add(Labels.fromJson(v));
-      });
-    }
     available = json['available'];
     availableForPremiumUsers = json['availableForPremiumUsers'];
     availableForOptions = json['availableForOptions'] != null ? json['availableForOptions'].cast<String>() : [];
@@ -57,6 +51,7 @@ class MAlbum {
     availablePartially = json['availablePartially'];
     bests = json['bests'] != null ? json['bests'].cast<num>() : [];
   }
+
   num id;
   String title;
   String metaType;
@@ -77,47 +72,51 @@ class MAlbum {
   bool availableForMobile;
   bool availablePartially;
   List<num> bests;
-MAlbum copyWith({  num id,
-  String title,
-  String metaType,
-  num year,
-  String releaseDate,
-  String coverUri,
-  String ogImage,
-  String genre,
-  num trackCount,
-  num likesCount,
-  bool recent,
-  bool veryImportant,
-  List<MArtist> artists,
-  List<Labels> labels,
-  bool available,
-  bool availableForPremiumUsers,
-  List<String> availableForOptions,
-  bool availableForMobile,
-  bool availablePartially,
-  List<num> bests,
-}) => MAlbum(  id: id ?? this.id,
-  title: title ?? this.title,
-  metaType: metaType ?? this.metaType,
-  year: year ?? this.year,
-  releaseDate: releaseDate ?? this.releaseDate,
-  coverUri: coverUri ?? this.coverUri,
-  ogImage: ogImage ?? this.ogImage,
-  genre: genre ?? this.genre,
-  trackCount: trackCount ?? this.trackCount,
-  likesCount: likesCount ?? this.likesCount,
-  recent: recent ?? this.recent,
-  veryImportant: veryImportant ?? this.veryImportant,
-  artists: artists ?? this.artists,
-  labels: labels ?? this.labels,
-  available: available ?? this.available,
-  availableForPremiumUsers: availableForPremiumUsers ?? this.availableForPremiumUsers,
-  availableForOptions: availableForOptions ?? this.availableForOptions,
-  availableForMobile: availableForMobile ?? this.availableForMobile,
-  availablePartially: availablePartially ?? this.availablePartially,
-  bests: bests ?? this.bests,
-);
+
+  MAlbum copyWith({
+    num id,
+    String title,
+    String metaType,
+    num year,
+    String releaseDate,
+    String coverUri,
+    String ogImage,
+    String genre,
+    num trackCount,
+    num likesCount,
+    bool recent,
+    bool veryImportant,
+    List<MArtist> artists,
+    List<Labels> labels,
+    bool available,
+    bool availableForPremiumUsers,
+    List<String> availableForOptions,
+    bool availableForMobile,
+    bool availablePartially,
+    List<num> bests,
+  }) =>
+      MAlbum(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        metaType: metaType ?? this.metaType,
+        year: year ?? this.year,
+        releaseDate: releaseDate ?? this.releaseDate,
+        coverUri: coverUri ?? this.coverUri,
+        ogImage: ogImage ?? this.ogImage,
+        genre: genre ?? this.genre,
+        trackCount: trackCount ?? this.trackCount,
+        likesCount: likesCount ?? this.likesCount,
+        recent: recent ?? this.recent,
+        veryImportant: veryImportant ?? this.veryImportant,
+        artists: artists ?? this.artists,
+        available: available ?? this.available,
+        availableForPremiumUsers: availableForPremiumUsers ?? this.availableForPremiumUsers,
+        availableForOptions: availableForOptions ?? this.availableForOptions,
+        availableForMobile: availableForMobile ?? this.availableForMobile,
+        availablePartially: availablePartially ?? this.availablePartially,
+        bests: bests ?? this.bests,
+      );
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;
@@ -146,31 +145,35 @@ MAlbum copyWith({  num id,
     map['bests'] = bests;
     return map;
   }
-
 }
 
 class Labels {
   Labels({
-      this.id, 
-      this.name,});
+    this.id,
+    this.name,
+  });
 
   Labels.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
   }
+
   num id;
   String name;
-Labels copyWith({  num id,
-  String name,
-}) => Labels(  id: id ?? this.id,
-  name: name ?? this.name,
-);
+
+  Labels copyWith({
+    num id,
+    String name,
+  }) =>
+      Labels(
+        id: id ?? this.id,
+        name: name ?? this.name,
+      );
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;
     map['name'] = name;
     return map;
   }
-
 }
-

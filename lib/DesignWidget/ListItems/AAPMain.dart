@@ -61,7 +61,7 @@ class AAPMain extends StatelessWidget {
                         child: FadeInImage.memoryNetwork(
                           fit: BoxFit.cover,
                           width: 250,
-                          image: linkImage(coverUri, 200),
+                          image: coverUri != null ? linkImage(coverUri, 200) : imagePlaceholder,
                           placeholder: kTransparentImage,
                         ),
                       ),

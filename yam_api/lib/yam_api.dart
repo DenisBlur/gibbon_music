@@ -22,7 +22,6 @@ class YamApi {
 
   static Future<AccountStatusModel> accountStatusRequest() async {
     //Получение статуса аккаунта. Нет обязательных параметров.
-
     var response = await http.get(Uri.parse("$baseUrl/account/status"), headers: {'Authorization': 'OAuth $tokenMain'});
     if (response.statusCode == 200) {
       return AccountStatusModel.fromMap(jsonDecode(response.body));
@@ -181,6 +180,26 @@ class YamApi {
         "?track-id=$trackId&from-cache=none&from=client$uId&play-id=none&uid=$uId&timestamp=$timeStamp&track-length-seconds=$trackLengthSeconds&total-played-seconds=$totalPlayedSeconds&end-position-seconds=$endPositionSeconds&album-id=$albumId&playlist-id=$playlistId&client-now=$timeStamp";
 
     var response = await http.post(Uri.parse("$baseUrl/play-audio$params"), headers: {'Authorization': 'OAuth $tokenMain'});
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      return response.body;
+    }
+  }
+
+  static Future<String> getSearchSuggest(String text) async {
+    String params = "?part=$text";
+    var response = await http.get(Uri.parse("$baseUrl/search/suggest$params"), headers: {'Authorization': 'OAuth $tokenMain'});
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      return response.body;
+    }
+  }
+
+  static Future<String> getSearch(String text) async {
+    String params = "?text=$text&nocorrect=false&type=all&page=0&playlist-in-best=false";
+    var response = await http.get(Uri.parse("$baseUrl/search/$params"), headers: {'Authorization': 'OAuth $tokenMain'});
     if (response.statusCode == 200) {
       return response.body;
     } else {

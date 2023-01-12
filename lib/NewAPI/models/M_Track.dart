@@ -19,7 +19,7 @@ class MTrack {
       this.durationMs, 
       this.storageDir, 
       this.fileSize, 
-      this.previewDurationMs, 
+      this.previewDurationMs,
       this.r128, 
       this.artists, 
       this.albums,
@@ -28,7 +28,7 @@ class MTrack {
       this.lyricsAvailable,});
 
   MTrack.fromJson(dynamic json) {
-    id = json['id'];
+    id = json['id'].toString();
     realId = json['realId'];
     trackSource = json['trackSource'];
     title = json['title'];
