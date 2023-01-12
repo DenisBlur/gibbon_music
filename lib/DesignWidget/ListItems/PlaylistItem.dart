@@ -14,7 +14,7 @@ class PlaylistItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return AAPMain(
       onPressed: () {
-        goToPlaylist(context, playlist.owner.uid, playlist.kind);
+        goToPlaylist(context, playlist.owner.uid.toString(), playlist.kind);
       },
       index: index,
       icon: m.Icons.playlist_add_check,

@@ -15,6 +15,7 @@ import 'models/Download/DownloadInfo.dart';
 class YamApi {
   static String tokenMain = "AQAAAAAV_ACCAAG8XkFW219h4UiInu2aEV4ZGL4";
   static String baseUrl = "https://api.music.yandex.net";
+  static String device = "os=Python; os_version=; manufacturer=Marshal; model=Yandex Music API; clid=; device_id=random; uuid=random";
 
   static void init(String token) {
     tokenMain = token;

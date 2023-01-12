@@ -19,7 +19,7 @@ class PlaylistPage extends StatelessWidget {
   PlaylistPage({Key key, @required this.playlistKind, @required this.playlistId}) : super(key: key);
 
   final int playlistKind;
-  final int playlistId;
+  final String playlistId;
   final double hei = 250;
 
   final controller = ScrollController();

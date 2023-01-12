@@ -42,7 +42,7 @@ goToArtist(BuildContext context, int artistId) {
     },
   ));
   generalNotifyModel.backArrow = true;
-  generalNotifyModel.addNavList("ArtistPage");
+  generalNotifyModel.addNavList("ArtistPage (id: $artistId)");
 }
 
 goToAlbum(BuildContext context, int albumId) {
@@ -52,10 +52,10 @@ goToAlbum(BuildContext context, int albumId) {
     },
   ));
   generalNotifyModel.backArrow = true;
-  generalNotifyModel.addNavList("AlbumPage");
+  generalNotifyModel.addNavList("AlbumPage (id: $albumId)");
 }
 
-goToPlaylist(BuildContext context, int playlistId, int playlistKind) {
+goToPlaylist(BuildContext context, String playlistId, int playlistKind) {
   Navigator.push(context, FluentPageRoute(
     builder: (context) {
       return PlaylistPage(
@@ -65,5 +65,5 @@ goToPlaylist(BuildContext context, int playlistId, int playlistKind) {
     },
   ));
   generalNotifyModel.backArrow = true;
-  generalNotifyModel.addNavList("AlbumPage");
+  generalNotifyModel.addNavList("PlaylistPage (id: $playlistId, kind: $playlistKind)");
 }

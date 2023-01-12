@@ -49,7 +49,7 @@ class WindowHeader extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "$title | $router",
+                          "$title $router",
                           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                         ),
                       )))),
