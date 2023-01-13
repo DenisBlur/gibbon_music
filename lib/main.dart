@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart';
+import 'package:gibbon_music/providers/artist_provider.dart';
 import 'package:gibbon_music/providers/dashboard_provider.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +13,7 @@ import 'ui/theme_data.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
-List<SingleChildWidget> _providers = [ChangeNotifierProvider(create: (_) => DashboardProvider())];
+List<SingleChildWidget> _providers = [Provider(create: (_) => DashboardProvider()), Provider(create: (_) => ArtistProvider())];
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: _providers,
       child: FluentApp.router(
-        theme: GThemeCreator.lightColor,
+        theme: GThemeCreator.lightNoColor,
         routeInformationParser: AppRouter().route.routeInformationParser,
         routerDelegate: AppRouter().route.routerDelegate,
         routeInformationProvider: AppRouter().route.routeInformationProvider,

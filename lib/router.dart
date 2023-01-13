@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:gibbon_music/ui/screens/page_artist.dart';
 import 'package:gibbon_music/ui/screens/page_dashboard.dart';
 import 'package:gibbon_music/ui/widgets/page_container.dart';
 import 'package:gibbon_music/ui/screens/page_test.dart';
@@ -12,21 +13,36 @@ class AppRouter {
   AppRouter();
 
   final GoRouter route = GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/',
+    debugLogDiagnostics: true,
+    routerNeglect: true,
     routes: [
       ShellRoute(
           routes: [
             GoRoute(
-              path: "/home",
-              builder: (context, state) => PageHome(key: state.pageKey),
-            ),
-            GoRoute(
-              path: "/setting",
+              path: "/test",
+              name: "test",
               builder: (context, state) => PageTest(key: state.pageKey),
             ),
             GoRoute(
-              path: "/dashboard",
+              path: "/",
+              name: "dashboard",
               builder: (context, state) => PageDashboard(key: state.pageKey),
+            ),
+            GoRoute(
+              path: "/artist/:id",
+              name: "artist",
+              pageBuilder: (context, state) {
+                return CustomTransitionPage<void>(
+                  child: PageArtist(key: state.pageKey, id: int.parse(state.params["id"])),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    return DrillInPageTransition(
+                      animation: animation,
+                      child: child,
+                    );
+                  },
+                );
+              },
             ),
           ],
           builder: (context, state, child) => PageContainer(
@@ -37,15 +53,21 @@ class AppRouter {
     navigatorKey: rootNavigatorKey,
   );
 
-  static Future<void> gotoTest(BuildContext context, Key key) async {
-    await Navigator.of(context).push(
-      FluentPageRoute(builder: (_) => PageTest(key: key,)),
-    );
+  tryPop(BuildContext context) {
+    if (GoRouter.of(context).canPop()) {
+      GoRouter.of(context).pop();
+    }
   }
 
-  static Future<void> gotoDashboard(BuildContext context, Key key) async {
-    await Navigator.of(context).push(
-      FluentPageRoute(builder: (_) => PageDashboard(key: key,)),
-    );
+  gotoArtist(BuildContext context, int id) {
+    context.pushNamed("artist", params: {"id": id.toString()});
+  }
+
+  gotoTest(BuildContext context) {
+    context.push("/test");
+  }
+
+  gotoDashboard(BuildContext context) {
+    context.push("/dashboard");
   }
 }

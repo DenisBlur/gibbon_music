@@ -7,6 +7,8 @@ import 'package:gibbon_music/router.dart';
 import 'package:go_router/go_router.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../../main.dart';
+
 
 ///переписать что бы хорошо было!
 
@@ -26,7 +28,9 @@ class WindowHeader extends StatelessWidget {
       decoration: BoxDecoration(color: FluentTheme.of(context).cardColor, border: Border(bottom: BorderSide(color: borderColor, width: .8))),
       child: Row(
         children: [
-          HeaderButton(onPressed: () {}, icon: m.Icons.arrow_back_rounded, showHide: backArrow),
+          HeaderButton(onPressed: () {
+              AppRouter().tryPop(context);
+          }, icon: m.Icons.arrow_back_rounded, showHide: GoRouter.of(context).location != "/"),
           Expanded(
               child: DragToMoveArea(
                   child: SizedBox(
@@ -42,7 +46,7 @@ class WindowHeader extends StatelessWidget {
               ? IconButton(
                   icon: const Icon(m.Icons.settings, size: 16),
                   onPressed: () async {
-
+                    print(GoRouter.of(context).location);
                   })
               : const SizedBox(),
           const SizedBox(

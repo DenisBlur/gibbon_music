@@ -1,12 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/constants/style_consts.dart';
-import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/extensions/string.dart';
+
 import '../../constants/ui_consts.dart';
 import '../controls/buttons.dart';
-import '../list_item/album_card.dart';
-import '../list_item/track_card.dart';
 import '../widgets/scroller_scaffold.dart';
 
 

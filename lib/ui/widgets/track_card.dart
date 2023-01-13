@@ -1,15 +1,18 @@
 import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gibbon_music/api/models/InnerModel/M_InnerArtist.dart';
 import 'package:gibbon_music/api/models/M_Track.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/extensions/string.dart';
+import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/ui/widgets/context_menu.dart';
 import 'package:gibbon_music/ui/controls/buttons.dart';
 import 'package:gibbon_music/ui/widgets/ImageThumbnail.dart';
 import 'package:gibbon_music/ui/widgets/card_view.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:go_router/go_router.dart';
 import '../../constants/style_consts.dart';
 
 class TrackCard extends StatelessWidget {
@@ -35,10 +38,7 @@ class TrackCard extends StatelessWidget {
                 track.title,
                 style: AppStyle.trackHeaderStyle,
               ),
-              Text(
-                track.artists.first.name,
-                style: AppStyle.subTrackHeaderStyle(context),
-              )
+              ArtistsListWidgets(key: key, mInnerArtistList: track.artists,)
             ],
           ),
           AppConsts.fillSpacer,
@@ -46,6 +46,52 @@ class TrackCard extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class ArtistsListWidgets extends StatelessWidget {
+  const ArtistsListWidgets({Key key, @required this.mInnerArtistList}) : super(key: key);
+
+  final List<MInnerArtist> mInnerArtistList;
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> artistButtonList = [];
+    String fullTitle = "";
+
+    for (int i = 0; i < mInnerArtistList.length; i++) {
+      String title = "";
+      var element = mInnerArtistList[i];
+      if (i == 0) {
+        title = element.name;
+        fullTitle = element.name;
+      } else {
+        title = ", ${element.name}";
+        fullTitle = fullTitle + title;
+      }
+      artistButtonList.add(GTextButton(
+        onPressed: () {
+          if (fullTitle.length > 20) Navigator.pop(context);
+          AppRouter().gotoArtist(context, element.id);
+        },
+        title: title,
+      ));
+    }
+
+    if (fullTitle.length > 20) {
+      fullTitle = "${fullTitle.substring(0, 17)}...";
+      return GestureDetector(
+          onTapDown: (details) {
+            AppContext.showContext(context, details, artistButtonList);
+          },
+          child: GTextButton(onPressed: null, title: fullTitle));
+    } else {
+      return Row(
+        children: artistButtonList,
+      );
+    }
+
+    return const Placeholder();
   }
 }
 

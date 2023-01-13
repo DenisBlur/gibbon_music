@@ -59,9 +59,7 @@ class GTextButton extends StatelessWidget {
     var pressedStateColor = theme.accentColor.withOpacity(0.8);
 
     return HoverButton(
-      onPressed: () {
-        onPressed();
-      },
+      onPressed: onPressed,
       builder: (p0, state) {
         var textColor = state.isPressing
             ? pressedStateColor

@@ -6,17 +6,16 @@ import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import '../../constants/ui_consts.dart';
 
 class ScaffoldScroller extends StatelessWidget {
-  const ScaffoldScroller({Key key, @required this.slivers}) : super(key: key);
+  const ScaffoldScroller({Key key, @required this.slivers, this.showContent = true}) : super(key: key);
 
+  final bool showContent;
   final List<Widget> slivers;
 
   @override
   Widget build(BuildContext context) {
     final controller = ScrollController();
-    return ScaffoldPage(
-      padding: const EdgeInsets.all(0),
-      content: Padding(
-        padding: const EdgeInsets.only(left: 16,right: 16),
+    return Padding(
+        padding: const EdgeInsets.only(left: 16, right: 16),
         child: ImprovedScrolling(
           scrollController: controller,
           enableCustomMouseWheelScrolling: true,
@@ -27,8 +26,6 @@ class ScaffoldScroller extends StatelessWidget {
               controller: controller,
               physics: Platform.isAndroid ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
               slivers: slivers),
-        ),
-      ),
-    );
+        ));
   }
 }

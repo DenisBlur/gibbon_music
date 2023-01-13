@@ -28,7 +28,7 @@ class GCardView extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         highlightColor:defaultStateColor,
         hoverColor: hoverStateColor,
-        onTap: () => onPressed,
+        onTap: () => onPressed(),
         child: child,
       ),
     );

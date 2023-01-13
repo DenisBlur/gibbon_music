@@ -22,7 +22,7 @@ class PageContainer extends StatelessWidget {
           bottom: 50,
           child: child,
         ),
-        WindowHeader(title: "YandexMusic", backArrow: false, setting: true, key: key),
+        WindowHeader(title: "YandexMusic", backArrow: true, setting: false, key: key),
         Positioned(
           bottom: 0,
           right: 0,
