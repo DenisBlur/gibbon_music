@@ -16,14 +16,15 @@ import 'package:go_router/go_router.dart';
 import '../../constants/style_consts.dart';
 
 class TrackCard extends StatelessWidget {
-  const TrackCard({Key key, @required this.track}) : super(key: key);
+  const TrackCard({Key key, @required this.track, @required this.onPressed}) : super(key: key);
 
+  final VoidCallback onPressed;
   final MTrack track;
 
   @override
   Widget build(BuildContext context) {
     return GCardView(
-      onPressed: () {},
+      onPressed: () => onPressed(),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,

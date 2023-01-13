@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/ui/widgets/window_header.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/ui_consts.dart';
+import '../../providers/audio_provider.dart';
 
 class PageContainer extends StatelessWidget {
   const PageContainer({Key key, this.child}) : super(key: key);
@@ -13,6 +15,7 @@ class PageContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<AudioProvider>().init();
     return Stack(
       children: [
         Positioned(

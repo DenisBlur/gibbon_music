@@ -14,7 +14,6 @@ class AppRouter {
 
   final GoRouter route = GoRouter(
     initialLocation: '/',
-    debugLogDiagnostics: true,
     routerNeglect: true,
     routes: [
       ShellRoute(

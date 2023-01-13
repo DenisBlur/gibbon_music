@@ -2,18 +2,26 @@ import 'dart:io' show Platform;
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/providers/artist_provider.dart';
+import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/dashboard_provider.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'ui/theme_data.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
-List<SingleChildWidget> _providers = [Provider(create: (_) => DashboardProvider()), Provider(create: (_) => ArtistProvider())];
+List<SingleChildWidget> _providers = [
+  Provider(create: (_) => DashboardProvider()),
+  Provider(create: (_) => ArtistProvider()),
+  ChangeNotifierProvider(
+    create: (_) => AudioProvider(),
+  )
+];
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
