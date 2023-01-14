@@ -1,10 +1,14 @@
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gibbon_music/api/models/PageModels/M_PageDashboard.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/dashboard_provider.dart';
+import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/ui/widgets/album_card.dart';
+import 'package:gibbon_music/ui/widgets/content_loader.dart';
+import 'package:gibbon_music/ui/widgets/loading_ring.dart';
 import 'package:gibbon_music/ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
 
@@ -20,46 +24,48 @@ class PageDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     AudioProvider audioProvider = context.read();
+    DashboardProvider dashboardProvider = context.read();
+    WidgetsBinding.instance.addPostFrameCallback((_) => context.read<NavigatorProvider>().showOverlay(context));
 
     return ScaffoldPage(
         resizeToAvoidBottomInset: true,
         padding: const EdgeInsets.all(0),
-        content: Consumer<DashboardProvider>(
-          builder: (_, provider, __) {
-            return FutureBuilder(
-              future: provider.init(),
-              builder: (_, snapshot) {
-                bool hasData = provider.mPageDashboard != null;
-                return ScaffoldScroller(slivers: [
-                  const SliverToBoxAdapter(
-                    child: Text("Вы недавно слушали", style: AppStyle.header1Style),
-                  ),
-                  PlayContextSection(
-                    playContexts: provider.mPageDashboard.playContextList,
-                  ),
-                  const SliverToBoxAdapter(child: AppConsts.defaultVSpacer),
-                  const SliverToBoxAdapter(
-                    child: Text("Чарт", style: AppStyle.header1Style),
-                  ),
-                  const SliverToBoxAdapter(child: AppConsts.defaultVSpacer),
-                  SliverGrid(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, mainAxisExtent: 56, crossAxisSpacing: 8, mainAxisSpacing: 8),
-                      delegate: SliverChildBuilderDelegate(
-                          (context, index) => TrackCard(
-                                track: provider.mPageDashboard.chartList[index].track,
-                                onPressed: () {
-                                  var tracks = provider.mPageDashboard.chartList.select((element, index) => element.track).toList();
-
-                                  audioProvider.setPlaylist(tracks);
-                                  audioProvider.playTrack(index);
-                                },
-                              ),
-                          childCount: provider.mPageDashboard.chartList.length))
-                ]);
-              },
-            );
+        content: ContentLoader(
+          future: dashboardProvider.init(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              MPageDashboard mPageDashboard = dashboardProvider.mPageDashboard;
+              return ScaffoldScroller(slivers: [
+                const SliverToBoxAdapter(
+                  child: Text("Вы недавно слушали", style: AppStyle.header1Style),
+                ),
+                PlayContextSection(
+                  playContexts: mPageDashboard.playContextList,
+                ),
+                const SliverToBoxAdapter(child: AppConsts.defaultVSpacer),
+                const SliverToBoxAdapter(
+                  child: Text("Чарт", style: AppStyle.header1Style),
+                ),
+                const SliverToBoxAdapter(child: AppConsts.defaultVSpacer),
+                SliverGrid(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, mainAxisExtent: 56, crossAxisSpacing: 8, mainAxisSpacing: 8),
+                    delegate: SliverChildBuilderDelegate(
+                        (context, index) => TrackCard(
+                              track: mPageDashboard.chartList[index].track,
+                              onPressed: () {
+                                var tracks = mPageDashboard.chartList.select((element, index) => element.track).toList();
+                                audioProvider.setPlaylist(tracks);
+                                audioProvider.playTrack(index);
+                              },
+                            ),
+                        childCount: mPageDashboard.chartList.length))
+              ]);
+            } else {
+              return const LoadingRing();
+            }
           },
         ));
   }

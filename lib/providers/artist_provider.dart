@@ -6,9 +6,20 @@ import 'package:gibbon_music/api/models/PageModels/M_PageDashboard.dart';
 class ArtistProvider{
   ArtistProvider();
 
+  MPageArtist _mPageArtist;
+
+
+  MPageArtist get mPageArtist => _mPageArtist;
+
+  set mPageArtist(MPageArtist value) {
+    _mPageArtist = value;
+  }
+
   Future<void> init(int id) async {
     mPageArtist  = await getArtist(id);
   }
 
-  MPageArtist mPageArtist;
+  Future<void> dispose() async {
+    mPageArtist = null;
+  }
 }

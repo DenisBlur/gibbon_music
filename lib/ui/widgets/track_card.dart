@@ -12,7 +12,6 @@ import 'package:gibbon_music/ui/controls/buttons.dart';
 import 'package:gibbon_music/ui/widgets/ImageThumbnail.dart';
 import 'package:gibbon_music/ui/widgets/card_view.dart';
 import 'package:flutter/material.dart' as m;
-import 'package:go_router/go_router.dart';
 import '../../constants/style_consts.dart';
 
 class TrackCard extends StatelessWidget {

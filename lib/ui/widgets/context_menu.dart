@@ -12,6 +12,7 @@ class AppContext {
     if (position.dx > width) {
       position = Offset(position.dx - 250, position.dy);
     }
+
     showMenu(
         context: context,
         offset: position,

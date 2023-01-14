@@ -5,10 +5,20 @@ import 'package:gibbon_music/api/models/PageModels/M_PageDashboard.dart';
 class DashboardProvider {
   DashboardProvider();
 
+  MPageDashboard _mPageDashboard;
+
+  MPageDashboard get mPageDashboard => _mPageDashboard;
+
+  set mPageDashboard(MPageDashboard value) {
+    _mPageDashboard = value;
+  }
+
   Future<void> init() async {
     initYamApi("AQAAAAAV_ACCAAG8XkFW219h4UiInu2aEV4ZGL4");
     mPageDashboard ??= await getPageDashboard(["play_contexts", "chart", "promotions", "mixes"]);
   }
 
-  MPageDashboard mPageDashboard;
+  Future<void> dispose() async {
+    mPageDashboard = null;
+  }
 }

@@ -4,7 +4,10 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/providers/artist_provider.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/dashboard_provider.dart';
+import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/router.dart';
+import 'package:gibbon_music/ui/screens/page_dashboard.dart';
+import 'package:gibbon_music/ui/widgets/overlay_container.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:system_theme/system_theme.dart';
@@ -14,12 +17,16 @@ import 'package:path_provider/path_provider.dart';
 import 'ui/theme_data.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+bool _overlayCreated = false;
 
 List<SingleChildWidget> _providers = [
   Provider(create: (_) => DashboardProvider()),
   Provider(create: (_) => ArtistProvider()),
   ChangeNotifierProvider(
     create: (_) => AudioProvider(),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => NavigatorProvider(),
   )
 ];
 
@@ -44,11 +51,22 @@ Future<void> main() async {
     });
   }
 
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+class App extends StatefulWidget {
+  const App({Key key}) : super(key: key);
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  void initState() {
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +74,9 @@ class MyApp extends StatelessWidget {
     GThemeCreator.setColors(SystemTheme.accentColor);
     return MultiProvider(
       providers: _providers,
-      child: FluentApp.router(
+      child: FluentApp(
+        home: const PageDashboard(),
         theme: GThemeCreator.lightNoColor,
-        routeInformationParser: AppRouter().route.routeInformationParser,
-        routerDelegate: AppRouter().route.routerDelegate,
-        routeInformationProvider: AppRouter().route.routeInformationProvider,
         color: GThemeCreator.accentColor.accent,
       ),
     );

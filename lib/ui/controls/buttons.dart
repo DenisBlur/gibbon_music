@@ -1,5 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:gibbon_music/main.dart';
+import 'package:gibbon_music/ui/theme_data.dart';
 
 import '../../constants/ui_consts.dart';
 
@@ -84,32 +86,41 @@ class GIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color defaultStateColor, hoverStateColor, iconColor;
+    Color defaultStateColor, hoverStateColor, pressedStateColor, iconColor;
 
     var theme = FluentTheme.of(context);
 
     if (!contrastBackground) {
-      defaultStateColor = theme.accentColor.withOpacity(0);
-      hoverStateColor = theme.accentColor.withOpacity(.4);
+      defaultStateColor = theme.checkedColor.withOpacity(0);
+      hoverStateColor = theme.checkedColor.withOpacity(.8);
+      pressedStateColor = theme.checkedColor.withOpacity(.4);
     } else {
       defaultStateColor = theme.uncheckedColor.withOpacity(1);
-      hoverStateColor = theme.checkedColor.withOpacity(.2);
+      hoverStateColor =  GThemeCreator.alphaBlend(theme.checkedColor.withOpacity(.1), theme.uncheckedColor);
+      pressedStateColor = GThemeCreator.alphaBlend(theme.accentColor.withOpacity(.1), theme.uncheckedColor);
       iconColor = theme.checkedColor.withOpacity(1);
     }
 
-    return m.Material(
-      borderRadius: BorderRadius.circular(size * 2),
-      color: defaultStateColor,
-      child: m.InkWell(
-        onTap: () => onPressed,
-        hoverColor: hoverStateColor,
-        splashColor: hoverStateColor.withOpacity(.8),
-        borderRadius: BorderRadius.circular(size * 2),
-        child: Padding(
+    return HoverButton(
+      onPressed: () => onPressed(),
+      builder: (p0, state) {
+        Color bgColor = state.isPressing
+            ? pressedStateColor
+            : state.isHovering
+                ? hoverStateColor
+                : defaultStateColor;
+
+        return AnimatedContainer(
           padding: EdgeInsets.all(padding),
+          duration: AppConsts.defaultAnimation,
+          curve: AppConsts.defaultCurve,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(size * 2),
+            color: bgColor,
+          ),
           child: Icon(icon, size: size, color: iconColor),
-        ),
-      ),
+        );
+      },
     );
   }
 }

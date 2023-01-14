@@ -5,6 +5,7 @@ import 'package:gibbon_music/api/models/M_Track.dart';
 import 'package:gibbon_music/domain/interfaces/iplaylist_loop_strategy.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:yam_api/yam_api.dart';
+import 'package:flutter/material.dart' as m;
 
 class AudioProvider extends ChangeNotifier {
   AudioProvider();
@@ -13,6 +14,14 @@ class AudioProvider extends ChangeNotifier {
   Playlist _playlist = Playlist();
 
   Playlist get playlist => _playlist;
+
+  Stream<PlayerState> get onPlayerStateChanged => _player.onPlayerStateChanged;
+
+  Stream<Duration> get onPositionChanged => _player.onPositionChanged;
+
+  Stream<Duration> get onDurationChanged => _player.onDurationChanged;
+
+  PlayerState get playerState => _player.state;
 
   set playlist(Playlist value) {
     _playlist = value;
@@ -31,6 +40,7 @@ class AudioProvider extends ChangeNotifier {
     var trackUrl = await YamApi.downloadTrack(_playlist.currentTrack.id);
     await _player.setSourceUrl(trackUrl);
     await _player.resume();
+    notifyListeners();
   }
 
   @override
@@ -72,5 +82,39 @@ class AudioProvider extends ChangeNotifier {
   void shuffle(bool value) {
     _playlist.shuffle(value);
     notifyListeners();
+  }
+
+  void setSeek(double ms) async {
+    await _player.seek(Duration(milliseconds: ms.toInt()));
+    notifyListeners();
+  }
+
+  void resume() async {
+    await _player.resume();
+    notifyListeners();
+  }
+
+  void pause() async {
+    await _player.pause();
+    notifyListeners();
+  }
+
+  ///Удалить если чего
+  IconData icon() {
+    switch (playerState) {
+      case PlayerState.stopped:
+        return m.Icons.stop_rounded;
+        break;
+      case PlayerState.playing:
+        return m.Icons.pause;
+        break;
+      case PlayerState.paused:
+        return m.Icons.play_arrow;
+        break;
+      case PlayerState.completed:
+        return m.Icons.not_interested;
+        break;
+    }
+    return m.Icons.not_interested;
   }
 }
