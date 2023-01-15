@@ -3,17 +3,17 @@ library yam_api;
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
+import 'package:yam_api/models/error_model.dart';
 
 import 'models/Download/DownloadInfo.dart';
 
-enum QualityTrack{
-  medium,
-  high,
-  low
-}
+enum QualityTrack { medium, high, low }
+
+enum ActionType { playlist, artist, album, track }
 
 class YamApi {
   static const String baseUrl = "https://api.music.yandex.net";
@@ -31,141 +31,131 @@ class YamApi {
     userId = jsonResult["result"]["account"]["uid"].toString();
   }
 
+  Future<String> checkResponse(http.Response response) async {
+    if (response.statusCode == 200) {
+      if (kDebugMode) {
+        print(response.body);
+      }
+      return response.body;
+    } else {
+      ErrorModel errorModel = ErrorModel(error: ErrorResult(result: response.body, statusCode: response.statusCode));
+      if (kDebugMode) {
+        print("Status Code: ${errorModel.error?.statusCode}");
+        ///print(errorModel.toJson().toString());
+      }
+      return errorModel.toJson().toString();
+    }
+  }
+
   ///Start future like
 
-
-  Future<String> removeLikePlaylist(String objectId) async {
-    return await actionLike(objectId, "playlist", true);
+  Future<bool> removeLike(String objectId, ActionType actionType) async {
+    String action = "none";
+    switch (actionType) {
+      case ActionType.playlist:
+        action = "playlist";
+        break;
+      case ActionType.artist:
+        action = "artist";
+        break;
+      case ActionType.album:
+        action = "album";
+        break;
+      case ActionType.track:
+        action = "track";
+        break;
+    }
+    String response = await actionLike(objectId, action, true);
+    return response == "error" ? false : true;
   }
 
-  Future<String> removeLikeArtist(String objectId) async {
-    return await actionLike(objectId, "artist", true);
-  }
-
-  Future<String> removeLikeAlbum(String objectId) async {
-    return await actionLike(objectId, "album", true);
-  }
-
-  Future<String> removeLikeTrack(String objectId) async {
-    return await actionLike(objectId, "track", true);
-  }
-
-
-
-  Future<String> setLikePlaylist(String objectId) async {
-    return await actionLike(objectId, "playlist", false);
-  }
-
-  Future<String> setLikeArtist(String objectId) async {
-    return await actionLike(objectId, "artist", false);
-  }
-
-  Future<String> setLikeAlbum(String objectId) async {
-    return await actionLike(objectId, "album", false);
-  }
-
-  Future<String> setLikeTrack(String objectId) async {
-    return await actionLike(objectId, "track", false);
+  Future<bool> setLike(String objectId, ActionType actionType) async {
+    String action = "none";
+    switch (actionType) {
+      case ActionType.playlist:
+        action = "playlist";
+        break;
+      case ActionType.artist:
+        action = "artist";
+        break;
+      case ActionType.album:
+        action = "album";
+        break;
+      case ActionType.track:
+        action = "track";
+        break;
+    }
+    String response = await actionLike(objectId, action, false);
+    return response.contains("error") ? false : true;
   }
 
   Future<String> actionLike(String objectId, String type, bool remove) async {
     var action = remove ? "remove" : "add-multiple";
-    var response = await http.post(Uri.parse("$baseUrl/users/$userId/likes/${type}s/$action?$type-ids=$objectId"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
+    var response = await http
+        .post(Uri.parse("$baseUrl/users/$userId/likes/${type}s/$action?$type-ids=$objectId"), headers: {'Authorization': 'OAuth $tokenMain'});
+    return checkResponse(response);
+  }
+
+  Future<String> getLikes(ActionType actionType) async {
+    String action = "none";
+    switch (actionType) {
+      case ActionType.playlist:
+        action = "playlist";
+        break;
+      case ActionType.artist:
+        action = "artist";
+        break;
+      case ActionType.album:
+        action = "album";
+        break;
+      case ActionType.track:
+        action = "track";
+        break;
     }
+    return await getLike(action);
   }
 
-  Future<String> getLikePlaylist() async {
-    return await getLike("playlist");
-  }
-
-  Future<String> getLikeArtist() async {
-    return await getLike("artist");
-  }
-
-  Future<String> getLikeAlbum() async {
-    return await getLike("album");
-  }
-
-  Future<String> getLikeTrack() async {
-    return await getLike("track");
-  }
   ///End future like
 
   Future<String> getLike(String type) async {
     var response = await http.get(Uri.parse("$baseUrl/users/$userId/likes/${type}s"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
   Future<String> accountStatusRequest() async {
     //Получение статуса аккаунта. Нет обязательных параметров.
     var response = await http.get(Uri.parse("$baseUrl/account/status"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
   Future<String> accountSettingRequest() async {
     var response = await http.get(Uri.parse("$baseUrl/account/settings"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
   Future<String> charts() async {
     var response = await http.get(Uri.parse("$baseUrl/landing3/chart"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
   Future<String> getAlbum(int albumId) async {
     var response = await http.get(Uri.parse("$baseUrl/albums/$albumId/with-tracks"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
-  Future<String> getPlaylist(String user, int playlistId) async {
+  Future<String> getPlaylist(String user, String playlistId) async {
     var response = await http.get(Uri.parse("$baseUrl/users/$user/playlists/$playlistId"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
   Future<String> getUserPlaylist(int userId) async {
     var response = await http.get(Uri.parse("$baseUrl/users/$userId/playlists/list"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
   Future<String> getArtist(int artistId) async {
     var response = await http.get(Uri.parse("$baseUrl/artists/$artistId/brief-info"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
   Future<String> promotions(List<String> blocks) async {
@@ -174,11 +164,7 @@ class YamApi {
       _blocks = _blocks + "$bl,";
     }
     var response = await http.get(Uri.parse("$baseUrl/landing3?blocks=$_blocks"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
   Future<String> downloadTrack(String trackId, QualityTrack quality) async {
@@ -186,8 +172,8 @@ class YamApi {
     if (responseInfo.statusCode == 200) {
       var jsonResult = jsonDecode(responseInfo.body);
       var trackInfo = DownloadInfoModel.fromMap(jsonResult);
-      print(trackInfo.result![quality.index].bitrateInKbps);
-      var response = await http.get(Uri.parse(trackInfo.result![quality.index].downloadInfoUrl.toString()), headers: {'Authorization': 'OAuth $tokenMain'});
+      var response =
+          await http.get(Uri.parse(trackInfo.result![quality.index].downloadInfoUrl.toString()), headers: {'Authorization': 'OAuth $tokenMain'});
 
       if (response.statusCode == 200) {
         final document = XmlDocument.parse(response.body);
@@ -230,65 +216,41 @@ class YamApi {
     }
   }
 
-  static Future<String> getRadio() async {
+  Future<String> getRadio() async {
     var response = await http.get(Uri.parse("$baseUrl/rotor/stations/list"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
-  static Future<String> getStation(String genre, String tag) async {
+  Future<String> getStation(String genre, String tag) async {
     var response = await http.get(Uri.parse("$baseUrl/rotor/station/$genre:$tag/tracks"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
 // Post запросы
-  static Future<String> postStationFeedback(String genre, String tag) async {
+  Future<String> postStationFeedback(String genre, String tag) async {
     var response = await http.post(Uri.parse("$baseUrl/rotor/station/$genre:$tag/feedback"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
-  static Future<String> postPlayAudio(
+  Future<String> postPlayAudio(
       int trackId, String albumId, playlistId, uId, int trackLengthSeconds, totalPlayedSeconds, endPositionSeconds) async {
     var timeStamp = "${DateTime.now().toIso8601String()}Z";
     String params =
         "?track-id=$trackId&from-cache=none&from=client$uId&play-id=none&uid=$uId&timestamp=$timeStamp&track-length-seconds=$trackLengthSeconds&total-played-seconds=$totalPlayedSeconds&end-position-seconds=$endPositionSeconds&album-id=$albumId&playlist-id=$playlistId&client-now=$timeStamp";
 
     var response = await http.post(Uri.parse("$baseUrl/play-audio$params"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
-  static Future<String> getSearchSuggest(String text) async {
+  Future<String> getSearchSuggest(String text) async {
     String params = "?part=$text";
     var response = await http.get(Uri.parse("$baseUrl/search/suggest$params"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 
-  static Future<String> getSearch(String text) async {
+  Future<String> getSearch(String text) async {
     String params = "?text=$text&nocorrect=false&type=all&page=0&playlist-in-best=false";
     var response = await http.get(Uri.parse("$baseUrl/search/$params"), headers: {'Authorization': 'OAuth $tokenMain'});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      return response.body;
-    }
+    return checkResponse(response);
   }
 }

@@ -10,20 +10,26 @@ class PageInit extends StatelessWidget {
   Widget build(BuildContext context) {
     Size pageSize = MediaQuery.of(context).size;
 
-    return SizedBox(
-        height: pageSize.height,
-        width: pageSize.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FadeInUp(child: const Text("Initialize YamApi", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),)),
-            AppConsts.bigVSpacer,
-            FadeInUp(
-              delay: const Duration(milliseconds: 150),
-              child: const ProgressRing(),
-            ),
-          ],
-        ));
+    return ScaffoldPage(
+      content: SizedBox(
+          height: pageSize.height,
+          width: pageSize.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FadeInUp(
+                  child: const Text(
+                "Initialize YamApi",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              )),
+              AppConsts.bigVSpacer,
+              FadeInUp(
+                delay: const Duration(milliseconds: 150),
+                child: const ProgressRing(),
+              ),
+            ],
+          )),
+    );
   }
 }

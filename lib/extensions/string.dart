@@ -1,3 +1,5 @@
+import 'package:gibbon_music/constants/ui_consts.dart';
+
 extension StringNumberExtension on String {
   String spaceSeparateNumbers() {
     final result = replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ');
@@ -5,8 +7,8 @@ extension StringNumberExtension on String {
   }
 
   String linkImage(int size) {
+    if (this == null || isEmpty) return AppConsts.imageEmptyLink;
     final result = substring(0, indexOf("%"));
     return "https://$result${size}x$size";
   }
-
 }

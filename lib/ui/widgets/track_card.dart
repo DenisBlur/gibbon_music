@@ -9,6 +9,7 @@ import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
+import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/ui/other/music_visualizer.dart';
 import 'package:gibbon_music/ui/widgets/context_menu.dart';
@@ -28,17 +29,15 @@ class TrackCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AudioProvider provider = context.watch();
+    YandexProvider yandexProvider = context.watch();
+    AudioProvider audioProvider = context.watch();
     bool isPlay = false;
     bool isLike = false;
 
+    isLike = yandexProvider.checkLike(track.id);
 
-    if (provider.likesTracks != null && provider.likesTracks.isNotEmpty) {
-      isLike = provider.likesTracks.contains(int.parse(track.id));
-    }
-
-    if (provider.playlist.tracks.isNotEmpty) {
-      isPlay = provider.playlist.currentTrack.id == track.id && provider.playerState == PlayerState.playing;
+    if (audioProvider.playlist.tracks.isNotEmpty) {
+      isPlay = audioProvider.playlist.currentTrack.id == track.id && audioProvider.playerState == PlayerState.playing;
     }
 
     return GCardView(
@@ -76,6 +75,7 @@ class TrackCard extends StatelessWidget {
             children: [
               Text(
                 track.title,
+                maxLines: 1,
                 style: AppStyle.trackHeaderStyle,
               ),
               ArtistsListWidgets(
@@ -86,6 +86,7 @@ class TrackCard extends StatelessWidget {
           ),
           AppConsts.fillSpacer,
           TrackCommandBar(isLike: isLike, id: track.id),
+          Text(track.durationMs == null ? "" : Duration(milliseconds: track.durationMs).toHms()),
         ],
       ),
     );
@@ -148,15 +149,11 @@ class TrackCommandBar extends StatelessWidget {
   Widget build(BuildContext context) {
 
     setLike() async {
-      await YamApi().setLikeTrack(id).then((value) {
-        context.read<AudioProvider>().addLike(int.parse(id));
-      });
+      context.read<YandexProvider>().addLike(id);
     }
 
     removeLike() async {
-      await YamApi().removeLikeTrack(id).then((value) {
-        context.read<AudioProvider>().removeLike(int.parse(id));
-      });
+      context.read<YandexProvider>().removeLike(id);
     }
 
     return Row(
@@ -181,7 +178,6 @@ class TrackCommandBar extends StatelessWidget {
           ),
         ),
         AppConsts.defaultHSpacer,
-        Text(const Duration(milliseconds: 88442).toHms()),
       ],
     );
   }

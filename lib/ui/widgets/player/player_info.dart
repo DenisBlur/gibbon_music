@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/api/models/M_Track.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
@@ -16,10 +17,16 @@ class PlayerInfo extends StatelessWidget {
     MTrack track = provider.playlist.currentTrack;
     return Row(
       children: [
-        ImageThumbnail(
-          url: track.coverUri.linkImage(100),
-          height: 44,
-          width: 44,
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: FluentTheme.of(context).scaffoldBackgroundColor,
+              boxShadow: [BoxShadow(color: Colors.black.withOpacity(.15), offset: Offset(0, 8), blurRadius: 5)]),
+          child: ImageThumbnail(
+            url: track.coverUri.linkImage(100),
+            height: 44,
+            width: 44,
+          ),
         ),
         AppConsts.defaultHSpacer,
         Column(

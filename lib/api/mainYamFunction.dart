@@ -24,7 +24,7 @@ Future<MSearch> getSearchResult(String text) async {
   String result = "";
   CancelableOperation<String> getTrackOperationAsync;
   getTrackOperationAsync?.cancel();
-  getTrackOperationAsync = CancelableOperation.fromFuture(YamApi.getSearch(text));
+  getTrackOperationAsync = CancelableOperation.fromFuture(YamApi().getSearch(text));
   getTrackOperationAsync.then((value) {
     if(getTrackOperationAsync.isCanceled) {
       return null;
@@ -43,7 +43,7 @@ Future<MSearchSuggest> getSearchSuggest(String text) async {
   String result = "";
   CancelableOperation<String> getTrackOperationAsync;
   getTrackOperationAsync?.cancel();
-  getTrackOperationAsync = CancelableOperation.fromFuture(YamApi.getSearchSuggest(text));
+  getTrackOperationAsync = CancelableOperation.fromFuture(YamApi().getSearchSuggest(text));
   getTrackOperationAsync.then((value) {
     if(getTrackOperationAsync.isCanceled) {
       return null;
@@ -58,7 +58,7 @@ Future<MSearchSuggest> getSearchSuggest(String text) async {
   return null;
 }
 
-Future<MPagePlaylist> getPlaylist(String uid, int kind) async {
+Future<MPagePlaylist> getPlaylist(String uid, String kind) async {
   String result = await YamApi().getPlaylist(uid, kind);
   var jsonResult = jsonDecode(result);
   MPagePlaylist mPagePlaylist = MPagePlaylist.fromJson(jsonResult["result"]);
@@ -110,12 +110,4 @@ Future<MPageDashboard> getPageDashboard(List<String> params) async {
   mPageHome.playContextList = playContextList;
 
   return mPageHome;
-}
-
-Future<MLikeTracks> getLikeTracks() async {
-  ///TODO: UserId: 368836738
-  String result = await YamApi().getLikeTrack();
-  var jsonResult = jsonDecode(result);
-  MLikeTracks mLikeTracks = MLikeTracks.fromJson(jsonResult["result"]);
-  return mLikeTracks;
 }

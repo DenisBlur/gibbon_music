@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/api/models/PageModels/M_PageDashboard.dart';
@@ -14,7 +13,6 @@ import 'package:gibbon_music/ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
 
 import 'package:gibbon_music/ui/widgets/scroller_scaffold.dart';
-import 'package:path_provider/path_provider.dart';
 import '../../api/models/M_Album.dart';
 import '../../api/models/M_Artist.dart';
 import '../../api/models/M_Entities.dart';
@@ -41,16 +39,13 @@ class PageDashboard extends StatelessWidget {
                 SliverToBoxAdapter(
                     child: Column(
                   children: [
-                    FadeInUp(child: const Text("Вы недавно слушали", style: AppStyle.header1Style)),
+                    const Text("Вы недавно слушали", style: AppStyle.header1Style),
                     AppConsts.defaultVSpacer,
                     PlayContextSection(
                       playContexts: mPageDashboard.playContextList,
                     ),
                     AppConsts.defaultVSpacer,
-                    FadeInUp(
-                      delay: const Duration(milliseconds: 250),
-                      child: const Text("Чарт", style: AppStyle.header1Style),
-                    ),
+                    const Text("Чарт", style: AppStyle.header1Style),
                   ],
                 )),
                 const SliverToBoxAdapter(child: AppConsts.defaultVSpacer),
@@ -58,19 +53,16 @@ class PageDashboard extends StatelessWidget {
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, mainAxisExtent: 56, crossAxisSpacing: 8, mainAxisSpacing: 8),
                     delegate: SliverChildBuilderDelegate(
-                        (context, index) => FadeInUp(
-                              delay: Duration(milliseconds: 250 + (50 * index)),
-                              child: TrackCard(
-                                track: mPageDashboard.chartList[index].track,
-                                onPressed: () {
-                                  var tracks = mPageDashboard.chartList.select((element, index) => element.track).toList();
-                                  audioProvider.setPlaylist(tracks);
-                                  audioProvider.playTrack(index);
-                                },
-                              ),
+                        (context, index) => TrackCard(
+                              track: mPageDashboard.chartList[index].track,
+                              onPressed: () {
+                                var tracks = mPageDashboard.chartList.select((element, index) => element.track).toList();
+                                audioProvider.setPlaylist(tracks);
+                                audioProvider.playTrack(index);
+                              },
                             ),
                         childCount: mPageDashboard.chartList.length)),
-              ]);
+              ], padding: AppConsts.pageInsets,);
             } else {
               return const LoadingRing();
             }
@@ -110,7 +102,7 @@ class PlayContextSection extends StatelessWidget {
               break;
           }
 
-          return FadeInRight(delay: Duration(milliseconds: 250 + (index * 50)), child: Padding(padding: const EdgeInsets.only(right: 16), child: widget));
+          return Padding(padding: const EdgeInsets.only(right: 16), child: widget);
         },
         itemCount: playContexts.length,
       ),

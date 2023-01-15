@@ -61,18 +61,26 @@ class PlayerMainControl extends StatelessWidget {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
                   case ConnectionState.active:
-                    return Slider(
-                      label: data.toHms(),
-                      min: 0,
-                      style: SliderThemeData(
-                        labelBackgroundColor: FluentTheme.of(context).accentColor,
-                        trackHeight: ButtonState.all(2),
-                      ),
-                      max: track.durationMs.toDouble(),
-                      value: position,
-                      onChanged: (value) {
-                        provider.setSeek(value);
-                      },
+                    return Row(
+                      children: [
+                        Text(data.toHms()),
+                        AppConsts.defaultHSpacer,
+                        Expanded(child: Slider(
+                          label: data.toHms(),
+                          min: 0,
+                          style: SliderThemeData(
+                            labelBackgroundColor: FluentTheme.of(context).accentColor,
+                            trackHeight: ButtonState.all(2),
+                          ),
+                          max: track.durationMs.toDouble(),
+                          value: position,
+                          onChanged: (value) {
+                            provider.setSeek(value);
+                          },
+                        ),),
+                        AppConsts.defaultHSpacer,
+                        Text(Duration(milliseconds: track.durationMs).toHms()),
+                      ],
                     );
                   case ConnectionState.none:
                   case ConnectionState.done:

@@ -20,6 +20,8 @@ dependencies:
   animate_do: ^3.0.2
   flutter_improved_scrolling: ^0.0.3
   darq: ^1.2.1
+  yam_api:
+    path: yam_api
   event: any
   async: any
   stack: any
@@ -28,8 +30,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-  yam_api:
-    path: yam_api
+
 
 flutter:
   uses-material-design: true

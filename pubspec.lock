@@ -489,7 +489,7 @@ packages:
     source: hosted
     version: "5.4.1"
   yam_api:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       path: yam_api
       relative: true

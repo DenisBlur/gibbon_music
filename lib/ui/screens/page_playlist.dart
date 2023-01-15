@@ -1,44 +1,41 @@
-import 'dart:ui';
-
 import 'package:animate_do/animate_do.dart';
+import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/api/models/M_Album.dart';
 import 'package:gibbon_music/api/models/M_Playlist.dart';
+import 'package:gibbon_music/api/models/PageModels/M_PagePlaylist.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
-import 'package:gibbon_music/extensions/string.dart';
-import 'package:gibbon_music/providers/artist_provider.dart';
+import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/ui/widgets/content_loader.dart';
 import 'package:gibbon_music/ui/widgets/loading_ring.dart';
 import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
 
-import '../../api/models/PageModels/M_PageArtist.dart';
 import '../../constants/style_consts.dart';
 import '../../providers/audio_provider.dart';
 import '../widgets/album_card.dart';
 import '../widgets/scroller_scaffold.dart';
 import '../widgets/track_card.dart';
 
-class PageArtist extends StatelessWidget {
-  const PageArtist({Key key, this.id}) : super(key: key);
+class PagePlaylist extends StatelessWidget {
+  const PagePlaylist({Key key, @required this.id, @required this.kind}) : super(key: key);
 
-  final int id;
+  final String id;
+  final String kind;
 
   @override
   Widget build(BuildContext context) {
     AudioProvider audioProvider = context.read();
-
-    ArtistProvider artistProvider = context.read();
-    artistProvider.dispose();
+    PlaylistProvider playlistProvider = context.read();
+    playlistProvider.dispose();
 
     return ScaffoldPage(
         padding: const EdgeInsets.all(0),
         content: ContentLoader(
-          future: artistProvider.init(id),
+          future: playlistProvider.init(id, kind),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              MPageArtist mPageArtist = artistProvider.mPageArtist;
-              return ScaffoldScroller(scrollHeaderModel: ScrollHeaderContent(pageModel: mPageArtist), slivers: [
+              MPagePlaylist mPagePlaylist = playlistProvider.mPagePlaylist;
+              return ScaffoldScroller(scrollHeaderModel: ScrollHeaderContent(pageModel: mPagePlaylist), slivers: [
                 SliverToBoxAdapter(
                     child: FadeInUp(
                   delay: const Duration(milliseconds: 150),
@@ -52,33 +49,14 @@ class PageArtist extends StatelessWidget {
                         (context, index) => Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: TrackCard(
-                                track: mPageArtist.popularTracks[index],
+                                track: mPagePlaylist.tracks[index].track,
                                 onPressed: () {
-                                  audioProvider.setPlaylist(mPageArtist.popularTracks);
+                                  audioProvider.setPlaylist(mPagePlaylist.tracks.select((e, _) => e.track,).toList());
                                   audioProvider.playTrack(index);
                                 },
                               ),
                             ),
-                        childCount: mPageArtist.popularTracks.length)),
-                SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AppConsts.defaultVSpacer,
-                      FadeInUp(child: const Text("Альбомы", style: AppStyle.header1Style)),
-                      AppConsts.defaultVSpacer,
-                      AlbumSection(
-                        albums: mPageArtist.albums,
-                      ),
-                      AppConsts.defaultVSpacer,
-                      FadeInUp(child: const Text("Плейлисты", style: AppStyle.header1Style)),
-                      AppConsts.defaultVSpacer,
-                      PlaylistSection(
-                        playlist: mPageArtist.playlists,
-                      ),
-                    ],
-                  ),
-                ),
+                        childCount: mPagePlaylist.tracks.length)),
               ], padding: AppConsts.pageInsets,);
             } else {
               return const LoadingRing();

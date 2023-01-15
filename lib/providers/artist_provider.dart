@@ -8,7 +8,6 @@ class ArtistProvider{
 
   MPageArtist _mPageArtist;
 
-
   MPageArtist get mPageArtist => _mPageArtist;
 
   set mPageArtist(MPageArtist value) {

@@ -24,7 +24,9 @@ class AlbumCard extends StatelessWidget {
       uri: album.ogImage,
       title: album.title,
       subtitle: album.artists.first.name,
-      onPressed: () {},
+      onPressed: () {
+        AppRouter().gotoAlbum(context, album.id);
+      },
       upTitle: 'Album',
     );
   }
@@ -60,7 +62,9 @@ class PlaylistCard extends StatelessWidget {
       uri: playlist.cover.uri,
       title: playlist.title,
       subtitle: playlist.owner == null ? "${playlist.trackCount} Треков" : playlist.owner.name,
-      onPressed: () {},
+      onPressed: () {
+        AppRouter().gotoPlaylist(context, playlist.owner.uid.toString(), playlist.kind.toString());
+      },
       upTitle: 'Playlist',
     );
   }

@@ -1,16 +1,14 @@
-import 'dart:ui';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/api/models/M_Album.dart';
 import 'package:gibbon_music/api/models/M_Playlist.dart';
+import 'package:gibbon_music/api/models/PageModels/M_PageAlbum.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
-import 'package:gibbon_music/extensions/string.dart';
+import 'package:gibbon_music/providers/album_provider.dart';
 import 'package:gibbon_music/providers/artist_provider.dart';
 import 'package:gibbon_music/ui/widgets/content_loader.dart';
 import 'package:gibbon_music/ui/widgets/loading_ring.dart';
 import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import '../../api/models/PageModels/M_PageArtist.dart';
 import '../../constants/style_consts.dart';
@@ -19,66 +17,47 @@ import '../widgets/album_card.dart';
 import '../widgets/scroller_scaffold.dart';
 import '../widgets/track_card.dart';
 
-class PageArtist extends StatelessWidget {
-  const PageArtist({Key key, this.id}) : super(key: key);
+class PageAlbum extends StatelessWidget {
+  const PageAlbum({Key key, this.id}) : super(key: key);
 
   final int id;
 
   @override
   Widget build(BuildContext context) {
-    AudioProvider audioProvider = context.read();
 
-    ArtistProvider artistProvider = context.read();
-    artistProvider.dispose();
+    AudioProvider audioProvider = context.read();
+    AlbumProvider albumProvider = context.read();
+    albumProvider.dispose();
 
     return ScaffoldPage(
         padding: const EdgeInsets.all(0),
         content: ContentLoader(
-          future: artistProvider.init(id),
+          future: albumProvider.init(id),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              MPageArtist mPageArtist = artistProvider.mPageArtist;
-              return ScaffoldScroller(scrollHeaderModel: ScrollHeaderContent(pageModel: mPageArtist), slivers: [
+              MPageAlbum mPageAlbum = albumProvider.mPageAlbum;
+              return ScaffoldScroller(scrollHeaderModel: ScrollHeaderContent(pageModel: mPageAlbum), slivers: [
                 SliverToBoxAdapter(
                     child: FadeInUp(
-                  delay: const Duration(milliseconds: 150),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [AppConsts.defaultVSpacer, Text("Популярные треки", style: AppStyle.header1Style), AppConsts.defaultVSpacer],
-                  ),
-                )),
+                      delay: const Duration(milliseconds: 150),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [AppConsts.defaultVSpacer, Text("Популярные треки", style: AppStyle.header1Style), AppConsts.defaultVSpacer],
+                      ),
+                    )),
                 SliverList(
                     delegate: SliverChildBuilderDelegate(
-                        (context, index) => Padding(
-                              padding: const EdgeInsets.only(top: 8),
-                              child: TrackCard(
-                                track: mPageArtist.popularTracks[index],
-                                onPressed: () {
-                                  audioProvider.setPlaylist(mPageArtist.popularTracks);
-                                  audioProvider.playTrack(index);
-                                },
-                              ),
-                            ),
-                        childCount: mPageArtist.popularTracks.length)),
-                SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AppConsts.defaultVSpacer,
-                      FadeInUp(child: const Text("Альбомы", style: AppStyle.header1Style)),
-                      AppConsts.defaultVSpacer,
-                      AlbumSection(
-                        albums: mPageArtist.albums,
-                      ),
-                      AppConsts.defaultVSpacer,
-                      FadeInUp(child: const Text("Плейлисты", style: AppStyle.header1Style)),
-                      AppConsts.defaultVSpacer,
-                      PlaylistSection(
-                        playlist: mPageArtist.playlists,
-                      ),
-                    ],
-                  ),
-                ),
+                            (context, index) => Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: TrackCard(
+                            track: mPageAlbum.volumes[index],
+                            onPressed: () {
+                              audioProvider.setPlaylist(mPageAlbum.volumes);
+                              audioProvider.playTrack(index);
+                            },
+                          ),
+                        ),
+                        childCount: mPageAlbum.volumes.length)),
               ], padding: AppConsts.pageInsets,);
             } else {
               return const LoadingRing();
