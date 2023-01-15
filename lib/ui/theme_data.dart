@@ -12,7 +12,7 @@ class GThemeCreator {
   static Color accentLightMicaColor;
   static Color accentLightCardColor;
 
-  static const double blendValue = 0.2;
+  static const double blendValue = 0.3;
 
   static ThemeData darkNoColor = ThemeData(
     brightness: Brightness.dark,

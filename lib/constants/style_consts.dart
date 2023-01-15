@@ -24,7 +24,20 @@ class AppStyle {
     );
   }
 
+  static TextStyle upCardHeaderStyle(BuildContext context) {
+    return TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+        color: FluentTheme.of(context).accentColor
+    );
+  }
+
   static const TextStyle trackHeaderStyle = TextStyle(
     fontSize: 16,
   );
+
+  static const TextStyle cardHeaderStyle = TextStyle(
+    fontSize: 14,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis
+  );
+
 }

@@ -14,10 +14,11 @@ class PlayerMainControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double position = 0.0;
     Size pageSize = MediaQuery.of(context).size;
     AudioProvider provider = context.watch();
     MTrack track = provider.playlist.currentTrack;
+
+    double position = 0.0;
 
     return SizedBox(
       width: pageSize.width / 2.5,
@@ -33,13 +34,17 @@ class PlayerMainControl extends StatelessWidget {
               AppConsts.defaultHSpacer,
               GIconButton(onPressed: () {}, icon: m.Icons.skip_previous_rounded, size: 24),
               AppConsts.defaultHSpacer,
-              GIconButton(onPressed: () {
-                if(provider.playerState == PlayerState.playing) {
-                  provider.pause();
-                } else {
-                  provider.resume();
-                }
-              }, icon: provider.icon(), contrastBackground: true, size: 26),
+              GIconButton(
+                  onPressed: () {
+                    if (provider.playerState == PlayerState.playing) {
+                      provider.pause();
+                    } else {
+                      provider.resume();
+                    }
+                  },
+                  icon: provider.icon(),
+                  contrastBackground: true,
+                  size: 26),
               AppConsts.defaultHSpacer,
               GIconButton(onPressed: () => provider.canNext(), icon: m.Icons.skip_next_rounded, size: 24),
               AppConsts.defaultHSpacer,
@@ -48,24 +53,35 @@ class PlayerMainControl extends StatelessWidget {
           ),
           AppConsts.smallVSpacer,
           StreamBuilder(
-            stream: provider.onPositionChanged,
-            initialData: const Duration(milliseconds: 0),
-            builder: (context, snapshot) {
-              position = snapshot.data.inMilliseconds.toDouble();
-              return Slider(
-                label: "10",
-                min: 0,
-                style: SliderThemeData(
-                  trackHeight: ButtonState.all(2),
-                ),
-                max: track.durationMs.toDouble(),
-                value:position,
-                onChanged: (value) {
-                  provider.setSeek(value);
-                },
-              );
-            }
-          ),
+              stream: provider.onPositionChanged,
+              initialData: const Duration(milliseconds: 0),
+              builder: (context, snapshot) {
+                Duration data = snapshot.data;
+                position = data.inMilliseconds.toDouble();
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                  case ConnectionState.active:
+                    return Slider(
+                      label: data.toHms(),
+                      min: 0,
+                      style: SliderThemeData(
+                        labelBackgroundColor: FluentTheme.of(context).accentColor,
+                        trackHeight: ButtonState.all(2),
+                      ),
+                      max: track.durationMs.toDouble(),
+                      value: position,
+                      onChanged: (value) {
+                        provider.setSeek(value);
+                      },
+                    );
+                  case ConnectionState.none:
+                  case ConnectionState.done:
+                  default:
+                    print("NONE");
+                    return Text("None");
+                    break;
+                }
+              }),
         ],
       ),
     );

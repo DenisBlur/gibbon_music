@@ -18,9 +18,6 @@ dependencies:
   path_provider: ^2.0.10
   fluent_ui: ^4.1.2
   animate_do: ^3.0.2
-  mouse_parallax: ^1.1.0
-  anitex: ^3.0.1
-  contextmenu: ^3.0.0
   flutter_improved_scrolling: ^0.0.3
   darq: ^1.2.1
   event: any

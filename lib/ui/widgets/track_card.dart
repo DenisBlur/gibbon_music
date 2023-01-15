@@ -1,18 +1,24 @@
+import 'dart:convert';
 import 'dart:ui';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/api/models/InnerModel/M_InnerArtist.dart';
 import 'package:gibbon_music/api/models/M_Track.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/extensions/string.dart';
+import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/router.dart';
+import 'package:gibbon_music/ui/other/music_visualizer.dart';
 import 'package:gibbon_music/ui/widgets/context_menu.dart';
 import 'package:gibbon_music/ui/controls/buttons.dart';
 import 'package:gibbon_music/ui/widgets/ImageThumbnail.dart';
 import 'package:gibbon_music/ui/widgets/card_view.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:provider/provider.dart';
 import '../../constants/style_consts.dart';
+import 'package:yam_api/yam_api.dart';
 
 class TrackCard extends StatelessWidget {
   const TrackCard({Key key, @required this.track, @required this.onPressed}) : super(key: key);
@@ -22,13 +28,47 @@ class TrackCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AudioProvider provider = context.watch();
+    bool isPlay = false;
+    bool isLike = false;
+
+
+    if (provider.likesTracks != null && provider.likesTracks.isNotEmpty) {
+      isLike = provider.likesTracks.contains(int.parse(track.id));
+    }
+
+    if (provider.playlist.tracks.isNotEmpty) {
+      isPlay = provider.playlist.currentTrack.id == track.id && provider.playerState == PlayerState.playing;
+    }
+
     return GCardView(
       onPressed: () => onPressed(),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          ImageThumbnail(url: track.coverUri.linkImage(200)),
+          Stack(
+            children: [
+              ImageThumbnail(url: track.coverUri.linkImage(100), height: 44, width: 44),
+              AnimatedScale(
+                scale: isPlay ? 1 : 0,
+                duration: AppConsts.slowAnimation,
+                curve: AppConsts.defaultCurve,
+                child: Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: FluentTheme.of(context).cardColor.withOpacity(.4)),
+                    child: Center(
+                      child: MiniMusicVisualizer(
+                        color: Colors.red,
+                        active: isPlay,
+                        width: 4,
+                        height: 15,
+                      ),
+                    )),
+              ),
+            ],
+          ),
           AppConsts.defaultHSpacer,
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,11 +78,14 @@ class TrackCard extends StatelessWidget {
                 track.title,
                 style: AppStyle.trackHeaderStyle,
               ),
-              ArtistsListWidgets(key: key, mInnerArtistList: track.artists,)
+              ArtistsListWidgets(
+                key: key,
+                mInnerArtistList: track.artists,
+              )
             ],
           ),
           AppConsts.fillSpacer,
-          const TrackCommandBar(),
+          TrackCommandBar(isLike: isLike, id: track.id),
         ],
       ),
     );
@@ -96,15 +139,38 @@ class ArtistsListWidgets extends StatelessWidget {
 }
 
 class TrackCommandBar extends StatelessWidget {
-  const TrackCommandBar({Key key}) : super(key: key);
+  const TrackCommandBar({Key key, this.isLike = false, this.id}) : super(key: key);
+
+  final String id;
+  final bool isLike;
 
   @override
   Widget build(BuildContext context) {
+
+    setLike() async {
+      await YamApi().setLikeTrack(id).then((value) {
+        context.read<AudioProvider>().addLike(int.parse(id));
+      });
+    }
+
+    removeLike() async {
+      await YamApi().removeLikeTrack(id).then((value) {
+        context.read<AudioProvider>().removeLike(int.parse(id));
+      });
+    }
+
     return Row(
       children: [
         GIconButton(
-          onPressed: () {},
-          icon: m.Icons.favorite_border_rounded,
+          onPressed: () {
+            if (!isLike) {
+              setLike();
+            } else {
+              removeLike();
+            }
+          },
+          icon: isLike ? m.Icons.favorite : m.Icons.favorite_border_rounded,
+          iconColor: isLike ? FluentTheme.of(context).accentColor : Colors.transparent,
         ),
         AppConsts.smallHSpacer,
         GestureDetector(

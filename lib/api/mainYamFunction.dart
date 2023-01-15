@@ -13,10 +13,11 @@ import 'package:gibbon_music/api/models/SearchModels/M_SearchSuggest.dart';
 // ignore: depend_on_referenced_packages
 import 'package:yam_api/yam_api.dart';
 
+import 'models/LikesModels/M_LikeTracks.dart';
 import 'models/SearchModels/M_Search.dart';
 
-void initYamApi(String token) {
-  YamApi.init(token);
+Future<void> initYamApi(String token) async {
+  await YamApi().init(token);
 }
 
 Future<MSearch> getSearchResult(String text) async {
@@ -58,28 +59,28 @@ Future<MSearchSuggest> getSearchSuggest(String text) async {
 }
 
 Future<MPagePlaylist> getPlaylist(String uid, int kind) async {
-  String result = await YamApi.getPlaylist(uid, kind);
+  String result = await YamApi().getPlaylist(uid, kind);
   var jsonResult = jsonDecode(result);
   MPagePlaylist mPagePlaylist = MPagePlaylist.fromJson(jsonResult["result"]);
   return mPagePlaylist;
 }
 
 Future<MPageAlbum> getAlbum(int albumId) async {
-  String result = await YamApi.getAlbum(albumId);
+  String result = await YamApi().getAlbum(albumId);
   var jsonResult = jsonDecode(result);
   MPageAlbum mPageAlbum = MPageAlbum.fromJson(jsonResult["result"]);
   return mPageAlbum;
 }
 
 Future<MPageArtist> getArtist(int id) async {
-  String result = await YamApi.getArtist(id);
+  String result = await YamApi().getArtist(id);
   var jsonResult = jsonDecode(result);
   MPageArtist mPageArtist = MPageArtist.fromJson(jsonResult["result"]);
   return mPageArtist;
 }
 
 Future<MPageDashboard> getPageDashboard(List<String> params) async {
-  String result = await YamApi.promotions(params);
+  String result = await YamApi().promotions(params);
   var jsonResult = jsonDecode(result);
 
   MPageDashboard mPageHome = MPageDashboard();
@@ -109,4 +110,12 @@ Future<MPageDashboard> getPageDashboard(List<String> params) async {
   mPageHome.playContextList = playContextList;
 
   return mPageHome;
+}
+
+Future<MLikeTracks> getLikeTracks() async {
+  ///TODO: UserId: 368836738
+  String result = await YamApi().getLikeTrack();
+  var jsonResult = jsonDecode(result);
+  MLikeTracks mLikeTracks = MLikeTracks.fromJson(jsonResult["result"]);
+  return mLikeTracks;
 }

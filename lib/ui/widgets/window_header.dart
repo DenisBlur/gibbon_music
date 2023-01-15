@@ -10,62 +10,50 @@ import 'package:window_manager/window_manager.dart';
 
 import '../../main.dart';
 
-
 ///переписать что бы хорошо было!
 
 class WindowHeader extends StatelessWidget {
-  const WindowHeader({Key key, @required this.title, @required this.backArrow, @required this.setting}) : super(key: key);
+  const WindowHeader({Key key, @required this.setting}) : super(key: key);
 
-  final String title;
-  final bool backArrow;
   final bool setting;
 
   @override
   Widget build(BuildContext context) {
-    Color borderColor = FluentTheme.of(context).borderInputColor.withOpacity(.2);
+    var theme = FluentTheme.of(context);
+
     return Consumer<NavigatorProvider>(
       builder: (_, provider, __) => Container(
         height: AppConsts.windowHeader,
-        decoration: BoxDecoration(color: FluentTheme.of(context).cardColor, border: Border(bottom: BorderSide(color: borderColor, width: .8))),
+        decoration: BoxDecoration(
+          color: theme.scaffoldBackgroundColor,
+        ),
         child: Row(
           children: [
-            HeaderButton(onPressed: () {
-              AppRouter().tryPop(context);
-            }, icon: m.Icons.arrow_back_rounded, showHide: provider.navigationCanBack),
-            Expanded(
+            HeaderButton(onPressed: () => AppRouter().tryPop(context), icon: m.Icons.arrow_back_rounded, showHide: provider.navigationCanBack),
+            AppConsts.smallHSpacer,
+            const Expanded(
                 child: DragToMoveArea(
                     child: SizedBox(
-                        height: 36,
+                        height: AppConsts.windowHeader,
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            title,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                            AppConsts.appTitle,
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         )))),
-            setting
-                ? IconButton(
-                icon: const Icon(m.Icons.settings, size: 16),
-                onPressed: () async {
-                })
-                : const SizedBox(),
-            const SizedBox(
-              width: 16,
-            ),
+            setting ? IconButton(icon: const Icon(m.Icons.settings, size: 18), onPressed: () async {}) : const SizedBox(),
+            AppConsts.defaultHSpacer,
             HeaderButton(onPressed: () {}, icon: m.Icons.search_rounded, showHide: false),
-            const SizedBox(
-              width: 8,
-            ),
+            AppConsts.smallHSpacer,
             IconButton(
-                icon: const Icon(m.Icons.minimize_rounded, size: 16),
+                icon: const Icon(m.Icons.minimize_rounded, size: 18),
                 onPressed: () async {
                   await windowManager.minimize();
                 }),
-            const SizedBox(
-              width: 8,
-            ),
+            AppConsts.smallHSpacer,
             IconButton(
-                icon: const Icon(m.Icons.check_box_outline_blank_rounded, size: 16),
+                icon: const Icon(m.Icons.check_box_outline_blank_rounded, size: 18),
                 onPressed: () async {
                   if (await windowManager.isMaximized()) {
                     await windowManager.unmaximize();
@@ -73,17 +61,13 @@ class WindowHeader extends StatelessWidget {
                     await windowManager.maximize();
                   }
                 }),
-            const SizedBox(
-              width: 8,
-            ),
+            AppConsts.smallHSpacer,
             IconButton(
-                icon: const Icon(m.Icons.close_rounded, size: 16),
+                icon: const Icon(m.Icons.close_rounded, size: 18),
                 onPressed: () {
                   exit(0);
                 }),
-            const SizedBox(
-              width: 8,
-            ),
+            AppConsts.smallHSpacer,
           ],
         ),
       ),
@@ -110,7 +94,7 @@ class HeaderButton extends StatelessWidget {
       curve: Curves.fastLinearToSlowEaseIn,
       child: ClipRRect(
         child: IconButton(
-            icon: Icon(icon, size: 16),
+            icon: Icon(icon, size: 18),
             onPressed: () {
               onPressed();
             }),

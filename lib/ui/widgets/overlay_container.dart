@@ -17,7 +17,7 @@ class OverlayContainer extends StatelessWidget {
     audioProvider.init();
     return Stack(
       children: [
-        WindowHeader(title: "YandexMusic", backArrow: true, setting: false, key: key),
+        WindowHeader(setting: false, key: key),
         const Positioned(
           bottom: 0,
           right: 0,

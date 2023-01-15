@@ -1,14 +1,39 @@
+import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:gibbon_music/api/models/LikesModels/M_LikeTracks.dart';
 import 'package:gibbon_music/api/models/M_Track.dart';
 import 'package:gibbon_music/domain/interfaces/iplaylist_loop_strategy.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:yam_api/yam_api.dart';
 import 'package:flutter/material.dart' as m;
 
+import '../api/mainYamFunction.dart';
+
 class AudioProvider extends ChangeNotifier {
   AudioProvider();
+
+  MLikeTracks mLikeTracks = MLikeTracks();
+  List<int> _likesTracks;
+
+
+  List<int> get likesTracks => _likesTracks;
+
+  set likesTracks(List<int> value) {
+    _likesTracks = value;
+    notifyListeners();
+  }
+
+  removeLike(int value) {
+    likesTracks.remove(value);
+    notifyListeners();
+  }
+
+  addLike(int value) {
+    _likesTracks.add(value);
+    notifyListeners();
+  }
 
   AudioPlayer _player;
   Playlist _playlist = Playlist();
@@ -29,6 +54,8 @@ class AudioProvider extends ChangeNotifier {
 
   Future<void> init() async {
     _player ??= AudioPlayer();
+    mLikeTracks = await getLikeTracks();
+    likesTracks = mLikeTracks.library.tracks.select((element, _) => int.parse(element.id)).toList();
   }
 
   void setPlaylist(List<MTrack> tracks) {
@@ -37,9 +64,9 @@ class AudioProvider extends ChangeNotifier {
 
   void playTrack(int index) async {
     _playlist.currentTrackIndex = index;
-    var trackUrl = await YamApi.downloadTrack(_playlist.currentTrack.id);
+    var trackUrl = await YamApi().downloadTrack(_playlist.currentTrack.id, QualityTrack.low);
     await _player.setSourceUrl(trackUrl);
-    await _player.resume();
+    resume();
     notifyListeners();
   }
 

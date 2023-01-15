@@ -76,17 +76,25 @@ class GTextButton extends StatelessWidget {
 }
 
 class GIconButton extends StatelessWidget {
-  const GIconButton({Key key, @required this.onPressed, @required this.icon, this.contrastBackground = false, this.size = 18, this.padding = 8})
+  const GIconButton(
+      {Key key,
+      @required this.onPressed,
+      @required this.icon,
+      this.contrastBackground = false,
+      this.size = 18,
+      this.padding = 8,
+      this.iconColor = Colors.transparent})
       : super(key: key);
 
   final VoidCallback onPressed;
   final IconData icon;
   final double size, padding;
   final bool contrastBackground;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
-    Color defaultStateColor, hoverStateColor, pressedStateColor, iconColor;
+    Color defaultStateColor, hoverStateColor, pressedStateColor, iColor;
 
     var theme = FluentTheme.of(context);
 
@@ -96,9 +104,14 @@ class GIconButton extends StatelessWidget {
       pressedStateColor = theme.checkedColor.withOpacity(.4);
     } else {
       defaultStateColor = theme.uncheckedColor.withOpacity(1);
-      hoverStateColor =  GThemeCreator.alphaBlend(theme.checkedColor.withOpacity(.1), theme.uncheckedColor);
+      hoverStateColor = GThemeCreator.alphaBlend(theme.checkedColor.withOpacity(.1), theme.uncheckedColor);
       pressedStateColor = GThemeCreator.alphaBlend(theme.accentColor.withOpacity(.1), theme.uncheckedColor);
-      iconColor = theme.checkedColor.withOpacity(1);
+    }
+
+    if(iconColor == Colors.transparent) {
+      iColor = !contrastBackground ? theme.uncheckedColor.withOpacity(1) : theme.checkedColor.withOpacity(1);
+    } else {
+      iColor = iconColor;
     }
 
     return HoverButton(
@@ -118,7 +131,7 @@ class GIconButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(size * 2),
             color: bgColor,
           ),
-          child: Icon(icon, size: size, color: iconColor),
+          child: Icon(icon, size: size, color: iColor),
         );
       },
     );

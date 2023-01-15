@@ -14,11 +14,12 @@ class ScaffoldScroller extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = ScrollController();
+    slivers.add(const SliverToBoxAdapter(child: SizedBox(height: AppConsts.playerHeight+16),));
     Widget content = CustomScrollView(
         controller: controller, physics: Platform.isAndroid ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(), slivers: slivers);
 
     return Padding(
-        padding: const EdgeInsets.only(top: AppConsts.windowHeader, left: 16, right: 16, bottom: 100),
+        padding: const EdgeInsets.only(top: AppConsts.windowHeader, left: 16, right: 16),
         child: ImprovedScrolling(
           scrollController: controller,
           enableCustomMouseWheelScrolling: true,

@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/api/models/PageModels/M_PageDashboard.dart';
@@ -24,7 +25,6 @@ class PageDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     AudioProvider audioProvider = context.read();
     DashboardProvider dashboardProvider = context.read();
     WidgetsBinding.instance.addPostFrameCallback((_) => context.read<NavigatorProvider>().showOverlay(context));
@@ -38,30 +38,38 @@ class PageDashboard extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done) {
               MPageDashboard mPageDashboard = dashboardProvider.mPageDashboard;
               return ScaffoldScroller(slivers: [
-                const SliverToBoxAdapter(
-                  child: Text("Вы недавно слушали", style: AppStyle.header1Style),
-                ),
-                PlayContextSection(
-                  playContexts: mPageDashboard.playContextList,
-                ),
-                const SliverToBoxAdapter(child: AppConsts.defaultVSpacer),
-                const SliverToBoxAdapter(
-                  child: Text("Чарт", style: AppStyle.header1Style),
-                ),
+                SliverToBoxAdapter(
+                    child: Column(
+                  children: [
+                    FadeInUp(child: const Text("Вы недавно слушали", style: AppStyle.header1Style)),
+                    AppConsts.defaultVSpacer,
+                    PlayContextSection(
+                      playContexts: mPageDashboard.playContextList,
+                    ),
+                    AppConsts.defaultVSpacer,
+                    FadeInUp(
+                      delay: const Duration(milliseconds: 250),
+                      child: const Text("Чарт", style: AppStyle.header1Style),
+                    ),
+                  ],
+                )),
                 const SliverToBoxAdapter(child: AppConsts.defaultVSpacer),
                 SliverGrid(
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, mainAxisExtent: 56, crossAxisSpacing: 8, mainAxisSpacing: 8),
                     delegate: SliverChildBuilderDelegate(
-                        (context, index) => TrackCard(
-                              track: mPageDashboard.chartList[index].track,
-                              onPressed: () {
-                                var tracks = mPageDashboard.chartList.select((element, index) => element.track).toList();
-                                audioProvider.setPlaylist(tracks);
-                                audioProvider.playTrack(index);
-                              },
+                        (context, index) => FadeInUp(
+                              delay: Duration(milliseconds: 250 + (50 * index)),
+                              child: TrackCard(
+                                track: mPageDashboard.chartList[index].track,
+                                onPressed: () {
+                                  var tracks = mPageDashboard.chartList.select((element, index) => element.track).toList();
+                                  audioProvider.setPlaylist(tracks);
+                                  audioProvider.playTrack(index);
+                                },
+                              ),
                             ),
-                        childCount: mPageDashboard.chartList.length))
+                        childCount: mPageDashboard.chartList.length)),
               ]);
             } else {
               return const LoadingRing();
@@ -78,9 +86,8 @@ class PlayContextSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-        child: SizedBox(
-      height: 250,
+    return SizedBox(
+      height: 186,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
@@ -103,10 +110,10 @@ class PlayContextSection extends StatelessWidget {
               break;
           }
 
-          return widget;
+          return FadeInRight(delay: Duration(milliseconds: 250 + (index * 50)), child: Padding(padding: const EdgeInsets.only(right: 16), child: widget));
         },
         itemCount: playContexts.length,
       ),
-    ));
+    );
   }
 }

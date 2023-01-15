@@ -1,3 +1,5 @@
+import 'package:gibbon_music/api/models/M_Cover.dart';
+import 'package:gibbon_music/api/models/M_Playlist.dart';
 import 'package:gibbon_music/api/models/M_Track.dart';
 
 import '../M_Album.dart';
@@ -105,7 +107,7 @@ class MPageArtist {
     if (json['playlists'] != null) {
       playlists = [];
       json['playlists'].forEach((v) {
-        playlists.add(Playlists.fromJson(v));
+        playlists.add(MPlaylist.fromJson(v));
       });
     }
   }
@@ -126,7 +128,7 @@ class MPageArtist {
   Stats stats;
   MCustomWave customWave;
   List<PlaylistIds> playlistIds;
-  List<Playlists> playlists;
+  List<MPlaylist> playlists;
 MPageArtist copyWith({  ArtistInfo artist,
   List<MAlbum> albums,
   List<MAlbum> alsoAlbums,
@@ -144,7 +146,7 @@ MPageArtist copyWith({  ArtistInfo artist,
   Stats stats,
   MCustomWave customWave,
   List<PlaylistIds> playlistIds,
-  List<Playlists> playlists,
+  List<MPlaylist> playlists,
 }) => MPageArtist(  artist: artist ?? this.artist,
   albums: albums ?? this.albums,
   alsoAlbums: alsoAlbums ?? this.alsoAlbums,
@@ -216,63 +218,6 @@ MPageArtist copyWith({  ArtistInfo artist,
     if (playlists != null) {
       map['playlists'] = playlists.map((v) => v.toJson()).toList();
     }
-    return map;
-  }
-
-}
-
-class Playlists {
-  Playlists({
-      this.uid, 
-      this.kind, 
-      this.title, 
-      this.description, 
-      this.descriptionFormatted, 
-      this.cover, 
-      this.trackCount,});
-
-  Playlists.fromJson(dynamic json) {
-    uid = json['uid'];
-    kind = json['kind'];
-    title = json['title'];
-    description = json['description'];
-    descriptionFormatted = json['descriptionFormatted'];
-    cover = json['cover'] != null ? Cover.fromJson(json['cover']) : null;
-    trackCount = json['trackCount'];
-  }
-  num uid;
-  num kind;
-  String title;
-  String description;
-  String descriptionFormatted;
-  Cover cover;
-  num trackCount;
-Playlists copyWith({  num uid,
-  num kind,
-  String title,
-  String description,
-  String descriptionFormatted,
-  Cover cover,
-  num trackCount,
-}) => Playlists(  uid: uid ?? this.uid,
-  kind: kind ?? this.kind,
-  title: title ?? this.title,
-  description: description ?? this.description,
-  descriptionFormatted: descriptionFormatted ?? this.descriptionFormatted,
-  cover: cover ?? this.cover,
-  trackCount: trackCount ?? this.trackCount,
-);
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['uid'] = uid;
-    map['kind'] = kind;
-    map['title'] = title;
-    map['description'] = description;
-    map['descriptionFormatted'] = descriptionFormatted;
-    if (cover != null) {
-      map['cover'] = cover.toJson();
-    }
-    map['trackCount'] = trackCount;
     return map;
   }
 
@@ -557,7 +502,7 @@ class ArtistInfo {
     name = json['name'];
     various = json['various'];
     composer = json['composer'];
-    cover = json['cover'] != null ? Cover.fromJson(json['cover']) : null;
+    cover = json['cover'] != null ? MCover.fromJson(json['cover']) : null;
     ogImage = json['ogImage'];
     genres = json['genres'] != null ? json['genres'].cast<String>() : [];
     counts = json['counts'] != null ? Counts.fromJson(json['counts']) : null;
@@ -575,7 +520,7 @@ class ArtistInfo {
   String name;
   bool various;
   bool composer;
-  Cover cover;
+  MCover cover;
   String ogImage;
   List<String> genres;
   Counts counts;
@@ -587,7 +532,7 @@ ArtistInfo copyWith({  String id,
   String name,
   bool various,
   bool composer,
-  Cover cover,
+  MCover cover,
   String ogImage,
   List<String> genres,
   Counts counts,
@@ -786,7 +731,7 @@ class SimilarArtists {
   SimilarArtists.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
-    cover = json['cover'] != null ? Cover.fromJson(json['cover']) : null;
+    cover = json['cover'] != null ? MCover.fromJson(json['cover']) : null;
     various = json['various'];
     composer = json['composer'];
     available = json['available'];
@@ -796,7 +741,7 @@ class SimilarArtists {
   }
   num id;
   String name;
-  Cover cover;
+  MCover cover;
   bool various;
   bool composer;
   bool available;
@@ -805,7 +750,7 @@ class SimilarArtists {
   bool ticketsAvailable;
 SimilarArtists copyWith({  num id,
   String name,
-  Cover cover,
+  MCover cover,
   bool various,
   bool composer,
   bool available,
@@ -893,7 +838,7 @@ class Artist {
     name = json['name'];
     various = json['various'];
     composer = json['composer'];
-    cover = json['cover'] != null ? Cover.fromJson(json['cover']) : null;
+    cover = json['cover'] != null ? MCover.fromJson(json['cover']) : null;
     ogImage = json['ogImage'];
     genres = json['genres'] != null ? json['genres'].cast<String>() : [];
     counts = json['counts'] != null ? Counts.fromJson(json['counts']) : null;
@@ -917,7 +862,7 @@ class Artist {
   String name;
   bool various;
   bool composer;
-  Cover cover;
+  MCover cover;
   String ogImage;
   List<String> genres;
   Counts counts;
@@ -935,7 +880,7 @@ ArtistInfo copyWith({  String id,
   String name,
   bool various,
   bool composer,
-  Cover cover,
+  MCover cover,
   String ogImage,
   List<String> genres,
   Counts counts,

@@ -15,23 +15,17 @@ import '../widgets/ImageThumbnail.dart';
 
 class AlbumCard extends StatelessWidget {
   const AlbumCard({Key key, this.album}) : super(key: key);
-  
+
   final MAlbum album;
 
   @override
   Widget build(BuildContext context) {
-    return GCardView(
+    return CardContent(
+      uri: album.ogImage,
+      title: album.title,
+      subtitle: album.artists.first.name,
       onPressed: () {},
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          ImageThumbnail(url: album.coverUri.linkImage(200), width: 150, height: 150),
-          AppConsts.smallVSpacer,
-          Text(album.title, style: AppStyle.trackHeaderStyle),
-          ArtistsListWidgets(mInnerArtistList: album.artists)
-        ],
-      ),
+      upTitle: 'Album',
     );
   }
 }
@@ -43,20 +37,14 @@ class ArtistCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GCardView(
+    return CardContent(
+      uri: artist.ogImage,
+      title: artist.name,
+      subtitle: artist.genres.first,
       onPressed: () {
         AppRouter().gotoArtist(context, int.parse(artist.id));
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          ImageThumbnail(url: artist.ogImage.linkImage(200), width: 150, height: 150),
-          AppConsts.smallVSpacer,
-          Text(artist.name, style: AppStyle.trackHeaderStyle),
-          Text(artist.genres.first, style: AppStyle.subTrackHeaderStyle(context)),
-        ],
-      ),
+      upTitle: 'Artist',
     );
   }
 }
@@ -68,17 +56,67 @@ class PlaylistCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GCardView(
+    return CardContent(
+      uri: playlist.cover.uri,
+      title: playlist.title,
+      subtitle: playlist.owner == null ? "${playlist.trackCount} Треков" : playlist.owner.name,
       onPressed: () {},
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          ImageThumbnail(url: playlist.cover.uri.linkImage(200), width: 150, height: 150),
-          AppConsts.smallVSpacer,
-          Text(playlist.title, style: AppStyle.trackHeaderStyle),
-          Text(playlist.owner.name, style: AppStyle.subTrackHeaderStyle(context)),
-        ],
+      upTitle: 'Playlist',
+    );
+  }
+}
+
+class CardContent extends StatelessWidget {
+  const CardContent({Key key, @required this.uri, @required this.title, @required this.subtitle, @required this.onPressed, @required this.upTitle})
+      : super(key: key);
+
+  final String uri, title, subtitle, upTitle;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 186,
+      width: 186,
+      child: HoverButton(
+        onPressed: () => onPressed(),
+        builder: (p0, state) => ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Stack(
+            children: [
+              AnimatedScale(
+                scale: state.isPressing
+                    ? 0.9
+                    : state.isHovering
+                        ? 0.98
+                        : 0.95,
+                duration: AppConsts.defaultAnimation,
+                curve: AppConsts.defaultCurve,
+                child: ImageThumbnail(url: uri.linkImage(200), width: 186, height: 186, radius: 16),
+              ),
+              Container(
+                width: 186,
+                height: 186,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                  FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
+                  FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0),
+                ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(upTitle.toUpperCase(), style: AppStyle.upCardHeaderStyle(context)),
+                      Text(title, style: AppStyle.cardHeaderStyle, maxLines: 1),
+                      Text(subtitle, style: AppStyle.subTrackHeaderStyle(context)),
+                    ],
+                  )),
+            ],
+          ),
+        ),
       ),
     );
   }
