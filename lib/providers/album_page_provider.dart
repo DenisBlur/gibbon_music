@@ -1,8 +1,8 @@
 import 'package:gibbon_music/api/mainYamFunction.dart';
 import 'package:gibbon_music/api/models/PageModels/M_PageAlbum.dart';
 
-class AlbumProvider {
-  AlbumProvider();
+class PageAlbumProvider {
+  PageAlbumProvider();
 
   MPageAlbum _mPageAlbum;
 

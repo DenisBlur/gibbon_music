@@ -44,7 +44,7 @@ class TrackCard extends StatelessWidget {
     }
 
     return GCardView(
-      onPressed: () => onPressed(),
+      onPressed: () {onPressed(); YamApi().getTrack(track.id);},
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,

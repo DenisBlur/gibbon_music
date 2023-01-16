@@ -1,12 +1,15 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:gibbon_music/api/mainYamFunction.dart';
+import 'package:gibbon_music/api/models/M_Track.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/extensions/string.dart';
+import 'package:gibbon_music/ui/widgets/content_loader.dart';
+import 'package:yam_api/yam_api.dart';
 
 import '../../constants/ui_consts.dart';
 import '../controls/buttons.dart';
 import '../widgets/scroller_scaffold.dart';
-
 
 /// Эта стриничка только для тестирования виджетов!
 
@@ -15,42 +18,35 @@ class PageTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldScroller(
-      slivers: [
-        SliverToBoxAdapter(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              AppConsts.defaultVSpacer,
-              Text("Gibbon system design".toUpperCase(), style: AppStyle.header1Style),
-              GTextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },title: "GoBack"),
-              Text("Input GButtons", style: AppStyle.subHeader1Style(context),),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GIconButton(onPressed: () {}, icon: m.Icons.play_arrow_rounded, size: 24, contrastBackground: true),
-                  const SizedBox(width: 16,),
-                  GIconButton(onPressed: () {}, icon: m.Icons.play_arrow_rounded, size: 24, contrastBackground: false),
-                  const SizedBox(width: 16,),
-                  GTextButton(onPressed: () {}, title: "Text button"),
-                  const SizedBox(width: 16,),
-                  GButton(onPressed: () {}, title: "Default button")
-                ],
-              ),
-              const Text("Extensions", style: AppStyle.header1Style),
-              Text("avatars.yandex.net/get-music-content/7548376/aef04514.a.23754447-1/%x%".linkImage(200)),
-              const SizedBox(
-                height: 5000,
+    print(YamApi.device);
+    return ContentLoader(
+      future: syncDevices(),
+      builder: (context, snapshot) {
+        if (snapshot.data != null) {
+          MTrack track = snapshot.data[0];
+          List<MTrack> listTracks = snapshot.data[1];
+          return ScaffoldScroller(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(track.title, style: AppStyle.trackHeaderStyle),
+                    Text(listTracks.length.toString(), style: AppStyle.trackHeaderStyle),
+                    const SizedBox(
+                      height: 5000,
+                    ),
+                  ],
+                ),
               ),
             ],
-          ),
-        ),
-      ],
+            padding: EdgeInsets.zero,
+          );
+        } else {
+          return const SizedBox();
+        }
+      },
     );
   }
 }

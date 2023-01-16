@@ -3,8 +3,8 @@ import 'package:gibbon_music/api/mainYamFunction.dart';
 import 'package:gibbon_music/api/models/PageModels/M_PageArtist.dart';
 import 'package:gibbon_music/api/models/PageModels/M_PageDashboard.dart';
 
-class ArtistProvider{
-  ArtistProvider();
+class PageArtistProvider{
+  PageArtistProvider();
 
   MPageArtist _mPageArtist;
 
