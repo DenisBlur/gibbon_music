@@ -1,18 +1,22 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'dart:async';
+
+import 'package:async/async.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:flutter/services.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:gibbon_music/api/models/M_Track.dart';
 import 'package:gibbon_music/domain/interfaces/iplaylist_loop_strategy.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
+import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:yam_api/yam_api.dart';
 
 class AudioProvider extends ChangeNotifier {
-  AudioProvider();
+  AudioProvider(this._playlistProvider);
+
+  final PlayListProvider _playlistProvider;
 
   AudioPlayer _player;
-  Playlist _playlist = Playlist();
-
-  Playlist get playlist => _playlist;
 
   Stream<PlayerState> get onPlayerStateChanged => _player.onPlayerStateChanged;
 
@@ -20,72 +24,50 @@ class AudioProvider extends ChangeNotifier {
 
   Stream<Duration> get onDurationChanged => _player.onDurationChanged;
 
+  CancelableOperation<String> _getTrackURLAsyncOperation;
+
   PlayerState get playerState => _player.state;
 
-  set playlist(Playlist value) {
-    _playlist = value;
-  }
+  MTrack get currentTrack => _playlistProvider.currentTrack;
 
-  init() {
+  Future<void> init() async {
     _player ??= AudioPlayer();
-  }
-
-  void setPlaylist(List<MTrack> tracks) {
-    _playlist.tracks = tracks;
-  }
-
-  Future<void> playTrack(int index) async {
-    _playlist.currentTrackIndex = index;
-    await YamApi().downloadTrack(_playlist.currentTrack.id, QualityTrack.low).then((trackUrl) async {
-      await _player.setSourceUrl(trackUrl);
-      resume();
+    //
+    // _playlistProvider.onNextTrackPlay.subscribe((args) => _changeTrack());
+    _playlistProvider.onCurrentTrackUpdated.subscribe((args) {
+      preloadTrack(_playlistProvider.currentTrack);
+      notifyListeners();
     });
-    notifyListeners();
+
+    _player.onPlayerStateChanged.listen((event) {
+      if (event == PlayerState.completed) {
+        _playlistProvider.end();
+        notifyListeners();
+      }
+    });
   }
 
-  @override
-  Future<void> dispose() async {
-    super.dispose();
-    _player?.dispose();
-    _player = null;
+  // void _getTrackAsyncOperation(MTrack track) {
+  //   _getTrackURLAsyncOperation?.cancel();
+  //   _getTrackURLAsyncOperation = CancelableOperation.fromFuture(YamApi().downloadTrack(track.id, QualityTrack.low));
+  //   _getTrackURLAsyncOperation.then((trackURL) => _playTrack(trackURL));
+  // }
+
+  void preloadTrack(MTrack track) {
+    _player.pause();
+    setSeek(0);
+
+    _getTrackURLAsyncOperation?.cancel();
+    _getTrackURLAsyncOperation = CancelableOperation.fromFuture(YamApi().downloadTrack(track.id, QualityTrack.low));
+    _getTrackURLAsyncOperation.then((trackURL) => _playTrack(trackURL));
   }
 
-  void addTrackAfterCurrent(MTrack track) {
-    _playlist.addTrackAfterCurrent(track);
-    notifyListeners();
+  void setOneTrack(MTrack track) {
+    _playlistProvider.setPlaylist([track]);
   }
 
-  void addTrackToEnd(MTrack track) {
-    _playlist.addTrackToEnd(track);
-    notifyListeners();
-  }
-
-  int afterTrackEnd() {
-    _playlist.afterTrackEnd();
-    notifyListeners();
-  }
-
-  bool canNext() => _playlist.canNext();
-
-  bool canPrevious() => _playlist.canPrevious();
-
-  set loopStrategy(IPlaylistLoopStrategy value) {
-    _playlist.loopStrategy = value;
-    notifyListeners();
-  }
-
-  void reorder(int oldIndex, int newIndex) {
-    _playlist.reorder(oldIndex, newIndex);
-    notifyListeners();
-  }
-
-  void shuffle(bool value) {
-    _playlist.shuffle(value);
-    notifyListeners();
-  }
-
-  void setSeek(double ms) async {
-    await _player.seek(Duration(milliseconds: ms.toInt()));
+  void playTrack() {
+    preloadTrack(_playlistProvider.currentTrack);
     notifyListeners();
   }
 
@@ -99,22 +81,43 @@ class AudioProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setSeek(double ms) async {
+    await _player.seek(Duration(milliseconds: ms.toInt()));
+    notifyListeners();
+  }
+
+  void _playTrack(String url) async {
+    _player.setSourceUrl(url);
+    resume();
+    notifyListeners();
+  }
+
+  @override
+  Future<void> dispose() async {
+    _playlistProvider.onNextTrackPlay.unsubscribeAll();
+    _playlistProvider.onCurrentTrackUpdated.unsubscribeAll();
+    super.dispose();
+    _player?.dispose();
+    _player = null;
+  }
+
   ///Удалить если чего
   IconData icon() {
     switch (playerState) {
-      case PlayerState.stopped:
-        return m.Icons.stop_rounded;
-        break;
+      // case PlayerState.stopped:
+      //   return m.Icons.stop_rounded;
+      //   break;
       case PlayerState.playing:
         return m.Icons.pause;
         break;
       case PlayerState.paused:
         return m.Icons.play_arrow;
         break;
-      case PlayerState.completed:
+      // case PlayerState.completed:
+      //   return m.Icons.not_interested;
+      //   break;
+      default:
         return m.Icons.not_interested;
-        break;
     }
-    return m.Icons.not_interested;
   }
 }

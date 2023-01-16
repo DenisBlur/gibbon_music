@@ -25,7 +25,8 @@ class PagePlaylist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AudioProvider audioProvider = context.read();
-    PlaylistProvider playlistProvider = context.read();
+    PlayListProvider playListProvider = context.read();
+    PagePlaylistProvider playlistProvider = context.read();
     playlistProvider.dispose();
 
     return ScaffoldPage(
@@ -51,8 +52,9 @@ class PagePlaylist extends StatelessWidget {
                               child: TrackCard(
                                 track: mPagePlaylist.tracks[index].track,
                                 onPressed: () {
-                                  audioProvider.setPlaylist(mPagePlaylist.tracks.select((e, _) => e.track,).toList());
-                                  audioProvider.playTrack(index);
+                                  playListProvider.setPlaylist(mPagePlaylist.tracks.select((e, _) => e.track,).toList());
+                                  playListProvider.setCurrentTrack(index);
+                                  audioProvider.resume();
                                 },
                               ),
                             ),

@@ -1,26 +1,14 @@
 abstract class IPlaylistLoopStrategy {
-  int _currentIndex = 0;
-  int _size = 0;
 
-  int get currentIndex => _currentIndex;
+  int currentIndex = 0;
 
-  set currentIndex(int value) {
-    _currentIndex = value;
-  }
+  int size = 0;
 
-  int get size => _size;
+  bool endTrack();
 
-  set size(int value) {
-    _size = value;
-  }
+  bool next();
 
-  IPlaylistLoopStrategy(this._currentIndex, this._size);
-
-  int endTrack();
-
-  int next();
-
-  int previous();
+  bool previous();
 
   bool canNext();
 

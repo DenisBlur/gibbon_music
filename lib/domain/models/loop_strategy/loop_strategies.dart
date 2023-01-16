@@ -1,80 +1,43 @@
 import 'package:gibbon_music/domain/interfaces/iplaylist_loop_strategy.dart';
 
-class OneTrackLoopStrategy implements IPlaylistLoopStrategy {
-  @override
-  int currentIndex;
-
-  @override
-  int size;
-
-  @override
-  int endTrack() {
-    // TODO: implement endTrack
-    throw UnimplementedError();
-  }
-
-  @override
-  int next() {
-    // TODO: implement next
-    throw UnimplementedError();
-  }
-
-  @override
-  int previous() {
-    // TODO: implement previous
-    throw UnimplementedError();
-  }
-
-  @override
-  bool canNext() {
-    // TODO: implement canNext
-    throw UnimplementedError();
-  }
-
-  @override
-  bool canPrevious() {
-    // TODO: implement canPrevious
-    throw UnimplementedError();
-  }
-}
+// class OneTrackLoopStrategy implements IPlaylistLoopStrategy {
+//
+// }
 
 class PlaylistLoopStrategy extends IPlaylistLoopStrategy {
-  @override
-  int currentIndex;
-
-  @override
-  int size;
-
-  PlaylistLoopStrategy(int currentIndex, int size) : super(currentIndex, size);
+  PlaylistLoopStrategy();
 
   bool _checkRange(int index) {
-    return index >= -1 && index < size;
+    return index >= 0 && index < size;
   }
 
   @override
-  int endTrack() {
+  bool endTrack() {
     return next();
   }
 
   @override
-  int next() {
-    if (canNext()) {
-      currentIndex++;
-    }
-    currentIndex;
+  bool next() {
+    if (canNext() == false) return false;
+
+    currentIndex++;
+    currentIndex = currentIndex % size;
+
+    return true;
   }
 
   @override
-  int previous() {
-    if (canNext()) {
-      currentIndex--;
-    }
-    currentIndex;
+  bool previous() {
+    if (canPrevious() == false) return false;
+
+    currentIndex--;
+
+    return true;
   }
 
   @override
   bool canNext() {
-    return _checkRange(currentIndex + 1);
+    return size != 0;
   }
 
   @override
@@ -83,40 +46,6 @@ class PlaylistLoopStrategy extends IPlaylistLoopStrategy {
   }
 }
 
-class NoLoopStrategy implements IPlaylistLoopStrategy {
-  @override
-  int currentIndex;
-
-  @override
-  int size;
-
-  @override
-  int endTrack() {
-    // TODO: implement endTrack
-    throw UnimplementedError();
-  }
-
-  @override
-  int next() {
-    // TODO: implement next
-    throw UnimplementedError();
-  }
-
-  @override
-  int previous() {
-    // TODO: implement previous
-    throw UnimplementedError();
-  }
-
-  @override
-  bool canNext() {
-    // TODO: implement canNext
-    throw UnimplementedError();
-  }
-
-  @override
-  bool canPrevious() {
-    // TODO: implement canPrevious
-    throw UnimplementedError();
-  }
-}
+// class NoLoopStrategy implements IPlaylistLoopStrategy {
+//
+// }

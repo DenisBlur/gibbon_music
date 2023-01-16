@@ -23,12 +23,13 @@ List<SingleChildWidget> _providers = [
   Provider(create: (_) => DashboardProvider()),
   Provider(create: (_) => ArtistProvider()),
   Provider(create: (_) => AlbumProvider()),
-  Provider(create: (_) => PlaylistProvider()),
+  Provider(create: (_) => PagePlaylistProvider()),
+  ChangeNotifierProvider(create: (_) => PlayListProvider()),
   ChangeNotifierProvider(
     create: (_) => UxProvider(),
   ),
   ChangeNotifierProvider(
-    create: (_) => AudioProvider(),
+    create: (context) => AudioProvider(context.read()),
   ),
   ChangeNotifierProvider(
     create: (context) => NavigatorProvider(),

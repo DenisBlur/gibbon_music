@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/api/models/M_Track.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
+import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/ui/widgets/scroller_scaffold.dart';
 import 'package:gibbon_music/ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
@@ -18,8 +19,9 @@ class PlaylistWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     UxProvider uxProvider = context.watch();
     AudioProvider audioProvider = context.watch();
+    PlayListProvider playListProvider = context.watch();
 
-    List<MTrack> tracks = audioProvider.playlist.tracks;
+    List<MTrack> tracks = playListProvider.queue;
 
     double width = uxProvider.isOpenDrawer ? 450 : 60;
 
@@ -45,7 +47,7 @@ class PlaylistWidget extends StatelessWidget {
               child: ListView.builder(
                 itemBuilder: (context, index) => Padding(padding: EdgeInsets.only(bottom: 8), child: TrackCard(
                   track: tracks[index],
-                  onPressed: () {},
+                  onPressed: () => playListProvider.setCurrentTrack(index),
                 ),),
                 itemCount: tracks.length,
               ),

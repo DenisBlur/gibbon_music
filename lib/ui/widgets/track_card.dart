@@ -9,6 +9,7 @@ import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
+import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/ui/other/music_visualizer.dart';
@@ -31,13 +32,15 @@ class TrackCard extends StatelessWidget {
   Widget build(BuildContext context) {
     YandexProvider yandexProvider = context.watch();
     AudioProvider audioProvider = context.watch();
+    PlayListProvider playListProvider = context.watch();
+
     bool isPlay = false;
     bool isLike = false;
 
     isLike = yandexProvider.checkLike(track.id);
 
-    if (audioProvider.playlist.tracks.isNotEmpty) {
-      isPlay = audioProvider.playlist.currentTrack.id == track.id && audioProvider.playerState == PlayerState.playing;
+    if (playListProvider.queue.isNotEmpty) {
+      isPlay = audioProvider.currentTrack.id == track.id && audioProvider.playerState == PlayerState.playing;
     }
 
     return GCardView(

@@ -4,6 +4,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
+import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/ui/widgets/player/player_controls.dart';
 import 'package:provider/provider.dart';
 
@@ -14,8 +15,9 @@ class PlayerMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PlayListProvider playListProvider = context.watch();
     return Consumer<AudioProvider>(builder: (_, value, __) {
-      if (value.playlist.tracks.isNotEmpty) {
+      if (value.currentTrack != null) {
         return FadeInUp(
           child: ClipRRect(
             child: BackdropFilter(

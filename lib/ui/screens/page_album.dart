@@ -6,6 +6,7 @@ import 'package:gibbon_music/api/models/PageModels/M_PageAlbum.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/providers/album_provider.dart';
 import 'package:gibbon_music/providers/artist_provider.dart';
+import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/ui/widgets/content_loader.dart';
 import 'package:gibbon_music/ui/widgets/loading_ring.dart';
 import 'package:provider/provider.dart';
@@ -24,8 +25,8 @@ class PageAlbum extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     AudioProvider audioProvider = context.read();
+    PlayListProvider playListProvider = context.read();
     AlbumProvider albumProvider = context.read();
     albumProvider.dispose();
 
@@ -36,29 +37,36 @@ class PageAlbum extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               MPageAlbum mPageAlbum = albumProvider.mPageAlbum;
-              return ScaffoldScroller(scrollHeaderModel: ScrollHeaderContent(pageModel: mPageAlbum), slivers: [
-                SliverToBoxAdapter(
-                    child: FadeInUp(
-                      delay: const Duration(milliseconds: 150),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [AppConsts.defaultVSpacer, Text("Популярные треки", style: AppStyle.header1Style), AppConsts.defaultVSpacer],
-                      ),
-                    )),
-                SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                            (context, index) => Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: TrackCard(
-                            track: mPageAlbum.volumes[index],
-                            onPressed: () {
-                              audioProvider.setPlaylist(mPageAlbum.volumes);
-                              audioProvider.playTrack(index);
-                            },
-                          ),
-                        ),
-                        childCount: mPageAlbum.volumes.length)),
-              ], padding: AppConsts.pageInsets,);
+              return ScaffoldScroller(
+                scrollHeaderModel: ScrollHeaderContent(pageModel: mPageAlbum),
+                slivers: [
+                  SliverToBoxAdapter(
+                      child: FadeInUp(
+                    delay: const Duration(milliseconds: 150),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [AppConsts.defaultVSpacer, Text("Популярные треки", style: AppStyle.header1Style), AppConsts.defaultVSpacer],
+                    ),
+                  )),
+                  SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                          (context, index) => Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: TrackCard(
+                                  track: mPageAlbum.volumes[index],
+                                  onPressed: () {
+                                    // playListProvider.
+                                    playListProvider.setPlaylist(mPageAlbum.volumes);
+                                    // playListProvider.se
+                                    playListProvider.setCurrentTrack(index);
+                                    audioProvider.resume();
+                                  },
+                                ),
+                              ),
+                          childCount: mPageAlbum.volumes.length)),
+                ],
+                padding: AppConsts.pageInsets,
+              );
             } else {
               return const LoadingRing();
             }

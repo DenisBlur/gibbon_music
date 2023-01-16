@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/extensions/duration.dart';
+import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/ui/controls/buttons.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:provider/provider.dart';
@@ -16,7 +17,8 @@ class PlayerMainControl extends StatelessWidget {
   Widget build(BuildContext context) {
     Size pageSize = MediaQuery.of(context).size;
     AudioProvider provider = context.watch();
-    MTrack track = provider.playlist.currentTrack;
+    PlayListProvider playList = context.watch();
+    MTrack track = playList.currentTrack;
 
     double position = 0.0;
 
@@ -32,7 +34,7 @@ class PlayerMainControl extends StatelessWidget {
             children: [
               GIconButton(onPressed: () {}, icon: m.Icons.loop_rounded, size: 24),
               AppConsts.defaultHSpacer,
-              GIconButton(onPressed: () {}, icon: m.Icons.skip_previous_rounded, size: 24),
+              GIconButton(onPressed: () { playList.previous(); }, icon: m.Icons.skip_previous_rounded, size: 24),
               AppConsts.defaultHSpacer,
               GIconButton(
                   onPressed: () {
@@ -46,9 +48,9 @@ class PlayerMainControl extends StatelessWidget {
                   contrastBackground: true,
                   size: 26),
               AppConsts.defaultHSpacer,
-              GIconButton(onPressed: () => provider.canNext(), icon: m.Icons.skip_next_rounded, size: 24),
+              GIconButton(onPressed: () { playList.next(); }, icon: m.Icons.skip_next_rounded, size: 24),
               AppConsts.defaultHSpacer,
-              GIconButton(onPressed: () {}, icon: m.Icons.shuffle, size: 24)
+              GIconButton(onPressed: () => playList.toggleShuffle(), icon: m.Icons.shuffle, size: 24)
             ],
           ),
           AppConsts.smallVSpacer,
@@ -65,19 +67,21 @@ class PlayerMainControl extends StatelessWidget {
                       children: [
                         Text(data.toHms()),
                         AppConsts.defaultHSpacer,
-                        Expanded(child: Slider(
-                          label: data.toHms(),
-                          min: 0,
-                          style: SliderThemeData(
-                            labelBackgroundColor: FluentTheme.of(context).accentColor,
-                            trackHeight: ButtonState.all(2),
+                        Expanded(
+                          child: Slider(
+                            label: data.toHms(),
+                            min: 0,
+                            style: SliderThemeData(
+                              labelBackgroundColor: FluentTheme.of(context).accentColor,
+                              trackHeight: ButtonState.all(2),
+                            ),
+                            max: track.durationMs.toDouble(),
+                            value: position,
+                            onChanged: (value) {
+                              provider.setSeek(value);
+                            },
                           ),
-                          max: track.durationMs.toDouble(),
-                          value: position,
-                          onChanged: (value) {
-                            provider.setSeek(value);
-                          },
-                        ),),
+                        ),
                         AppConsts.defaultHSpacer,
                         Text(Duration(milliseconds: track.durationMs).toHms()),
                       ],
