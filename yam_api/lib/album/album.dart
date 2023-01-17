@@ -53,12 +53,12 @@ class Album {
         artists?.add(Artist.fromJson(v));
       });
     }
-    if (json['labels'] != null) {
-      labels = [];
-      json['labels'].forEach((v) {
-        labels?.add(Labels.fromJson(v));
-      });
-    }
+    // if (json['labels'] != null) {
+    //   labels = [];
+    //   json['labels'].forEach((v) {
+    //     labels?.add(Labels.fromJson(v));
+    //   });
+    // }
     available = json['available'];
     availableForPremiumUsers = json['availableForPremiumUsers'];
     availableForOptions = json['availableForOptions'] != null ? json['availableForOptions'].cast<String>() : [];
@@ -114,7 +114,7 @@ Album copyWith({  num? id,
   bool? recent,
   bool? veryImportant,
   List<Artist>? artists,
-  List<Labels>? labels,
+  // List<Labels>? labels,
   bool? available,
   bool? availableForPremiumUsers,
   List<String>? availableForOptions,
@@ -139,7 +139,7 @@ Album copyWith({  num? id,
   recent: recent ?? this.recent,
   veryImportant: veryImportant ?? this.veryImportant,
   artists: artists ?? this.artists,
-  labels: labels ?? this.labels,
+  // labels: labels ?? this.labels,
   available: available ?? this.available,
   availableForPremiumUsers: availableForPremiumUsers ?? this.availableForPremiumUsers,
   availableForOptions: availableForOptions ?? this.availableForOptions,
@@ -169,9 +169,9 @@ Album copyWith({  num? id,
     if (artists != null) {
       map['artists'] = artists?.map((v) => v.toJson()).toList();
     }
-    if (labels != null) {
-      map['labels'] = labels?.map((v) => v.toJson()).toList();
-    }
+    // if (labels != null) {
+    //   map['labels'] = labels?.map((v) => v.toJson()).toList();
+    // }
     map['available'] = available;
     map['availableForPremiumUsers'] = availableForPremiumUsers;
     map['availableForOptions'] = availableForOptions;

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,8 +30,8 @@ class RequestClient {
     return _checkResponse(response);
   }
 
-  Future<String> requestPost({required String url, Object body = ""}) async {
-    var response = await http.post(Uri.parse("$baseUrl$url"), headers: headers, body: body);
+  Future<String> requestPost({required String url, required Map<String, dynamic> body}) async {
+    var response = await http.post(Uri.parse("$baseUrl$url"), headers: headers, body: jsonEncode(body));
     return _checkResponse(response);
   }
 }

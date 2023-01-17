@@ -19,7 +19,7 @@ class BriefInfo {
     this.ticketsAvailable,});
 
   BriefInfo.fromJson(dynamic json) {
-    id = json['id'];
+    id = json['id'].toString();
     name = json['name'];
     various = json['various'];
     composer = json['composer'];
@@ -37,7 +37,7 @@ class BriefInfo {
     }
     ticketsAvailable = json['ticketsAvailable'];
   }
-  int? id;
+  String? id;
   String? name;
   bool? various;
   bool? composer;
@@ -49,7 +49,7 @@ class BriefInfo {
   Rating? ratings;
   List<Link>? links;
   bool? ticketsAvailable;
-  BriefInfo copyWith({  int? id,
+  BriefInfo copyWith({  String? id,
     String? name,
     bool? various,
     bool? composer,

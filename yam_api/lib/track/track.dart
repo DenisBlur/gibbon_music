@@ -32,7 +32,7 @@ class Track {
     this.trackSharingFlag,});
 
   Track.fromJson(dynamic json) {
-    id = json['id'];
+    id = json['id'].toString();
     realId = json['realId'];
     title = json['title'];
     trackSource = json['trackSource'];

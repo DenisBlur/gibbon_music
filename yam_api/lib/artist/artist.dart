@@ -12,7 +12,7 @@ import 'track_in_chart.dart';
 
 class Artist {
   Artist({
-      this.artist, 
+      this.briefInfo,
       this.albums, 
       this.alsoAlbums, 
       this.lastReleaseIds, 
@@ -33,7 +33,7 @@ class Artist {
       this.playlists,});
 
   Artist.fromJson(dynamic json) {
-    artist = json['artist'] != null ? Artist.fromJson(json['artist']) : null;
+    briefInfo = json['artist'] != null ? BriefInfo.fromJson(json['artist']) : null;
     if (json['albums'] != null) {
       albums = [];
       json['albums'].forEach((v) {
@@ -111,7 +111,7 @@ class Artist {
       });
     }
   }
-  Artist? artist;
+  BriefInfo? briefInfo;
   List<Album>? albums;
   List<Album>? alsoAlbums;
   List<dynamic>? lastReleaseIds;
@@ -149,7 +149,7 @@ Artist copyWith({  Artist? artist,
   CustomWave? customWave,
   List<PlaylistIds>? playlistIds,
   List<Playlist>? playlists,
-}) => Artist(  artist: artist ?? this.artist,
+}) => Artist(  briefInfo: briefInfo ?? this.briefInfo,
   albums: albums ?? this.albums,
   alsoAlbums: alsoAlbums ?? this.alsoAlbums,
   lastReleaseIds: lastReleaseIds ?? this.lastReleaseIds,
@@ -171,8 +171,8 @@ Artist copyWith({  Artist? artist,
 );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    if (artist != null) {
-      map['artist'] = artist?.toJson();
+    if (briefInfo != null) {
+      map['artist'] = briefInfo?.toJson();
     }
     if (albums != null) {
       map['albums'] = albums?.map((v) => v.toJson()).toList();
