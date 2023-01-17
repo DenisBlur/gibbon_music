@@ -1,15 +1,16 @@
 import 'dart:async';
 
 import 'package:async/async.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:flutter/services.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:gibbon_music/api/models/M_Track.dart';
 import 'package:gibbon_music/domain/interfaces/iplaylist_loop_strategy.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
+import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
-import 'package:yam_api/yam_api.dart';
+import 'package:yam_api/enums.dart';
+import 'package:yam_api/track/track.dart';
 
 class AudioProvider extends ChangeNotifier {
   AudioProvider(this._playlistProvider);
@@ -28,7 +29,7 @@ class AudioProvider extends ChangeNotifier {
 
   PlayerState get playerState => _player.state;
 
-  MTrack get currentTrack => _playlistProvider.currentTrack;
+  Track get currentTrack => _playlistProvider.currentTrack;
 
   Future<void> init() async {
     _player ??= AudioPlayer();
@@ -53,16 +54,16 @@ class AudioProvider extends ChangeNotifier {
   //   _getTrackURLAsyncOperation.then((trackURL) => _playTrack(trackURL));
   // }
 
-  void preloadTrack(MTrack track) {
+  void preloadTrack(Track track) {
     _player.pause();
     setSeek(0);
 
     _getTrackURLAsyncOperation?.cancel();
-    _getTrackURLAsyncOperation = CancelableOperation.fromFuture(YamApi().downloadTrack(track.id, QualityTrack.low));
+    _getTrackURLAsyncOperation = CancelableOperation.fromFuture(client.downloadTrack(trackId: track.id, quality: QualityTrack.low));
     _getTrackURLAsyncOperation.then((trackURL) => _playTrack(trackURL));
   }
 
-  void setOneTrack(MTrack track) {
+  void setOneTrack(Track track) {
     _playlistProvider.setPlaylist([track]);
   }
 

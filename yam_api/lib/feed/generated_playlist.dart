@@ -11,16 +11,16 @@ class GeneratedPlaylists {
     type = json['type'];
     ready = json['ready'];
     notify = json['notify'];
-    data = json['data'] != null ? Playlist.fromJson(json['data']) : null;
+    data = json['data'] != null ? MPlaylist.fromJson(json['data']) : null;
   }
   String? type;
   bool? ready;
   bool? notify;
-  Playlist? data;
+  MPlaylist? data;
   GeneratedPlaylists copyWith({  String? type,
     bool? ready,
     bool? notify,
-    Playlist? data,
+    MPlaylist? data,
   }) => GeneratedPlaylists(  type: type ?? this.type,
     ready: ready ?? this.ready,
     notify: notify ?? this.notify,

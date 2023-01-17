@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
+import 'package:xml/xml.dart';
 import 'package:yam_api/album/album.dart';
 import 'package:yam_api/artist/artist.dart';
 import 'package:yam_api/artist/artist_albums.dart';
@@ -27,6 +29,7 @@ import 'package:yam_api/supplement/supplement.dart';
 
 import 'account/status.dart';
 import 'account/user_settings.dart';
+import 'download_info/download_info.dart';
 import 'landing/chart.dart';
 import 'models/error_model.dart';
 import 'permission_alerts.dart';
@@ -229,6 +232,11 @@ class Client {
     return ListStations.fromJson(jsonDecode(result));
   }
 
+  Future<MPlaylist> playlist(String uid, String playlistKind) async {
+    var result = await RequestClient(headers: headers).requestGet("/users/$uid/playlists/$playlistKind");
+    return MPlaylist.fromJson(jsonDecode(result)["result"]);
+  }
+
   Future<Artist> getArtistPage(String artistId) async {
     ///Получение информации об артисте
     var result = await RequestClient(headers: headers).requestGet("/artists/$artistId/brief-info");
@@ -269,13 +277,13 @@ class Client {
     return result;
   }
 
-  Future<List<Playlist>> userPlaylists() async {
+  Future<List<MPlaylist>> userPlaylists() async {
     ///Получает плейлисты пользователя
-    List<Playlist> userPlaylists = [];
+    List<MPlaylist> userPlaylists = [];
     var result = await RequestClient(headers: headers).requestGet("/users/$userId/playlists/list");
     var jsonResult = jsonDecode(result);
     jsonResult['result'].forEach((v) {
-      userPlaylists.add(Playlist.fromJson(v));
+      userPlaylists.add(MPlaylist.fromJson(v));
     });
     return userPlaylists;
   }
@@ -296,19 +304,6 @@ class Client {
     ///Получение информации об артисте
 
     List<Tracks> queueTracks = [];
-
-    for (var element in tracks) {
-
-      var track = Tracks(
-        trackId: element.id,
-        albumId: element.albums!.first.id.toString(),
-        from: "mobile-own_tracks-playlist-default",
-      );
-
-      queueTracks.add(track);
-
-    }
-
     var data = QueueItem(
       id: const Uuid().v1(),
       context: MainContext(id: "368836738:1001", description: "Hello", login: "tokar-denis2017", type: "playlist"),
@@ -319,6 +314,28 @@ class Client {
     ).toJson();
     var result = await RequestClient(headers: deviceHeaders).requestPost(url: "/queues", body: data);
     return result;
+  }
+
+  Future<String> downloadTrack({required String trackId, QualityTrack quality = QualityTrack.low}) async {
+    var responseInfo = await RequestClient(headers: deviceHeaders).requestGet("/tracks/$trackId/download-info");
+    if (!responseInfo.contains("error")) {
+      var jsonResult = jsonDecode(responseInfo);
+      var trackInfo = DownloadInfo.fromMap(jsonResult);
+      var response = await http.get(Uri.parse(trackInfo.result![quality.index].downloadInfoUrl.toString()), headers: headers);
+      if (response.statusCode == 200) {
+        final document = XmlDocument.parse(response.body);
+        String host = document.findAllElements("host").first.innerText;
+        String path = document.findAllElements("path").first.innerText;
+        String ts = document.findAllElements("ts").first.innerText;
+        String s = document.findAllElements("s").first.innerText;
+        var sign = md5.convert(utf8.encode("XGRlBW9FXlekgbPrRHuSiA${path.substring(1, path.length - 1)}$s"));
+        return "https://$host/get-mp3/$sign/$ts$path";
+      } else {
+        return "error";
+      }
+    } else {
+      return "error";
+    }
   }
 
 // Future<> name() async {

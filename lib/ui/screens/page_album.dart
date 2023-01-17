@@ -1,18 +1,15 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/api/models/M_Album.dart';
-import 'package:gibbon_music/api/models/M_Playlist.dart';
-import 'package:gibbon_music/api/models/PageModels/M_PageAlbum.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
-import 'package:gibbon_music/providers/album_provider.dart';
-import 'package:gibbon_music/providers/artist_provider.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/ui/widgets/content_loader.dart';
 import 'package:gibbon_music/ui/widgets/loading_ring.dart';
 import 'package:provider/provider.dart';
+import 'package:yam_api/album/album.dart';
+import 'package:yam_api/playlist/playlist.dart';
 
-import '../../api/models/PageModels/M_PageArtist.dart';
 import '../../constants/style_consts.dart';
+import '../../providers/album_page_provider.dart';
 import '../../providers/audio_provider.dart';
 import '../widgets/album_card.dart';
 import '../widgets/scroller_scaffold.dart';
@@ -27,7 +24,7 @@ class PageAlbum extends StatelessWidget {
   Widget build(BuildContext context) {
     AudioProvider audioProvider = context.read();
     PlayListProvider playListProvider = context.read();
-    AlbumProvider albumProvider = context.read();
+    PageAlbumProvider albumProvider = context.read();
     albumProvider.dispose();
 
     return ScaffoldPage(
@@ -36,7 +33,7 @@ class PageAlbum extends StatelessWidget {
           future: albumProvider.init(id),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              MPageAlbum mPageAlbum = albumProvider.mPageAlbum;
+              Album mPageAlbum = albumProvider.mAlbum;
               return ScaffoldScroller(
                 scrollHeaderModel: ScrollHeaderContent(pageModel: mPageAlbum),
                 slivers: [
@@ -78,7 +75,7 @@ class PageAlbum extends StatelessWidget {
 class AlbumSection extends StatelessWidget {
   const AlbumSection({Key key, @required this.albums}) : super(key: key);
 
-  final List<MAlbum> albums;
+  final List<Album> albums;
 
   @override
   Widget build(BuildContext context) {

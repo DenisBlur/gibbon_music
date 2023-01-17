@@ -1,46 +1,41 @@
-import 'dart:ui';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/api/models/M_Album.dart';
-import 'package:gibbon_music/api/models/M_Playlist.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
-import 'package:gibbon_music/extensions/string.dart';
-import 'package:gibbon_music/providers/artist_provider.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/ui/widgets/content_loader.dart';
 import 'package:gibbon_music/ui/widgets/loading_ring.dart';
 import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:yam_api/album/album.dart';
+import 'package:yam_api/artist/artist.dart';
+import 'package:yam_api/playlist/playlist.dart';
 
-import '../../api/models/PageModels/M_PageArtist.dart';
 import '../../constants/style_consts.dart';
+import '../../providers/artist_page_provider.dart';
 import '../../providers/audio_provider.dart';
 import '../widgets/album_card.dart';
 import '../widgets/scroller_scaffold.dart';
 import '../widgets/track_card.dart';
 
 class PageArtist extends StatelessWidget {
-  const PageArtist({Key key, this.id}) : super(key: key);
+  const PageArtist({Key key, @required this.artistId}) : super(key: key);
 
-  final int id;
+  final String artistId;
 
   @override
   Widget build(BuildContext context) {
     AudioProvider audioProvider = context.read();
 
     PlayListProvider playListProvider = context.read();
-
-    ArtistProvider artistProvider = context.read();
+    PageArtistProvider artistProvider = context.read();
     artistProvider.dispose();
 
     return ScaffoldPage(
         padding: const EdgeInsets.all(0),
         content: ContentLoader(
-          future: artistProvider.init(id),
+          future: artistProvider.init(artistId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              MPageArtist mPageArtist = artistProvider.mPageArtist;
+              Artist mPageArtist = artistProvider.mArtist;
               return ScaffoldScroller(
                 scrollHeaderModel: ScrollHeaderContent(pageModel: mPageArtist),
                 slivers: [
@@ -100,7 +95,7 @@ class PageArtist extends StatelessWidget {
 class AlbumSection extends StatelessWidget {
   const AlbumSection({Key key, @required this.albums}) : super(key: key);
 
-  final List<MAlbum> albums;
+  final List<Album> albums;
 
   @override
   Widget build(BuildContext context) {

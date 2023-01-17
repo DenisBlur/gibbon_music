@@ -4,13 +4,13 @@ import 'dart:ui';
 import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
-import 'package:gibbon_music/api/models/PageModels/M_PageAlbum.dart';
-import 'package:gibbon_music/api/models/PageModels/M_PageArtist.dart';
-import 'package:gibbon_music/api/models/PageModels/M_PagePlaylist.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/ui/controls/buttons.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:yam_api/album/album.dart';
+import 'package:yam_api/artist/artist.dart';
+import 'package:yam_api/playlist/playlist.dart';
 
 import '../../constants/ui_consts.dart';
 
@@ -86,26 +86,26 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    MPageArtist artist = MPageArtist();
-    MPageAlbum album = MPageAlbum();
-    MPagePlaylist playlist = MPagePlaylist();
+    Artist artist = Artist();
+    Album album = Album();
+    MPlaylist playlist = MPlaylist();
 
     String title, image, imageBg, upTitle;
     Widget dynamicContent;
 
     if (pageModel != null) {
-      if (pageModel is MPageArtist) {
+      if (pageModel is Artist) {
         artist = pageModel;
-        title = artist.artist.name;
-        image = artist.artist.ogImage.linkImage(100);
-        imageBg = artist.artist.ogImage.linkImage(600);
+        title = artist.briefInfo.name;
+        image = artist.briefInfo.ogImage.linkImage(100);
+        imageBg = artist.briefInfo.ogImage.linkImage(600);
         upTitle = "Исполнитель";
         dynamicContent = Text(
           "${artist.stats.lastMonthListeners.toString().spaceSeparateNumbers()} слушателя за месяц",
           style: TextStyle(fontSize: 14, color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
         );
       }
-      if (pageModel is MPageAlbum) {
+      if (pageModel is Album) {
         album = pageModel;
         title = album.title;
         imageBg = album.ogImage.linkImage(600);
@@ -124,7 +124,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
           ],
         );
       }
-      if (pageModel is MPagePlaylist) {
+      if (pageModel is MPlaylist) {
         playlist = pageModel;
         title = playlist.title;
         imageBg = playlist.ogImage.linkImage(600);

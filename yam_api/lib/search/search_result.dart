@@ -19,7 +19,7 @@ class PlaylistSearchResult {
     if (json['results'] != null) {
       results = [];
       json['results'].forEach((v) {
-        results?.add(Playlist.fromJson(v));
+        results?.add(MPlaylist.fromJson(v));
       });
     }
   }
@@ -27,13 +27,13 @@ class PlaylistSearchResult {
   num? total;
   num? perPage;
   num? order;
-  List<Playlist>? results;
+  List<MPlaylist>? results;
 
   PlaylistSearchResult copyWith({
     num? total,
     num? perPage,
     num? order,
-    List<Playlist>? results,
+    List<MPlaylist>? results,
   }) =>
       PlaylistSearchResult(
         total: total ?? this.total,

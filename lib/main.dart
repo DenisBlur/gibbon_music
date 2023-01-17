@@ -1,28 +1,32 @@
 import 'dart:io' show Platform;
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/providers/album_provider.dart';
-import 'package:gibbon_music/providers/artist_provider.dart';
+import 'package:gibbon_music/providers/album_page_provider.dart';
+import 'package:gibbon_music/providers/artist_page_provider.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
-import 'package:gibbon_music/providers/dashboard_provider.dart';
+import 'package:gibbon_music/providers/landing_provider.dart';
 import 'package:gibbon_music/providers/navigator_provider.dart';
+import 'package:gibbon_music/providers/playlist_page_provider.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
-import 'package:gibbon_music/ui/screens/page_dashboard.dart';
+import 'package:gibbon_music/ui/screens/page_landing.dart';
 import 'package:gibbon_music/ui/screens/page_init.dart';
 import 'package:gibbon_music/ui/widgets/content_loader.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:yam_api/client.dart';
 
 import 'ui/theme_data.dart';
 
+Client client = Client();
+
 List<SingleChildWidget> _providers = [
-  Provider(create: (_) => DashboardProvider()),
-  Provider(create: (_) => ArtistProvider()),
-  Provider(create: (_) => AlbumProvider()),
+  Provider(create: (_) => LandingProvider()),
+  Provider(create: (_) => PageArtistProvider()),
+  Provider(create: (_) => PageAlbumProvider()),
   Provider(create: (_) => PagePlaylistProvider()),
   ChangeNotifierProvider(create: (_) => PlayListProvider()),
   ChangeNotifierProvider(
@@ -43,7 +47,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows) {
     await windowManager.ensureInitialized();
-    //Убираем TitleBar, ставим минимальный размер приложения и центрируем
+    ///Убираем TitleBar, ставим минимальный размер приложения и центрируем
     WindowOptions windowOptions = const WindowOptions(
       minimumSize: Size(800, 400),
       center: true,
@@ -52,14 +56,14 @@ Future<void> main() async {
       titleBarStyle: TitleBarStyle.hidden,
     );
 
-    //показ приложения и центрирование, а так же установка фокуса на приложение
+    ///показ приложения и центрирование, а так же установка фокуса на приложение
     windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();
       await windowManager.focus();
       await windowManager.center();
     });
   }
-
+  client.init(token: "AQAAAAAV_ACCAAG8XkFW219h4UiInu2aEV4ZGL4");
   runApp(const App());
 }
 
@@ -78,13 +82,15 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    //Инициализация тем приложения
+    ///Инициализация тем приложения
     GThemeCreator.setColors(SystemTheme.accentColor);
     return MultiProvider(
       providers: _providers,
       child: FluentApp(
+        debugShowCheckedModeBanner: false,
+        showSemanticsDebugger: false,
         home: const Load(),
-        theme: GThemeCreator.darkNoColor,
+        theme: GThemeCreator.lightNoColor,
         color: GThemeCreator.accentColor.accent,
       ),
     );
@@ -98,14 +104,14 @@ class Load extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ContentLoader(
-      future: context.read<YandexProvider>().init("AQAAAAAV_ACCAAG8XkFW219h4UiInu2aEV4ZGL4"),
+
       builder: (context, snapshot) {
         if(snapshot.connectionState == ConnectionState.done) {
-          return const PageDashboard();
+          return const PageLanding();
         } else {
           return const PageInit();
         }
-      },
+      }, future: Future.delayed(Duration(seconds: 2)),
     );
   }
 }

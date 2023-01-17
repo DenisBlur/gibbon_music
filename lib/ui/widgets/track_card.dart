@@ -1,50 +1,52 @@
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/api/models/InnerModel/M_InnerArtist.dart';
-import 'package:gibbon_music/api/models/M_Track.dart';
+import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
-import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:gibbon_music/router.dart';
-import 'package:gibbon_music/ui/other/music_visualizer.dart';
-import 'package:gibbon_music/ui/widgets/context_menu.dart';
 import 'package:gibbon_music/ui/controls/buttons.dart';
+import 'package:gibbon_music/ui/other/music_visualizer.dart';
 import 'package:gibbon_music/ui/widgets/ImageThumbnail.dart';
 import 'package:gibbon_music/ui/widgets/card_view.dart';
-import 'package:flutter/material.dart' as m;
+import 'package:gibbon_music/ui/widgets/context_menu.dart';
 import 'package:provider/provider.dart';
-import '../../constants/style_consts.dart';
+import 'package:yam_api/artist/brief_info.dart';
+import 'package:yam_api/track/track.dart';
 import 'package:yam_api/yam_api.dart';
+
+import '../../constants/style_consts.dart';
 
 class TrackCard extends StatelessWidget {
   const TrackCard({Key key, @required this.track, @required this.onPressed}) : super(key: key);
 
   final VoidCallback onPressed;
-  final MTrack track;
+  final Track track;
 
   @override
   Widget build(BuildContext context) {
-    YandexProvider yandexProvider = context.watch();
+    ///YandexProvider yandexProvider = context.watch();
     AudioProvider audioProvider = context.watch();
     PlayListProvider playListProvider = context.watch();
 
     bool isPlay = false;
     bool isLike = false;
 
-    isLike = yandexProvider.checkLike(track.id);
+    /// isLike = yandexProvider.checkLike(track.id);
 
     if (playListProvider.queue.isNotEmpty) {
       isPlay = audioProvider.currentTrack.id == track.id && audioProvider.playerState == PlayerState.playing;
     }
 
     return GCardView(
-      onPressed: () {onPressed(); YamApi().getTrack(track.id);},
+      onPressed: () {
+        onPressed();
+        YamApi().getTrack(track.id);
+      },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -99,7 +101,7 @@ class TrackCard extends StatelessWidget {
 class ArtistsListWidgets extends StatelessWidget {
   const ArtistsListWidgets({Key key, @required this.mInnerArtistList}) : super(key: key);
 
-  final List<MInnerArtist> mInnerArtistList;
+  final List<BriefInfo> mInnerArtistList;
 
   @override
   Widget build(BuildContext context) {
@@ -137,8 +139,6 @@ class ArtistsListWidgets extends StatelessWidget {
         children: artistButtonList,
       );
     }
-
-    return const Placeholder();
   }
 }
 
@@ -150,31 +150,30 @@ class TrackCommandBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    setLike() async {
-      context.read<YandexProvider>().addLike(id);
-    }
-
-    removeLike() async {
-      context.read<YandexProvider>().removeLike(id);
-    }
+    /// setLike() async {
+    ///   context.read<YandexProvider>().addLike(id);
+    /// }
+    ///
+    /// removeLike() async {
+    ///   context.read<YandexProvider>().removeLike(id);
+    /// }
 
     return Row(
       children: [
         GIconButton(
           onPressed: () {
-            if (!isLike) {
-              setLike();
-            } else {
-              removeLike();
-            }
+            /// if (!isLike) {
+            ///   setLike();
+            /// } else {
+            ///   removeLike();
+            /// }
           },
           icon: isLike ? m.Icons.favorite : m.Icons.favorite_border_rounded,
           iconColor: isLike ? FluentTheme.of(context).accentColor : Colors.transparent,
         ),
         AppConsts.smallHSpacer,
         GestureDetector(
-          onTapDown: (details) => AppContext.showContext(context, details, [Text("Hello!")]),
+          onTapDown: (details) => AppContext.showContext(context, details, [const Text("Hello!")]),
           child: GIconButton(
             onPressed: () {},
             icon: m.Icons.more_horiz_rounded,

@@ -6,8 +6,8 @@ import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/ui/controls/buttons.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:provider/provider.dart';
+import 'package:yam_api/track/track.dart';
 
-import '../../../api/models/M_Track.dart';
 import '../../../providers/audio_provider.dart';
 
 class PlayerMainControl extends StatelessWidget {
@@ -18,7 +18,7 @@ class PlayerMainControl extends StatelessWidget {
     Size pageSize = MediaQuery.of(context).size;
     AudioProvider provider = context.watch();
     PlayListProvider playList = context.watch();
-    MTrack track = playList.currentTrack;
+    Track track = playList.currentTrack;
 
     double position = 0.0;
 

@@ -1,3 +1,4 @@
+import 'package:yam_api/artist/brief_info.dart';
 import 'package:yam_api/track/track.dart';
 
 import '../artist/artist.dart';
@@ -50,7 +51,7 @@ class Album {
     if (json['artists'] != null) {
       artists = [];
       json['artists'].forEach((v) {
-        artists?.add(Artist.fromJson(v));
+        artists?.add(BriefInfo.fromJson(v));
       });
     }
     // if (json['labels'] != null) {
@@ -88,7 +89,7 @@ class Album {
   num? likesCount;
   bool? recent;
   bool? veryImportant;
-  List<Artist>? artists;
+  List<BriefInfo>? artists;
   List<Labels>? labels;
   bool? available;
   bool? availableForPremiumUsers;
@@ -113,7 +114,7 @@ Album copyWith({  num? id,
   num? likesCount,
   bool? recent,
   bool? veryImportant,
-  List<Artist>? artists,
+  List<BriefInfo>? artists,
   // List<Labels>? labels,
   bool? available,
   bool? availableForPremiumUsers,

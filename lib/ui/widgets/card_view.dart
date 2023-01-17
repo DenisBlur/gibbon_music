@@ -41,17 +41,5 @@ class GCardView extends StatelessWidget {
       },
     );
 
-    return Material(
-      borderRadius: BorderRadius.circular(8),
-      color: defaultStateColor,
-      child: InkWell(
-        splashColor: pressedStateColor,
-        borderRadius: BorderRadius.circular(8),
-        highlightColor: defaultStateColor,
-        hoverColor: hoverStateColor,
-        onTap: () => onPressed(),
-        child: child,
-      ),
-    );
   }
 }

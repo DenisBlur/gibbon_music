@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/api/models/M_Track.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
@@ -8,6 +7,7 @@ import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/ui/widgets/ImageThumbnail.dart';
 import 'package:gibbon_music/ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
+import 'package:yam_api/track/track.dart';
 
 class PlayerInfo extends StatelessWidget {
   const PlayerInfo({Key key}) : super(key: key);
@@ -16,7 +16,7 @@ class PlayerInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     AudioProvider provider = context.watch();
     PlayListProvider playlist = context.watch();
-    MTrack track = playlist.currentTrack;
+    Track track = playlist.currentTrack;
     return Row(
       children: [
         Container(

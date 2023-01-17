@@ -19,7 +19,7 @@ class Chart {
     title = json['title'];
     chartDescription = json['chartDescription'];
     menu = json['menu'] != null ? Menu.fromJson(json['menu']) : null;
-    chart = json['chart'] != null ? Playlist.fromJson(json['chart']) : null;
+    chart = json['chart'] != null ? MPlaylist.fromJson(json['chart']) : null;
   }
   String? id;
   String? type;
@@ -27,14 +27,14 @@ class Chart {
   String? title;
   String? chartDescription;
   Menu? menu;
-  Playlist? chart;
+  MPlaylist? chart;
 Chart copyWith({  String? id,
   String? type,
   String? typeForFrom,
   String? title,
   String? chartDescription,
   Menu? menu,
-  Playlist? chart,
+  MPlaylist? chart,
 }) => Chart(  id: id ?? this.id,
   type: type ?? this.type,
   typeForFrom: typeForFrom ?? this.typeForFrom,

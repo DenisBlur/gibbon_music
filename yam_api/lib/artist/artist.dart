@@ -107,7 +107,7 @@ class Artist {
     if (json['playlists'] != null) {
       playlists = [];
       json['playlists'].forEach((v) {
-        playlists?.add(Playlist.fromJson(v));
+        playlists?.add(MPlaylist.fromJson(v));
       });
     }
   }
@@ -129,7 +129,7 @@ class Artist {
   Stats? stats;
   CustomWave? customWave;
   List<PlaylistIds>? playlistIds;
-  List<Playlist>? playlists;
+  List<MPlaylist>? playlists;
 Artist copyWith({  Artist? artist,
   List<Album>? albums,
   List<Album>? alsoAlbums,
@@ -148,7 +148,7 @@ Artist copyWith({  Artist? artist,
   Stats? stats,
   CustomWave? customWave,
   List<PlaylistIds>? playlistIds,
-  List<Playlist>? playlists,
+  List<MPlaylist>? playlists,
 }) => Artist(  briefInfo: briefInfo ?? this.briefInfo,
   albums: albums ?? this.albums,
   alsoAlbums: alsoAlbums ?? this.alsoAlbums,

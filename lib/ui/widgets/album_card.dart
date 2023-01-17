@@ -1,22 +1,18 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/api/models/M_Artist.dart';
-import 'package:gibbon_music/api/models/M_Playlist.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/extensions/string.dart';
-import 'package:gibbon_music/providers/dashboard_provider.dart';
 import 'package:gibbon_music/router.dart';
-import 'package:gibbon_music/ui/widgets/card_view.dart';
-import 'package:gibbon_music/ui/widgets/track_card.dart';
-import 'package:provider/provider.dart';
+import 'package:yam_api/album/album.dart';
+import 'package:yam_api/artist/brief_info.dart';
+import 'package:yam_api/playlist/playlist.dart';
 
-import '../../api/models/M_Album.dart';
 import '../widgets/ImageThumbnail.dart';
 
 class AlbumCard extends StatelessWidget {
   const AlbumCard({Key key, this.album}) : super(key: key);
 
-  final MAlbum album;
+  final Album album;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +31,7 @@ class AlbumCard extends StatelessWidget {
 class ArtistCard extends StatelessWidget {
   const ArtistCard({Key key, this.artist}) : super(key: key);
 
-  final MArtist artist;
+  final BriefInfo artist;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +40,7 @@ class ArtistCard extends StatelessWidget {
       title: artist.name,
       subtitle: artist.genres.first,
       onPressed: () {
-        AppRouter().gotoArtist(context, int.parse(artist.id));
+        AppRouter().gotoArtist(context, artist.id);
       },
       upTitle: 'Artist',
     );

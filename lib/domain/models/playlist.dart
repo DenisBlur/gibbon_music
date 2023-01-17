@@ -1,8 +1,8 @@
 import 'package:darq/darq.dart';
 import 'package:event/event.dart';
-import 'package:gibbon_music/api/models/M_Track.dart';
 import 'package:gibbon_music/domain/interfaces/iplaylist_loop_strategy.dart';
 import 'package:gibbon_music/domain/models/loop_strategy/loop_strategies.dart';
+import 'package:yam_api/track/track.dart';
 
 class Playlist {
   Playlist();
@@ -16,7 +16,7 @@ class Playlist {
   set currentTrackIndex(int value) => _loopStrategy.currentIndex = value;
 
   List<int> _trackIds = [];
-  List<MTrack> _tracks = [];
+  List<Track> _tracks = [];
 
   IPlaylistLoopStrategy _loopStrategy = PlaylistLoopStrategy();
 
@@ -28,11 +28,11 @@ class Playlist {
 
   IPlaylistLoopStrategy get loopStrategy => _loopStrategy;
 
-  List<MTrack> get queue => _tracks.isEmpty ? [] : _trackIds.select((element, _) => _tracks[element]).toList();
+  List<Track> get queue => _tracks.isEmpty ? [] : _trackIds.select((element, _) => _tracks[element]).toList();
 
-  List<MTrack> get tracks => _tracks;
+  List<Track> get tracks => _tracks;
 
-  set tracks(List<MTrack> value) {
+  set tracks(List<Track> value) {
     _tracks = value;
     _loopStrategy.size = value.length;
     _trackIds.clear();
@@ -43,7 +43,7 @@ class Playlist {
     _sortTracks();
   }
 
-  MTrack get currentTrack => _tracks.isEmpty ? null : _tracks[_trackIds[currentTrackIndex]];
+  Track get currentTrack => _tracks.isEmpty ? null : _tracks[_trackIds[currentTrackIndex]];
 
   bool nextTrack() => _loopStrategy.next();
 
@@ -62,7 +62,7 @@ class Playlist {
   void reorder(int oldIndex, int newIndex) {
     throw UnimplementedError("reorder method in development");
 
-    MTrack track = _tracks[_trackIds[oldIndex]];
+    Track track = _tracks[_trackIds[oldIndex]];
     _tracks.removeAt(_trackIds[oldIndex]);
 
     _tracks.insert(newIndex, track);
@@ -70,7 +70,7 @@ class Playlist {
     // _trackIds
   }
 
-  void addTrackToEnd(MTrack track) {
+  void addTrackToEnd(Track track) {
     _trackIds.add(_trackIds.length);
     _tracks.add(track);
   }
@@ -88,7 +88,7 @@ class Playlist {
     currentTrackIndex--;
   }
 
-  void addTrackAfterCurrent(MTrack track) {
+  void addTrackAfterCurrent(Track track) {
     int index = _trackIds.length;
 
     _trackIds = _trackIds.select((element, _) => element <= currentTrackIndex ? element : element + 1);
