@@ -13,7 +13,7 @@ class AppConsts {
   static const Curve defaultCurve = Curves.fastLinearToSlowEaseIn;
 
   static const double windowHeader = 48;
-  static const double scrollMultiplier = 10;
+  static const double scrollMultiplier = 25;
   static const double playerHeight = 100;
   static const double cardHeight = 258;
 

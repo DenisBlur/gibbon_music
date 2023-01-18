@@ -22,55 +22,51 @@ class WindowHeader extends StatelessWidget {
 
     return Consumer<NavigatorProvider>(
       builder: (_, provider, __) => ClipRRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaY: 25, sigmaX: 25),
-          child: Container(
-            padding: const EdgeInsets.only(right: 16),
-            height: AppConsts.windowHeader,
-            color: theme.scaffoldBackgroundColor.withOpacity(.4),
-            child: Row(
-              children: [
-                HeaderButton(onPressed: () => AppRouter().tryPop(context), icon: m.Icons.arrow_back_rounded, showHide: provider.navigationCanBack),
-                AppConsts.smallHSpacer,
-                const Expanded(
-                    child: DragToMoveArea(
-                        child: SizedBox(
-                            height: AppConsts.windowHeader,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                AppConsts.appTitle,
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                              ),
-                            )))),
-                setting ? IconButton(icon: const Icon(m.Icons.settings, size: 18), onPressed: () async {}) : const SizedBox(),
-                AppConsts.defaultHSpacer,
-                HeaderButton(onPressed: () {}, icon: m.Icons.search_rounded, showHide: false),
-                AppConsts.smallHSpacer,
-                IconButton(
-                    icon: const Icon(m.Icons.minimize_rounded, size: 18),
-                    onPressed: () async {
-                      await windowManager.minimize();
-                    }),
-                AppConsts.smallHSpacer,
-                IconButton(
-                    icon: const Icon(m.Icons.check_box_outline_blank_rounded, size: 18),
-                    onPressed: () async {
-                      if (await windowManager.isMaximized()) {
-                        await windowManager.unmaximize();
-                      } else {
-                        await windowManager.maximize();
-                      }
-                    }),
-                AppConsts.smallHSpacer,
-                IconButton(
-                    icon: const Icon(m.Icons.close_rounded, size: 18),
-                    onPressed: () {
-                      exit(0);
-                    }),
-                AppConsts.smallHSpacer,
-              ],
-            ),
+        child: Container(
+          height: AppConsts.windowHeader,
+          color: theme.scaffoldBackgroundColor,
+          child: Row(
+            children: [
+              HeaderButton(onPressed: () => AppRouter().tryPop(context), icon: m.Icons.arrow_back_rounded, showHide: provider.navigationCanBack),
+              AppConsts.smallHSpacer,
+              const Expanded(
+                  child: DragToMoveArea(
+                      child: SizedBox(
+                          height: AppConsts.windowHeader,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              AppConsts.appTitle,
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          )))),
+              setting ? IconButton(icon: const Icon(m.Icons.settings, size: 18), onPressed: () async {}) : const SizedBox(),
+              AppConsts.defaultHSpacer,
+              HeaderButton(onPressed: () {}, icon: m.Icons.search_rounded, showHide: false),
+              AppConsts.smallHSpacer,
+              IconButton(
+                  icon: const Icon(m.Icons.minimize_rounded, size: 18),
+                  onPressed: () async {
+                    await windowManager.minimize();
+                  }),
+              AppConsts.smallHSpacer,
+              IconButton(
+                  icon: const Icon(m.Icons.check_box_outline_blank_rounded, size: 18),
+                  onPressed: () async {
+                    if (await windowManager.isMaximized()) {
+                      await windowManager.unmaximize();
+                    } else {
+                      await windowManager.maximize();
+                    }
+                  }),
+              AppConsts.smallHSpacer,
+              IconButton(
+                  icon: const Icon(m.Icons.close_rounded, size: 18),
+                  onPressed: () {
+                    exit(0);
+                  }),
+              AppConsts.smallHSpacer,
+            ],
           ),
         ),
       ),

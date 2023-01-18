@@ -20,6 +20,7 @@ import 'package:yam_api/track/track.dart';
 import 'package:yam_api/yam_api.dart';
 
 import '../../constants/style_consts.dart';
+import '../../providers/yandex_provider.dart';
 
 class TrackCard extends StatelessWidget {
   const TrackCard({Key? key, required this.track, required this.onPressed}) : super(key: key);
@@ -29,20 +30,11 @@ class TrackCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ///YandexProvider yandexProvider = context.watch();
-    AudioProvider audioProvider = context.watch();
-    PlayListProvider playListProvider = context.watch();
-
+    YandexProvider yandexProvider = context.watch();
     bool isPlay = false;
     bool isSelected = false;
-    bool isLike = false;
-
-    /// isLike = yandexProvider.checkLike(track.id);
-
-    if (playListProvider.queue!.isNotEmpty) {
-      isPlay = audioProvider.currentTrack!.id == track.id && audioProvider.playerState == PlayerState.playing;
-      isSelected = audioProvider.currentTrack!.id == track.id;
-    }
+    bool isLike = yandexProvider.trackIsLiked(track.id.toString());
+    String image = track.coverUri != null ? track.coverUri!.linkImage(100) : AppConsts.imageEmptyLink;
 
     return GCardView(
       onPressed: () {
@@ -55,7 +47,7 @@ class TrackCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              ImageThumbnail(url: track.coverUri!.linkImage(100), height: 44, width: 44),
+              ImageThumbnail(url: image, height: 44, width: 44),
               AnimatedScale(
                 scale: isSelected ? 1 : 0,
                 duration: AppConsts.slowAnimation,
@@ -151,23 +143,16 @@ class TrackCommandBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// setLike() async {
-    ///   context.read<YandexProvider>().addLike(id);
-    /// }
-    ///
-    /// removeLike() async {
-    ///   context.read<YandexProvider>().removeLike(id);
-    /// }
+
+    likeAction() async {
+      await context.read<YandexProvider>().trackActionLike(id.toString());
+    }
 
     return Row(
       children: [
         GIconButton(
           onPressed: () {
-            /// if (!isLike) {
-            ///   setLike();
-            /// } else {
-            ///   removeLike();
-            /// }
+            likeAction();
           },
           icon: isLike ? m.Icons.favorite : m.Icons.favorite_border_rounded,
           iconColor: isLike ? FluentTheme.of(context).accentColor : Colors.transparent,

@@ -53,7 +53,6 @@ class Client {
     headers = {'Authorization': 'OAuth $token'};
     await accountStatus().then((value) async {
       userId = value.account?.uid.toString();
-      print(userId);
     });
     deviceHeaders = {'Authorization': 'OAuth $token', 'X-Yandex-Music-Device': '$device'};
   }
@@ -321,7 +320,8 @@ class Client {
     if (!responseInfo.contains("error")) {
       var jsonResult = jsonDecode(responseInfo);
       var trackInfo = DownloadInfo.fromMap(jsonResult);
-      var response = await http.get(Uri.parse(trackInfo.result![quality.index].downloadInfoUrl.toString()), headers: headers);
+      int downloadIndex = quality.index > trackInfo.result!.length-1 ? trackInfo.result!.length - 1 : quality.index;
+      var response = await http.get(Uri.parse(trackInfo.result![downloadIndex].downloadInfoUrl.toString()), headers: headers);
       if (response.statusCode == 200) {
         final document = XmlDocument.parse(response.body);
         String host = document.findAllElements("host").first.innerText;

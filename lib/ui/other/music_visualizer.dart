@@ -40,7 +40,7 @@ class MiniMusicVisualizer extends StatelessWidget {
             active: active,
             curve: Curves.bounceOut,
             duration: duration[index % 5],
-            color: colorList[Random().nextInt(colorList.length)] ?? FluentTheme.of(context).accentColor,
+            color: colorList[Random().nextInt(colorList.length)],
             width: width,
             height: height,
           ),
@@ -83,8 +83,8 @@ class _VisualComponentState extends State<VisualComponent> with SingleTickerProv
   @override
   void initState() {
     super.initState();
-    width = widget.width ?? 4;
-    height = widget.height ?? 15;
+    width = widget.width;
+    height = widget.height;
     animate();
   }
 

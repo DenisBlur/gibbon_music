@@ -1,28 +1,19 @@
-import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
-import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/landing_provider.dart';
-import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/providers/navigator_provider.dart';
+import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/ui/widgets/album_card.dart';
 import 'package:gibbon_music/ui/widgets/content_loader.dart';
 import 'package:gibbon_music/ui/widgets/loading_ring.dart';
+import 'package:gibbon_music/ui/widgets/scroller_scaffold.dart';
 import 'package:gibbon_music/ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
-
-import 'package:gibbon_music/ui/widgets/scroller_scaffold.dart';
 import 'package:yam_api/album/album.dart';
-import 'package:yam_api/artist/artist.dart';
 import 'package:yam_api/artist/brief_info.dart';
 import 'package:yam_api/landing/entitie.dart';
-import 'package:yam_api/landing/landing.dart';
 import 'package:yam_api/playlist/playlist.dart';
-import 'package:yam_api/track/track.dart';
-import 'package:yam_api/yam_api.dart';
-
-import '../../providers/playlist_page_provider.dart';
 
 class PageLanding extends StatelessWidget {
   const PageLanding({Key? key}) : super(key: key);

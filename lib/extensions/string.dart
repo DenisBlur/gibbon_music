@@ -7,7 +7,7 @@ extension StringNumberExtension on String {
   }
 
   String linkImage(int size) {
-    if (this == null || isEmpty) return AppConsts.imageEmptyLink;
+    if (isEmpty) return AppConsts.imageEmptyLink;
     final result = substring(0, indexOf("%"));
     return "https://$result${size}x$size";
   }

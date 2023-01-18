@@ -1,50 +1,44 @@
 import 'package:flutter/foundation.dart';
+import 'package:gibbon_music/domain/models/like.dart';
 
 class YandexProvider extends ChangeNotifier {
-  // MLikeTracks mLikeTracks = MLikeTracks();
-  // List<int> _likesTracks;
-  //
-  // List<int> get likesTracks => _likesTracks;
-  //
-  // set likesTracks(List<int> value) {
-  //   _likesTracks = value;
-  //   notifyListeners();
-  // }
-  //
-  // Future<void> init(String token) async {
-  //
-  // }
-  //
-  // Future<void> removeLike(dynamic id) async {
-  //   await YamApi().removeLike(id, ActionType.track).then((value) {
-  //     if (value) {
-  //       likesTracks.remove(int.parse(id));
-  //     } else {
-  //       if (kDebugMode) {
-  //         print("error");
-  //       }
-  //     }
-  //   });
-  //   notifyListeners();
-  // }
-  //
-  // Future<void> addLike(dynamic id) async {
-  //   await YamApi().setLike(id, ActionType.track).then((value) {
-  //     if (value) {
-  //       _likesTracks.add(int.parse(id));
-  //     } else {
-  //       if (kDebugMode) {
-  //         print("error");
-  //       }
-  //     }
-  //   });
-  //   notifyListeners();
-  // }
-  //
-  // bool checkLike(dynamic id) {
-  //   if (_likesTracks.isNotEmpty && _likesTracks != null) {
-  //     return _likesTracks.contains(int.parse(id));
-  //   }
-  //   return false;
-  // }
+  Like like;
+
+  YandexProvider({required this.like});
+
+  bool trackIsLiked(String trackId) {
+    return like.trackIsLiked(trackId: trackId);
+  }
+
+  bool playlistIsLiked(String playlistKind, String playlistId) {
+    return like.playlistIsLiked(playlistKind: playlistKind, playlistId: playlistId);
+  }
+
+  bool albumIsLiked(String albumId) {
+    return like.albumIsLiked(albumId: albumId);
+  }
+
+  bool artistIsLiked(String artistId) {
+    return like.artistIsLiked(artistId: artistId);
+  }
+
+  Future trackActionLike(String? trackId) async {
+    await like.trackActionLike(trackId: trackId);
+    notifyListeners();
+  }
+
+  Future playlistActionLike(String? playlistId, String? playlistKind) async {
+    await like.playlistActionLike(playlistId: playlistId, playlistKind: playlistKind);
+    notifyListeners();
+  }
+
+  Future albumActionLike(String? albumId) async {
+    await like.albumActionLike(albumId: albumId);
+    notifyListeners();
+  }
+
+  Future artistActionLike(String? artistId) async {
+    await like.artistActionLike(artistId: artistId);
+    notifyListeners();
+  }
 }

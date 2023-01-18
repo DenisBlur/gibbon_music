@@ -11,6 +11,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:yam_api/album/album.dart';
 import 'package:yam_api/artist/artist.dart';
 import 'package:yam_api/playlist/playlist.dart';
+import 'package:flutter/material.dart' as m;
 
 import '../../constants/ui_consts.dart';
 
@@ -45,7 +46,7 @@ class ScaffoldScroller extends StatelessWidget {
       paddingSlivers.insert(
         1,
         SliverPersistentHeader(
-          pinned: false,
+          pinned: true,
           delegate: ScrollHeader(expandedHeight: 200, pageModel: scrollHeaderModel?.pageModel),
         ),
       );
@@ -102,7 +103,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
         upTitle = "Исполнитель";
         dynamicContent = Text(
           "${artist.stats!.lastMonthListeners.toString().spaceSeparateNumbers()} слушателя за месяц",
-          style: TextStyle(fontSize: 14, color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
+          style: TextStyle(fontSize: 14 - (shrinkOffset).clamp(0, 14), color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
         );
       }
       if (pageModel is Album) {
@@ -114,7 +115,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
           children: [
             Text(
               "Исполнитель: ",
-              style: TextStyle(fontSize: 14, color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
+              style: TextStyle(fontSize: 14 - (shrinkOffset).clamp(0, 14), color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
             ),
             GTextButton(
                 onPressed: () {
@@ -131,7 +132,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
         upTitle = "Плейлист";
         dynamicContent = Text(
           "Создатель: ${playlist.owner!.name}",
-          style: TextStyle(fontSize: 14, color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
+          style: TextStyle(fontSize: 14 - (shrinkOffset).clamp(0, 14), color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
         );
       }
     }
@@ -141,33 +142,39 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
         child: ClipRRect(
           child: Stack(
             children: [
-              SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: expandedHeight,
-                  child: ClipRRect(
-                    child: ImageFiltered(
-                      imageFilter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
-                      child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, fit: BoxFit.cover, image: imageBg.toString()),
-                    ),
-                  )),
+              Opacity(
+                opacity: 1 - (shrinkOffset / expandedHeight),
+                child: Transform.scale(
+                  scaleY: .99,
+                  child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: expandedHeight,
+                      child: ClipRRect(
+                        child: ImageFiltered(
+                          imageFilter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
+                          child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, fit: BoxFit.cover, image: imageBg.toString()),
+                        ),
+                      )),
+                ),
+              ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: expandedHeight,
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [FluentTheme.of(context).scaffoldBackgroundColor, FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(.5)],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter)),
+                    gradient: LinearGradient(colors: [
+                  FluentTheme.of(context).scaffoldBackgroundColor,
+                  FluentTheme.of(context).scaffoldBackgroundColor.withOpacity((shrinkOffset / expandedHeight).clamp(0.5, 1))
+                ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
               ),
               Positioned(
                   left: 16,
-                  bottom: (shrinkOffset / 4) + 16,
+                  bottom: playlist.kind == null ? 8 : 16,
                   child: Row(
                     children: [
                       image != null
                           ? SizedBox(
-                              width: 100,
-                              height: 100,
+                              width: (expandedHeight/shrinkOffset*40).clamp(40, 100),
+                              height: (expandedHeight/shrinkOffset*40).clamp(40, 100),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
                                 child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: image),
@@ -183,17 +190,40 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                             opacity: (1 - shrinkOffset / expandedHeight),
                             child: Text(
                               upTitle!,
-                              style: TextStyle(fontSize: 14, color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
+                              style: TextStyle(
+                                  fontSize: (14 - shrinkOffset).clamp(0, 14), color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
                             ),
                           ),
                           Text(
                             title!,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: (expandedHeight/shrinkOffset*16).clamp(16, 32)),
                           ),
                           dynamicContent,
                         ],
                       ),
                     ],
+                  )),
+              Positioned(
+                  right: 16,
+                  bottom: 8,
+                  child: SizedBox(
+                    height: 40,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GIconButton(
+                          onPressed: () {},
+                          icon: m.Icons.favorite_border_rounded,
+                          contrastBackground: true,
+                        ),
+                        GIconButton(
+                          onPressed: () {},
+                          icon: m.Icons.favorite_border_rounded,
+                          contrastBackground: true,
+                        ),
+                      ],
+                    ),
                   )),
             ],
           ),
@@ -204,7 +234,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
   double get maxExtent => expandedHeight;
 
   @override
-  double get minExtent => 200;
+  double get minExtent => AppConsts.windowHeader + 56;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;

@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gibbon_music/domain/models/like.dart';
 import 'package:gibbon_music/providers/album_page_provider.dart';
 import 'package:gibbon_music/providers/artist_page_provider.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
@@ -28,6 +29,9 @@ List<SingleChildWidget> _providers = [
   Provider(create: (_) => PageArtistProvider()),
   Provider(create: (_) => PageAlbumProvider()),
   Provider(create: (_) => PagePlaylistProvider()),
+  ChangeNotifierProvider(
+    create: (context) => YandexProvider(like: Like()),
+  ),
   ChangeNotifierProvider(create: (_) => PlayListProvider()),
   ChangeNotifierProvider(
     create: (_) => UxProvider(),
@@ -38,15 +42,13 @@ List<SingleChildWidget> _providers = [
   ChangeNotifierProvider(
     create: (context) => NavigatorProvider(),
   ),
-  ChangeNotifierProvider(
-    create: (context) => YandexProvider(),
-  )
 ];
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows) {
     await windowManager.ensureInitialized();
+
     ///Убираем TitleBar, ставим минимальный размер приложения и центрируем
     WindowOptions windowOptions = const WindowOptions(
       minimumSize: Size(800, 400),
@@ -63,8 +65,9 @@ Future<void> main() async {
       await windowManager.center();
     });
   }
-  client.init(token: "AQAAAAAV_ACCAAG8XkFW219h4UiInu2aEV4ZGL4");
-  runApp(const App());
+  client.init(token: "AQAAAAAV_ACCAAG8XkFW219h4UiInu2aEV4ZGL4").whenComplete(() {
+    runApp(const App());
+  });
 }
 
 class App extends StatefulWidget {
@@ -97,20 +100,20 @@ class _AppState extends State<App> {
   }
 }
 
-
 class Load extends StatelessWidget {
   const Load({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    YandexProvider provider = context.read();
     return ContentLoader(
       builder: (context, snapshot) {
-        if(snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.done) {
           return const PageLanding();
         } else {
           return const PageInit();
         }
-      }, future: Future.delayed(Duration(seconds: 2)),
+      },
+      future: Future.delayed(Duration(seconds: 2)),
     );
   }
 }

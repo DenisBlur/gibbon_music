@@ -20,10 +20,10 @@ class OverlayContainer extends StatelessWidget {
       children: [
         const WindowHeader(setting: false),
         const Positioned(bottom: 0, right: 0, left: 0, child: PlayerMain()),
-        const Positioned(top: AppConsts.windowHeader + 16, bottom: AppConsts.playerHeight + 16, left: 0, child: DrawerWidget()),
+        const Positioned(top: AppConsts.windowHeader , bottom: AppConsts.playerHeight, left: 0, child: DrawerWidget()),
         Positioned(
-          top: AppConsts.windowHeader + 16,
-          height: MediaQuery.of(context).size.height - (AppConsts.playerHeight + AppConsts.windowHeader + 32),
+          top: AppConsts.windowHeader,
+          height: MediaQuery.of(context).size.height - (AppConsts.playerHeight + (AppConsts.windowHeader)),
           right: 0,
           child: const PlaylistWidget(),
         ),
