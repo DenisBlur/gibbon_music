@@ -34,12 +34,14 @@ class TrackCard extends StatelessWidget {
     PlayListProvider playListProvider = context.watch();
 
     bool isPlay = false;
+    bool isSelected = false;
     bool isLike = false;
 
     /// isLike = yandexProvider.checkLike(track.id);
 
-    if (playListProvider.queue.isNotEmpty) {
+    if (playListProvider.queue!.isNotEmpty) {
       isPlay = audioProvider.currentTrack!.id == track.id && audioProvider.playerState == PlayerState.playing;
+      isSelected = audioProvider.currentTrack!.id == track.id;
     }
 
     return GCardView(
@@ -55,7 +57,7 @@ class TrackCard extends StatelessWidget {
             children: [
               ImageThumbnail(url: track.coverUri!.linkImage(100), height: 44, width: 44),
               AnimatedScale(
-                scale: isPlay ? 1 : 0,
+                scale: isSelected ? 1 : 0,
                 duration: AppConsts.slowAnimation,
                 curve: AppConsts.defaultCurve,
                 child: Container(

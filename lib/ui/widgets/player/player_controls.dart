@@ -34,7 +34,12 @@ class PlayerMainControl extends StatelessWidget {
             children: [
               GIconButton(onPressed: () {}, icon: m.Icons.loop_rounded, size: 24),
               AppConsts.defaultHSpacer,
-              GIconButton(onPressed: () { playList.previous(); }, icon: m.Icons.skip_previous_rounded, size: 24),
+              GIconButton(
+                  onPressed: () {
+                    playList.previous();
+                  },
+                  icon: m.Icons.skip_previous_rounded,
+                  size: 24),
               AppConsts.defaultHSpacer,
               GIconButton(
                   onPressed: () {
@@ -48,7 +53,12 @@ class PlayerMainControl extends StatelessWidget {
                   contrastBackground: true,
                   size: 26),
               AppConsts.defaultHSpacer,
-              GIconButton(onPressed: () { playList.next(); }, icon: m.Icons.skip_next_rounded, size: 24),
+              GIconButton(
+                  onPressed: () {
+                    playList.next();
+                  },
+                  icon: m.Icons.skip_next_rounded,
+                  size: 24),
               AppConsts.defaultHSpacer,
               GIconButton(onPressed: () => playList.toggleShuffle(), icon: m.Icons.shuffle, size: 24)
             ],
@@ -89,8 +99,7 @@ class PlayerMainControl extends StatelessWidget {
                   case ConnectionState.none:
                   case ConnectionState.done:
                   default:
-                    print("NONE");
-                    return Text("None");
+                    return const Text("None");
                     break;
                 }
               }),

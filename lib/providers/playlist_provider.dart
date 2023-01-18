@@ -17,7 +17,7 @@ class PlayListProvider extends ChangeNotifier {
 
   IPlaylistLoopStrategy get loopStrategy => _playlist.loopStrategy;
 
-  List<Track?> get queue => _playlist.queue;
+  List<Track?>? get queue => _playlist.queue;
 
   List<IPlaylistLoopStrategy> loopStrategies = [
     PlaylistLoopStrategy(),
@@ -50,7 +50,7 @@ class PlayListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setPlaylist(List<Track?> tracks) {
+  void setPlaylist(List<Track?>? tracks) {
     _playlist.tracks = tracks;
     onCurrentTrackUpdated.broadcast();
     notifyListeners();

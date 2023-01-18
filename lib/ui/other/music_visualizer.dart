@@ -8,12 +8,13 @@ class MiniMusicVisualizer extends StatelessWidget {
     required this.color,
     required this.width,
     required this.height,
-    this.active = false,
+    this.active = false, this.count = 3,
   }) : super(key: key);
 
   final Color color;
   final double width;
   final double height;
+  final int? count;
   final bool active;
 
   @override
@@ -30,8 +31,9 @@ class MiniMusicVisualizer extends StatelessWidget {
     ];
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: List<Widget>.generate(
-        3,
+        count!.toInt(),
         (index) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 1),
           child: VisualComponent(

@@ -15,7 +15,7 @@ class Playlist {
   set currentTrackIndex(int value) => _loopStrategy.currentIndex = value;
 
   List<int> _trackIds = [];
-  List<Track?> _tracks = [];
+  List<Track?>? _tracks = [];
 
   IPlaylistLoopStrategy _loopStrategy = PlaylistLoopStrategy();
 
@@ -27,13 +27,13 @@ class Playlist {
 
   IPlaylistLoopStrategy get loopStrategy => _loopStrategy;
 
-  List<Track?> get queue => _tracks.isEmpty ? [] : _trackIds.select((element, _) => _tracks[element]).toList();
+  List<Track?>? get queue => _tracks!.isEmpty ? [] : _trackIds.select((element, _) => _tracks![element]).toList();
 
-  List<Track?> get tracks => _tracks;
+  List<Track?>? get tracks => _tracks;
 
-  set tracks(List<Track?> value) {
+  set tracks(List<Track?>? value) {
     _tracks = value;
-    _loopStrategy.size = value.length;
+    _loopStrategy.size = value!.length;
     _trackIds.clear();
     _trackIds.length = value.length;
 
@@ -42,7 +42,7 @@ class Playlist {
     _sortTracks();
   }
 
-  Track? get currentTrack => _tracks.isEmpty ? null : _tracks[_trackIds[currentTrackIndex]];
+  Track? get currentTrack => _tracks!.isEmpty ? null : _tracks![_trackIds[currentTrackIndex]];
 
   bool nextTrack() => _loopStrategy.next();
 
@@ -61,23 +61,23 @@ class Playlist {
   void reorder(int oldIndex, int newIndex) {
     throw UnimplementedError("reorder method in development");
 
-    Track track = _tracks[_trackIds[oldIndex]]!;
-    _tracks.removeAt(_trackIds[oldIndex]);
+    Track track = _tracks![_trackIds[oldIndex]]!;
+    _tracks!.removeAt(_trackIds[oldIndex]);
 
-    _tracks.insert(newIndex, track);
+    _tracks!.insert(newIndex, track);
 
     // _trackIds
   }
 
   void addTrackToEnd(Track track) {
     _trackIds.add(_trackIds.length);
-    _tracks.add(track);
+    _tracks!.add(track);
   }
 
   void removeTrack(int index) {
     //TODO: check index for every method in this file
 
-    _tracks.removeAt(_trackIds[index]);
+    _tracks!.removeAt(_trackIds[index]);
 
     int removedIndex = _trackIds[index];
     _trackIds.removeAt(index);
@@ -94,11 +94,11 @@ class Playlist {
     _trackIds.add(_trackIds.length);
     _trackIds[index] = currentTrackIndex + 1;
 
-    _tracks.add(track);
+    _tracks!.add(track);
   }
 
   void shuffle(bool value) {
-    if (tracks.isEmpty) return;
+    if (tracks!.isEmpty) return;
 
     int index = _trackIds[currentTrackIndex];
 
@@ -120,7 +120,7 @@ class Playlist {
   }
 
   void _setSortedNumbers() {
-    for (int i = 0; i < tracks.length; i++) {
+    for (int i = 0; i < tracks!.length; i++) {
       _trackIds[i] = i;
     }
   }

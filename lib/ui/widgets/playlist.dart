@@ -18,18 +18,17 @@ class PlaylistWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UxProvider uxProvider = context.watch();
-    AudioProvider audioProvider = context.watch();
     PlayListProvider playListProvider = context.watch();
 
-    List<Track?> tracks = playListProvider.queue;
+    List<Track?>? tracks = playListProvider.queue;
 
-    double width = uxProvider.isOpenDrawer ? 450 : 60;
+    double width = uxProvider.isOpenPlaylist ? 450 : 60;
 
     var theme = FluentTheme.of(context);
-    var backgroundColor = uxProvider.isOpenDrawer ? theme.cardColor.withOpacity(.65) : theme.scaffoldBackgroundColor;
+    var backgroundColor = uxProvider.isOpenPlaylist ? theme.cardColor.withOpacity(.65) : theme.scaffoldBackgroundColor;
 
     return AnimatedPadding(
-      padding: const EdgeInsets.all(0),
+      padding: EdgeInsets.all(uxProvider.isOpenPlaylist ? 16 : 0),
       duration: AppConsts.defaultAnimation,
       curve: AppConsts.defaultCurve,
       child: ClipRRect(
@@ -46,10 +45,10 @@ class PlaylistWidget extends StatelessWidget {
               ),
               child: ListView.builder(
                 itemBuilder: (context, index) => Padding(padding: const EdgeInsets.only(bottom: 8), child: TrackCard(
-                  track: tracks[index]!,
+                  track: tracks![index]!,
                   onPressed: () => playListProvider.setCurrentTrack(index),
                 ),),
-                itemCount: tracks.length,
+                itemCount: tracks!.length,
               ),
             )),
       ),

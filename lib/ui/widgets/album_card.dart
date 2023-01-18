@@ -1,16 +1,21 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/main.dart';
+import 'package:gibbon_music/providers/playlist_provider.dart';
+import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/ui/controls/buttons.dart';
+import 'package:provider/provider.dart';
 import 'package:yam_api/album/album.dart';
 import 'package:yam_api/artist/brief_info.dart';
 import 'package:yam_api/playlist/playlist.dart';
 
+import '../other/music_visualizer.dart';
 import '../widgets/ImageThumbnail.dart';
 
 class AlbumCard extends StatelessWidget {
@@ -27,7 +32,8 @@ class AlbumCard extends StatelessWidget {
       onPressed: () {
         AppRouter().gotoAlbum(context, album.id!.toInt());
       },
-      upTitle: 'Album', onPlay: () {  },
+      upTitle: 'Album',
+      onPlay: () {},
     );
   }
 }
@@ -59,14 +65,30 @@ class PlaylistCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String uid = playlist.owner == null ? playlist.uid.toString() : playlist.owner!.uid.toString();
+    String kind = playlist.kind.toString();
+
+    PlayListProvider playListProvider = context.read();
+    UxProvider ux = context.watch();
+
+    Future<void> getTracks() async {
+      var result = await client.playlist(uid, kind);
+      var tracks = result.tracks!.select((e, _) => e!.track).toList();
+      playListProvider.setPlaylist(tracks);
+      playListProvider.setCurrentTrack(0);
+      ux.currentPlaylist = "$uid:$kind";
+    }
+
     return CardContent(
+      isPlaying: ux.currentPlaylist == "$uid:$kind",
       uri: playlist.cover!.uri,
       title: playlist.title,
       subtitle: playlist.owner == null ? "${playlist.trackCount} Треков" : playlist.owner!.name,
       onPressed: () {
-        AppRouter().gotoPlaylist(context, playlist.owner!.uid.toString(), playlist.kind.toString());
+        AppRouter().gotoPlaylist(context, uid, kind);
       },
-      upTitle: 'Playlist', onPlay: () {  },
+      upTitle: 'Playlist',
+      onPlay: () => getTracks(),
     );
   }
 }
@@ -79,10 +101,12 @@ class CardContent extends StatelessWidget {
       required this.subtitle,
       required this.onPressed,
       required this.upTitle,
-      required this.onPlay})
+      required this.onPlay,
+      this.isPlaying = false})
       : super(key: key);
 
   final String? uri, title, subtitle, upTitle;
+  final bool? isPlaying;
   final VoidCallback onPressed;
   final VoidCallback onPlay;
 
@@ -113,7 +137,7 @@ class CardContent extends StatelessWidget {
                   ),
                   FadeInUp(
                     duration: AppConsts.defaultAnimation,
-                    animate: state.isHovering,
+                    animate: isPlaying == false ? state.isHovering : isPlaying as bool,
                     child: Container(
                       width: 186,
                       height: 186,
@@ -132,7 +156,7 @@ class CardContent extends StatelessWidget {
                               onPressed: () {
                                 onPlay();
                               },
-                              icon: m.Icons.play_arrow,
+                              icon: isPlaying == true ? m.Icons.pause : m.Icons.play_arrow,
                               contrastBackground: true,
                               size: 26),
                           AppConsts.smallHSpacer,

@@ -29,8 +29,6 @@ class PageLanding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AudioProvider audioProvider = context.read();
-    PagePlaylistProvider pagePlaylistProvider = context.read();
     PlayListProvider playlistProvider = context.read();
     LandingProvider landingProvider = context.read();
     WidgetsBinding.instance.addPostFrameCallback((_) => context.read<NavigatorProvider>().showOverlay(context));

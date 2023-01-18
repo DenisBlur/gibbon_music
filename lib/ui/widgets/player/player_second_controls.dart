@@ -24,7 +24,9 @@ class PlayerSecondControl extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              GIconButton(onPressed: () {}, icon: m.Icons.playlist_play_rounded, size: 24),
+              GIconButton(onPressed: () {
+                context.read<UxProvider>().changePlaylistState();
+              }, icon: m.Icons.playlist_play_rounded, size: 24),
               GIconButton(onPressed: () {}, icon: m.Icons.volume_up_rounded, size: 24),
               AppConsts.smallHSpacer,
               SizedBox(
