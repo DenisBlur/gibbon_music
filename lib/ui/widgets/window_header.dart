@@ -12,7 +12,7 @@ import 'package:window_manager/window_manager.dart';
 ///переписать что бы хорошо было!
 
 class WindowHeader extends StatelessWidget {
-  const WindowHeader({Key key, @required this.setting}) : super(key: key);
+  const WindowHeader({Key? key, required this.setting}) : super(key: key);
 
   final bool setting;
 
@@ -79,7 +79,7 @@ class WindowHeader extends StatelessWidget {
 }
 
 class HeaderButton extends StatelessWidget {
-  const HeaderButton({Key key, this.showHide = true, @required this.onPressed, @required this.icon}) : super(key: key);
+  const HeaderButton({Key? key, this.showHide = true, required this.onPressed, required this.icon}) : super(key: key);
 
   final bool showHide;
   final VoidCallback onPressed;

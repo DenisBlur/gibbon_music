@@ -2,7 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:animate_do/animate_do.dart';
 
 class LoadingRing extends StatelessWidget {
-  const LoadingRing({Key key}) : super(key: key);
+  const LoadingRing({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -10,13 +10,13 @@ import 'package:provider/provider.dart';
 import 'package:yam_api/track/track.dart';
 
 class PlayerInfo extends StatelessWidget {
-  const PlayerInfo({Key key}) : super(key: key);
+  const PlayerInfo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     AudioProvider provider = context.watch();
     PlayListProvider playlist = context.watch();
-    Track track = playlist.currentTrack;
+    Track? track = playlist.currentTrack;
     return Row(
       children: [
         Container(
@@ -25,7 +25,7 @@ class PlayerInfo extends StatelessWidget {
               color: FluentTheme.of(context).scaffoldBackgroundColor,
               boxShadow: [BoxShadow(color: Colors.black.withOpacity(.15), offset: Offset(0, 8), blurRadius: 5)]),
           child: ImageThumbnail(
-            url: track.coverUri.linkImage(100),
+            url: track!.coverUri!.linkImage(100),
             height: 44,
             width: 44,
           ),
@@ -34,7 +34,7 @@ class PlayerInfo extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [Text(track.title), ArtistsListWidgets(mInnerArtistList: track.artists)],
+          children: [Text(track.title!), ArtistsListWidgets(mInnerArtistList: track.artists!)],
         )
       ],
     );

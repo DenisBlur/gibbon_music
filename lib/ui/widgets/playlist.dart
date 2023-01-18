@@ -13,7 +13,7 @@ import '../../providers/ux_provider.dart';
 import '../controls/buttons.dart';
 
 class PlaylistWidget extends StatelessWidget {
-  const PlaylistWidget({Key key}) : super(key: key);
+  const PlaylistWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class PlaylistWidget extends StatelessWidget {
     AudioProvider audioProvider = context.watch();
     PlayListProvider playListProvider = context.watch();
 
-    List<Track> tracks = playListProvider.queue;
+    List<Track?> tracks = playListProvider.queue;
 
     double width = uxProvider.isOpenDrawer ? 450 : 60;
 
@@ -45,8 +45,8 @@ class PlaylistWidget extends StatelessWidget {
                 color: backgroundColor,
               ),
               child: ListView.builder(
-                itemBuilder: (context, index) => Padding(padding: EdgeInsets.only(bottom: 8), child: TrackCard(
-                  track: tracks[index],
+                itemBuilder: (context, index) => Padding(padding: const EdgeInsets.only(bottom: 8), child: TrackCard(
+                  track: tracks[index]!,
                   onPressed: () => playListProvider.setCurrentTrack(index),
                 ),),
                 itemCount: tracks.length,

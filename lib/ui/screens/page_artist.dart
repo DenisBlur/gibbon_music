@@ -17,7 +17,7 @@ import '../widgets/scroller_scaffold.dart';
 import '../widgets/track_card.dart';
 
 class PageArtist extends StatelessWidget {
-  const PageArtist({Key key, @required this.artistId}) : super(key: key);
+  const PageArtist({Key? key, required this.artistId}) : super(key: key);
 
   final String artistId;
 
@@ -52,16 +52,16 @@ class PageArtist extends StatelessWidget {
                           (context, index) => Padding(
                                 padding: const EdgeInsets.only(top: 8),
                                 child: TrackCard(
-                                  track: mPageArtist.popularTracks[index],
+                                  track: mPageArtist.popularTracks![index],
                                   onPressed: () {
-                                    playListProvider.setPlaylist(mPageArtist.popularTracks);
+                                    playListProvider.setPlaylist(mPageArtist.popularTracks!);
                                     playListProvider.setCurrentTrack(index);
                                     audioProvider.playTrack();
                                     // audioProvider.playTrack();
                                   },
                                 ),
                               ),
-                          childCount: mPageArtist.popularTracks.length)),
+                          childCount: mPageArtist.popularTracks!.length)),
                   SliverToBoxAdapter(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,13 +70,13 @@ class PageArtist extends StatelessWidget {
                         FadeInUp(child: const Text("Альбомы", style: AppStyle.header1Style)),
                         AppConsts.defaultVSpacer,
                         AlbumSection(
-                          albums: mPageArtist.albums,
+                          albums: mPageArtist.albums!,
                         ),
                         AppConsts.defaultVSpacer,
                         FadeInUp(child: const Text("Плейлисты", style: AppStyle.header1Style)),
                         AppConsts.defaultVSpacer,
                         PlaylistSection(
-                          playlist: mPageArtist.playlists,
+                          playlist: mPageArtist.playlists!,
                         ),
                       ],
                     ),
@@ -93,7 +93,7 @@ class PageArtist extends StatelessWidget {
 }
 
 class AlbumSection extends StatelessWidget {
-  const AlbumSection({Key key, @required this.albums}) : super(key: key);
+  const AlbumSection({Key? key, required this.albums}) : super(key: key);
 
   final List<Album> albums;
 
@@ -102,7 +102,7 @@ class AlbumSection extends StatelessWidget {
     return FadeInUp(
         delay: const Duration(milliseconds: 250),
         child: SizedBox(
-          height: 186,
+          height: AppConsts.cardHeight,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
@@ -115,7 +115,7 @@ class AlbumSection extends StatelessWidget {
 }
 
 class PlaylistSection extends StatelessWidget {
-  const PlaylistSection({Key key, @required this.playlist}) : super(key: key);
+  const PlaylistSection({Key? key, required this.playlist}) : super(key: key);
 
   final List<MPlaylist> playlist;
 
@@ -124,7 +124,7 @@ class PlaylistSection extends StatelessWidget {
     return FadeInUp(
         delay: const Duration(milliseconds: 400),
         child: SizedBox(
-          height: 186,
+          height: AppConsts.cardHeight,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {

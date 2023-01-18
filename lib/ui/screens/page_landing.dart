@@ -25,7 +25,7 @@ import 'package:yam_api/yam_api.dart';
 import '../../providers/playlist_page_provider.dart';
 
 class PageLanding extends StatelessWidget {
-  const PageLanding({Key key}) : super(key: key);
+  const PageLanding({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +34,7 @@ class PageLanding extends StatelessWidget {
     PlayListProvider playlistProvider = context.read();
     LandingProvider landingProvider = context.read();
     WidgetsBinding.instance.addPostFrameCallback((_) => context.read<NavigatorProvider>().showOverlay(context));
+    landingProvider.dispose();
 
     return ScaffoldPage(
         resizeToAvoidBottomInset: true,
@@ -83,18 +84,18 @@ class PageLanding extends StatelessWidget {
 }
 
 class PlayContextSection extends StatelessWidget {
-  const PlayContextSection({Key key, @required this.entities}) : super(key: key);
+  const PlayContextSection({Key? key, required this.entities}) : super(key: key);
 
   final List<Entities> entities;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 186,
+      height: AppConsts.cardHeight,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          Widget widget;
+          Widget widget = const Text("");
 
           switch (entities[index].data["context"]) {
             case "album":

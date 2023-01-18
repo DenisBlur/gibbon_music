@@ -4,10 +4,11 @@ import 'package:fluent_ui/fluent_ui.dart';
 
 class MiniMusicVisualizer extends StatelessWidget {
   const MiniMusicVisualizer({
-    Key key,
-    this.color,
-    this.width,
-    this.height, this.active = false,
+    Key? key,
+    required this.color,
+    required this.width,
+    required this.height,
+    this.active = false,
   }) : super(key: key);
 
   final Color color;
@@ -49,12 +50,13 @@ class MiniMusicVisualizer extends StatelessWidget {
 
 class VisualComponent extends StatefulWidget {
   const VisualComponent({
-    Key key,
-    @required this.duration,
-    @required this.color,
-    @required this.curve,
-    this.width,
-    this.height, this.active = false,
+    Key? key,
+    required this.duration,
+    required this.color,
+    required this.curve,
+    required this.width,
+    required this.height,
+    this.active = false,
   }) : super(key: key);
 
   final int duration;
@@ -69,10 +71,11 @@ class VisualComponent extends StatefulWidget {
 }
 
 class _VisualComponentState extends State<VisualComponent> with SingleTickerProviderStateMixin {
-  Animation<double> animation;
-  AnimationController animationController;
-  double width;
-  double height;
+  late Animation<double> animation;
+  late AnimationController animationController;
+  late double width;
+  late double height;
+
   _ambiguate<T>(value) => value;
 
   @override

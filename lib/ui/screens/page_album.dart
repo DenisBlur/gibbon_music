@@ -16,7 +16,7 @@ import '../widgets/scroller_scaffold.dart';
 import '../widgets/track_card.dart';
 
 class PageAlbum extends StatelessWidget {
-  const PageAlbum({Key key, this.id}) : super(key: key);
+  const PageAlbum({Key? key, required this.id}) : super(key: key);
 
   final int id;
 
@@ -50,17 +50,17 @@ class PageAlbum extends StatelessWidget {
                           (context, index) => Padding(
                                 padding: const EdgeInsets.only(top: 8),
                                 child: TrackCard(
-                                  track: mPageAlbum.volumes[index],
+                                  track: mPageAlbum.volumes![index],
                                   onPressed: () {
                                     // playListProvider.
-                                    playListProvider.setPlaylist(mPageAlbum.volumes);
+                                    playListProvider.setPlaylist(mPageAlbum.volumes!);
                                     // playListProvider.se
                                     playListProvider.setCurrentTrack(index);
                                     audioProvider.resume();
                                   },
                                 ),
                               ),
-                          childCount: mPageAlbum.volumes.length)),
+                          childCount: mPageAlbum.volumes!.length)),
                 ],
                 padding: AppConsts.pageInsets,
               );
@@ -73,7 +73,7 @@ class PageAlbum extends StatelessWidget {
 }
 
 class AlbumSection extends StatelessWidget {
-  const AlbumSection({Key key, @required this.albums}) : super(key: key);
+  const AlbumSection({Key? key, required this.albums}) : super(key: key);
 
   final List<Album> albums;
 
@@ -95,7 +95,7 @@ class AlbumSection extends StatelessWidget {
 }
 
 class PlaylistSection extends StatelessWidget {
-  const PlaylistSection({Key key, @required this.playlist}) : super(key: key);
+  const PlaylistSection({Key? key, required this.playlist}) : super(key: key);
 
   final List<MPlaylist> playlist;
 

@@ -1,8 +1,12 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/extensions/string.dart';
+import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/router.dart';
+import 'package:flutter/material.dart' as m;
+import 'package:gibbon_music/ui/controls/buttons.dart';
 import 'package:yam_api/album/album.dart';
 import 'package:yam_api/artist/brief_info.dart';
 import 'package:yam_api/playlist/playlist.dart';
@@ -10,110 +14,142 @@ import 'package:yam_api/playlist/playlist.dart';
 import '../widgets/ImageThumbnail.dart';
 
 class AlbumCard extends StatelessWidget {
-  const AlbumCard({Key key, this.album}) : super(key: key);
+  const AlbumCard({Key? key, required this.album}) : super(key: key);
 
   final Album album;
 
   @override
   Widget build(BuildContext context) {
     return CardContent(
-      uri: album.ogImage,
-      title: album.title,
-      subtitle: album.artists.first.name,
+      uri: album.ogImage!,
+      title: album.title!,
+      subtitle: album.artists!.first.name,
       onPressed: () {
-        AppRouter().gotoAlbum(context, album.id);
+        AppRouter().gotoAlbum(context, album.id!.toInt());
       },
-      upTitle: 'Album',
+      upTitle: 'Album', onPlay: () {  },
     );
   }
 }
 
 class ArtistCard extends StatelessWidget {
-  const ArtistCard({Key key, this.artist}) : super(key: key);
+  const ArtistCard({Key? key, required this.artist}) : super(key: key);
 
   final BriefInfo artist;
 
   @override
   Widget build(BuildContext context) {
     return CardContent(
-      uri: artist.ogImage,
-      title: artist.name,
-      subtitle: artist.genres.first,
+      uri: artist.ogImage!,
+      title: artist.name!,
+      subtitle: artist.genres!.first,
       onPressed: () {
-        AppRouter().gotoArtist(context, artist.id);
+        AppRouter().gotoArtist(context, artist.id!);
       },
       upTitle: 'Artist',
+      onPlay: () {},
     );
   }
 }
 
 class PlaylistCard extends StatelessWidget {
-  const PlaylistCard({Key key, this.playlist}) : super(key: key);
+  const PlaylistCard({Key? key, required this.playlist}) : super(key: key);
 
   final MPlaylist playlist;
 
   @override
   Widget build(BuildContext context) {
     return CardContent(
-      uri: playlist.cover.uri,
+      uri: playlist.cover!.uri,
       title: playlist.title,
-      subtitle: playlist.owner == null ? "${playlist.trackCount} Треков" : playlist.owner.name,
+      subtitle: playlist.owner == null ? "${playlist.trackCount} Треков" : playlist.owner!.name,
       onPressed: () {
-        AppRouter().gotoPlaylist(context, playlist.owner.uid.toString(), playlist.kind.toString());
+        AppRouter().gotoPlaylist(context, playlist.owner!.uid.toString(), playlist.kind.toString());
       },
-      upTitle: 'Playlist',
+      upTitle: 'Playlist', onPlay: () {  },
     );
   }
 }
 
 class CardContent extends StatelessWidget {
-  const CardContent({Key key, @required this.uri, @required this.title, @required this.subtitle, @required this.onPressed, @required this.upTitle})
+  const CardContent(
+      {Key? key,
+      required this.uri,
+      required this.title,
+      required this.subtitle,
+      required this.onPressed,
+      required this.upTitle,
+      required this.onPlay})
       : super(key: key);
 
-  final String uri, title, subtitle, upTitle;
+  final String? uri, title, subtitle, upTitle;
   final VoidCallback onPressed;
+  final VoidCallback onPlay;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 186,
+      height: 258,
       width: 186,
       child: HoverButton(
         onPressed: () => onPressed(),
         builder: (p0, state) => ClipRRect(
           borderRadius: BorderRadius.circular(16),
-          child: Stack(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              AnimatedScale(
-                scale: state.isPressing
-                    ? 0.9
-                    : state.isHovering
-                        ? 0.98
-                        : 0.95,
-                duration: AppConsts.defaultAnimation,
-                curve: AppConsts.defaultCurve,
-                child: ImageThumbnail(url: uri.linkImage(200), width: 186, height: 186, radius: 16),
-              ),
-              Container(
-                width: 186,
-                height: 186,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                  FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
-                  FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0),
-                ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
+              Stack(
+                children: [
+                  AnimatedScale(
+                    scale: state.isPressing
+                        ? 0.9
+                        : state.isHovering
+                            ? 0.98
+                            : 0.95,
+                    duration: AppConsts.defaultAnimation,
+                    curve: AppConsts.defaultCurve,
+                    child: ImageThumbnail(url: uri!.linkImage(200), width: 186, height: 186, radius: 16),
+                  ),
+                  FadeInUp(
+                    duration: AppConsts.defaultAnimation,
+                    animate: state.isHovering,
+                    child: Container(
+                      width: 186,
+                      height: 186,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                        FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
+                        FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0),
+                      ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GIconButton(onPressed: () {}, icon: m.Icons.favorite_border_rounded),
+                          AppConsts.smallHSpacer,
+                          GIconButton(
+                              onPressed: () {
+                                onPlay();
+                              },
+                              icon: m.Icons.play_arrow,
+                              contrastBackground: true,
+                              size: 26),
+                          AppConsts.smallHSpacer,
+                          GIconButton(onPressed: () {}, icon: m.Icons.more_horiz_rounded)
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
               Padding(
                   padding: const EdgeInsets.all(8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(upTitle.toUpperCase(), style: AppStyle.upCardHeaderStyle(context)),
-                      Text(title, style: AppStyle.cardHeaderStyle, maxLines: 1),
-                      Text(subtitle, style: AppStyle.subTrackHeaderStyle(context)),
-                    ],
-                  )),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
+                    Text(upTitle!.toUpperCase(), style: AppStyle.upCardHeaderStyle(context)),
+                    Text(title!, style: AppStyle.cardHeaderStyle, maxLines: 1),
+                    Text(subtitle!, style: AppStyle.subTrackHeaderStyle(context)),
+                  ]))
             ],
           ),
         ),

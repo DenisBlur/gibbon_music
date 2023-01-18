@@ -316,7 +316,7 @@ class Client {
     return result;
   }
 
-  Future<String> downloadTrack({required String trackId, QualityTrack quality = QualityTrack.low}) async {
+  Future<String> downloadTrack({required String? trackId, QualityTrack quality = QualityTrack.low}) async {
     var responseInfo = await RequestClient(headers: deviceHeaders).requestGet("/tracks/$trackId/download-info");
     if (!responseInfo.contains("error")) {
       var jsonResult = jsonDecode(responseInfo);

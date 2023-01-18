@@ -6,12 +6,13 @@ import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/ui/widgets/player/player_controls.dart';
+import 'package:gibbon_music/ui/widgets/player/player_second_controls.dart';
 import 'package:provider/provider.dart';
 
 import 'player_info.dart';
 
 class PlayerMain extends StatelessWidget {
-  const PlayerMain({Key key}) : super(key: key);
+  const PlayerMain({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,8 @@ class PlayerMain extends StatelessWidget {
                     Align(
                       alignment: Alignment.center,
                       child: PlayerMainControl(),
-                    )
+                    ),
+                    PlayerSecondControl(),
                   ],
                 ),
               ),

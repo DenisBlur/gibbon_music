@@ -4,12 +4,11 @@ import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/ui/widgets/loading_ring.dart';
 
 class PageInit extends StatelessWidget {
-  const PageInit({Key key}) : super(key: key);
+  const PageInit({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size pageSize = MediaQuery.of(context).size;
-
     return ScaffoldPage(
       content: SizedBox(
           height: pageSize.height,

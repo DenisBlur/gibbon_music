@@ -27,7 +27,6 @@ class AppStyle {
   static TextStyle upCardHeaderStyle(BuildContext context) {
     return TextStyle(
         fontSize: 12,
-        fontWeight: FontWeight.bold,
         color: FluentTheme.of(context).accentColor
     );
   }

@@ -4,9 +4,6 @@ import 'package:async/async.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
-import 'package:flutter/services.dart';
-import 'package:gibbon_music/domain/interfaces/iplaylist_loop_strategy.dart';
-import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:yam_api/enums.dart';
@@ -17,7 +14,7 @@ class AudioProvider extends ChangeNotifier {
 
   final PlayListProvider _playlistProvider;
 
-  AudioPlayer _player;
+  late AudioPlayer _player;
 
   Stream<PlayerState> get onPlayerStateChanged => _player.onPlayerStateChanged;
 
@@ -25,18 +22,18 @@ class AudioProvider extends ChangeNotifier {
 
   Stream<Duration> get onDurationChanged => _player.onDurationChanged;
 
-  CancelableOperation<String> _getTrackURLAsyncOperation;
+  CancelableOperation<String>? _getTrackURLAsyncOperation;
 
   PlayerState get playerState => _player.state;
 
-  Track get currentTrack => _playlistProvider.currentTrack;
+  Track? get currentTrack => _playlistProvider.currentTrack;
 
   Future<void> init() async {
-    _player ??= AudioPlayer();
+    _player = AudioPlayer();
     //
     // _playlistProvider.onNextTrackPlay.subscribe((args) => _changeTrack());
     _playlistProvider.onCurrentTrackUpdated.subscribe((args) {
-      preloadTrack(_playlistProvider.currentTrack);
+      preloadTrack(_playlistProvider.currentTrack!);
       notifyListeners();
     });
 
@@ -58,9 +55,10 @@ class AudioProvider extends ChangeNotifier {
     _player.pause();
     setSeek(0);
 
+
     _getTrackURLAsyncOperation?.cancel();
     _getTrackURLAsyncOperation = CancelableOperation.fromFuture(client.downloadTrack(trackId: track.id, quality: QualityTrack.low));
-    _getTrackURLAsyncOperation.then((trackURL) => _playTrack(trackURL));
+    _getTrackURLAsyncOperation?.then((trackURL) => _playTrack(trackURL));
   }
 
   void setOneTrack(Track track) {
@@ -68,7 +66,7 @@ class AudioProvider extends ChangeNotifier {
   }
 
   void playTrack() {
-    preloadTrack(_playlistProvider.currentTrack);
+    preloadTrack(_playlistProvider.currentTrack!);
     notifyListeners();
   }
 
@@ -87,6 +85,10 @@ class AudioProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setVolume(double volume) async {
+    await _player.setVolume(volume);
+  }
+
   void _playTrack(String url) async {
     _player.setSourceUrl(url);
     resume();
@@ -98,25 +100,24 @@ class AudioProvider extends ChangeNotifier {
     _playlistProvider.onNextTrackPlay.unsubscribeAll();
     _playlistProvider.onCurrentTrackUpdated.unsubscribeAll();
     super.dispose();
-    _player?.dispose();
-    _player = null;
+    _player.dispose();
   }
 
   ///Удалить если чего
   IconData icon() {
     switch (playerState) {
-      // case PlayerState.stopped:
-      //   return m.Icons.stop_rounded;
-      //   break;
+    // case PlayerState.stopped:
+    //   return m.Icons.stop_rounded;
+    //   break;
       case PlayerState.playing:
         return m.Icons.pause;
         break;
       case PlayerState.paused:
         return m.Icons.play_arrow;
         break;
-      // case PlayerState.completed:
-      //   return m.Icons.not_interested;
-      //   break;
+    // case PlayerState.completed:
+    //   return m.Icons.not_interested;
+    //   break;
       default:
         return m.Icons.not_interested;
     }

@@ -172,7 +172,7 @@ class YamApi {
 
   ///End future queue
 
-  Future<String> getTrack(String trackId) async {
+  Future<String> getTrack(String? trackId) async {
     var response = await http.get(Uri.parse("$baseUrl/tracks/$trackId"), headers: headers);
     return checkResponse(response);
   }

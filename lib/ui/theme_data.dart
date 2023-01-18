@@ -4,13 +4,13 @@ import 'package:system_theme/system_theme.dart';
 class GThemeCreator {
   static SystemAccentColor accentColor = SystemTheme.accentColor;
 
-  static Color accentDarkBackgroundColor;
-  static Color accentDarkMicaColor;
-  static Color accentDarkCardColor;
+  static Color? accentDarkBackgroundColor;
+  static Color? accentDarkMicaColor;
+  static Color? accentDarkCardColor;
 
-  static Color accentLightBackgroundColor;
-  static Color accentLightMicaColor;
-  static Color accentLightCardColor;
+  static Color? accentLightBackgroundColor;
+  static Color? accentLightMicaColor;
+  static Color? accentLightCardColor;
 
   static const double blendValue = 0.3;
 
@@ -78,16 +78,16 @@ class GThemeCreator {
     accentDarkBackgroundColor =
         alphaBlend(userAccentColorDark.withOpacity(blendValue), Colors.black);
     accentDarkMicaColor =
-        alphaBlend(userAccentColorDark.withOpacity(blendValue), accentDarkBackgroundColor);
+        alphaBlend(userAccentColorDark.withOpacity(blendValue), accentDarkBackgroundColor!);
     accentDarkCardColor =
-        alphaBlend(userAccentColorDark.withOpacity(blendValue), accentDarkBackgroundColor);
+        alphaBlend(userAccentColorDark.withOpacity(blendValue), accentDarkBackgroundColor!);
 
     accentLightBackgroundColor =
         alphaBlend(userAccentColorLight.withOpacity(blendValue), Colors.white);
     accentLightMicaColor =
-        alphaBlend(userAccentColorLight.withOpacity(blendValue), accentLightBackgroundColor);
+        alphaBlend(userAccentColorLight.withOpacity(blendValue), accentLightBackgroundColor!);
     accentLightCardColor =
-        alphaBlend(userAccentColorLight.withOpacity(blendValue), accentLightBackgroundColor);
+        alphaBlend(userAccentColorLight.withOpacity(blendValue), accentLightBackgroundColor!);
 
     darkColor = ThemeData(
       brightness: Brightness.dark,

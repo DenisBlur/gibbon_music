@@ -17,7 +17,7 @@ import '../widgets/scroller_scaffold.dart';
 import '../widgets/track_card.dart';
 
 class PagePlaylist extends StatelessWidget {
-  const PagePlaylist({Key key, @required this.id, @required this.kind}) : super(key: key);
+  const PagePlaylist({Key? key, required this.id, required this.kind}) : super(key: key);
 
   final String id;
   final String kind;
@@ -50,15 +50,15 @@ class PagePlaylist extends StatelessWidget {
                         (context, index) => Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: TrackCard(
-                                track: mPagePlaylist.tracks[index].track,
+                                track: mPagePlaylist.tracks![index]!.track!,
                                 onPressed: () {
-                                  playListProvider.setPlaylist(mPagePlaylist.tracks.select((e, _) => e.track,).toList());
+                                  playListProvider.setPlaylist(mPagePlaylist.tracks!.select((e, _) => e?.track,).toList());
                                   playListProvider.setCurrentTrack(index);
                                   audioProvider.resume();
                                 },
                               ),
                             ),
-                        childCount: mPagePlaylist.tracks.length)),
+                        childCount: mPagePlaylist.tracks!.length)),
               ], padding: AppConsts.pageInsets,);
             } else {
               return const LoadingRing();
@@ -69,7 +69,7 @@ class PagePlaylist extends StatelessWidget {
 }
 
 class AlbumSection extends StatelessWidget {
-  const AlbumSection({Key key, @required this.albums}) : super(key: key);
+  const AlbumSection({Key? key, required this.albums}) : super(key: key);
 
   final List<Album> albums;
 
@@ -91,7 +91,7 @@ class AlbumSection extends StatelessWidget {
 }
 
 class PlaylistSection extends StatelessWidget {
-  const PlaylistSection({Key key, @required this.playlist}) : super(key: key);
+  const PlaylistSection({Key? key, required this.playlist}) : super(key: key);
 
   final List<MPlaylist> playlist;
 

@@ -29,7 +29,7 @@ class NavigatorProvider extends ChangeNotifier {
   }
 
   showOverlay(BuildContext context) async {
-    OverlayState overlayState = Overlay.of(context);
+    OverlayState? overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(
       opaque: false,
       maintainState: true,
@@ -38,7 +38,7 @@ class NavigatorProvider extends ChangeNotifier {
       },
     );
     if (!_overlayCreated) {
-      overlayState.insert(overlayEntry);
+      overlayState?.insert(overlayEntry);
       _overlayCreated = true;
     }
   }

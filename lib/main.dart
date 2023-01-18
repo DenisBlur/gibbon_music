@@ -68,7 +68,7 @@ Future<void> main() async {
 }
 
 class App extends StatefulWidget {
-  const App({Key key}) : super(key: key);
+  const App({Key? key}) : super(key: key);
 
   @override
   State<App> createState() => _AppState();
@@ -99,12 +99,11 @@ class _AppState extends State<App> {
 
 
 class Load extends StatelessWidget {
-  const Load({Key key}) : super(key: key);
+  const Load({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ContentLoader(
-
       builder: (context, snapshot) {
         if(snapshot.connectionState == ConnectionState.done) {
           return const PageLanding();

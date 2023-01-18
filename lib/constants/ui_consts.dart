@@ -15,6 +15,7 @@ class AppConsts {
   static const double windowHeader = 48;
   static const double scrollMultiplier = 10;
   static const double playerHeight = 100;
+  static const double cardHeight = 258;
 
   static const SizedBox smallHSpacer = SizedBox(width: 8,);
   static const SizedBox defaultHSpacer = SizedBox(width: 16,);

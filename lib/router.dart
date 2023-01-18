@@ -26,9 +26,9 @@ class AppRouter {
     provider.push("album", context, PageAlbum(id: id,));
   }
 
-  gotoArtist(BuildContext context, String id) {
+  gotoArtist(BuildContext context, String? id) {
     NavigatorProvider provider = context.read();
-    provider.push("artist", context, PageArtist(artistId: id,));
+    provider.push("artist", context, PageArtist(artistId: id.toString(),));
   }
 
   gotoTest(BuildContext context) {

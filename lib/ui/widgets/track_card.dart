@@ -22,7 +22,7 @@ import 'package:yam_api/yam_api.dart';
 import '../../constants/style_consts.dart';
 
 class TrackCard extends StatelessWidget {
-  const TrackCard({Key key, @required this.track, @required this.onPressed}) : super(key: key);
+  const TrackCard({Key? key, required this.track, required this.onPressed}) : super(key: key);
 
   final VoidCallback onPressed;
   final Track track;
@@ -39,7 +39,7 @@ class TrackCard extends StatelessWidget {
     /// isLike = yandexProvider.checkLike(track.id);
 
     if (playListProvider.queue.isNotEmpty) {
-      isPlay = audioProvider.currentTrack.id == track.id && audioProvider.playerState == PlayerState.playing;
+      isPlay = audioProvider.currentTrack!.id == track.id && audioProvider.playerState == PlayerState.playing;
     }
 
     return GCardView(
@@ -53,7 +53,7 @@ class TrackCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              ImageThumbnail(url: track.coverUri.linkImage(100), height: 44, width: 44),
+              ImageThumbnail(url: track.coverUri!.linkImage(100), height: 44, width: 44),
               AnimatedScale(
                 scale: isPlay ? 1 : 0,
                 duration: AppConsts.slowAnimation,
@@ -79,19 +79,18 @@ class TrackCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                track.title,
+                track.title.toString(),
                 maxLines: 1,
                 style: AppStyle.trackHeaderStyle,
               ),
               ArtistsListWidgets(
-                key: key,
                 mInnerArtistList: track.artists,
               )
             ],
           ),
           AppConsts.fillSpacer,
           TrackCommandBar(isLike: isLike, id: track.id),
-          Text(track.durationMs == null ? "" : Duration(milliseconds: track.durationMs).toHms()),
+          Text(track.durationMs == null ? "" : Duration(milliseconds: track.durationMs!.toInt()).toHms()),
         ],
       ),
     );
@@ -99,23 +98,23 @@ class TrackCard extends StatelessWidget {
 }
 
 class ArtistsListWidgets extends StatelessWidget {
-  const ArtistsListWidgets({Key key, @required this.mInnerArtistList}) : super(key: key);
+  const ArtistsListWidgets({Key? key, required this.mInnerArtistList}) : super(key: key);
 
-  final List<BriefInfo> mInnerArtistList;
+  final List<BriefInfo>? mInnerArtistList;
 
   @override
   Widget build(BuildContext context) {
     List<Widget> artistButtonList = [];
     String fullTitle = "";
 
-    for (int i = 0; i < mInnerArtistList.length; i++) {
+    for (int i = 0; i < mInnerArtistList!.length; i++) {
       String title = "";
-      var element = mInnerArtistList[i];
+      var element = mInnerArtistList![i];
       if (i == 0) {
-        title = element.name;
-        fullTitle = element.name;
+        title = element.name!;
+        fullTitle = element.name!;
       } else {
-        title = ", ${element.name}";
+        title = ", ${element.name!}";
         fullTitle = fullTitle + title;
       }
       artistButtonList.add(GTextButton(
@@ -133,7 +132,7 @@ class ArtistsListWidgets extends StatelessWidget {
           onTapDown: (details) {
             AppContext.showContext(context, details, artistButtonList);
           },
-          child: GTextButton(onPressed: null, title: fullTitle));
+          child: GTextButton(onPressed: () {}, title: fullTitle));
     } else {
       return Row(
         children: artistButtonList,
@@ -143,9 +142,9 @@ class ArtistsListWidgets extends StatelessWidget {
 }
 
 class TrackCommandBar extends StatelessWidget {
-  const TrackCommandBar({Key key, this.isLike = false, this.id}) : super(key: key);
+  const TrackCommandBar({Key? key, this.isLike = false, this.id}) : super(key: key);
 
-  final String id;
+  final String? id;
   final bool isLike;
 
   @override

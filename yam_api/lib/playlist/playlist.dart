@@ -90,7 +90,7 @@ class MPlaylist {
   num? durationMs;
   Cover? cover;
   String? ogImage;
-  List<Tracks>? tracks;
+  List<Tracks?>? tracks;
   List<dynamic>? tags;
   num? likesCount;
   List<MPlaylist>? lastOwnerPlaylists;
@@ -114,7 +114,7 @@ MPlaylist copyWith({  Owner? owner,
   num? durationMs,
   Cover? cover,
   String? ogImage,
-  List<Tracks>? tracks,
+  List<Tracks?>? tracks,
   List<dynamic>? tags,
   num? likesCount,
   List<MPlaylist>? lastOwnerPlaylists,
@@ -170,7 +170,7 @@ MPlaylist copyWith({  Owner? owner,
     }
     map['ogImage'] = ogImage;
     if (tracks != null) {
-      map['tracks'] = tracks?.map((v) => v.toJson()).toList();
+      map['tracks'] = tracks?.map((v) => v!.toJson()).toList();
     }
     if (tags != null) {
       map['tags'] = tags?.map((v) => v.toJson()).toList();

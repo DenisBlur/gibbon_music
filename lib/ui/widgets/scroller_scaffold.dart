@@ -15,9 +15,9 @@ import 'package:yam_api/playlist/playlist.dart';
 import '../../constants/ui_consts.dart';
 
 class ScaffoldScroller extends StatelessWidget {
-  const ScaffoldScroller({Key key, @required this.slivers, this.scrollHeaderModel, @required this.padding}) : super(key: key);
+  const ScaffoldScroller({Key? key, required this.slivers, this.scrollHeaderModel, required this.padding}) : super(key: key);
 
-  final ScrollHeaderContent scrollHeaderModel;
+  final ScrollHeaderContent? scrollHeaderModel;
   final List<Widget> slivers;
   final EdgeInsets padding;
 
@@ -46,7 +46,7 @@ class ScaffoldScroller extends StatelessWidget {
         1,
         SliverPersistentHeader(
           pinned: false,
-          delegate: ScrollHeader(expandedHeight: 200, pageModel: scrollHeaderModel.pageModel),
+          delegate: ScrollHeader(expandedHeight: 200, pageModel: scrollHeaderModel?.pageModel),
         ),
       );
     }
@@ -82,7 +82,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
   final dynamic pageModel;
 
-  ScrollHeader({@required this.expandedHeight, this.pageModel});
+  ScrollHeader({required this.expandedHeight, this.pageModel});
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -90,25 +90,25 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
     Album album = Album();
     MPlaylist playlist = MPlaylist();
 
-    String title, image, imageBg, upTitle;
-    Widget dynamicContent;
+    String? title, image, imageBg, upTitle;
+    Widget dynamicContent = const Text("none");
 
     if (pageModel != null) {
       if (pageModel is Artist) {
         artist = pageModel;
-        title = artist.briefInfo.name;
-        image = artist.briefInfo.ogImage.linkImage(100);
-        imageBg = artist.briefInfo.ogImage.linkImage(600);
+        title = artist.briefInfo!.name!;
+        image = artist.briefInfo!.ogImage!.linkImage(100);
+        imageBg = artist.briefInfo!.ogImage!.linkImage(600);
         upTitle = "Исполнитель";
         dynamicContent = Text(
-          "${artist.stats.lastMonthListeners.toString().spaceSeparateNumbers()} слушателя за месяц",
+          "${artist.stats!.lastMonthListeners.toString().spaceSeparateNumbers()} слушателя за месяц",
           style: TextStyle(fontSize: 14, color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
         );
       }
       if (pageModel is Album) {
         album = pageModel;
-        title = album.title;
-        imageBg = album.ogImage.linkImage(600);
+        title = album.title!;
+        imageBg = album.ogImage!.linkImage(600);
         upTitle = "Альбом";
         dynamicContent = Row(
           children: [
@@ -118,19 +118,19 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
             ),
             GTextButton(
                 onPressed: () {
-                  AppRouter().gotoArtist(context, album.artists.first.id);
+                  AppRouter().gotoArtist(context, album.artists!.first.id);
                 },
-                title: "${album.artists.first.name} • ${album.year}")
+                title: "${album.artists!.first.name} • ${album.year}")
           ],
         );
       }
       if (pageModel is MPlaylist) {
         playlist = pageModel;
-        title = playlist.title;
-        imageBg = playlist.ogImage.linkImage(600);
+        title = playlist.title!;
+        imageBg = playlist.ogImage!.linkImage(600);
         upTitle = "Плейлист";
         dynamicContent = Text(
-          "Создатель: ${playlist.owner.name}",
+          "Создатель: ${playlist.owner!.name}",
           style: TextStyle(fontSize: 14, color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
         );
       }
@@ -147,7 +147,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                   child: ClipRRect(
                     child: ImageFiltered(
                       imageFilter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
-                      child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, fit: BoxFit.cover, image: imageBg),
+                      child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, fit: BoxFit.cover, image: imageBg.toString()),
                     ),
                   )),
               Container(
@@ -182,12 +182,12 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                           Opacity(
                             opacity: (1 - shrinkOffset / expandedHeight),
                             child: Text(
-                              upTitle,
+                              upTitle!,
                               style: TextStyle(fontSize: 14, color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
                             ),
                           ),
                           Text(
-                            title,
+                            title!,
                             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
                           ),
                           dynamicContent,

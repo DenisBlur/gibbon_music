@@ -1,12 +1,11 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
-import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/ui/theme_data.dart';
 
 import '../../constants/ui_consts.dart';
 
 class GButton extends StatelessWidget {
-  const GButton({Key key, @required this.onPressed, @required this.title}) : super(key: key);
+  const GButton({Key? key, required this.onPressed, required this.title}) : super(key: key);
 
   final VoidCallback onPressed;
   final String title;
@@ -47,7 +46,7 @@ class GButton extends StatelessWidget {
 }
 
 class GTextButton extends StatelessWidget {
-  const GTextButton({Key key, @required this.onPressed, @required this.title}) : super(key: key);
+  const GTextButton({Key? key, required this.onPressed, required this.title}) : super(key: key);
 
   final VoidCallback onPressed;
   final String title;
@@ -77,9 +76,9 @@ class GTextButton extends StatelessWidget {
 
 class GIconButton extends StatelessWidget {
   const GIconButton(
-      {Key key,
-      @required this.onPressed,
-      @required this.icon,
+      {Key? key,
+      required this.onPressed,
+      required this.icon,
       this.contrastBackground = false,
       this.size = 18,
       this.padding = 8,

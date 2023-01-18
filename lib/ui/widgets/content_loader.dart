@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 
 class ContentLoader extends StatelessWidget {
-  const ContentLoader({Key key, @required this.future, @required this.builder}) : super(key: key);
+  const ContentLoader({Key? key, required this.future, required this.builder}) : super(key: key);
 
   final AsyncWidgetBuilder builder;
   final Future<dynamic> future;

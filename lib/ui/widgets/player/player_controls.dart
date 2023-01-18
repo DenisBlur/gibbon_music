@@ -11,14 +11,14 @@ import 'package:yam_api/track/track.dart';
 import '../../../providers/audio_provider.dart';
 
 class PlayerMainControl extends StatelessWidget {
-  const PlayerMainControl({Key key}) : super(key: key);
+  const PlayerMainControl({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size pageSize = MediaQuery.of(context).size;
     AudioProvider provider = context.watch();
     PlayListProvider playList = context.watch();
-    Track track = playList.currentTrack;
+    Track? track = playList.currentTrack;
 
     double position = 0.0;
 
@@ -58,8 +58,8 @@ class PlayerMainControl extends StatelessWidget {
               stream: provider.onPositionChanged,
               initialData: const Duration(milliseconds: 0),
               builder: (context, snapshot) {
-                Duration data = snapshot.data;
-                position = data.inMilliseconds.toDouble();
+                Duration? data = snapshot.data as Duration?;
+                position = data!.inMilliseconds.toDouble();
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
                   case ConnectionState.active:
@@ -75,7 +75,7 @@ class PlayerMainControl extends StatelessWidget {
                               labelBackgroundColor: FluentTheme.of(context).accentColor,
                               trackHeight: ButtonState.all(2),
                             ),
-                            max: track.durationMs.toDouble(),
+                            max: track!.durationMs!.toDouble(),
                             value: position,
                             onChanged: (value) {
                               provider.setSeek(value);
@@ -83,7 +83,7 @@ class PlayerMainControl extends StatelessWidget {
                           ),
                         ),
                         AppConsts.defaultHSpacer,
-                        Text(Duration(milliseconds: track.durationMs).toHms()),
+                        Text(Duration(milliseconds: track.durationMs!.toInt()).toHms()),
                       ],
                     );
                   case ConnectionState.none:

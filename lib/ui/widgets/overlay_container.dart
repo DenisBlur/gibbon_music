@@ -10,9 +10,7 @@ import '../../constants/ui_consts.dart';
 import '../../providers/audio_provider.dart';
 
 class OverlayContainer extends StatelessWidget {
-  const OverlayContainer({Key key, this.child}) : super(key: key);
-
-  final Widget child;
+  const OverlayContainer({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +18,14 @@ class OverlayContainer extends StatelessWidget {
     audioProvider.init();
     return Stack(
       children: [
-        WindowHeader(setting: false, key: key),
+        const WindowHeader(setting: false),
         const Positioned(bottom: 0, right: 0, left: 0, child: PlayerMain()),
         const Positioned(top: AppConsts.windowHeader + 16, bottom: AppConsts.playerHeight + 16, left: 0, child: DrawerWidget()),
         Positioned(
           top: AppConsts.windowHeader + 16,
           height: MediaQuery.of(context).size.height - (AppConsts.playerHeight + AppConsts.windowHeader + 32),
           right: 0,
-          child: PlaylistWidget(),
+          child: const PlaylistWidget(),
         ),
       ],
     );

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../constants/ui_consts.dart';
 
 class GCardView extends StatelessWidget {
-  const GCardView({Key key, @required this.child, this.onPressed, this.radius = 8}) : super(key: key);
+  const GCardView({Key? key, required this.child,required this.onPressed, this.radius = 8}) : super(key: key);
 
   final Widget child;
   final double radius;

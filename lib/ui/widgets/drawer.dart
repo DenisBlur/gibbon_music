@@ -8,7 +8,7 @@ import 'package:gibbon_music/ui/controls/buttons.dart';
 import 'package:provider/provider.dart';
 
 class DrawerWidget extends StatelessWidget {
-  const DrawerWidget({Key key}) : super(key: key);
+  const DrawerWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
