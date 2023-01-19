@@ -10,6 +10,7 @@ import 'package:gibbon_music/providers/landing_provider.dart';
 import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/providers/playlist_page_provider.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
+import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:gibbon_music/ui/screens/page_landing.dart';
@@ -30,6 +31,7 @@ List<SingleChildWidget> _providers = [
   Provider(create: (_) => PageArtistProvider()),
   Provider(create: (_) => PageAlbumProvider()),
   Provider(create: (_) => PagePlaylistProvider()),
+  ChangeNotifierProvider(create: (_) => ThemeProvider(),),
   ChangeNotifierProvider(
     create: (context) => YandexProvider(likeModel: LikeModel(), queueModel: QueueModel()),
   ),
@@ -86,17 +88,17 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    ///Инициализация тем приложения
-    GThemeCreator.setColors(SystemTheme.accentColor);
     return MultiProvider(
       providers: _providers,
-      child: FluentApp(
-        debugShowCheckedModeBanner: false,
-        showSemanticsDebugger: false,
-        home: const Load(),
-        theme: GThemeCreator.lightNoColor,
-        color: GThemeCreator.accentColor.accent,
-      ),
+      builder: (context, child) {
+        return FluentApp(
+          debugShowCheckedModeBanner: false,
+          showSemanticsDebugger: false,
+          home: const Load(),
+          theme: context.watch<ThemeProvider>().theme,
+          color: context.watch<ThemeProvider>().accentColor,
+        );
+      },
     );
   }
 }

@@ -103,8 +103,8 @@ class GIconButton extends StatelessWidget {
       pressedStateColor = theme.cardColor.withOpacity(.4);
     } else {
       defaultStateColor = theme.uncheckedColor.withOpacity(1);
-      hoverStateColor = GThemeCreator.alphaBlend(theme.checkedColor.withOpacity(.1), theme.uncheckedColor);
-      pressedStateColor = GThemeCreator.alphaBlend(theme.accentColor.withOpacity(.1), theme.uncheckedColor);
+      hoverStateColor = GThemeCreator().alphaBlend(theme.checkedColor.withOpacity(.1), theme.uncheckedColor);
+      pressedStateColor = GThemeCreator().alphaBlend(theme.accentColor.withOpacity(.1), theme.uncheckedColor);
     }
 
     if(iconColor == Colors.transparent) {

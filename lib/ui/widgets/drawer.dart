@@ -4,6 +4,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
+import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/ui/controls/buttons.dart';
 import 'package:provider/provider.dart';
 
@@ -48,7 +49,7 @@ class DrawerWidget extends StatelessWidget {
                 AppConsts.fillSpacer,
                 GIconButton(
                   onPressed: () {
-                    uxProvider.changeDrawerState();
+                    AppRouter().gotoSetting(context);
                   },
                   icon: m.Icons.settings,
                   size: 22,

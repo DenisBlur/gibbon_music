@@ -5,6 +5,7 @@ import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/ui/screens/page_album.dart';
 import 'package:gibbon_music/ui/screens/page_artist.dart';
 import 'package:gibbon_music/ui/screens/page_playlist.dart';
+import 'package:gibbon_music/ui/screens/page_setting.dart';
 import 'package:gibbon_music/ui/screens/page_test.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +35,11 @@ class AppRouter {
   gotoTest(BuildContext context) {
     NavigatorProvider provider = context.read();
     provider.push("test", context, const PageTest());
+  }
+
+  gotoSetting(BuildContext context) {
+    NavigatorProvider provider = context.read();
+    provider.push("setting", context, const PageSetting());
   }
 
 }
