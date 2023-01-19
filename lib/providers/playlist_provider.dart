@@ -5,7 +5,20 @@ import 'package:gibbon_music/domain/models/loop_strategy/loop_strategies.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:yam_api/track/track.dart';
 
+import 'yandex_provider.dart';
+
 class PlayListProvider extends ChangeNotifier {
+
+  YandexProvider yandexProvider;
+
+  PlayListProvider(this.yandexProvider)
+  {
+    yandexProvider.queueModel.onSyncDevice.subscribe((args) {
+      setPlaylist(args!.tracks);
+      setCurrentTrack(args.currentIndex!.toInt());
+    });
+  }
+
   Event onNextTrackPlay = Event();
   Event onCurrentTrackUpdated = Event();
 

@@ -1,44 +1,65 @@
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
-import 'package:gibbon_music/domain/models/like.dart';
+import 'package:gibbon_music/domain/models/like_model.dart';
+import 'package:gibbon_music/providers/audio_provider.dart';
+import 'package:yam_api/enums.dart';
+import 'package:yam_api/track/track.dart';
+
+import '../domain/models/queue_model.dart';
 
 class YandexProvider extends ChangeNotifier {
-  Like like;
+  LikeModel likeModel;
+  QueueModel queueModel;
+  AudioProvider? audioProvider;
 
-  YandexProvider({required this.like});
+  YandexProvider({required this.likeModel, required this.queueModel});
 
   bool trackIsLiked(String trackId) {
-    return like.trackIsLiked(trackId: trackId);
+    return likeModel.trackIsLiked(trackId: trackId);
   }
 
   bool playlistIsLiked(String playlistKind, String playlistId) {
-    return like.playlistIsLiked(playlistKind: playlistKind, playlistId: playlistId);
+    return likeModel.playlistIsLiked(playlistKind: playlistKind, playlistId: playlistId);
   }
 
   bool albumIsLiked(String albumId) {
-    return like.albumIsLiked(albumId: albumId);
+    return likeModel.albumIsLiked(albumId: albumId);
   }
 
   bool artistIsLiked(String artistId) {
-    return like.artistIsLiked(artistId: artistId);
+    return likeModel.artistIsLiked(artistId: artistId);
   }
 
   Future trackActionLike(String? trackId) async {
-    await like.trackActionLike(trackId: trackId);
+    await likeModel.trackActionLike(trackId: trackId);
     notifyListeners();
   }
 
   Future playlistActionLike(String? playlistId, String? playlistKind) async {
-    await like.playlistActionLike(playlistId: playlistId, playlistKind: playlistKind);
+    await likeModel.playlistActionLike(playlistId: playlistId, playlistKind: playlistKind);
     notifyListeners();
   }
 
   Future albumActionLike(String? albumId) async {
-    await like.albumActionLike(albumId: albumId);
+    await likeModel.albumActionLike(albumId: albumId);
     notifyListeners();
   }
 
   Future artistActionLike(String? artistId) async {
-    await like.artistActionLike(artistId: artistId);
+    await likeModel.artistActionLike(artistId: artistId);
     notifyListeners();
   }
+
+  Future createQueue(List<Track?>? tracks, int currentIndex, String objectId, ObjectType type) async {
+    await queueModel.createQueue(tracks, currentIndex, objectId, type);
+  }
+
+  updateQueuePosition() {
+
+  }
+
+  Future connectToAudioSystem(AudioProvider provider) async {
+    audioProvider = provider;
+  }
+
 }

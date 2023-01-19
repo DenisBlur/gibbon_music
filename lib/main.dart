@@ -1,7 +1,8 @@
 import 'dart:io' show Platform;
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/domain/models/like.dart';
+import 'package:gibbon_music/domain/models/like_model.dart';
+import 'package:gibbon_music/domain/models/queue_model.dart';
 import 'package:gibbon_music/providers/album_page_provider.dart';
 import 'package:gibbon_music/providers/artist_page_provider.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
@@ -30,9 +31,9 @@ List<SingleChildWidget> _providers = [
   Provider(create: (_) => PageAlbumProvider()),
   Provider(create: (_) => PagePlaylistProvider()),
   ChangeNotifierProvider(
-    create: (context) => YandexProvider(like: Like()),
+    create: (context) => YandexProvider(likeModel: LikeModel(), queueModel: QueueModel()),
   ),
-  ChangeNotifierProvider(create: (_) => PlayListProvider()),
+  ChangeNotifierProvider(create: (context) => PlayListProvider(context.read())),
   ChangeNotifierProvider(
     create: (_) => UxProvider(),
   ),
@@ -102,9 +103,13 @@ class _AppState extends State<App> {
 
 class Load extends StatelessWidget {
   const Load({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    YandexProvider provider = context.read();
+    PlayListProvider pl = context.read();
+    AudioProvider au = context.read();
+    YandexProvider ya = context.read();
+    ya.connectToAudioSystem(au);
     return ContentLoader(
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {

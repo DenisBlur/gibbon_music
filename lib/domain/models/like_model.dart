@@ -4,8 +4,8 @@ import 'package:darq/darq.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:yam_api/enums.dart';
 
-class Like {
-  Like() {
+class LikeModel {
+  LikeModel() {
     init();
   }
 

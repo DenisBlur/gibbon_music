@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
@@ -31,7 +30,6 @@ import 'account/status.dart';
 import 'account/user_settings.dart';
 import 'download_info/download_info.dart';
 import 'landing/chart.dart';
-import 'models/error_model.dart';
 import 'permission_alerts.dart';
 import 'search/search.dart';
 import 'track/track.dart';
@@ -47,11 +45,14 @@ class Client {
   Map<String, String> headers = {};
   Map<String, String> deviceHeaders = {};
 
+  Status account = Status();
+
   Future init({required String token}) async {
     this.token = token;
     device = await _device();
     headers = {'Authorization': 'OAuth $token'};
     await accountStatus().then((value) async {
+      account = value;
       userId = value.account?.uid.toString();
     });
     deviceHeaders = {'Authorization': 'OAuth $token', 'X-Yandex-Music-Device': '$device'};
@@ -258,8 +259,8 @@ class Client {
     ///Действия с отметкой "мне нравится"
 
     var action = remove ? 'remove' : 'add-multiple';
-    var result =
-        await RequestClient(headers: headers).requestPost(url: "/users/$userId/likes/${objectType.name}s/$action?${objectType.name}-ids=$objectId", body: {});
+    var result = await RequestClient(headers: headers)
+        .requestPost(url: "/users/$userId/likes/${objectType.name}s/$action?${objectType.name}-ids=$objectId", body: {});
     return result;
   }
 
@@ -288,31 +289,52 @@ class Client {
   }
 
   Future<QueuesList> getQueuesList() async {
-    ///Получение информации об артисте
+    ///Получение всех очередей треков с разных устройств для синхронизации между ними
     var result = await RequestClient(headers: deviceHeaders).requestGet("/queues");
     return QueuesList.fromJson(jsonDecode(result)["result"]);
   }
 
   Future<QueueItem> getQueue({required String queueId}) async {
-    ///Получение информации об артисте
+    ///Получение информации об очереди треков и самих треков в ней
     var result = await RequestClient(headers: deviceHeaders).requestGet("/queues/$queueId");
     return QueueItem.fromJson(jsonDecode(result)["result"]);
   }
 
-  Future<String> createQueue(List<Track> tracks, int currentIndex) async {
-    ///Получение информации об артисте
-
-    List<Tracks> queueTracks = [];
-    var data = QueueItem(
-      id: const Uuid().v1(),
-      context: MainContext(id: "368836738:1001", description: "Hello", login: "tokar-denis2017", type: "playlist"),
-      initialContext: MainContext(id: "368836738:1001", description: "Hello", login: "tokar-denis2017", type: "playlist"),
-      currentIndex: currentIndex,
-      modified: formatISOTime(DateTime.now()),
-      tracks: queueTracks
-    ).toJson();
-    var result = await RequestClient(headers: deviceHeaders).requestPost(url: "/queues", body: data);
+  Future<String> queueUpdatePosition({required String queueId, required int index}) async {
+    ///Установка текущего индекса проигрываемого трека в очереди треков
+    var result = await RequestClient(headers: deviceHeaders)
+        .requestPost(url: "/queues/$queueId/update-position?isInteractive=false&currentIndex=$index", body: {});
     return result;
+  }
+
+  Future<String> createQueue(List<Track?>? tracks, int currentIndex, String objectId, ObjectType type) async {
+    ///Создание новой очереди треков
+    List<Tracks> queueTracks = [];
+    for (var element in tracks!) {
+      queueTracks.add(Tracks(albumId: element!.albums!.isEmpty ? "" : element.albums!.first.id.toString(),  trackId: element.id, from: "desktop_win-default-album-default"));
+    }
+    var data = QueueItem(
+            id: const Uuid().v1(),
+            initialContext: MainContext(id: userId, description: "Hello", login: "tokar-denis2017", type: type.name),
+            currentIndex: currentIndex,
+            modified: formatISOTime(DateTime.now()),
+            tracks: queueTracks).toJson();
+
+    var result = await RequestClient(headers: deviceHeaders).requestPost(url: "/queues/", body: data);
+    return result;
+  }
+
+  Future<List<Track?>?> getList({required ObjectType type, required List<String?>? list}) async {
+    List<Track?>? returnList = [];
+    String params = list!.join(',');
+    String url = "/${type.name}s?${type.name}-ids=$params";
+    var result = await RequestClient(headers: headers).requestGet(url);
+    var jsonResult = jsonDecode(result);
+    List<dynamic> mapResult = jsonResult["result"];
+    for (var track in mapResult) {
+      returnList.add(Track.fromJson(track));
+    }
+    return returnList;
   }
 
   Future<String> downloadTrack({required String? trackId, QualityTrack quality = QualityTrack.low}) async {
@@ -320,7 +342,7 @@ class Client {
     if (!responseInfo.contains("error")) {
       var jsonResult = jsonDecode(responseInfo);
       var trackInfo = DownloadInfo.fromMap(jsonResult);
-      int downloadIndex = quality.index > trackInfo.result!.length-1 ? trackInfo.result!.length - 1 : quality.index;
+      int downloadIndex = quality.index > trackInfo.result!.length - 1 ? trackInfo.result!.length - 1 : quality.index;
       var response = await http.get(Uri.parse(trackInfo.result![downloadIndex].downloadInfoUrl.toString()), headers: headers);
       if (response.statusCode == 200) {
         final document = XmlDocument.parse(response.body);
@@ -350,4 +372,3 @@ class Client {
 // }
 
 }
-
