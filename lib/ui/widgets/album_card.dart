@@ -48,7 +48,7 @@ class ArtistCard extends StatelessWidget {
     return CardContent(
       uri: artist.ogImage!,
       title: artist.name!,
-      subtitle: artist.genres!.first,
+      subtitle: artist.genres!.isEmpty ? "" : artist.genres!.first,
       onPressed: () {
         AppRouter().gotoArtist(context, artist.id!);
       },
@@ -133,7 +133,7 @@ class CardContent extends StatelessWidget {
                             : 0.95,
                     duration: AppConsts.defaultAnimation,
                     curve: AppConsts.defaultCurve,
-                    child: ImageThumbnail(url: uri!.linkImage(200), width: 186, height: 186, radius: 16),
+                    child: ImageThumbnail(url: uri != null ? uri!.linkImage(200) : AppConsts.imageEmptyLink, width: 186, height: 186, radius: 16),
                   ),
                   FadeInUp(
                     duration: AppConsts.defaultAnimation,
@@ -170,9 +170,9 @@ class CardContent extends StatelessWidget {
               Padding(
                   padding: const EdgeInsets.all(8),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
-                    Text(upTitle!.toUpperCase(), style: AppStyle.upCardHeaderStyle(context)),
-                    Text(title!, style: AppStyle.cardHeaderStyle, maxLines: 1),
-                    Text(subtitle!, style: AppStyle.subTrackHeaderStyle(context)),
+                    Text(upTitle!.toUpperCase(), maxLines: 1, overflow: TextOverflow.clip, style: AppStyle.upCardHeaderStyle(context)),
+                    Text(title!, maxLines: 1, overflow: TextOverflow.clip, style: AppStyle.cardHeaderStyle),
+                    Text(subtitle!, maxLines: 1, overflow: TextOverflow.clip, style: AppStyle.subTrackHeaderStyle(context)),
                   ]))
             ],
           ),

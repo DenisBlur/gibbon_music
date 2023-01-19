@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/domain/models/like_model.dart';
 import 'package:gibbon_music/domain/models/queue_model.dart';
+import 'package:gibbon_music/domain/models/search_model.dart';
 import 'package:gibbon_music/providers/album_page_provider.dart';
 import 'package:gibbon_music/providers/artist_page_provider.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
@@ -10,6 +11,7 @@ import 'package:gibbon_music/providers/landing_provider.dart';
 import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/providers/playlist_page_provider.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
+import 'package:gibbon_music/providers/search_provider.dart';
 import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
@@ -31,7 +33,12 @@ List<SingleChildWidget> _providers = [
   Provider(create: (_) => PageArtistProvider()),
   Provider(create: (_) => PageAlbumProvider()),
   Provider(create: (_) => PagePlaylistProvider()),
-  ChangeNotifierProvider(create: (_) => ThemeProvider(),),
+  ChangeNotifierProvider(
+    create: (_) => SearchProvider(searchModel: SearchModel()),
+  ),
+  ChangeNotifierProvider(
+    create: (_) => ThemeProvider(),
+  ),
   ChangeNotifierProvider(
     create: (context) => YandexProvider(likeModel: LikeModel(), queueModel: QueueModel()),
   ),

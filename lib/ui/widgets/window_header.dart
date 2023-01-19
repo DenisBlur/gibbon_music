@@ -42,7 +42,9 @@ class WindowHeader extends StatelessWidget {
                           )))),
               setting ? IconButton(icon: const Icon(m.Icons.settings, size: 18), onPressed: () async {}) : const SizedBox(),
               AppConsts.defaultHSpacer,
-              HeaderButton(onPressed: () {}, icon: m.Icons.search_rounded, showHide: false),
+              HeaderButton(onPressed: () {
+                AppRouter().gotoSearch(context);
+              }, icon: m.Icons.search_rounded, showHide: true),
               AppConsts.smallHSpacer,
               IconButton(
                   icon: const Icon(m.Icons.minimize_rounded, size: 18),

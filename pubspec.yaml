@@ -21,6 +21,7 @@ dependencies:
   animate_do: ^3.0.2
   flutter_improved_scrolling: ^0.0.3
   darq: ^1.2.1
+  flutter_sticky_header: ^0.6.5
   yam_api:
     path: yam_api
   event: any

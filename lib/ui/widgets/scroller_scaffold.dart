@@ -51,6 +51,7 @@ class ScaffoldScroller extends StatelessWidget {
         ),
       );
     }
+
     paddingSlivers.add(const SliverToBoxAdapter(
       child: SizedBox(height: AppConsts.playerHeight + 16),
     ));
