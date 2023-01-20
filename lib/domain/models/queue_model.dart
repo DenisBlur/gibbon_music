@@ -25,7 +25,7 @@ class QueueModel {
       var queue = await client.getQueue(queueId: value.queues![0].id.toString());
       List<String?>? tracksIds = queue.tracks?.select((element, _) => element.trackId).toList();
       List<Track?>? tracks = await client.getList(type: ObjectType.track, list: tracksIds);
-      onSyncDevice.broadcast(QueueSync(tracks, queue.currentIndex!.toInt()));
+      //onSyncDevice.broadcast(QueueSync(tracks, queue.currentIndex!.toInt()));
       ///TODO:реализовать в будущем
       //createQueue(tracks, queue.currentIndex!.toInt(), "album", ObjectType.album);
     });

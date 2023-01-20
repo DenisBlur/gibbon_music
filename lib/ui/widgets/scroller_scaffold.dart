@@ -35,12 +35,14 @@ class ScaffoldScroller extends StatelessWidget {
       ));
     }
 
-    paddingSlivers.insert(
-      0,
-      const SliverToBoxAdapter(
-        child: SizedBox(height: AppConsts.windowHeader),
-      ),
-    );
+    if(Platform.isWindows) {
+      paddingSlivers.insert(
+        0,
+        const SliverToBoxAdapter(
+          child: SizedBox(height: AppConsts.windowHeader),
+        ),
+      );
+    }
 
     if (scrollHeaderModel != null) {
       paddingSlivers.insert(
@@ -61,7 +63,7 @@ class ScaffoldScroller extends StatelessWidget {
         slivers: paddingSlivers);
 
     return Padding(
-      padding: EdgeInsets.only(left: 60, right: 60),
+      padding: Platform.isWindows ? EdgeInsets.only(left: 60, right: 60) : EdgeInsets.zero,
       child: ImprovedScrolling(
         scrollController: controller,
         enableCustomMouseWheelScrolling: true,

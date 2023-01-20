@@ -101,7 +101,7 @@ class _AppState extends State<App> {
         return FluentApp(
           debugShowCheckedModeBanner: false,
           showSemanticsDebugger: false,
-          home: const Load(),
+          home: const SafeArea(child: Load(),),
           theme: context.watch<ThemeProvider>().theme,
           color: context.watch<ThemeProvider>().accentColor,
         );
@@ -115,10 +115,7 @@ class Load extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PlayListProvider pl = context.read();
-    AudioProvider au = context.read();
     YandexProvider ya = context.read();
-    ya.connectToAudioSystem(au);
     return ContentLoader(
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {

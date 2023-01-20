@@ -16,6 +16,7 @@ class PlayListProvider extends ChangeNotifier {
     yandexProvider.queueModel.onSyncDevice.subscribe((args) {
       setPlaylist(args!.tracks);
       setCurrentTrack(args.currentIndex!.toInt());
+      print("SYNC!");
     });
   }
 

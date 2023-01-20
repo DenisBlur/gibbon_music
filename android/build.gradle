@@ -29,7 +29,3 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-dependencies {
-    implementation 'org.jetbrains:annotations:15.0'
-}

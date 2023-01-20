@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
@@ -11,7 +14,9 @@ import 'package:yam_api/track/track.dart';
 import '../../../providers/audio_provider.dart';
 
 class PlayerMainControl extends StatelessWidget {
-  const PlayerMainControl({Key? key}) : super(key: key);
+  const PlayerMainControl({Key? key, this.animationCoef}) : super(key: key);
+
+  final double? animationCoef;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +27,12 @@ class PlayerMainControl extends StatelessWidget {
 
     double position = 0.0;
 
-    return SizedBox(
-      width: pageSize.width / 2.5,
+    double? coef = animationCoef ?? 0;
+
+    double y = lerpDouble(126, 0, coef)!.toDouble();
+
+    return Transform.translate(offset: Offset(0, Platform.isAndroid ? y : 0), child: SizedBox(
+      width: pageSize.width / (Platform.isWindows ? 2.5 : 1),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -105,6 +114,6 @@ class PlayerMainControl extends StatelessWidget {
               }),
         ],
       ),
-    );
+    ),);
   }
 }

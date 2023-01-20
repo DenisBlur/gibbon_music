@@ -1,10 +1,7 @@
-import 'package:animate_do/animate_do.dart' as ad;
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/providers/search_provider.dart';
-import 'package:gibbon_music/ui/controls/buttons.dart';
 import 'package:gibbon_music/ui/widgets/card_view.dart';
 import 'package:gibbon_music/ui/widgets/scroller_scaffold.dart';
 import 'package:gibbon_music/ui/widgets/track_card.dart';
@@ -22,7 +19,7 @@ class PageSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = TextEditingController();
+    final TextEditingController controller = TextEditingController();
     return ScaffoldPage(
         padding: EdgeInsets.zero,
         content: Consumer<SearchProvider>(builder: (_, search, __) {
@@ -130,7 +127,7 @@ class PageSearch extends StatelessWidget {
                         )),
                     onPressed: () {
                       search.getSearch(search.suggest.suggestions![i]);
-                      _controller.text = search.suggest.suggestions![i];
+                      controller.text = search.suggest.suggestions![i];
                     },
                   ),
                   childCount: search.suggest.suggestions!.length,
@@ -148,7 +145,7 @@ class PageSearch extends StatelessWidget {
                     height: 60.0,
                     alignment: Alignment.centerLeft,
                     child: TextBox(
-                      controller: _controller,
+                      controller: controller,
                       onChanged: (value) {
                         search.getSuggest(value);
                       },

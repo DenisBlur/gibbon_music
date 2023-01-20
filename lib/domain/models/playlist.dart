@@ -35,10 +35,9 @@ class Playlist {
     _tracks = value;
     _loopStrategy.size = value!.length;
     _trackIds.clear();
-    _trackIds.length = value.length;
-
+    _trackIds = value.select((_, index) => index).toList();
+    //TODO: Not work _trackIds.length = value.length;
     currentTrackIndex = 0;
-
     _sortTracks();
   }
 
@@ -89,7 +88,6 @@ class Playlist {
 
   void addTrackAfterCurrent(Track track) {
     int index = _trackIds.length;
-
     _trackIds = _trackIds.select((element, _) => element <= currentTrackIndex ? element : element + 1).toList();
     _trackIds.add(_trackIds.length);
     _trackIds[index] = currentTrackIndex + 1;

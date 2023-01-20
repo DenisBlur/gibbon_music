@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fluent_ui/fluent_ui.dart';
 
 class AppConsts {
@@ -26,5 +28,5 @@ class AppConsts {
   static const SizedBox bigVSpacer = SizedBox(height: 32,);
 
   static const Expanded fillSpacer = Expanded(child: SizedBox());
-  static const EdgeInsets pageInsets = EdgeInsets.symmetric(horizontal: 16);
+  static EdgeInsets pageInsets = EdgeInsets.symmetric(horizontal: Platform.isWindows ? 16 : 8);
 }

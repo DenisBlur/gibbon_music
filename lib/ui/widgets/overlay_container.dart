@@ -10,24 +10,29 @@ import '../../constants/ui_consts.dart';
 import '../../providers/audio_provider.dart';
 
 class OverlayContainer extends StatelessWidget {
-  const OverlayContainer({Key? key,}) : super(key: key);
+  const OverlayContainer({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     AudioProvider audioProvider = context.read();
     audioProvider.init();
-    return Stack(
+    return SafeArea(child: Stack(
       children: [
-        const WindowHeader(setting: false),
-        const Positioned(bottom: 0, right: 0, left: 0, child: PlayerMain()),
-        const Positioned(top: AppConsts.windowHeader , bottom: AppConsts.playerHeight, left: 0, child: DrawerWidget()),
-        Positioned(
-          top: AppConsts.windowHeader,
-          height: MediaQuery.of(context).size.height - (AppConsts.playerHeight + (AppConsts.windowHeader)),
-          right: 0,
-          child: const PlaylistWidget(),
-        ),
+        Platform.isWindows ? const WindowHeader(setting: false) : const SizedBox(),
+        const Align(alignment: Alignment.bottomCenter, child: PlayerMain()),
+        Platform.isWindows
+            ? const Positioned(top: AppConsts.windowHeader, bottom: AppConsts.playerHeight, left: 0, child: DrawerWidget())
+            : const SizedBox(),
+        Platform.isWindows
+            ? Positioned(
+            top: AppConsts.windowHeader,
+            height: MediaQuery.of(context).size.height - (AppConsts.playerHeight + (AppConsts.windowHeader)),
+            right: 0,
+            child: const PlaylistWidget())
+            : const SizedBox(),
       ],
-    );
+    ),);
   }
 }
