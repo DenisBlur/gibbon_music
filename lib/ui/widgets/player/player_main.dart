@@ -76,7 +76,7 @@ class _PlayerMainState extends State<PlayerMain> {
                   color: FluentTheme
                       .of(context)
                       .cardColor
-                      .withOpacity(.4),
+                      .withOpacity(Platform.isAndroid ? 1 : .4),
                   child: Stack(
                       children: [
                       PlayerInfo(animationCoef: coefAnimation),
@@ -158,12 +158,12 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
           width: wWidth,
           duration: AppConsts.defaultAnimation,
           curve: AppConsts.defaultCurve,
-          padding: const EdgeInsets.only(left: 16, right: 16),
+          padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
           height: height,
           decoration: BoxDecoration(
               color: FluentTheme
                   .of(context)
-                  .cardColor,
+                  .scaffoldBackgroundColor,
               borderRadius: const BorderRadius.only(topRight: Radius.circular(16), topLeft: Radius.circular(16))),
           child: ListView.builder(
             itemBuilder: (context, index) => Padding(padding: const EdgeInsets.only(bottom: 8), child: TrackCard(

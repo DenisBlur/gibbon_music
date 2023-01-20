@@ -27,7 +27,7 @@ class PageAlbum extends StatelessWidget {
     PageAlbumProvider albumProvider = context.read();
     albumProvider.dispose();
 
-    return ScaffoldPage(
+    return  SafeArea(child: ScaffoldPage(
         padding: const EdgeInsets.all(0),
         content: ContentLoader(
           future: albumProvider.init(id),
@@ -68,7 +68,7 @@ class PageAlbum extends StatelessWidget {
               return const LoadingRing();
             }
           },
-        ));
+        )));
   }
 }
 

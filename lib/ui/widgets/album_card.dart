@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -130,7 +132,7 @@ class CardContent extends StatelessWidget {
                         ? 0.9
                         : state.isHovering
                             ? 0.98
-                            : 0.95,
+                            : Platform.isAndroid ? 1 : 0.95,
                     duration: AppConsts.defaultAnimation,
                     curve: AppConsts.defaultCurve,
                     child: ImageThumbnail(url: uri != null ? uri!.linkImage(200) : AppConsts.imageEmptyLink, width: 186, height: 186, radius: 16),

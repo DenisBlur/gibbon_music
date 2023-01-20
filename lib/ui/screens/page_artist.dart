@@ -27,7 +27,7 @@ class PageArtist extends StatelessWidget {
     PageArtistProvider artistProvider = context.read();
     artistProvider.dispose();
 
-    return ScaffoldPage(
+    return SafeArea(child: ScaffoldPage(
         padding: const EdgeInsets.all(0),
         content: ContentLoader(
           future: artistProvider.init(artistId),
@@ -82,6 +82,6 @@ class PageArtist extends StatelessWidget {
               return const LoadingRing();
             }
           },
-        ));
+        )));
   }
 }

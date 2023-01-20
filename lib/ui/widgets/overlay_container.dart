@@ -20,10 +20,10 @@ class OverlayContainer extends StatelessWidget {
     audioProvider.init();
     return SafeArea(child: Stack(
       children: [
-        Platform.isWindows ? const WindowHeader(setting: false) : const SizedBox(),
+        const WindowHeader(setting: false),
         const Align(alignment: Alignment.bottomCenter, child: PlayerMain()),
         Platform.isWindows
-            ? const Positioned(top: AppConsts.windowHeader, bottom: AppConsts.playerHeight, left: 0, child: DrawerWidget())
+            ? Positioned(top: AppConsts.windowHeader, bottom: AppConsts.playerHeight, left: 0, child: DrawerWidget())
             : const SizedBox(),
         Platform.isWindows
             ? Positioned(

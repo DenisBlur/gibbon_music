@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
@@ -25,7 +27,7 @@ class PageLanding extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) => context.read<NavigatorProvider>().showOverlay(context));
     landingProvider.dispose();
 
-    return ScaffoldPage(
+    return SafeArea(child: ScaffoldPage(
         resizeToAvoidBottomInset: true,
         padding: const EdgeInsets.all(0),
         content: ContentLoader(
@@ -36,7 +38,10 @@ class PageLanding extends StatelessWidget {
                 slivers: [
                   SliverToBoxAdapter(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      AppConsts.defaultVSpacer,
                       const Text("Вы недавно слушали", style: AppStyle.header1Style),
                       AppConsts.defaultVSpacer,
                       PlayContextSection(
@@ -48,8 +53,8 @@ class PageLanding extends StatelessWidget {
                   )),
                   const SliverToBoxAdapter(child: AppConsts.defaultVSpacer),
                   SliverGrid(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, mainAxisExtent: 56, crossAxisSpacing: 8, mainAxisSpacing: 8),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: Platform.isAndroid ? 1 : 2, mainAxisExtent: 56, crossAxisSpacing: 8, mainAxisSpacing: 8),
                       delegate: SliverChildBuilderDelegate(
                           (context, index) => TrackCard(
                                 track: landingProvider.chart[index],
@@ -68,7 +73,7 @@ class PageLanding extends StatelessWidget {
               return const LoadingRing();
             }
           },
-        ));
+        )));
   }
 }
 

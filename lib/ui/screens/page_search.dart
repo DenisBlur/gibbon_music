@@ -20,7 +20,7 @@ class PageSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController controller = TextEditingController();
-    return ScaffoldPage(
+    return SafeArea(child: ScaffoldPage(
         padding: EdgeInsets.zero,
         content: Consumer<SearchProvider>(builder: (_, search, __) {
           List<Widget> lists = [];
@@ -160,7 +160,7 @@ class PageSearch extends StatelessWidget {
             ],
             padding: AppConsts.pageInsets,
           );
-        }));
+        })));
   }
 }
 

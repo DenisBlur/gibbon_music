@@ -19,59 +19,64 @@ class WindowHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = FluentTheme.of(context);
-
     return Consumer<NavigatorProvider>(
-      builder: (_, provider, __) => ClipRRect(
-        child: Container(
-          height: AppConsts.windowHeader,
-          color: theme.scaffoldBackgroundColor,
-          child: Row(
-            children: [
-              HeaderButton(onPressed: () => AppRouter().tryPop(context), icon: m.Icons.arrow_back_rounded, showHide: provider.navigationCanBack),
-              AppConsts.smallHSpacer,
-              const Expanded(
-                  child: DragToMoveArea(
-                      child: SizedBox(
-                          height: AppConsts.windowHeader,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              AppConsts.appTitle,
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                          )))),
-              setting ? IconButton(icon: const Icon(m.Icons.settings, size: 18), onPressed: () async {}) : const SizedBox(),
-              AppConsts.defaultHSpacer,
-              HeaderButton(onPressed: () {
-                AppRouter().gotoSearch(context);
-              }, icon: m.Icons.search_rounded, showHide: true),
-              AppConsts.smallHSpacer,
-              IconButton(
-                  icon: const Icon(m.Icons.minimize_rounded, size: 18),
-                  onPressed: () async {
-                    await windowManager.minimize();
-                  }),
-              AppConsts.smallHSpacer,
-              IconButton(
-                  icon: const Icon(m.Icons.check_box_outline_blank_rounded, size: 18),
-                  onPressed: () async {
-                    if (await windowManager.isMaximized()) {
-                      await windowManager.unmaximize();
-                    } else {
-                      await windowManager.maximize();
-                    }
-                  }),
-              AppConsts.smallHSpacer,
-              IconButton(
-                  icon: const Icon(m.Icons.close_rounded, size: 18),
-                  onPressed: () {
-                    exit(0);
-                  }),
-              AppConsts.smallHSpacer,
-            ],
+      builder: (_, provider, __) {
+        List<Widget> row = [];
+        row.add(HeaderButton(onPressed: () => AppRouter().tryPop(context), icon: m.Icons.arrow_back_rounded, showHide: provider.navigationCanBack),);
+        row.add(AppConsts.smallHSpacer,);
+        row.add(Expanded(
+            child: DragToMoveArea(
+                child: SizedBox(
+                    height: AppConsts.windowHeader,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        Platform.isAndroid ? "" : AppConsts.appTitle,
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    )))),);
+        row.add(AppConsts.defaultHSpacer,);
+        row.add(HeaderButton(onPressed: () {AppRouter().gotoSearch(context);}, icon: m.Icons.search_rounded, showHide: true),);
+        row.add(AppConsts.smallHSpacer,);
+        if(!Platform.isAndroid) {
+          row.add(IconButton(
+            icon: const Icon(m.Icons.minimize_rounded, size: 18),
+            onPressed: () async {
+              await windowManager.minimize();
+            }),);
+        }
+        if(!Platform.isAndroid) row.add(AppConsts.smallHSpacer,);
+        if(!Platform.isAndroid) {
+          row.add(IconButton(
+            icon: const Icon(m.Icons.check_box_outline_blank_rounded, size: 18),
+            onPressed: () async {
+              if (await windowManager.isMaximized()) {
+                await windowManager.unmaximize();
+              } else {
+                await windowManager.maximize();
+              }
+            }),);
+        }
+        if(!Platform.isAndroid)row.add(AppConsts.smallHSpacer,);
+        if(!Platform.isAndroid) {
+          row.add(IconButton(
+            icon: const Icon(m.Icons.close_rounded, size: 18),
+            onPressed: () {
+              exit(0);
+            }),);
+        }
+        if(!Platform.isAndroid)row.add(AppConsts.smallHSpacer,);
+
+        return ClipRRect(
+          child: Container(
+            height: AppConsts.windowHeader,
+            color: Platform.isAndroid ? theme.cardColor : theme.scaffoldBackgroundColor,
+            child: Row(
+              children: row,
+            ),
           ),
-        ),
-      ),
+        );
+      }
     );
   }
 }
@@ -85,17 +90,20 @@ class HeaderButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    double iconSize = Platform.isAndroid ? 26 : 18;
+
     return AnimatedContainer(
       margin: EdgeInsets.only(
         left: 8,
         right: showHide ? 8 : 0,
       ),
-      width: showHide ? 32 : 0,
+      width: showHide ? iconSize * 2 : 0,
       duration: AppConsts.defaultAnimation,
       curve: Curves.fastLinearToSlowEaseIn,
       child: ClipRRect(
         child: IconButton(
-            icon: Icon(icon, size: 18),
+            icon: Icon(icon, size: Platform.isAndroid ? 26 : 18),
             onPressed: () {
               onPressed();
             }),

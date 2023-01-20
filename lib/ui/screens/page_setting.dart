@@ -14,7 +14,7 @@ class PageSetting extends StatelessWidget {
     String accName = client.account.account!.displayName.toString();
     String accLogin = client.account.account!.login.toString();
     bool? hasPlus = client.account.plus!.hasPlus;
-    return ScaffoldPage(
+    return SafeArea(child: ScaffoldPage(
         padding: EdgeInsets.zero,
         content: ScaffoldScroller(
           padding: AppConsts.pageInsets,
@@ -32,16 +32,16 @@ class PageSetting extends StatelessWidget {
                 AppConsts.smallHSpacer,
                 hasPlus == true
                     ? Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                        decoration: BoxDecoration(
-                            color: FluentTheme.of(context).accentColor,
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(.2), width: .6)),
-                        child: const Text(
-                          "PLUS",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      )
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  decoration: BoxDecoration(
+                      color: FluentTheme.of(context).accentColor,
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(.2), width: .6)),
+                  child: const Text(
+                    "PLUS",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                )
                     : const SizedBox(),
               ],
             )),
@@ -59,27 +59,31 @@ class PageSetting extends StatelessWidget {
             const Adapter(
               AppConsts.defaultVSpacer,
             ),
-            Adapter(Row(
-              children: const [
-                ThemeCard(
-                  themeType: ThemeType.lightColor,
-                ),
-                AppConsts.smallHSpacer,
-                ThemeCard(
-                  themeType: ThemeType.darkColor,
-                ),
-                AppConsts.smallHSpacer,
-                ThemeCard(
-                  themeType: ThemeType.lightNoColor,
-                ),
-                AppConsts.smallHSpacer,
-                ThemeCard(
-                  themeType: ThemeType.darkNoColor,
-                ),
-              ],
+            Adapter(SizedBox(
+              height: 100,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: const [
+                  ThemeCard(
+                    themeType: ThemeType.lightColor,
+                  ),
+                  AppConsts.smallHSpacer,
+                  ThemeCard(
+                    themeType: ThemeType.darkColor,
+                  ),
+                  AppConsts.smallHSpacer,
+                  ThemeCard(
+                    themeType: ThemeType.lightNoColor,
+                  ),
+                  AppConsts.smallHSpacer,
+                  ThemeCard(
+                    themeType: ThemeType.darkNoColor,
+                  ),
+                ],
+              ),
             )),
           ],
-        ));
+        )));
   }
 }
 
@@ -117,7 +121,11 @@ class ThemeCard extends StatelessWidget {
         return AnimatedContainer(
             width: 150,
             height: 100,
-            padding: EdgeInsets.all(theme.themeType == themeType ? 4 :state.isHovering ? 4 : 0),
+            padding: EdgeInsets.all(theme.themeType == themeType
+                ? 4
+                : state.isHovering
+                    ? 4
+                    : 0),
             duration: AppConsts.defaultAnimation,
             curve: AppConsts.defaultCurve,
             decoration: BoxDecoration(
@@ -128,9 +136,7 @@ class ThemeCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(4),
               child: Container(
                 decoration: BoxDecoration(color: themeData.scaffoldBackgroundColor),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
+                child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                   Container(
                     height: 10,
                     decoration: BoxDecoration(color: themeData.cardColor),

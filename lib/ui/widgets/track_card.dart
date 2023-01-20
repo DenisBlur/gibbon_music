@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/constants/ui_consts.dart';
@@ -68,19 +70,22 @@ class TrackCard extends StatelessWidget {
             ],
           ),
           AppConsts.defaultHSpacer,
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                track.title.toString(),
-                maxLines: 1,
-                style: AppStyle.trackHeaderStyle,
-              ),
-              ArtistsListWidgets(
-                mInnerArtistList: track.artists,
-              )
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  track.title.toString(),
+                  maxLines: 1,
+                  style: AppStyle.trackHeaderStyle,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                ArtistsListWidgets(
+                  mInnerArtistList: track.artists,
+                )
+              ],
+            ),
           ),
           AppConsts.fillSpacer,
           TrackCommandBar(isLike: isLike, id: track.id),
@@ -98,40 +103,11 @@ class ArtistsListWidgets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> artistButtonList = [];
-    String fullTitle = "";
+    List<String> artistButtonList = [];
 
-    for (int i = 0; i < mInnerArtistList!.length; i++) {
-      String title = "";
-      var element = mInnerArtistList![i];
-      if (i == 0) {
-        title = element.name!;
-        fullTitle = element.name!;
-      } else {
-        title = ", ${element.name!}";
-        fullTitle = fullTitle + title;
-      }
-      artistButtonList.add(GTextButton(
-        onPressed: () {
-          if (fullTitle.length > 20) Navigator.pop(context);
-          AppRouter().gotoArtist(context, element.id);
-        },
-        title: title,
-      ));
-    }
+    artistButtonList = mInnerArtistList!.select((element, index) => element.name.toString()).toList();
 
-    if (fullTitle.length > 20) {
-      fullTitle = "${fullTitle.substring(0, 17)}...";
-      return GestureDetector(
-          onTapDown: (details) {
-            AppContext.showContext(context, details, artistButtonList);
-          },
-          child: GTextButton(onPressed: () {}, title: fullTitle));
-    } else {
-      return Row(
-        children: artistButtonList,
-      );
-    }
+    return GTextButton(onPressed: () {}, title: artistButtonList.join(","));
   }
 }
 
@@ -143,7 +119,6 @@ class TrackCommandBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     likeAction() async {
       await context.read<YandexProvider>().trackActionLike(id.toString());
     }
@@ -156,14 +131,6 @@ class TrackCommandBar extends StatelessWidget {
           },
           icon: isLike ? m.Icons.favorite : m.Icons.favorite_border_rounded,
           iconColor: isLike ? FluentTheme.of(context).accentColor : Colors.transparent,
-        ),
-        AppConsts.smallHSpacer,
-        GestureDetector(
-          onTapDown: (details) => AppContext.showContext(context, details, [const Text("Hello!")]),
-          child: GIconButton(
-            onPressed: () {},
-            icon: m.Icons.more_horiz_rounded,
-          ),
         ),
         AppConsts.defaultHSpacer,
       ],

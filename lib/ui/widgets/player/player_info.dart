@@ -25,8 +25,8 @@ class PlayerInfo extends StatelessWidget {
     double? coef = animationCoef ?? 0;
     var page = MediaQuery.of(context).size;
 
-    double x = lerpDouble(-60, -16, coef)!.toDouble();
-    double y = lerpDouble(0, 16, coef)!.toDouble();
+    double x = lerpDouble(-60, 0, coef)!.toDouble();
+    double y = lerpDouble(0, 32, coef)!.toDouble();
 
     return Stack(
       children: [
@@ -47,7 +47,7 @@ class PlayerInfo extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [Text(track.title!), ArtistsListWidgets(mInnerArtistList: track.artists!)],
+          children: [Text(track.title!, style: TextStyle(fontSize: lerpDouble(14, 18, coef)!.toDouble()),), ArtistsListWidgets(mInnerArtistList: track.artists!)],
         ),),
       ],
     );

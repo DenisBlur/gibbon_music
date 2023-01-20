@@ -29,7 +29,7 @@ class PagePlaylist extends StatelessWidget {
     PagePlaylistProvider pagePlaylistProvider = context.read();
     pagePlaylistProvider.dispose();
 
-    return ScaffoldPage(
+    return SafeArea(child:ScaffoldPage(
         padding: const EdgeInsets.all(0),
         content: ContentLoader(
           future: pagePlaylistProvider.init(id, kind),
@@ -64,7 +64,7 @@ class PagePlaylist extends StatelessWidget {
               return const LoadingRing();
             }
           },
-        ));
+        )));
   }
 }
 

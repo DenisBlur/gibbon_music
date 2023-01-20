@@ -35,14 +35,12 @@ class ScaffoldScroller extends StatelessWidget {
       ));
     }
 
-    if(Platform.isWindows) {
       paddingSlivers.insert(
         0,
-        const SliverToBoxAdapter(
+        SliverToBoxAdapter(
           child: SizedBox(height: AppConsts.windowHeader),
         ),
       );
-    }
 
     if (scrollHeaderModel != null) {
       paddingSlivers.insert(
@@ -59,18 +57,18 @@ class ScaffoldScroller extends StatelessWidget {
     ));
     Widget content = CustomScrollView(
         controller: controller,
-        physics: Platform.isAndroid ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
+        physics: Platform.isAndroid ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
         slivers: paddingSlivers);
 
     return Padding(
-      padding: Platform.isWindows ? EdgeInsets.only(left: 60, right: 60) : EdgeInsets.zero,
+      padding: Platform.isWindows ? const EdgeInsets.only(left: 60, right: 60) : EdgeInsets.zero,
       child: ImprovedScrolling(
         scrollController: controller,
         enableCustomMouseWheelScrolling: true,
         customMouseWheelScrollConfig: const CustomMouseWheelScrollConfig(
           scrollAmountMultiplier: AppConsts.scrollMultiplier,
         ),
-        child: FadeInUp(delay: Duration(milliseconds: 250), child: content),
+        child: FadeInUp(delay: AppConsts.fastAnimation, child: content),
       ),
     );
   }
@@ -97,6 +95,8 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
     String? title, image, imageBg, upTitle;
     Widget dynamicContent = const Text("none");
 
+    double coef = (shrinkOffset / expandedHeight);
+
     if (pageModel != null) {
       if (pageModel is Artist) {
         artist = pageModel;
@@ -106,7 +106,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
         upTitle = "Исполнитель";
         dynamicContent = Text(
           "${artist.stats!.lastMonthListeners.toString().spaceSeparateNumbers()} слушателя за месяц",
-          style: TextStyle(fontSize: 14 - (shrinkOffset).clamp(0, 14), color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
+          style: TextStyle(fontSize: lerpDouble(14, 0, coef), color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
         );
       }
       if (pageModel is Album) {
@@ -118,7 +118,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
           children: [
             Text(
               "Исполнитель: ",
-              style: TextStyle(fontSize: 14 - (shrinkOffset).clamp(0, 14), color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
+              style: TextStyle(fontSize: lerpDouble(14, 0, coef), color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
             ),
             GTextButton(
                 onPressed: () {
@@ -135,7 +135,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
         upTitle = "Плейлист";
         dynamicContent = Text(
           "Создатель: ${playlist.owner!.name}",
-          style: TextStyle(fontSize: 14 - (shrinkOffset).clamp(0, 14), color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
+          style: TextStyle(fontSize: lerpDouble(14, 0, coef), color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
         );
       }
     }
@@ -146,9 +146,9 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
           child: Stack(
             children: [
               Opacity(
-                opacity: 1 - (shrinkOffset / expandedHeight),
-                child: Transform.scale(
-                  scaleY: .99,
+                opacity: 1 - coef,
+                child: Transform.translate(
+                  offset: Offset(0, -2),
                   child: SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: expandedHeight,
@@ -176,8 +176,8 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                     children: [
                       image != null
                           ? SizedBox(
-                              width: (expandedHeight/shrinkOffset*40).clamp(40, 100),
-                              height: (expandedHeight/shrinkOffset*40).clamp(40, 100),
+                              width: lerpDouble(100, 40, coef),
+                              height: lerpDouble(100, 40, coef),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
                                 child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: image),
@@ -194,7 +194,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                             child: Text(
                               upTitle!,
                               style: TextStyle(
-                                  fontSize: (14 - shrinkOffset).clamp(0, 14), color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
+                                  fontSize: lerpDouble(14, 0, coef), color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
                             ),
                           ),
                           Text(
