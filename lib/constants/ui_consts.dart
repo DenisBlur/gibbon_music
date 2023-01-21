@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gibbon_music/ui/utils/ui_utils.dart';
 
 class AppConsts {
   AppConsts._();
@@ -14,7 +15,7 @@ class AppConsts {
 
   static const Curve defaultCurve = Curves.fastLinearToSlowEaseIn;
 
-  static double windowHeader =  Platform.isAndroid ? 56 : 48;
+  static double windowHeader = 48;
   static const double scrollMultiplier = 25;
   static const double playerHeight = 100;
   static const double cardHeight = 258;
@@ -28,5 +29,5 @@ class AppConsts {
   static const SizedBox bigVSpacer = SizedBox(height: 32,);
 
   static const Expanded fillSpacer = Expanded(child: SizedBox());
-  static EdgeInsets pageInsets = EdgeInsets.symmetric(horizontal:  16);
+  static EdgeInsets pageInsets = const EdgeInsets.symmetric(horizontal:  16);
 }

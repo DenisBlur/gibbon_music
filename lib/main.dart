@@ -61,7 +61,7 @@ Future<void> main() async {
 
     ///Убираем TitleBar, ставим минимальный размер приложения и центрируем
     WindowOptions windowOptions = const WindowOptions(
-      minimumSize: Size(800, 400),
+      minimumSize: Size(100, 100),
       center: true,
       size: Size(1280, 720),
       skipTaskbar: false,
