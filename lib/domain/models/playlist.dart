@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:collection';
+
 import 'package:darq/darq.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gibbon_music/domain/interfaces/iplaylist_loop_strategy.dart';
 import 'package:gibbon_music/domain/models/loop_strategy/loop_strategies.dart';
 import 'package:yam_api/track/track.dart';
@@ -27,7 +31,9 @@ class Playlist {
 
   IPlaylistLoopStrategy get loopStrategy => _loopStrategy;
 
-  List<Track?>? get queue => _tracks!.isEmpty ? [] : _trackIds.select((element, _) => _tracks![element]).toList();
+  List<Track?>? get queue => _tracks!.isEmpty
+      ? []
+      : _trackIds.select((element, _) => _tracks![element]).toList();
 
   List<Track?>? get tracks => _tracks;
 
@@ -41,7 +47,8 @@ class Playlist {
     _sortTracks();
   }
 
-  Track? get currentTrack => _tracks!.isEmpty ? null : _tracks![_trackIds[currentTrackIndex]];
+  Track? get currentTrack =>
+      _tracks!.isEmpty ? null : _tracks![_trackIds[currentTrackIndex]];
 
   bool nextTrack() => _loopStrategy.next();
 
@@ -81,14 +88,20 @@ class Playlist {
     int removedIndex = _trackIds[index];
     _trackIds.removeAt(index);
 
-    _trackIds = _trackIds.select(((element, index) => element < removedIndex ? element : element - 1)).toList();
+    _trackIds = _trackIds
+        .select(((element, index) =>
+            element < removedIndex ? element : element - 1))
+        .toList();
 
     currentTrackIndex--;
   }
 
   void addTrackAfterCurrent(Track track) {
     int index = _trackIds.length;
-    _trackIds = _trackIds.select((element, _) => element <= currentTrackIndex ? element : element + 1).toList();
+    _trackIds = _trackIds
+        .select((element, _) =>
+            element <= currentTrackIndex ? element : element + 1)
+        .toList();
     _trackIds.add(_trackIds.length);
     _trackIds[index] = currentTrackIndex + 1;
 
@@ -127,4 +140,121 @@ class Playlist {
     _trackIds.shuffle();
     _shuffled = true;
   }
+}
+
+class NewPlaylist with ChangeNotifier {
+  NewPlaylist();
+
+  final List<Track?> _tracks = [];
+  final List<int> _ids = [];
+
+  bool _shuffled = false;
+
+  IPlaylistLoopStrategy _loop = PlaylistLoopStrategy();
+
+  //region Events
+
+  final _onPlaylistUpdateController = StreamController();
+  final _onTrackChangeController = StreamController();
+
+  //endregion
+
+  //region setters
+
+  set shuffle(bool value) {
+    if (value == _shuffled) return;
+
+    if (value) {
+      _shuffle();
+    } else {
+      _sortIndexes();
+    }
+
+    _onPlaylistUpdateController.add(true);
+    _shuffled = value;
+  }
+
+  set loopStrategy(IPlaylistLoopStrategy value) {
+    int currentIndex = _loop.currentIndex;
+    _loop = value;
+    _loop.currentIndex = currentIndex < _tracks.length ? currentIndex : 0;
+    _loop.size = _tracks.length;
+    notifyListeners();
+  }
+
+  set tracks(List<Track?>? tracks) {
+    _tracks.clear();
+    _tracks.addAll(tracks!);
+
+    currentTrackIndex = 0;
+    _loop.size = _tracks.length;
+
+    _indexing();
+
+    // launch events
+    _onPlaylistUpdateController.add(true);
+    notifyListeners();
+  }
+
+  set currentTrackIndex(int index) {
+    if (_checkRange(index) == false) {
+      throw IndexError(index, _tracks);
+    }
+
+    _loop.currentIndex = index;
+
+    _onTrackChangeController.add(true);
+    notifyListeners();
+  }
+
+  //endregion
+
+  //region getters
+
+  List<Track?>? get _tracksQueue =>
+      _tracks.select((_, index) => _tracks[_ids[index]]).toList();
+
+  UnmodifiableListView get tracksQueue => UnmodifiableListView(_tracksQueue!);
+
+  Stream get onPlaylistUpdate => _onPlaylistUpdateController.stream;
+
+  Stream get onTrackChange => _onTrackChangeController.stream;
+
+  Track? get currentTrack {
+    return _tracks[_ids[_loop.currentIndex]];
+  }
+
+  //endregion
+
+  void nextTrack() {
+    if (_loop.next()) {}
+  }
+
+  void previousTrack() {}
+
+  void onTrackEnd() {}
+
+  bool canNext() => _loop.canNext();
+
+  bool canPrevious() => _loop.canPrevious();
+
+  void _indexing() {
+    _ids.clear();
+    _ids.addAll(_tracks.select((_, index) => index));
+  }
+
+  void _sortIndexes() {
+    _indexing();
+    _onPlaylistUpdateController.add(true);
+    notifyListeners();
+  }
+
+  void _shuffle() {
+    // shuffle
+
+    _onPlaylistUpdateController.add(true);
+    notifyListeners();
+  }
+
+  bool _checkRange(int index) => index >= 0 && index < _tracks.length;
 }
