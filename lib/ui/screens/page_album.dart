@@ -62,7 +62,7 @@ class PageAlbum extends StatelessWidget {
                               ),
                           childCount: mPageAlbum.volumes!.length)),
                 ],
-                padding: AppConsts.pageInsets,
+                padding: AppConsts.pageInsets(context),
               );
             } else {
               return const LoadingRing();

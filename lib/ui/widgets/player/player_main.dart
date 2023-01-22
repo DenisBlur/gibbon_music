@@ -8,6 +8,7 @@ import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/ui/widgets/player/player_controls.dart';
 import 'package:gibbon_music/ui/widgets/player/player_second_controls.dart';
+import 'package:gibbon_music/updated_ui/utils/ui_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:yam_api/track/track.dart';
 
@@ -27,25 +28,36 @@ class _PlayerMainState extends State<PlayerMain> {
   double coefAnimation = 0.0;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var wHeight = MediaQuery
         .of(context)
         .size
         .height;
     return Consumer<AudioProvider>(builder: (_, value, __) {
+      if (Responsive.isDesktop(context)) {
+        height = AppConsts.playerHeight;
+        print("hello!");
+        coefAnimation = 0;
+      } else {
+        coefAnimation = (height - AppConsts.playerHeight) / (wHeight - AppConsts.playerHeight);
+      }
       if (value.currentTrack != null) {
         return FadeInUp(
           child: GestureDetector(
             onVerticalDragUpdate: (details) {
-              if (Platform.isAndroid) {
+              if (Responsive.isMobile(context)) {
                 setState(() {
                   height = (height + (details.delta.dy * -1)).clamp(AppConsts.playerHeight, wHeight);
-                  coefAnimation = (height - AppConsts.playerHeight) / (wHeight - AppConsts.playerHeight);
                 });
               }
             },
             onVerticalDragEnd: (details) {
-              if (Platform.isAndroid) {
+              if (Responsive.isMobile(context)) {
                 var velocityInverse = (details.primaryVelocity! * -1);
                 setState(() {
                   if (velocityInverse.abs() > 250) {
@@ -61,34 +73,36 @@ class _PlayerMainState extends State<PlayerMain> {
                       height = wHeight;
                     }
                   }
-                  coefAnimation = (height - AppConsts.playerHeight) / (wHeight - AppConsts.playerHeight);
+                });
+                setState(() {
+
                 });
               }
             },
-            child: ClipRRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaY: 25, sigmaX: 25),
-                child: AnimatedContainer(
-                  duration: AppConsts.defaultAnimation,
-                  curve: AppConsts.defaultCurve,
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  height: height,
-                  color: FluentTheme
-                      .of(context)
-                      .cardColor
-                      .withOpacity(Platform.isAndroid ? 1 : .4),
-                  child: Stack(
-                      children: [
-                      PlayerInfo(animationCoef: coefAnimation),
-                  const Align(
-                    alignment: Alignment.center,
-                    child: PlayerMainControl(),
-                  ),
-                  Platform.isWindows ? const PlayerSecondControl() : Transform.translate(
-                    offset: Offset(0, lerpDouble(126, 0, coefAnimation)!.toDouble()), child: const Align(alignment: Alignment.bottomCenter, child: PlaylistSheet())),
-                    ],
-                  ),
-                ),
+            child: AnimatedContainer(
+              duration: AppConsts.slowAnimation,
+              curve: AppConsts.defaultCurve,
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              width: AppConsts
+                  .pageSize(context)
+                  .width,
+              height: Responsive.isDesktop(context) ? AppConsts.playerHeight : height,
+              color: FluentTheme
+                  .of(context)
+                  .cardColor,
+              child: Stack(
+                children: [
+                  PlayerInfo(animationCoef: coefAnimation),
+                  Center(child: PlayerMainControl(animationCoef: coefAnimation),),
+                  Responsive.isMobile(context) ? AnimatedPositioned(
+                    left: 0,
+                    right: 0,
+                    bottom: lerpDouble(-126, 0, coefAnimation),
+                    duration: AppConsts.slowAnimation,
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    child: const Align(alignment: Alignment.bottomCenter, child: PlaylistSheet()),
+                  ) : const PlayerSecondControl(),
+                ],
               ),
             ),
           ),
@@ -108,7 +122,6 @@ class PlaylistSheet extends StatefulWidget {
 }
 
 class _PlaylistSheetState extends State<PlaylistSheet> {
-
   double height = AppConsts.playerHeight;
   double coefAnimation = 0.0;
 
@@ -118,10 +131,6 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
         .of(context)
         .size
         .height;
-    var wWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
 
     PlayListProvider playListProvider = context.watch();
 
@@ -155,7 +164,6 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
       },
       child: ClipRRect(
         child: AnimatedContainer(
-          width: wWidth,
           duration: AppConsts.defaultAnimation,
           curve: AppConsts.defaultCurve,
           padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
@@ -166,10 +174,14 @@ class _PlaylistSheetState extends State<PlaylistSheet> {
                   .scaffoldBackgroundColor,
               borderRadius: const BorderRadius.only(topRight: Radius.circular(16), topLeft: Radius.circular(16))),
           child: ListView.builder(
-            itemBuilder: (context, index) => Padding(padding: const EdgeInsets.only(bottom: 8), child: TrackCard(
-              track: tracks![index]!,
-              onPressed: () => playListProvider.setCurrentTrack(index),
-            ),),
+            itemBuilder: (context, index) =>
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: TrackCard(
+                    track: tracks![index]!,
+                    onPressed: () => playListProvider.setCurrentTrack(index),
+                  ),
+                ),
             itemCount: tracks!.length,
           ),
         ),

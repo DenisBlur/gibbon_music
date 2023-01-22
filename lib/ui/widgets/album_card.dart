@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:darq/darq.dart';
@@ -13,10 +14,12 @@ import 'package:gibbon_music/router.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/ui/controls/buttons.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_corner/smooth_corner.dart';
 import 'package:yam_api/album/album.dart';
 import 'package:yam_api/artist/brief_info.dart';
 import 'package:yam_api/playlist/playlist.dart';
 
+import '../../updated_ui/widgets/image_hoverd.dart';
 import '../other/music_visualizer.dart';
 import '../widgets/ImageThumbnail.dart';
 
@@ -96,16 +99,7 @@ class PlaylistCard extends StatelessWidget {
 }
 
 class CardContent extends StatelessWidget {
-  const CardContent(
-      {Key? key,
-      required this.uri,
-      required this.title,
-      required this.subtitle,
-      required this.onPressed,
-      required this.upTitle,
-      required this.onPlay,
-      this.isPlaying = false})
-      : super(key: key);
+  const CardContent({Key? key, required this.uri, required this.title, required this.subtitle, required this.onPressed, required this.upTitle, required this.onPlay, this.isPlaying = false}) : super(key: key);
 
   final String? uri, title, subtitle, upTitle;
   final bool? isPlaying;
@@ -115,39 +109,43 @@ class CardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 258,
-      width: 186,
+      height: AppConsts.standartCardHeight,
+      width: AppConsts.standartCardWidth,
       child: HoverButton(
         onPressed: () => onPressed(),
-        builder: (p0, state) => ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: Column(
+        builder: (p0, state) {
+          double imageState = 1.0;
+          if (state.isPressing) {
+            imageState = 0.9;
+          } else if (state.isHovering) {
+            imageState = 0.98;
+          } else {
+            imageState = .95;
+          }
+
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Stack(
                 children: [
-                  AnimatedScale(
-                    scale: state.isPressing
-                        ? 0.9
-                        : state.isHovering
-                            ? 0.98
-                            : Platform.isAndroid ? 1 : 0.95,
-                    duration: AppConsts.defaultAnimation,
-                    curve: AppConsts.defaultCurve,
-                    child: ImageThumbnail(url: uri != null ? uri!.linkImage(200) : AppConsts.imageEmptyLink, width: 186, height: 186, radius: 16),
-                  ),
+                  ImageHovered(imageState: imageState, uri: uri!),
                   FadeInUp(
                     duration: AppConsts.defaultAnimation,
                     animate: isPlaying == false ? state.isHovering : isPlaying as bool,
                     child: Container(
-                      width: 186,
-                      height: 186,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                        FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
-                        FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0),
-                      ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
+                      width: AppConsts.standartCardWidth,
+                      height: AppConsts.standartCardWidth,
+                      decoration: ShapeDecoration(
+                        gradient: LinearGradient(colors: [
+                          FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
+                          FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0),
+                        ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
+                        shape: SmoothRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          smoothness: 1,
+                        ),
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -177,8 +175,8 @@ class CardContent extends StatelessWidget {
                     Text(subtitle!, maxLines: 1, overflow: TextOverflow.clip, style: AppStyle.subTrackHeaderStyle(context)),
                   ]))
             ],
-          ),
-        ),
+          );
+        },
       ),
     );
   }

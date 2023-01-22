@@ -4,7 +4,7 @@ class NewPlaylists {
     this.type,
     this.typeForFrom,
     this.title,
-    this.newPlaylists,
+    this.playlistIds,
   });
 
   NewPlaylists.fromJson(dynamic json) {
@@ -13,9 +13,9 @@ class NewPlaylists {
     typeForFrom = json['typeForFrom'];
     title = json['title'];
     if (json['newPlaylists'] != null) {
-      newPlaylists = [];
+      playlistIds = [];
       json['newPlaylists'].forEach((v) {
-        newPlaylists?.add(NewPlaylists.fromJson(v));
+        playlistIds?.add(PlaylistIds.fromJson(v));
       });
     }
   }
@@ -24,21 +24,21 @@ class NewPlaylists {
   String? type;
   String? typeForFrom;
   String? title;
-  List<NewPlaylists>? newPlaylists;
+  List<PlaylistIds>? playlistIds;
 
   NewPlaylists copyWith({
     String? id,
     String? type,
     String? typeForFrom,
     String? title,
-    List<NewPlaylists>? newPlaylists,
+    List<PlaylistIds>? playlistIds,
   }) =>
       NewPlaylists(
         id: id ?? this.id,
         type: type ?? this.type,
         typeForFrom: typeForFrom ?? this.typeForFrom,
         title: title ?? this.title,
-        newPlaylists: newPlaylists ?? this.newPlaylists,
+        playlistIds: playlistIds ?? this.playlistIds,
       );
 
   Map<String, dynamic> toJson() {
@@ -47,8 +47,8 @@ class NewPlaylists {
     map['type'] = type;
     map['typeForFrom'] = typeForFrom;
     map['title'] = title;
-    if (newPlaylists != null) {
-      map['newPlaylists'] = newPlaylists?.map((v) => v.toJson()).toList();
+    if (playlistIds != null) {
+      map['newPlaylists'] = playlistIds?.map((v) => v.toJson()).toList();
     }
     return map;
   }

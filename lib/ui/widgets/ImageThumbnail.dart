@@ -1,4 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gibbon_music/constants/ui_consts.dart';
+import 'package:gibbon_music/main.dart';
+import 'package:smooth_corner/smooth_corner.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ImageThumbnail extends StatelessWidget {
@@ -9,12 +12,22 @@ class ImageThumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(borderRadius: BorderRadius.circular(radius),child: FadeInImage.memoryNetwork(
-      placeholder: kTransparentImage,
-      image: url,
+    return AnimatedContainer(
+      duration: AppConsts.defaultAnimation,
+      curve: AppConsts.defaultCurve,
       width: width,
       height: height,
-      fit: BoxFit.cover,
-    ),);
+      child: SmoothClipRRect(
+        smoothness: 1,
+        borderRadius: BorderRadius.circular(radius),
+        child: FadeInImage.memoryNetwork(
+          placeholder: kTransparentImage,
+          image: url,
+          width: AppConsts.pageSize(context).width,
+          height: AppConsts.pageSize(context).height,
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
   }
 }

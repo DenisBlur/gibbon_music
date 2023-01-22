@@ -15,16 +15,14 @@ import 'package:gibbon_music/providers/search_provider.dart';
 import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
-import 'package:gibbon_music/ui/screens/page_landing.dart';
 import 'package:gibbon_music/ui/screens/page_init.dart';
 import 'package:gibbon_music/ui/widgets/content_loader.dart';
+import 'package:gibbon_music/updated_ui/screens/page_landing.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:yam_api/client.dart';
 
-import 'ui/theme_data.dart';
 
 Client client = Client();
 
@@ -119,7 +117,7 @@ class Load extends StatelessWidget {
     return ContentLoader(
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return const PageLanding();
+          return const UPageLanding();
         } else {
           return const PageInit();
         }

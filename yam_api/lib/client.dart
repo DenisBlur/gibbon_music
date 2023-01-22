@@ -126,10 +126,7 @@ class Client {
   Future<Landing> landing({required List<String> blocks}) async {
     ///Получение лендинг-страницы содержащий блоки с новыми релизами, чартами, плейлистами с новинками и т.д.
     ///Поддерживаемые типы блоков: `personalplaylists`, `promotions`, `new-releases`, `new-playlists`, `mixes`,`chart`, `artists`, `albums`, `playlists`, `play_contexts`.
-    String _blocks = "";
-    for (String bl in blocks) {
-      _blocks = _blocks + "$bl,";
-    }
+    String _blocks = blocks.join(",");
     var result = await RequestClient(headers: headers).requestGet("/landing3?blocks=$_blocks");
     return Landing.fromJson(jsonDecode(result)["result"]);
   }
@@ -140,16 +137,26 @@ class Client {
     return Chart.fromJson(jsonDecode(result)["result"]);
   }
 
-  Future<NewReleases> newReleases() async {
+  Future<List<Album>> newReleases() async {
     ///Получение полного списка всех новых релизов (альбомов)
+    List<String> uidList = [];
     var result = await RequestClient(headers: headers).requestGet("/landing3/new-releases");
-    return NewReleases.fromJson(jsonDecode(result)["result"]);
+    var jsonResult = NewReleases.fromJson(jsonDecode(result)["result"]);
+    for (var e in jsonResult.newReleases!) {
+      uidList.add(e.toString());
+    }
+    return  await getList(type: ObjectType.album, list: uidList) as List<Album>;
   }
 
-  Future<NewPlaylists> newPlaylists() async {
+  Future<List<MPlaylist>> newPlaylists() async {
     ///Получение полного списка всех новых релизов (альбомов)
+    List<String> uidList = [];
     var result = await RequestClient(headers: headers).requestGet("/landing3/new-playlists");
-    return NewPlaylists.fromJson(jsonDecode(result)["result"]);
+    var jsonResult = NewPlaylists.fromJson(jsonDecode(result)["result"]);
+    for (var e in jsonResult.playlistIds!) {
+      uidList.add("${e.uid}:${e.kind}");
+    }
+    return await getList(type: ObjectType.playlist, list: uidList) as List<MPlaylist>;
   }
 
   Future<Supplement> trackSupplement(String trackId) async {
@@ -324,17 +331,46 @@ class Client {
     return result;
   }
 
-  Future<List<Track?>?> getList({required ObjectType type, required List<String?>? list}) async {
-    List<Track?>? returnList = [];
+  Future<List<dynamic>> getList({required ObjectType type, required List<String?>? list}) async {
     String params = list!.join(',');
-    String url = "/${type.name}s?${type.name}-ids=$params";
+    String add = type == ObjectType.playlist ? "/list" : "";
+    String url = "/${type.name}s$add?${type.name}-ids=$params";
     var result = await RequestClient(headers: headers).requestGet(url);
     var jsonResult = jsonDecode(result);
     List<dynamic> mapResult = jsonResult["result"];
-    for (var track in mapResult) {
-      returnList.add(Track.fromJson(track));
+
+    switch (type) {
+      case ObjectType.playlist:
+        List<MPlaylist>? returnList = [];
+        for (var playlist in mapResult) {
+          returnList.add(MPlaylist.fromJson(playlist));
+        }
+        return returnList;
+        break;
+      case ObjectType.artist:
+        List<Artist>? returnList = [];
+        for (var artist in mapResult) {
+          returnList.add(Artist.fromJson(artist));
+        }
+        return returnList;
+        break;
+      case ObjectType.album:
+        List<Album>? returnList = [];
+        for (var album in mapResult) {
+          returnList.add(Album.fromJson(album));
+        }
+        return returnList;
+        break;
+      case ObjectType.track:
+        List<Track?>? returnList = [];
+        for (var track in mapResult) {
+          returnList.add(Track.fromJson(track));
+        }
+        return returnList;
+        break;
     }
-    return returnList;
+
+    return [];
   }
 
   Future<String> downloadTrack({required String? trackId, QualityTrack quality = QualityTrack.low}) async {

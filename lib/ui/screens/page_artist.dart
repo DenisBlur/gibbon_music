@@ -65,7 +65,7 @@ class PageArtist extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AppConsts.defaultVSpacer,
-                        Text("Альбомы", style: AppStyle.header1Style),
+                        const Text("Альбомы", style: AppStyle.header1Style),
                         AppConsts.defaultVSpacer,
                         ListWidget( list: mPageArtist.albums!,),
                         AppConsts.defaultVSpacer,
@@ -76,7 +76,7 @@ class PageArtist extends StatelessWidget {
                     ),
                   ),
                 ],
-                padding: AppConsts.pageInsets,
+                padding: AppConsts.pageInsets(context),
               );
             } else {
               return const LoadingRing();

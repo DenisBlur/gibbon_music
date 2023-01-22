@@ -39,7 +39,7 @@ class ThemeProvider extends ChangeNotifier {
 
   init() {
     if(SystemTheme.isDarkMode) {
-      themeType = ThemeType.darkColor;
+      themeType = ThemeType.darkNoColor;
     } else {
       themeType = ThemeType.lightColor;
     }

@@ -17,7 +17,7 @@ class PageSetting extends StatelessWidget {
     return SafeArea(child: ScaffoldPage(
         padding: EdgeInsets.zero,
         content: ScaffoldScroller(
-          padding: AppConsts.pageInsets,
+          padding: AppConsts.pageInsets(context),
           slivers: [
             const Adapter(
               AppConsts.smallVSpacer,

@@ -68,7 +68,7 @@ class GTextButton extends StatelessWidget {
                 ? hoverStateColor
                 : defaultStateColor;
 
-        return AnimatedDefaultTextStyle(style: TextStyle(color: textColor), duration: AppConsts.defaultAnimation, child: Text(title));
+        return AnimatedDefaultTextStyle(style: TextStyle(color: textColor), duration: AppConsts.defaultAnimation, child: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis,));
       },
     );
   }

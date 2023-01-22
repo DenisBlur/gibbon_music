@@ -36,7 +36,6 @@ class Playlist {
     _loopStrategy.size = value!.length;
     _trackIds.clear();
     _trackIds = value.select((_, index) => index).toList();
-    //TODO: Not work _trackIds.length = value.length;
     currentTrackIndex = 0;
     _sortTracks();
   }

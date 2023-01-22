@@ -14,7 +14,7 @@ import 'package:gibbon_music/ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
 import 'package:yam_api/album/album.dart';
 import 'package:yam_api/artist/brief_info.dart';
-import 'package:yam_api/landing/entitie.dart';
+import 'package:yam_api/landing/entities.dart';
 import 'package:yam_api/playlist/playlist.dart';
 
 class PageLanding extends StatelessWidget {
@@ -27,53 +27,53 @@ class PageLanding extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) => context.read<NavigatorProvider>().showOverlay(context));
     landingProvider.dispose();
 
-    return SafeArea(child: ScaffoldPage(
-        resizeToAvoidBottomInset: true,
-        padding: const EdgeInsets.all(0),
-        content: ContentLoader(
-          future: landingProvider.init(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return ScaffoldScroller(
-                slivers: [
-                  SliverToBoxAdapter(
-                      child: Column(
+    return SafeArea(
+        child: ScaffoldPage(
+            resizeToAvoidBottomInset: true,
+            padding: const EdgeInsets.all(0),
+            content: ContentLoader(
+              future: landingProvider.init(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return ScaffoldScroller(
+                    slivers: [
+                      SliverToBoxAdapter(
+                          child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      AppConsts.defaultVSpacer,
-                      const Text("Вы недавно слушали", style: AppStyle.header1Style),
-                      AppConsts.defaultVSpacer,
-                      PlayContextSection(
-                        entities: landingProvider.playContext,
-                      ),
-                      AppConsts.defaultVSpacer,
-                      const Text("Чарт", style: AppStyle.header1Style),
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          AppConsts.defaultVSpacer,
+                          const Text("Вы недавно слушали", style: AppStyle.header1Style),
+                          AppConsts.defaultVSpacer,
+                          PlayContextSection(
+                            entities: landingProvider.playContext,
+                          ),
+                          AppConsts.defaultVSpacer,
+                          const Text("Чарт", style: AppStyle.header1Style),
+                        ],
+                      )),
+                      const SliverToBoxAdapter(child: AppConsts.defaultVSpacer),
+                      SliverGrid(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: Platform.isAndroid ? 1 : 2, mainAxisExtent: 56, crossAxisSpacing: 8, mainAxisSpacing: 8),
+                          delegate: SliverChildBuilderDelegate(
+                              (context, index) => TrackCard(
+                                    track: landingProvider.chart[index],
+                                    onPressed: () {
+                                      // TODO: application logic in UI?
+                                      playlistProvider.setPlaylist(landingProvider.chart);
+                                      playlistProvider.setCurrentTrack(index);
+                                      // audioProvider.resume();
+                                    },
+                                  ),
+                              childCount: landingProvider.chart.length)),
                     ],
-                  )),
-                  const SliverToBoxAdapter(child: AppConsts.defaultVSpacer),
-                  SliverGrid(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: Platform.isAndroid ? 1 : 2, mainAxisExtent: 56, crossAxisSpacing: 8, mainAxisSpacing: 8),
-                      delegate: SliverChildBuilderDelegate(
-                          (context, index) => TrackCard(
-                                track: landingProvider.chart[index],
-                                onPressed: () {
-                                  // TODO: application logic in UI?
-                                  playlistProvider.setPlaylist(landingProvider.chart);
-                                  playlistProvider.setCurrentTrack(index);
-                                  // audioProvider.resume();
-                                },
-                              ),
-                          childCount: landingProvider.chart.length)),
-                ],
-                padding: AppConsts.pageInsets,
-              );
-            } else {
-              return const LoadingRing();
-            }
-          },
-        )));
+                    padding: AppConsts.pageInsets(context),
+                  );
+                } else {
+                  return const LoadingRing();
+                }
+              },
+            )));
   }
 }
 
@@ -85,7 +85,7 @@ class PlayContextSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: AppConsts.cardHeight,
+      height: AppConsts.standartCardHeight,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {

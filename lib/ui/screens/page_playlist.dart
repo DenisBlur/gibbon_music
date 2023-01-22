@@ -59,7 +59,7 @@ class PagePlaylist extends StatelessWidget {
                               ),
                             ),
                         childCount: mPagePlaylist.tracks!.length)),
-              ], padding: AppConsts.pageInsets,);
+              ], padding: AppConsts.pageInsets(context),);
             } else {
               return const LoadingRing();
             }

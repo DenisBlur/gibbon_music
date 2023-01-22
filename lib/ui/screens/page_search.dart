@@ -158,7 +158,7 @@ class PageSearch extends StatelessWidget {
               ),
               for (var e in lists) e,
             ],
-            padding: AppConsts.pageInsets,
+            padding: AppConsts.pageInsets(context),
           );
         })));
   }

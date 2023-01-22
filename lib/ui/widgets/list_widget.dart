@@ -12,9 +12,8 @@ class ListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return SizedBox(
-      height: AppConsts.cardHeight,
+      height: AppConsts.standartCardHeight,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
@@ -33,8 +32,8 @@ class ListWidget extends StatelessWidget {
           }
 
           return listItem;
-
-        }, itemCount: list.length,
+        },
+        itemCount: list.length,
       ),
     );
   }
