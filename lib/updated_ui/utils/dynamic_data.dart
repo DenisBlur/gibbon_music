@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
-import 'package:gibbon_music/ui/widgets/album_card.dart';
+import 'package:gibbon_music/updated_ui/widgets/aap_card.dart';
 import 'package:gibbon_music/updated_ui/widgets/dynamic_list.dart';
 import 'package:gibbon_music/updated_ui/widgets/promotion_card.dart';
 import 'package:yam_api/album/album.dart';
@@ -59,17 +59,25 @@ List<Widget> widgetsToSliver(List<Widget> data) {
 
   for (var value in data) {
     if (value is StatelessWidget || value is StatefulWidget || value is SingleChildRenderObjectWidget || value is Flex) {
-      if (value is! DynamicListWidget) {
-        returnedList.add(SliverToBoxAdapter(
-          child: Padding(padding: AppConsts.pageOffset, child: value),
-        ));
+      if (value is !DynamicListWidget) {
+        if (value is SliverPersistentHeader) {
+          returnedList.add(value);
+        } else {
+          returnedList.add(SliverToBoxAdapter(
+            child: Padding(padding: AppConsts.pageOffset, child: value),
+          ));
+        }
       } else {
-        returnedList.add(SliverToBoxAdapter(
-          child: value,
-        ));
+          returnedList.add(SliverToBoxAdapter(
+            child: value,
+          ));
       }
     } else {
-      returnedList.add(SliverPadding(padding: AppConsts.pageOffset, sliver: value));
+      if(value is SliverPersistentHeader) {
+        returnedList.add(value);
+      } else {
+        returnedList.add(SliverPadding(padding: AppConsts.pageOffset, sliver: value));
+      }
     }
   }
 

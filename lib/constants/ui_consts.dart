@@ -15,11 +15,11 @@ class AppConsts {
 
   static double windowHeader = 48;
 
-  static const double scrollMultiplier = 25;
+  static const double scrollMultiplier = 10;
   static const double playerHeight = 100;
 
-  static const double standartCardHeight = 258 - 32;
-  static const double standartCardWidth = 186 - 32;
+  static const double defaultCardHeight = 258 - 32;
+  static const double defaultCardWidth = 186 - 32;
 
   static double wideCardHeight(BuildContext context) {
     return Responsive.isDesktop(context) ? 300 : 200;
@@ -55,12 +55,12 @@ class AppConsts {
     return Responsive.isMobile(context) ? EdgeInsets.zero : const EdgeInsets.symmetric(horizontal: 16);
   }
 
-  static EdgeInsets pageOffset = const EdgeInsets.symmetric(horizontal: 8);
+  static EdgeInsets pageOffset = const EdgeInsets.symmetric(horizontal: 16);
 
   static EdgeInsets pagePadding(BuildContext context) {
     return !Responsive.isDesktop(context)
         ? EdgeInsets.only(bottom: playerHeight, top: windowHeader)
-        : EdgeInsets.only(bottom: playerHeight, top: windowHeader, right: 60, left: 60);
+        : EdgeInsets.only(bottom: playerHeight, top: windowHeader);
   }
 
   static Size pageSize(BuildContext context) {

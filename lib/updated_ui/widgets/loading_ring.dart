@@ -8,13 +8,15 @@ class LoadingRing extends StatelessWidget {
   Widget build(BuildContext context) {
     Size pageSize = MediaQuery.of(context).size;
 
-    return SizedBox(
-      height: pageSize.height,
-      width: pageSize.width,
-      child: FadeInUp(
-          child: Center(
-        child: ProgressRing(),
-      )),
+    return ScaffoldPage(
+      content: SizedBox(
+        height: pageSize.height,
+        width: pageSize.width,
+        child: FadeInUp(
+            child: Center(
+              child: ProgressRing(),
+            )),
+      ),
     );
   }
 }

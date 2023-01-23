@@ -3,10 +3,10 @@ import 'package:gibbon_music/extensions/string.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
 import '../../constants/ui_consts.dart';
-import '../../ui/widgets/ImageThumbnail.dart';
+import 'ImageThumbnail.dart';
 
 class ImageHovered extends StatelessWidget {
-  const ImageHovered({Key? key, required this.imageState, required this.uri, this.uriSize = 200, this.width = AppConsts.standartCardWidth, this.height = AppConsts.standartCardWidth}) : super(key: key);
+  const ImageHovered({Key? key, required this.imageState, required this.uri, this.uriSize = 200, this.width = AppConsts.defaultCardWidth, this.height = AppConsts.defaultCardWidth}) : super(key: key);
 
   final double? imageState, width, height;
   final String uri;

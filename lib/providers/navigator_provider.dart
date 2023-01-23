@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:stack/stack.dart' as s;
 
-import '../ui/widgets/overlay_container.dart';
+import '../updated_ui/widgets/overlay_container.dart';
 
 class NavigatorProvider extends ChangeNotifier {
   NavigatorProvider();

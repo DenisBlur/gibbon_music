@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
@@ -40,10 +41,12 @@ class CustomScroller extends StatelessWidget {
       ),
       child: Padding(
         padding: AppConsts.pagePadding(context),
-        child: CustomScrollView(
-            controller: controller,
-            physics: Platform.isAndroid ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
-            slivers: widgetsToSliver(slivers)),
+        child: FadeInUp(
+          child: CustomScrollView(
+              controller: controller,
+              physics: Platform.isAndroid ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
+              slivers: widgetsToSliver(slivers)),
+        )
       )
     );
   }

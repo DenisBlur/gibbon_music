@@ -1,7 +1,5 @@
 import 'package:yam_api/rotor/main_station.dart';
 
-import 'station.dart';
-
 class Dashboard {
   Dashboard({
     this.dashboardId,

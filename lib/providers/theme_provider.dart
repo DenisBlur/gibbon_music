@@ -1,6 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/foundation.dart';
-import 'package:gibbon_music/ui/theme_data.dart';
+import 'package:gibbon_music/updated_ui/theme_data.dart';
 import 'package:system_theme/system_theme.dart';
 
 enum ThemeType {

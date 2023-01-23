@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/updated_ui/utils/ui_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart' as m;
@@ -23,6 +24,11 @@ class Header extends StatelessWidget {
         if (Platform.isWindows) {
           headerButtons.add(
             HeaderButton(onPressed: () => AppRouter().tryPop(context), icon: m.Icons.arrow_back_rounded, showHide: provider.navigationCanBack),
+          );
+          headerButtons.add(
+            HeaderButton(onPressed: () {
+              context.read<UxProvider>().changeDrawerState();
+            }, icon: m.Icons.menu_rounded, showHide: true),
           );
         }
 
@@ -113,7 +119,6 @@ class HeaderButton extends StatelessWidget {
 
     return AnimatedContainer(
       margin: EdgeInsets.only(
-        left: 8,
         right: showHide ? 8 : 0,
       ),
       width: showHide ? iconSize * 2 : 0,

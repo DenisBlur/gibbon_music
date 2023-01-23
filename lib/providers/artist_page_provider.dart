@@ -1,4 +1,3 @@
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:yam_api/artist/artist.dart';
 

@@ -10,11 +10,11 @@ class Best {
   }
 
   String? type;
-  dynamic? result;
+  dynamic result;
 
   Best copyWith({
     String? type,
-    dynamic? result,
+    dynamic result,
   }) =>
       Best(
         type: type ?? this.type,

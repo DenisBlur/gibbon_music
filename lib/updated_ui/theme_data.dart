@@ -83,6 +83,11 @@ class GThemeCreator {
       cardColor: alphaBlend(Colors.white.withOpacity(.1), Colors.black),
       scaffoldBackgroundColor: Colors.black,
       accentColor: systemAccentColor.accent.toAccentColor(),
+      scrollbarTheme: const ScrollbarThemeData(
+        backgroundColor: Colors.transparent,
+        hoveringThickness: 1,
+        thickness: 1,
+      ),
     );
 
     lightNoColor = ThemeData(
@@ -90,6 +95,11 @@ class GThemeCreator {
       cardColor: alphaBlend(Colors.black.withOpacity(.1), Colors.white),
       scaffoldBackgroundColor: Colors.white,
       accentColor: systemAccentColor.accent.toAccentColor(),
+      scrollbarTheme: const ScrollbarThemeData(
+        backgroundColor: Colors.transparent,
+        hoveringThickness: 1,
+        thickness: 1,
+      ),
     );
 
     darkColor = ThemeData(
@@ -98,6 +108,12 @@ class GThemeCreator {
       scaffoldBackgroundColor: accentDarkBackgroundColor,
       micaBackgroundColor: accentDarkMicaColor,
       inactiveBackgroundColor: accentDarkMicaColor,
+      scrollbarTheme: ScrollbarThemeData(
+        backgroundColor: Colors.transparent,
+        scrollbarColor: systemAccentColor.accent,
+        hoveringThickness: 1,
+        thickness: 1,
+      ),
       accentColor: systemAccentColor.accent.toAccentColor(),
     );
 
@@ -107,6 +123,12 @@ class GThemeCreator {
       scaffoldBackgroundColor: accentLightBackgroundColor,
       micaBackgroundColor: accentLightMicaColor,
       inactiveBackgroundColor: accentLightMicaColor,
+      scrollbarTheme: ScrollbarThemeData(
+        backgroundColor: Colors.transparent,
+        scrollbarColor: systemAccentColor.accent,
+        hoveringThickness: 1,
+        thickness: 1,
+      ),
       accentColor: systemAccentColor.accent.toAccentColor(),
     );
   }

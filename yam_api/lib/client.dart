@@ -22,6 +22,7 @@ import 'package:yam_api/queue/queues_list.dart';
 import 'package:yam_api/request_client.dart';
 import 'package:yam_api/rotor/dashboard.dart';
 import 'package:yam_api/rotor/list_stations.dart';
+import 'package:yam_api/rotor/rotor_tracks.dart';
 import 'package:yam_api/search/search_sugges.dart';
 import 'package:yam_api/settings.dart';
 import 'package:yam_api/supplement/supplement.dart';
@@ -29,6 +30,7 @@ import 'package:yam_api/supplement/supplement.dart';
 import 'account/status.dart';
 import 'account/user_settings.dart';
 import 'download_info/download_info.dart';
+import 'genres/genres.dart';
 import 'landing/chart.dart';
 import 'permission_alerts.dart';
 import 'search/search.dart';
@@ -137,6 +139,17 @@ class Client {
     return Chart.fromJson(jsonDecode(result)["result"]);
   }
 
+  Future<List<Genres>> genres() async {
+    var result = await RequestClient(headers: headers).requestGet("/genres");
+    var jsonResult = jsonDecode(result);
+    List<dynamic> jsonList = jsonResult["result"];
+    List<Genres> returnList = [];
+    for(var e in jsonList) {
+      returnList.add(Genres.fromJson(e));
+    }
+    return returnList;
+  }
+
   Future<List<Album>> newReleases() async {
     ///Получение полного списка всех новых релизов (альбомов)
     List<String> uidList = [];
@@ -145,7 +158,7 @@ class Client {
     for (var e in jsonResult.newReleases!) {
       uidList.add(e.toString());
     }
-    return  await getList(type: ObjectType.album, list: uidList) as List<Album>;
+    return await getList(type: ObjectType.album, list: uidList) as List<Album>;
   }
 
   Future<List<MPlaylist>> newPlaylists() async {
@@ -156,7 +169,8 @@ class Client {
     for (var e in jsonResult.playlistIds!) {
       uidList.add("${e.uid}:${e.kind}");
     }
-    return await getList(type: ObjectType.playlist, list: uidList) as List<MPlaylist>;
+    var f = await getList(type: ObjectType.playlist, list: uidList) as List<MPlaylist>;
+    return f;
   }
 
   Future<Supplement> trackSupplement(String trackId) async {
@@ -239,6 +253,25 @@ class Client {
     return ListStations.fromJson(jsonDecode(result));
   }
 
+  Future<RotorTracks> rotorStationTracks(String station) async {
+    var result = await RequestClient(headers: headers).requestGet("/rotor/station/$station/tracks");
+    return RotorTracks.fromJson(jsonDecode(result)["result"]);
+  }
+
+  Future<String> rotorStationFeedback(RotorFeedback type, String batchId, trackId, station) async {
+    String currentTime = "${DateTime.now().toIso8601String()}Z";
+    var data = {
+      "type" : type.name,
+      "timestamp" : currentTime,
+      "batch-id" : batchId,
+      "from" : device,
+      "track_id" : trackId
+    };
+
+    var result = await RequestClient(headers: headers).requestPost(url: "/rotor/station/$station/feedback", body: data);
+    return result;
+  }
+
   Future<MPlaylist> playlist(String uid, String playlistKind) async {
     var result = await RequestClient(headers: headers).requestGet("/users/$uid/playlists/$playlistKind");
     return MPlaylist.fromJson(jsonDecode(result)["result"]);
@@ -318,14 +351,18 @@ class Client {
     ///Создание новой очереди треков
     List<Tracks> queueTracks = [];
     for (var element in tracks!) {
-      queueTracks.add(Tracks(albumId: element!.albums!.isEmpty ? "" : element.albums!.first.id.toString(),  trackId: element.id, from: "desktop_win-default-album-default"));
+      queueTracks.add(Tracks(
+          albumId: element!.albums!.isEmpty ? "" : element.albums!.first.id.toString(),
+          trackId: element.id,
+          from: "desktop_win-default-album-default"));
     }
     var data = QueueItem(
             id: const Uuid().v1(),
             initialContext: MainContext(id: userId, description: "Hello", login: "tokar-denis2017", type: type.name),
             currentIndex: currentIndex,
             modified: formatISOTime(DateTime.now()),
-            tracks: queueTracks).toJson();
+            tracks: queueTracks)
+        .toJson();
 
     var result = await RequestClient(headers: deviceHeaders).requestPost(url: "/queues/", body: data);
     return result;

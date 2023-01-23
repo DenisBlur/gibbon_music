@@ -1,21 +1,12 @@
-import 'dart:io';
-import 'dart:ui';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/extensions/string.dart';
-import 'package:gibbon_music/providers/audio_provider.dart';
-import 'package:gibbon_music/providers/playlist_provider.dart';
-import 'package:gibbon_music/router.dart';
-import 'package:gibbon_music/ui/controls/buttons.dart';
-import 'package:gibbon_music/ui/other/music_visualizer.dart';
-import 'package:gibbon_music/ui/widgets/ImageThumbnail.dart';
-import 'package:gibbon_music/ui/widgets/card_view.dart';
-import 'package:gibbon_music/ui/widgets/context_menu.dart';
+import 'package:gibbon_music/updated_ui/widgets/ImageThumbnail.dart';
+import 'package:gibbon_music/updated_ui/widgets/card_view.dart';
 import 'package:provider/provider.dart';
 import 'package:yam_api/artist/brief_info.dart';
 import 'package:yam_api/track/track.dart';
@@ -23,6 +14,8 @@ import 'package:yam_api/yam_api.dart';
 
 import '../../constants/style_consts.dart';
 import '../../providers/yandex_provider.dart';
+import '../controls/buttons.dart';
+import '../other/music_visualizer.dart';
 
 class TrackCard extends StatelessWidget {
   const TrackCard({Key? key, required this.track, required this.onPressed}) : super(key: key);

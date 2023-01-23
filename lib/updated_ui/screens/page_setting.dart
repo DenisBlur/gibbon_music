@@ -3,7 +3,7 @@ import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/theme_provider.dart';
-import 'package:gibbon_music/ui/widgets/scroller_scaffold.dart';
+import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 import 'package:provider/provider.dart';
 
 class PageSetting extends StatelessWidget {
@@ -14,76 +14,70 @@ class PageSetting extends StatelessWidget {
     String accName = client.account.account!.displayName.toString();
     String accLogin = client.account.account!.login.toString();
     bool? hasPlus = client.account.plus!.hasPlus;
-    return SafeArea(child: ScaffoldPage(
-        padding: EdgeInsets.zero,
-        content: ScaffoldScroller(
-          padding: AppConsts.pageInsets(context),
-          slivers: [
-            const Adapter(
-              AppConsts.smallVSpacer,
-            ),
-            Adapter(Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+    return SafeArea(
+        child: ScaffoldPage(
+            padding: EdgeInsets.zero,
+            content: CustomScaffold(
               children: [
+                AppConsts.smallVSpacer,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      accName,
+                      style: AppStyle.header1Style,
+                    ),
+                    AppConsts.smallHSpacer,
+                    hasPlus == true
+                        ? Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                            decoration: BoxDecoration(
+                                color: FluentTheme.of(context).accentColor,
+                                borderRadius: BorderRadius.circular(4),
+                                border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(.2), width: .6)),
+                            child: const Text(
+                              "PLUS",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        : const SizedBox(),
+                  ],
+                ),
                 Text(
-                  accName,
+                  accLogin,
+                  style: AppStyle.subTrackHeaderStyle(context),
+                ),
+                AppConsts.defaultVSpacer,
+                const Text(
+                  "Персонализация",
                   style: AppStyle.header1Style,
                 ),
-                AppConsts.smallHSpacer,
-                hasPlus == true
-                    ? Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  decoration: BoxDecoration(
-                      color: FluentTheme.of(context).accentColor,
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(.2), width: .6)),
-                  child: const Text(
-                    "PLUS",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                AppConsts.defaultVSpacer,
+                SizedBox(
+                  height: 100,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: const [
+                      ThemeCard(
+                        themeType: ThemeType.lightColor,
+                      ),
+                      AppConsts.smallHSpacer,
+                      ThemeCard(
+                        themeType: ThemeType.darkColor,
+                      ),
+                      AppConsts.smallHSpacer,
+                      ThemeCard(
+                        themeType: ThemeType.lightNoColor,
+                      ),
+                      AppConsts.smallHSpacer,
+                      ThemeCard(
+                        themeType: ThemeType.darkNoColor,
+                      ),
+                    ],
                   ),
                 )
-                    : const SizedBox(),
               ],
-            )),
-            Adapter(Text(
-              accLogin,
-              style: AppStyle.subTrackHeaderStyle(context),
-            )),
-            const Adapter(
-              AppConsts.defaultVSpacer,
-            ),
-            const Adapter(Text(
-              "Персонализация",
-              style: AppStyle.header1Style,
-            )),
-            const Adapter(
-              AppConsts.defaultVSpacer,
-            ),
-            Adapter(SizedBox(
-              height: 100,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  ThemeCard(
-                    themeType: ThemeType.lightColor,
-                  ),
-                  AppConsts.smallHSpacer,
-                  ThemeCard(
-                    themeType: ThemeType.darkColor,
-                  ),
-                  AppConsts.smallHSpacer,
-                  ThemeCard(
-                    themeType: ThemeType.lightNoColor,
-                  ),
-                  AppConsts.smallHSpacer,
-                  ThemeCard(
-                    themeType: ThemeType.darkNoColor,
-                  ),
-                ],
-              ),
-            )),
-          ],
-        )));
+            )));
   }
 }
 
@@ -145,19 +139,6 @@ class ThemeCard extends StatelessWidget {
               ),
             ));
       },
-    );
-  }
-}
-
-class Adapter extends StatelessWidget {
-  const Adapter(this.child, {Key? key}) : super(key: key);
-
-  final Widget? child;
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: child,
     );
   }
 }

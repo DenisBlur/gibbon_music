@@ -1,19 +1,16 @@
 import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
-import 'package:gibbon_music/ui/widgets/scroller_scaffold.dart';
-import 'package:gibbon_music/ui/widgets/track_card.dart';
+import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
 import 'package:yam_api/track/track.dart';
 
 import '../../constants/ui_consts.dart';
 import '../../providers/ux_provider.dart';
-import '../controls/buttons.dart';
 
-class PlaylistWidget extends StatelessWidget {
-  const PlaylistWidget({Key? key}) : super(key: key);
+class UPlaylistWidget extends StatelessWidget {
+  const UPlaylistWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,21 +19,20 @@ class PlaylistWidget extends StatelessWidget {
 
     List<Track?>? tracks = playListProvider.queue;
 
-    double width = uxProvider.isOpenPlaylist ? 450 : 60;
-
     var theme = FluentTheme.of(context);
-    var backgroundColor = uxProvider.isOpenPlaylist ? theme.cardColor.withOpacity(.65) : theme.scaffoldBackgroundColor;
+    var backgroundColor = theme.cardColor.withOpacity(.65);
 
-    return AnimatedPadding(
-      padding: EdgeInsets.all(uxProvider.isOpenPlaylist ? 16 : 0),
+    return AnimatedPositioned(
+      top: AppConsts.windowHeader,
+      bottom: AppConsts.playerHeight,
+      right: uxProvider.isOpenPlaylist ? 0 : -450,
       duration: AppConsts.defaultAnimation,
       curve: AppConsts.defaultCurve,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
         child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
             child: AnimatedContainer(
-              width: width,
+              width: 450,
               curve: AppConsts.defaultCurve,
               padding: const EdgeInsets.all(8),
               duration: AppConsts.defaultAnimation,
@@ -44,10 +40,13 @@ class PlaylistWidget extends StatelessWidget {
                 color: backgroundColor,
               ),
               child: ListView.builder(
-                itemBuilder: (context, index) => Padding(padding: const EdgeInsets.only(bottom: 8), child: TrackCard(
-                  track: tracks![index]!,
-                  onPressed: () => playListProvider.setCurrentTrack(index),
-                ),),
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: TrackCard(
+                    track: tracks![index]!,
+                    onPressed: () => playListProvider.setCurrentTrack(index),
+                  ),
+                ),
                 itemCount: tracks!.length,
               ),
             )),

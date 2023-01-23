@@ -1,27 +1,22 @@
-import 'dart:io';
-import 'dart:ui';
+
 
 import 'package:animate_do/animate_do.dart';
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
-import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
-import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:flutter/material.dart' as m;
-import 'package:gibbon_music/ui/controls/buttons.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 import 'package:yam_api/album/album.dart';
 import 'package:yam_api/artist/brief_info.dart';
 import 'package:yam_api/playlist/playlist.dart';
 
-import '../../updated_ui/widgets/image_hoverd.dart';
-import '../other/music_visualizer.dart';
-import '../widgets/ImageThumbnail.dart';
+import '../controls/buttons.dart';
+import 'image_hovered.dart';
 
 class AlbumCard extends StatelessWidget {
   const AlbumCard({Key? key, required this.album}) : super(key: key);
@@ -51,7 +46,7 @@ class ArtistCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardContent(
-      uri: artist.ogImage!,
+      uri: artist.cover!.uri,
       title: artist.name!,
       subtitle: artist.genres!.isEmpty ? "" : artist.genres!.first,
       onPressed: () {
@@ -74,23 +69,20 @@ class PlaylistCard extends StatelessWidget {
     String kind = playlist.kind.toString();
 
     PlayListProvider playListProvider = context.read();
-    UxProvider ux = context.watch();
 
     Future<void> getTracks() async {
       var result = await client.playlist(uid, kind);
       var tracks = result.tracks!.select((e, _) => e!.track).toList();
       playListProvider.setPlaylist(tracks);
       playListProvider.setCurrentTrack(0);
-      ux.currentPlaylist = "$uid:$kind";
     }
 
     return CardContent(
-      isPlaying: ux.currentPlaylist == "$uid:$kind",
       uri: playlist.cover!.uri,
       title: playlist.title,
-      subtitle: playlist.owner == null ? "${playlist.trackCount} Треков" : playlist.owner!.name,
+      subtitle: "${playlist.trackCount} Треков",
       onPressed: () {
-        AppRouter().gotoPlaylist(context, uid, kind);
+        AppRouter().gotoPlaylist(context, uid, kind, false);
       },
       upTitle: 'Playlist',
       onPlay: () => getTracks(),
@@ -99,18 +91,17 @@ class PlaylistCard extends StatelessWidget {
 }
 
 class CardContent extends StatelessWidget {
-  const CardContent({Key? key, required this.uri, required this.title, required this.subtitle, required this.onPressed, required this.upTitle, required this.onPlay, this.isPlaying = false}) : super(key: key);
+  const CardContent({Key? key, required this.uri, required this.title, required this.subtitle, required this.onPressed, required this.upTitle, required this.onPlay}) : super(key: key);
 
   final String? uri, title, subtitle, upTitle;
-  final bool? isPlaying;
   final VoidCallback onPressed;
   final VoidCallback onPlay;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: AppConsts.standartCardHeight,
-      width: AppConsts.standartCardWidth,
+      height: AppConsts.defaultCardHeight,
+      width: AppConsts.defaultCardWidth,
       child: HoverButton(
         onPressed: () => onPressed(),
         builder: (p0, state) {
@@ -132,10 +123,10 @@ class CardContent extends StatelessWidget {
                   ImageHovered(imageState: imageState, uri: uri!),
                   FadeInUp(
                     duration: AppConsts.defaultAnimation,
-                    animate: isPlaying == false ? state.isHovering : isPlaying as bool,
+                    animate: state.isHovering,
                     child: Container(
-                      width: AppConsts.standartCardWidth,
-                      height: AppConsts.standartCardWidth,
+                      width: AppConsts.defaultCardWidth,
+                      height: AppConsts.defaultCardWidth,
                       decoration: ShapeDecoration(
                         gradient: LinearGradient(colors: [
                           FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
@@ -156,7 +147,7 @@ class CardContent extends StatelessWidget {
                               onPressed: () {
                                 onPlay();
                               },
-                              icon: isPlaying == true ? m.Icons.pause : m.Icons.play_arrow,
+                              icon: m.Icons.play_arrow,
                               contrastBackground: true,
                               size: 26),
                           AppConsts.smallHSpacer,

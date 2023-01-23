@@ -20,6 +20,28 @@ class AppStyle {
     );
   }
 
+  static TextStyle prTitle(BuildContext context) {
+    return const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold
+    );
+  }
+
+  static TextStyle prSubTitle(BuildContext context) {
+    return TextStyle(
+        fontSize: 14,
+        color: FluentTheme.of(context).uncheckedColor.withOpacity(.9)
+    );
+  }
+
+  static TextStyle prHeading(BuildContext context) {
+    return TextStyle(
+        fontSize: 14,
+        color: FluentTheme.of(context).accentColor.withOpacity(.9)
+    );
+  }
+
+
   static TextStyle subHeader1Style(BuildContext context) {
     return TextStyle(
         fontSize: 18,

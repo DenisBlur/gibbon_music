@@ -1,7 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
-import 'package:gibbon_music/ui/widgets/loading_ring.dart';
 import 'package:system_theme/system_theme.dart';
 
 class PageInit extends StatelessWidget {

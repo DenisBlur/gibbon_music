@@ -1,6 +1,6 @@
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
-import 'package:gibbon_music/main.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 import 'package:transparent_image/transparent_image.dart';
 

@@ -15,8 +15,7 @@ import 'package:gibbon_music/providers/search_provider.dart';
 import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
-import 'package:gibbon_music/ui/screens/page_init.dart';
-import 'package:gibbon_music/ui/widgets/content_loader.dart';
+import 'package:gibbon_music/updated_ui/screens/page_init.dart';
 import 'package:gibbon_music/updated_ui/screens/page_landing.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -59,7 +58,7 @@ Future<void> main() async {
 
     ///Убираем TitleBar, ставим минимальный размер приложения и центрируем
     WindowOptions windowOptions = const WindowOptions(
-      minimumSize: Size(100, 100),
+      minimumSize: Size(640, 360),
       center: true,
       size: Size(1280, 720),
       skipTaskbar: false,
@@ -113,8 +112,7 @@ class Load extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    YandexProvider ya = context.read();
-    return ContentLoader(
+    return FutureBuilder(
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return const UPageLanding();
@@ -122,7 +120,7 @@ class Load extends StatelessWidget {
           return const PageInit();
         }
       },
-      future: Future.delayed(Duration(seconds: 2)),
+      future: Future.delayed(const Duration(seconds: 1)),
     );
   }
 }
