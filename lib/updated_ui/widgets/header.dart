@@ -95,7 +95,7 @@ class Header extends StatelessWidget {
         return ClipRRect(
           child: Container(
             height: AppConsts.windowHeader,
-            color: Responsive.isMobile(context) ? theme.cardColor : theme.scaffoldBackgroundColor,
+            color: theme.scaffoldBackgroundColor,
             child: Row(
               children: headerButtons,
             ),
@@ -115,7 +115,7 @@ class HeaderButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double iconSize = Responsive.isMobile(context) ? 26 : 18;
+    double iconSize = 18;
 
     return AnimatedContainer(
       margin: EdgeInsets.only(

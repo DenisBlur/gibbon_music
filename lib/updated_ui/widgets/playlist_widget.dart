@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +23,7 @@ class UPlaylistWidget extends StatelessWidget {
 
     var theme = FluentTheme.of(context);
     var backgroundColor = theme.cardColor.withOpacity(.65);
+    final controller = ScrollController();
 
     return AnimatedPositioned(
       top: AppConsts.windowHeader,
@@ -32,22 +35,31 @@ class UPlaylistWidget extends StatelessWidget {
         child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
             child: AnimatedContainer(
-              width: 450,
-              curve: AppConsts.defaultCurve,
-              padding: const EdgeInsets.all(8),
-              duration: AppConsts.defaultAnimation,
-              decoration: BoxDecoration(
-                color: backgroundColor,
-              ),
-              child: ListView.builder(
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: TrackCard(
-                    track: tracks![index]!,
-                    onPressed: () => playListProvider.setCurrentTrack(index),
-                  ),
+                width: 450,
+                curve: AppConsts.defaultCurve,
+                padding: const EdgeInsets.all(8),
+                duration: AppConsts.defaultAnimation,
+                decoration: BoxDecoration(
+                  color: backgroundColor,
                 ),
-                itemCount: tracks!.length,
+                child: ImprovedScrolling(
+                  scrollController: controller,
+                  enableCustomMouseWheelScrolling: true,
+                  customMouseWheelScrollConfig: const CustomMouseWheelScrollConfig(
+                    scrollAmountMultiplier: AppConsts.scrollMultiplier,
+                  ),
+                  child: ListView.builder(
+                  controller: controller,
+                  physics: Platform.isAndroid ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: TrackCard(
+                      track: tracks![index]!,
+                      onPressed: () => playListProvider.setCurrentTrack(index),
+                    ),
+                  ),
+                  itemCount: tracks!.length,
+                ),
               ),
             )),
       ),
