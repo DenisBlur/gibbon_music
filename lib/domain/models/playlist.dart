@@ -31,9 +31,7 @@ class Playlist {
 
   IPlaylistLoopStrategy get loopStrategy => _loopStrategy;
 
-  List<Track?>? get queue => _tracks!.isEmpty
-      ? []
-      : _trackIds.select((element, _) => _tracks![element]).toList();
+  List<Track?>? get queue => _tracks!.isEmpty ? [] : _trackIds.select((element, _) => _tracks![element]).toList();
 
   List<Track?>? get tracks => _tracks;
 
@@ -47,8 +45,7 @@ class Playlist {
     _sortTracks();
   }
 
-  Track? get currentTrack =>
-      _tracks!.isEmpty ? null : _tracks![_trackIds[currentTrackIndex]];
+  Track? get currentTrack => _tracks!.isEmpty ? null : _tracks![_trackIds[currentTrackIndex]];
 
   bool nextTrack() => _loopStrategy.next();
 
@@ -88,20 +85,14 @@ class Playlist {
     int removedIndex = _trackIds[index];
     _trackIds.removeAt(index);
 
-    _trackIds = _trackIds
-        .select(((element, index) =>
-            element < removedIndex ? element : element - 1))
-        .toList();
+    _trackIds = _trackIds.select(((element, index) => element < removedIndex ? element : element - 1)).toList();
 
     currentTrackIndex--;
   }
 
   void addTrackAfterCurrent(Track track) {
     int index = _trackIds.length;
-    _trackIds = _trackIds
-        .select((element, _) =>
-            element <= currentTrackIndex ? element : element + 1)
-        .toList();
+    _trackIds = _trackIds.select((element, _) => element <= currentTrackIndex ? element : element + 1).toList();
     _trackIds.add(_trackIds.length);
     _trackIds[index] = currentTrackIndex + 1;
 
@@ -166,12 +157,16 @@ class NewPlaylist with ChangeNotifier {
 
     if (value) {
       _shuffle();
+      _loop.currentIndex = 0;
     } else {
-      _sortIndexes();
+      _indexing();
     }
 
-    _onPlaylistUpdateController.add(true);
     _shuffled = value;
+
+    // launch events
+    _onPlaylistUpdateController.add(true);
+    notifyListeners();
   }
 
   set loopStrategy(IPlaylistLoopStrategy value) {
@@ -186,10 +181,10 @@ class NewPlaylist with ChangeNotifier {
     _tracks.clear();
     _tracks.addAll(tracks!);
 
-    currentTrackIndex = 0;
     _loop.size = _tracks.length;
 
-    _indexing();
+    currentTrackIndex = 0;
+    shuffle = false;
 
     // launch events
     _onPlaylistUpdateController.add(true);
@@ -197,7 +192,7 @@ class NewPlaylist with ChangeNotifier {
   }
 
   set currentTrackIndex(int index) {
-    if (_checkRange(index) == false) {
+    if (_isValidIndex(index) == false) {
       throw IndexError(index, _tracks);
     }
 
@@ -211,50 +206,161 @@ class NewPlaylist with ChangeNotifier {
 
   //region getters
 
-  List<Track?>? get _tracksQueue =>
-      _tracks.select((_, index) => _tracks[_ids[index]]).toList();
+  List<Track?>? get _tracksQueue => _tracks.select((_, index) => _tracks[_ids[index]]).toList();
 
-  UnmodifiableListView get tracksQueue => UnmodifiableListView(_tracksQueue!);
+  UnmodifiableListView<Track?> get tracksQueue => UnmodifiableListView(_tracksQueue!);
 
   Stream get onPlaylistUpdate => _onPlaylistUpdateController.stream;
 
   Stream get onTrackChange => _onTrackChangeController.stream;
 
   Track? get currentTrack {
-    return _tracks[_ids[_loop.currentIndex]];
+    return _tracks.isEmpty ? null : _tracks[_ids[_loop.currentIndex]];
   }
+
+  IPlaylistLoopStrategy get loopStrategy => _loop;
+
+  bool get shuffled => _shuffled;
 
   //endregion
 
   void nextTrack() {
-    if (_loop.next()) {}
+    if (_loop.next() == false) {
+      return;
+    }
+
+    _onTrackChangeController.add(true);
+    notifyListeners();
   }
 
-  void previousTrack() {}
+  void previousTrack() {
+    if (_loop.previous() == false) {
+      return;
+    }
 
-  void onTrackEnd() {}
+    _onTrackChangeController.add(true);
+    notifyListeners();
+  }
+
+  void onTrackEnd() {
+    if (_loop.endTrack() == false) {
+      return;
+    }
+
+    _onTrackChangeController.add(true);
+    notifyListeners();
+  }
 
   bool canNext() => _loop.canNext();
 
   bool canPrevious() => _loop.canPrevious();
 
+  void addTrackToEnd(Track track) {
+    if (_tracks.any((element) => element!.id == track.id)) {
+      return;
+    }
+
+    _tracks.add(track);
+    _ids.add(_tracks.length - 1);
+    _loop.size = _tracks.length;
+
+    _onPlaylistUpdateController.add(true);
+    notifyListeners();
+  }
+
+  void addTrackAfterCurrent(Track track) {
+    if (_tracks.any((element) => element!.id == track.id)) {
+      return;
+    }
+
+    int indexToAdd = 0;
+    if (shuffled) {
+      indexToAdd = _tracks.length;
+    } else {
+      indexToAdd = currentTrack == null ? 0 : _loop.currentIndex + 1;
+    }
+
+    _tracks.insert(indexToAdd, track);
+    _ids.insert(_loop.currentIndex + 1, indexToAdd);
+
+    _loop.size = _tracks.length;
+
+    _onPlaylistUpdateController.add(true);
+    notifyListeners();
+  }
+
+  void removeTrack(Track track) {
+    var index = tracksQueue.indexWhere((element) => element!.id == track.id);
+    if (index == -1) return;
+    removeTrackByIndex(index);
+
+    _onPlaylistUpdateController.add(true);
+    notifyListeners();
+  }
+
+  void removeTrackByIndex(int index) {
+    if (_isValidIndex(index) == false) return;
+
+    // if (_loop.currentIndex == index) {
+    //   if (canNext() == false && canPrevious() == false) {
+    //
+    //   }
+    //
+    //   _loop.next() && _loop.previous();
+    // }
+
+    // remove from track list
+    var indexInList = _ids[index];
+    _tracks.removeAt(indexInList);
+
+    // remove from ids
+    _ids.removeAt(index);
+
+    // update all indices that are larger than index of removed track
+    for (int i = 0; i < _ids.length; i++) {
+      if (_ids[i] > indexInList) _ids[i]--;
+    }
+
+    _loop.size--;
+
+    if (_loop.currentIndex == _loop.size) {
+      currentTrackIndex = _loop.currentIndex - 1;
+    } else if (_loop.currentIndex == index) {
+      _onTrackChangeController.add(true);
+    }
+
+    _onPlaylistUpdateController.add(true);
+    notifyListeners();
+  }
+
+  void reorder(int oldIndex, int newIndex) {
+    if ((_isValidIndex(oldIndex) && _isValidIndex(newIndex)) == false) return;
+
+    int trackIndex = _ids[oldIndex];
+    _ids.removeAt(oldIndex);
+    _ids.insert(newIndex, trackIndex);
+
+    if (_loop.currentIndex == oldIndex) {
+      _loop.currentIndex = newIndex;
+    }
+
+    _onPlaylistUpdateController.add(true);
+    notifyListeners();
+  }
+
+  //region private functions
   void _indexing() {
     _ids.clear();
     _ids.addAll(_tracks.select((_, index) => index));
   }
 
-  void _sortIndexes() {
-    _indexing();
-    _onPlaylistUpdateController.add(true);
-    notifyListeners();
-  }
-
   void _shuffle() {
-    // shuffle
-
-    _onPlaylistUpdateController.add(true);
-    notifyListeners();
+    int index = _ids[_loop.currentIndex];
+    _ids.removeAt(_loop.currentIndex);
+    _ids.shuffle();
+    _ids.insert(0, index);
   }
 
-  bool _checkRange(int index) => index >= 0 && index < _tracks.length;
+  bool _isValidIndex(int index) => index >= 0 && index < _tracks.length;
+//endregion
 }
