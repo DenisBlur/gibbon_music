@@ -1,8 +1,46 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gibbon_music/updated_ui/utils/ui_utils.dart';
 
 class AppStyle {
 
   AppStyle._();
+
+  static TextStyle title(BuildContext context) {
+    return TextStyle(
+      fontSize: Responsive.isDesktop(context) ? 32 : 24,
+      fontWeight: FontWeight.bold
+    );
+  }
+
+  static TextStyle subTitle(BuildContext context) {
+    return TextStyle(
+        fontSize: Responsive.isDesktop(context) ? 20 : 16,
+        fontWeight: FontWeight.bold,
+        color: FluentTheme.of(context).uncheckedColor.withOpacity(.9)
+    );
+  }
+
+  static TextStyle prTitle(BuildContext context) {
+    return const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold
+    );
+  }
+
+  static TextStyle prSubTitle(BuildContext context) {
+    return TextStyle(
+        fontSize: 14,
+        color: FluentTheme.of(context).uncheckedColor.withOpacity(.9)
+    );
+  }
+
+  static TextStyle prHeading(BuildContext context) {
+    return TextStyle(
+        fontSize: 14,
+        color: FluentTheme.of(context).accentColor.withOpacity(.9)
+    );
+  }
+
 
   static TextStyle subHeader1Style(BuildContext context) {
     return TextStyle(

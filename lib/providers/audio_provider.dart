@@ -10,7 +10,9 @@ import 'package:yam_api/enums.dart';
 import 'package:yam_api/track/track.dart';
 
 class AudioProvider extends ChangeNotifier {
-  AudioProvider(this._playlistProvider);
+  AudioProvider(this._playlistProvider) {
+    init();
+  }
 
   final PlayListProvider _playlistProvider;
 
@@ -54,7 +56,6 @@ class AudioProvider extends ChangeNotifier {
   void preloadTrack(Track track) {
     _player.pause();
     setSeek(0);
-
 
     _getTrackURLAsyncOperation?.cancel();
     _getTrackURLAsyncOperation = CancelableOperation.fromFuture(client.downloadTrack(trackId: track.id, quality: QualityTrack.low));
@@ -106,18 +107,18 @@ class AudioProvider extends ChangeNotifier {
   ///Удалить если чего
   IconData icon() {
     switch (playerState) {
-    // case PlayerState.stopped:
-    //   return m.Icons.stop_rounded;
-    //   break;
+      // case PlayerState.stopped:
+      //   return m.Icons.stop_rounded;
+      //   break;
       case PlayerState.playing:
         return m.Icons.pause;
         break;
       case PlayerState.paused:
         return m.Icons.play_arrow;
         break;
-    // case PlayerState.completed:
-    //   return m.Icons.not_interested;
-    //   break;
+      // case PlayerState.completed:
+      //   return m.Icons.not_interested;
+      //   break;
       default:
         return m.Icons.not_interested;
     }
