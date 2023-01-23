@@ -20,7 +20,7 @@ class ArtistAlbums {
   ArtistAlbums copyWith({  Pager? pager,
     List<Album>? tracks,
   }) => ArtistAlbums(  pager: pager ?? this.pager,
-    albums: tracks ?? this.albums,
+    albums: tracks ?? albums,
   );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

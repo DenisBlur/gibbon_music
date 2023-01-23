@@ -1,3 +1,4 @@
+
 class DownloadInfoModel {
   final List<ResultBean>? result;
 

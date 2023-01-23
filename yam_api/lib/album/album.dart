@@ -1,7 +1,6 @@
 import 'package:yam_api/artist/brief_info.dart';
 import 'package:yam_api/track/track.dart';
 
-import '../artist/artist.dart';
 import '../custom_wave.dart';
 import '../pager.dart';
 import 'label.dart';

@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gibbon_music/domain/models/like_model.dart';
-import 'package:gibbon_music/providers/audio_provider.dart';
+import 'package:gibbon_music/main.dart';
 import 'package:yam_api/enums.dart';
 import 'package:yam_api/track/track.dart';
 
@@ -10,7 +10,10 @@ import '../domain/models/queue_model.dart';
 class YandexProvider extends ChangeNotifier {
   LikeModel likeModel;
   QueueModel queueModel;
-  AudioProvider? audioProvider;
+
+  bool isRadioPlaying = false;
+  String batchId = "";
+  String station = "";
 
   YandexProvider({required this.likeModel, required this.queueModel});
 
@@ -54,12 +57,16 @@ class YandexProvider extends ChangeNotifier {
     await queueModel.createQueue(tracks, currentIndex, objectId, type);
   }
 
-  updateQueuePosition() {
+  updateQueuePosition() {}
 
+  Future startRadio(bool isRadio, String batchId, station) async {
+    isRadioPlaying = isRadio;
+    this.batchId = batchId;
+    this.station = station;
+    radioFeedback(RotorFeedback.radioStarted);
   }
 
-  Future connectToAudioSystem(AudioProvider provider) async {
-    audioProvider = provider;
+  Future radioFeedback(RotorFeedback type) async {
+    await client.rotorStationFeedback(type, batchId, "", station);
   }
-
 }

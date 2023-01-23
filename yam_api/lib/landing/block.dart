@@ -1,4 +1,4 @@
-import 'entitie.dart';
+import 'entities.dart';
 
 class Block {
   Block({
