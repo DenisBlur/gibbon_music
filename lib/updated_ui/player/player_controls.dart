@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/constants/ui_consts.dart';
+import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,7 @@ class PlayerMainControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AudioProvider provider = context.watch();
-    PlayListProvider playList = context.watch();
+    NewPlaylist playList = context.watch();
     Track? track = playList.currentTrack;
     double position = 0.0;
 
@@ -34,7 +35,7 @@ class PlayerMainControl extends StatelessWidget {
               AppConsts.defaultHSpacer,
               GIconButton(
                   onPressed: () {
-                    playList.previous();
+                    playList.previousTrack();
                   },
                   icon: m.Icons.skip_previous_rounded,
                   size: 24),
@@ -53,12 +54,12 @@ class PlayerMainControl extends StatelessWidget {
               AppConsts.defaultHSpacer,
               GIconButton(
                   onPressed: () {
-                    playList.next();
+                    playList.nextTrack();
                   },
                   icon: m.Icons.skip_next_rounded,
                   size: 24),
               AppConsts.defaultHSpacer,
-              GIconButton(onPressed: () => playList.toggleShuffle(), icon: m.Icons.shuffle, size: 24)
+              GIconButton(onPressed: () =>  playList.shuffle = !playList.shuffled, icon: m.Icons.shuffle, size: 24)
             ],
           ),
           AppConsts.smallVSpacer,

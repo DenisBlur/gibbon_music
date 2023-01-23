@@ -2,6 +2,7 @@ import 'dart:io' show Platform;
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/domain/models/like_model.dart';
+import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/domain/models/queue_model.dart';
 import 'package:gibbon_music/domain/models/search_model.dart';
 import 'package:gibbon_music/providers/album_page_provider.dart';
@@ -39,7 +40,7 @@ List<SingleChildWidget> _providers = [
   ChangeNotifierProvider(
     create: (context) => YandexProvider(likeModel: LikeModel(), queueModel: QueueModel()),
   ),
-  ChangeNotifierProvider(create: (context) => PlayListProvider(context.read())),
+  ChangeNotifierProvider(create: (_) => NewPlaylist()),
   ChangeNotifierProvider(
     create: (_) => UxProvider(),
   ),

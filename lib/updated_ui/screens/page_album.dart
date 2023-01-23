@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
+import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/updated_ui/widgets/loading_ring.dart';
@@ -27,7 +28,7 @@ class PageAlbum extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AudioProvider audioProvider = context.read();
-    PlayListProvider playListProvider = context.read();
+    NewPlaylist playListProvider = context.read();
     PageAlbumProvider albumProvider = context.read();
     albumProvider.dispose();
 
@@ -53,9 +54,9 @@ class PageAlbum extends StatelessWidget {
                                 track: mPageAlbum.volumes![index],
                                 onPressed: () {
                                   // playListProvider.
-                                  playListProvider.setPlaylist(mPageAlbum.volumes!);
+                                  playListProvider.tracks = mPageAlbum.volumes!;
                                   // playListProvider.se
-                                  playListProvider.setCurrentTrack(index);
+                                  playListProvider.currentTrackIndex = index;
                                   audioProvider.resume();
                                 },
                               ),

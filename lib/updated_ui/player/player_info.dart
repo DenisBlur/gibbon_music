@@ -2,11 +2,10 @@ import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
+import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/extensions/string.dart';
-import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/updated_ui/widgets/ImageThumbnail.dart';
 import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
-import 'package:gibbon_music/updated_ui/utils/ui_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:yam_api/track/track.dart';
 
@@ -15,7 +14,7 @@ class PlayerInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PlayListProvider playlist = context.watch();
+    NewPlaylist playlist = context.watch();
     Track? track = playlist.currentTrack;
     return SizedBox(
       width: AppConsts.pageSize(context).width,

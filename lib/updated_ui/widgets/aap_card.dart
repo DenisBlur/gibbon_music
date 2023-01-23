@@ -1,10 +1,9 @@
-
-
 import 'package:animate_do/animate_do.dart';
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/ui_consts.dart';
+import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/router.dart';
@@ -68,13 +67,13 @@ class PlaylistCard extends StatelessWidget {
     String uid = playlist.owner == null ? playlist.uid.toString() : playlist.owner!.uid.toString();
     String kind = playlist.kind.toString();
 
-    PlayListProvider playListProvider = context.read();
+    NewPlaylist playListProvider = context.read();
 
     Future<void> getTracks() async {
       var result = await client.playlist(uid, kind);
       var tracks = result.tracks!.select((e, _) => e!.track).toList();
-      playListProvider.setPlaylist(tracks);
-      playListProvider.setCurrentTrack(0);
+      playListProvider.tracks = tracks;
+      playListProvider.currentTrackIndex = 0;
     }
 
     return CardContent(
@@ -91,7 +90,15 @@ class PlaylistCard extends StatelessWidget {
 }
 
 class CardContent extends StatelessWidget {
-  const CardContent({Key? key, required this.uri, required this.title, required this.subtitle, required this.onPressed, required this.upTitle, required this.onPlay}) : super(key: key);
+  const CardContent(
+      {Key? key,
+      required this.uri,
+      required this.title,
+      required this.subtitle,
+      required this.onPressed,
+      required this.upTitle,
+      required this.onPlay})
+      : super(key: key);
 
   final String? uri, title, subtitle, upTitle;
   final VoidCallback onPressed;

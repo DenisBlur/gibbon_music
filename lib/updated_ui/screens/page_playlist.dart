@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ class PagePlaylist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AudioProvider audioProvider = context.read();
-    PlayListProvider playListProvider = context.read();
+    NewPlaylist playListProvider = context.read();
     PagePlaylistProvider pagePlaylistProvider = context.read();
     pagePlaylistProvider.dispose();
 
@@ -48,8 +49,8 @@ class PagePlaylist extends StatelessWidget {
                         child: TrackCard(
                           track: mPagePlaylist.tracks![index]!.track!,
                           onPressed: () {
-                            playListProvider.setPlaylist(mPagePlaylist.tracks!.select((e, _) => e?.track,).toList());
-                            playListProvider.setCurrentTrack(index);
+                            playListProvider.tracks =  mPagePlaylist.tracks!.select((e, _) => e?.track,).toList();
+                            playListProvider.currentTrackIndex = index;
                             audioProvider.resume();
                           },
                         ),

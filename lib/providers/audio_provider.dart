@@ -4,6 +4,7 @@ import 'package:async/async.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:yam_api/enums.dart';
@@ -14,7 +15,7 @@ class AudioProvider extends ChangeNotifier {
     init();
   }
 
-  final PlayListProvider _playlistProvider;
+  final NewPlaylist _playlistProvider;
 
   late AudioPlayer _player;
 
@@ -30,18 +31,27 @@ class AudioProvider extends ChangeNotifier {
 
   Track? get currentTrack => _playlistProvider.currentTrack;
 
+  StreamSubscription? _onTrackChangeSubscribe;
+
   Future<void> init() async {
     _player = AudioPlayer();
     //
     // _playlistProvider.onNextTrackPlay.subscribe((args) => _changeTrack());
-    _playlistProvider.onCurrentTrackUpdated.subscribe((args) {
+
+    _onTrackChangeSubscribe = _playlistProvider.onTrackChange.listen((event) {
       preloadTrack(_playlistProvider.currentTrack!);
       notifyListeners();
     });
 
+    // _playlistProvider.onCurrentTrackUpdated.subscribe((args) {
+    //   preloadTrack(_playlistProvider.currentTrack!);
+    //   notifyListeners();
+    // });
+    //
+
     _player.onPlayerStateChanged.listen((event) {
       if (event == PlayerState.completed) {
-        _playlistProvider.end();
+        _playlistProvider.onTrackEnd();
         notifyListeners();
       }
     });
@@ -63,7 +73,7 @@ class AudioProvider extends ChangeNotifier {
   }
 
   void setOneTrack(Track track) {
-    _playlistProvider.setPlaylist([track]);
+    _playlistProvider.tracks = ([track]);
   }
 
   void playTrack() {
@@ -98,8 +108,10 @@ class AudioProvider extends ChangeNotifier {
 
   @override
   Future<void> dispose() async {
-    _playlistProvider.onNextTrackPlay.unsubscribeAll();
-    _playlistProvider.onCurrentTrackUpdated.unsubscribeAll();
+    // _playlistProvider.onTrackChange.
+    // _playlistProvider.onNextTrackPlay.unsubscribeAll();
+    // _playlistProvider.onCurrentTrackUpdated.unsubscribeAll();
+    _onTrackChangeSubscribe?.cancel();
     super.dispose();
     _player.dispose();
   }

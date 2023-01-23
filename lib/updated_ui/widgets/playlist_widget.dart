@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
+import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
@@ -17,9 +18,9 @@ class UPlaylistWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UxProvider uxProvider = context.watch();
-    PlayListProvider playListProvider = context.watch();
+    NewPlaylist playListProvider = context.watch();
 
-    List<Track?>? tracks = playListProvider.queue;
+    List<Track?>? tracks = playListProvider.tracksQueue;
 
     var theme = FluentTheme.of(context);
     var backgroundColor = theme.cardColor.withOpacity(.65);
@@ -54,11 +55,11 @@ class UPlaylistWidget extends StatelessWidget {
                   itemBuilder: (context, index) => Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: TrackCard(
-                      track: tracks![index]!,
-                      onPressed: () => playListProvider.setCurrentTrack(index),
+                      track: tracks[index]!,
+                      onPressed: () => playListProvider.currentTrackIndex = index,
                     ),
                   ),
-                  itemCount: tracks!.length,
+                  itemCount: tracks.length,
                 ),
               ),
             )),

@@ -1,6 +1,7 @@
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
+import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/enums/e_list_typer.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
@@ -191,8 +192,8 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
 
                   client.rotorStationTracks("user:onyourwave").then((value) {
                     context.read<YandexProvider>().startRadio(true, value.batchId!, "user:onyourwave");
-                    context.read<PlayListProvider>().setPlaylist(value.sequence!.select((e, _) => e.track,).toList());
-                    context.read<PlayListProvider>().setCurrentTrack(0);
+                    context.read<NewPlaylist>().tracks = value.sequence!.select((e, _) => e.track,).toList();
+                    context.read<NewPlaylist>().currentTrackIndex =  0;
                   });
 
                 }, title: "воспроизвести"),
