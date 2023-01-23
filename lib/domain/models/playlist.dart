@@ -158,7 +158,9 @@ class NewPlaylist with ChangeNotifier {
       _shuffle();
       _loop.currentIndex = 0;
     } else {
+      var index = _ids[_loop.currentIndex];
       _indexing();
+      _loop.currentIndex = index;
     }
 
     _shuffled = value;
@@ -183,7 +185,7 @@ class NewPlaylist with ChangeNotifier {
     _loop.size = _tracks.length;
 
     currentTrackIndex = 0;
-    shuffle = false;
+    _indexing();
 
     // launch events
     _onPlaylistUpdateController.add(true);
@@ -255,10 +257,6 @@ class NewPlaylist with ChangeNotifier {
   bool canPrevious() => _loop.canPrevious();
 
   void addTrackToEnd(Track track) {
-    if (_tracks.any((element) => element!.id == track.id)) {
-      return;
-    }
-
     _tracks.add(track);
     _ids.add(_tracks.length - 1);
     _loop.size = _tracks.length;
@@ -268,10 +266,6 @@ class NewPlaylist with ChangeNotifier {
   }
 
   void addTrackAfterCurrent(Track track) {
-    if (_tracks.any((element) => element!.id == track.id)) {
-      return;
-    }
-
     int indexToAdd = 0;
     if (shuffled) {
       indexToAdd = _tracks.length;
@@ -292,9 +286,6 @@ class NewPlaylist with ChangeNotifier {
     var index = tracksQueue.indexWhere((element) => element!.id == track.id);
     if (index == -1) return;
     removeTrackByIndex(index);
-
-    _onPlaylistUpdateController.add(true);
-    notifyListeners();
   }
 
   void removeTrackByIndex(int index) {
