@@ -110,9 +110,9 @@ class _AppState extends State<App> {
 
 class Load extends StatelessWidget {
   const Load({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    YandexProvider provider = context.read();
     return FutureBuilder(
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
