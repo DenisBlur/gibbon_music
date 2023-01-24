@@ -20,7 +20,7 @@ class UPlaylistWidget extends StatelessWidget {
     return Consumer<NewPlaylist>(
       builder: (context, playListProvider, child) {
         UxProvider uxProvider = context.watch();
-        List<Track?>? tracks = playListProvider!.tracksQueue;
+        List<Track?>? tracks = playListProvider.tracksQueue;
         var theme = FluentTheme.of(context);
         var backgroundColor = theme.cardColor.withOpacity(.65);
         final controller = ScrollController();

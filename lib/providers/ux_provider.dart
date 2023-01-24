@@ -7,12 +7,19 @@ class UxProvider extends ChangeNotifier {
   bool _isOpenDrawer = false;
   bool _isOpenPlaylist = false;
   bool _isContextMenu = false;
+  Offset _contextMenuOffset = Offset(0, 0);
   double _playerVolume = 1.0;
   String _currentPlaylist = "";
   String currentAlbum = "";
   String currentArtist = "";
-
   StreamController<TrackContextDetail> onChangeDetails = StreamController.broadcast();
+
+  Offset get contextMenuOffset => _contextMenuOffset;
+
+  set contextMenuOffset(Offset value) {
+    _contextMenuOffset = value;
+    notifyListeners();
+  }
 
   String get currentPlaylist => _currentPlaylist;
 
