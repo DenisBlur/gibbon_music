@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/updated_ui/theme_data.dart';
+import 'package:smooth_corner/smooth_corner.dart';
 
 import '../../constants/ui_consts.dart';
 
@@ -20,26 +21,29 @@ class GButton extends StatelessWidget {
     hoverStateColor = GThemeCreator().alphaBlend(theme.accentColor.withOpacity(.4), theme.cardColor);
     pressedStateColor = GThemeCreator().alphaBlend(theme.accentColor.withOpacity(.2), theme.cardColor);
 
-
     return HoverButton(
       onPressed: () => onPressed(),
       builder: (p0, state) {
         Color bgColor = state.isPressing
             ? pressedStateColor
             : state.isHovering
-            ? hoverStateColor
-            : defaultStateColor;
+                ? hoverStateColor
+                : defaultStateColor;
 
-        return AnimatedContainer(
-          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 4),
-          duration: AppConsts.defaultAnimation,
-          curve: AppConsts.defaultCurve,
-          decoration: BoxDecoration(
+        return SmoothClipRRect(
+          smoothness: 1,
+          borderRadius: BorderRadius.circular(4),
+          side: BorderSide(color: theme.borderInputColor.withOpacity(state.isHovering ? .2 : 0), width: .3),
+          child: AnimatedContainer(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 4),
+            duration: AppConsts.defaultAnimation,
+            curve: AppConsts.defaultCurve,
             color: bgColor,
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: theme.borderInputColor.withOpacity(state.isHovering ? .2 : 0), width: .3),
+            child: Text(
+              title.toLowerCase(),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
           ),
-          child: Text(title.toLowerCase(), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),),
         );
       },
     );
@@ -69,7 +73,14 @@ class GTextButton extends StatelessWidget {
                 ? hoverStateColor
                 : defaultStateColor;
 
-        return AnimatedDefaultTextStyle(style: TextStyle(color: textColor), duration: AppConsts.defaultAnimation, child: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis,));
+        return AnimatedDefaultTextStyle(
+            style: TextStyle(color: textColor),
+            duration: AppConsts.defaultAnimation,
+            child: Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ));
       },
     );
   }
@@ -108,7 +119,7 @@ class GIconButton extends StatelessWidget {
       pressedStateColor = GThemeCreator().alphaBlend(theme.accentColor.withOpacity(.1), theme.uncheckedColor);
     }
 
-    if(iconColor == Colors.transparent) {
+    if (iconColor == Colors.transparent) {
       iColor = !contrastBackground ? theme.uncheckedColor.withOpacity(1) : theme.checkedColor.withOpacity(1);
     } else {
       iColor = iconColor;

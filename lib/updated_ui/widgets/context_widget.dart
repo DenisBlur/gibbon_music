@@ -104,6 +104,10 @@ class _ContextWidgetState extends State<ContextWidget> {
                             context.read<NewPlaylist>().addTrackAfterCurrent(track);
                             ux.isContextMenu = false;
                           }, title: "Добавить после текущего"),
+                          AppConsts.smallVSpacer,
+                          GButton(onPressed: () {
+                            ux.isContextMenu = false;
+                          }, title: "Моя волна по треку"),
                           AppConsts.defaultHSpacer,
                           Text("Исполнители", style: AppStyle.subTitle(context),),
                           AppConsts.smallVSpacer,
