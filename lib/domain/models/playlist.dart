@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:darq/darq.dart';
 import 'package:flutter/foundation.dart';
@@ -296,34 +297,26 @@ class NewPlaylist with ChangeNotifier {
   void removeTrackByIndex(int index) {
     if (_isValidIndex(index) == false) return;
 
-    // if (_loop.currentIndex == index) {
-    //   if (canNext() == false && canPrevious() == false) {
-    //
-    //   }
-    //
-    //   _loop.next() && _loop.previous();
-    // }
+    bool currentTrack = index == _loop.currentIndex;
 
     // remove from track list
     var indexInList = _ids[index];
     _tracks.removeAt(indexInList);
 
+    _loop.size--;
+
     // remove from ids
     _ids.removeAt(index);
-
     // update all indices that are larger than index of removed track
     for (int i = 0; i < _ids.length; i++) {
       if (_ids[i] > indexInList) _ids[i]--;
     }
 
-    _loop.size--;
-
-    if (_loop.currentIndex == _loop.size) {
-      currentTrackIndex = _loop.currentIndex - 1;
-    } else if (_loop.currentIndex == index) {
-      _onTrackChangeController.add(true);
+    if (_tracks.isNotEmpty && index == _loop.size) {
+      _loop.currentIndex--;
     }
 
+    if (currentTrack) _onTrackChangeController.add(true);
     _onPlaylistUpdateController.add(true);
     notifyListeners();
   }
@@ -339,6 +332,8 @@ class NewPlaylist with ChangeNotifier {
       _loop.currentIndex = newIndex;
     } else if (oldIndex < _loop.currentIndex && _loop.currentIndex <= newIndex) {
       _loop.currentIndex--;
+    } else if (oldIndex > _loop.currentIndex && _loop.currentIndex >= newIndex) {
+      _loop.currentIndex++;
     }
 
     _onPlaylistUpdateController.add(true);
