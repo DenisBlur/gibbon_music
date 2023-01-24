@@ -41,7 +41,12 @@ class AudioProvider extends ChangeNotifier {
     // _playlistProvider.onNextTrackPlay.subscribe((args) => _changeTrack());
 
     _onTrackChangeSubscribe = _playlistProvider.onTrackChange.listen((event) {
-      preloadTrack(_playlistProvider.currentTrack!);
+      if (_playlistProvider.currentTrack == null) {
+        pause();
+      } else {
+        preloadTrack(_playlistProvider.currentTrack!);
+      }
+
       notifyListeners();
     });
 
@@ -51,7 +56,7 @@ class AudioProvider extends ChangeNotifier {
     // });
     //
 
-    _onPlayerStateChangedSubscribe =  onPlayerStateChanged.listen((event) {
+    _onPlayerStateChangedSubscribe = onPlayerStateChanged.listen((event) {
       if (event == PlayerState.completed) {
         _playlistProvider.onTrackEnd();
         notifyListeners();

@@ -312,7 +312,7 @@ class NewPlaylist with ChangeNotifier {
       if (_ids[i] > indexInList) _ids[i]--;
     }
 
-    if (_tracks.isNotEmpty && index == _loop.size) {
+    if (_tracks.isNotEmpty && (_loop.currentIndex == _tracks.length || _tracks.isNotEmpty && index < _loop.currentIndex)) {
       _loop.currentIndex--;
     }
 
