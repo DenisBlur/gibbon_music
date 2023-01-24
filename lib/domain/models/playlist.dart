@@ -337,6 +337,8 @@ class NewPlaylist with ChangeNotifier {
 
     if (_loop.currentIndex == oldIndex) {
       _loop.currentIndex = newIndex;
+    } else if (oldIndex < _loop.currentIndex && _loop.currentIndex <= newIndex) {
+      _loop.currentIndex--;
     }
 
     _onPlaylistUpdateController.add(true);
