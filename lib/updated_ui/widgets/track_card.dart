@@ -13,6 +13,7 @@ import 'package:yam_api/track/track.dart';
 import 'package:yam_api/yam_api.dart';
 
 import '../../constants/style_consts.dart';
+import '../../domain/models/playlist.dart';
 import '../../providers/yandex_provider.dart';
 import '../controls/buttons.dart';
 import '../other/music_visualizer.dart';
@@ -30,6 +31,10 @@ class TrackCard extends StatelessWidget {
     bool isSelected = false;
     bool isLike = yandexProvider.trackIsLiked(track.id.toString());
     String image = track.coverUri != null ? track.coverUri!.linkImage(100) : AppConsts.imageEmptyLink;
+
+    if(context.watch<NewPlaylist>().currentTrack!.id != null) {
+      isSelected = track.id == context.watch<NewPlaylist>().currentTrack!.id;
+    }
 
     return GestureDetector(
         onSecondaryTapUp: (details) {
@@ -63,7 +68,7 @@ class TrackCard extends StatelessWidget {
                     child: Center(
                       child: MiniMusicVisualizer(
                         color: Colors.red,
-                        active: isPlay,
+                        active: isSelected,
                         width: 4,
                         height: 15,
                       ),
