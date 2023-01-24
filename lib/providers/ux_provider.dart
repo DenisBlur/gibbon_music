@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:fluent_ui/fluent_ui.dart';
 
 class UxProvider extends ChangeNotifier {
   bool _isOpenDrawer = false;
   bool _isOpenPlaylist = false;
+  bool _isContextMenu = false;
   double _playerVolume = 1.0;
   String _currentPlaylist = "";
   String currentAlbum = "";
   String currentArtist = "";
 
+  StreamController<TapUpDetails> onChangeDetails = StreamController.broadcast();
 
   String get currentPlaylist => _currentPlaylist;
 
@@ -16,6 +20,13 @@ class UxProvider extends ChangeNotifier {
   bool get isOpenDrawer => _isOpenDrawer;
 
   bool get isOpenPlaylist => _isOpenPlaylist;
+
+  bool get isContextMenu => _isContextMenu;
+
+  set isContextMenu(bool value) {
+    _isContextMenu = value;
+    notifyListeners();
+  }
 
   set playerVolume(double value) {
     _playerVolume = value;
@@ -44,4 +55,5 @@ class UxProvider extends ChangeNotifier {
   changePlaylistState() {
     isOpenPlaylist = !isOpenPlaylist;
   }
+
 }

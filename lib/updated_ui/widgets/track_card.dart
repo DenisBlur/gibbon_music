@@ -1,10 +1,10 @@
-
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/extensions/string.dart';
+import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/updated_ui/widgets/ImageThumbnail.dart';
 import 'package:gibbon_music/updated_ui/widgets/card_view.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +31,13 @@ class TrackCard extends StatelessWidget {
     bool isLike = yandexProvider.trackIsLiked(track.id.toString());
     String image = track.coverUri != null ? track.coverUri!.linkImage(100) : AppConsts.imageEmptyLink;
 
-    return GCardView(
+    return GestureDetector(
+        onSecondaryTapUp: (details) {
+          UxProvider ux = context.read();
+          ux.onChangeDetails.add(details);
+          ux.isContextMenu = true;
+        },
+        child:GCardView(
       onPressed: () {
         onPressed();
         YamApi().getTrack(track.id);
@@ -50,7 +56,10 @@ class TrackCard extends StatelessWidget {
                 child: Container(
                     width: 44,
                     height: 44,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: FluentTheme.of(context).cardColor.withOpacity(.4)),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: FluentTheme
+                        .of(context)
+                        .cardColor
+                        .withOpacity(.4)),
                     child: Center(
                       child: MiniMusicVisualizer(
                         color: Colors.red,
@@ -85,7 +94,7 @@ class TrackCard extends StatelessWidget {
           Text(track.durationMs == null ? "" : Duration(milliseconds: track.durationMs!.toInt()).toHms()),
         ],
       ),
-    );
+    ));
   }
 }
 
@@ -123,7 +132,9 @@ class TrackCommandBar extends StatelessWidget {
             likeAction();
           },
           icon: isLike ? m.Icons.favorite : m.Icons.favorite_border_rounded,
-          iconColor: isLike ? FluentTheme.of(context).accentColor : Colors.transparent,
+          iconColor: isLike ? FluentTheme
+              .of(context)
+              .accentColor : Colors.transparent,
         ),
         AppConsts.defaultHSpacer,
       ],

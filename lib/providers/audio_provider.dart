@@ -33,6 +33,8 @@ class AudioProvider extends ChangeNotifier {
 
   StreamSubscription? _onTrackChangeSubscribe;
 
+  StreamSubscription? _onPlayerStateChangedSubscribe;
+
   Future<void> init() async {
     _player = AudioPlayer();
     //
@@ -49,7 +51,7 @@ class AudioProvider extends ChangeNotifier {
     // });
     //
 
-    _player.onPlayerStateChanged.listen((event) {
+    _onPlayerStateChangedSubscribe =  onPlayerStateChanged.listen((event) {
       if (event == PlayerState.completed) {
         _playlistProvider.onTrackEnd();
         notifyListeners();
@@ -112,6 +114,7 @@ class AudioProvider extends ChangeNotifier {
     // _playlistProvider.onNextTrackPlay.unsubscribeAll();
     // _playlistProvider.onCurrentTrackUpdated.unsubscribeAll();
     _onTrackChangeSubscribe?.cancel();
+    _onPlayerStateChangedSubscribe?.cancel();
     super.dispose();
     _player.dispose();
   }

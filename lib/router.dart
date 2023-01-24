@@ -18,6 +18,7 @@ class AppRouter {
   tryPop(BuildContext context) {
     if(context.read<UxProvider>().isOpenDrawer) {
       context.read<UxProvider>().changeDrawerState();
+      context.read<UxProvider>().isContextMenu = false;
     }
     NavigatorProvider provider = context.read();
     provider.pop(context);
@@ -26,6 +27,7 @@ class AppRouter {
   gotoPlaylist(BuildContext context, String id, String kind, bool isChart) {
     if(context.read<UxProvider>().isOpenDrawer) {
       context.read<UxProvider>().changeDrawerState();
+      context.read<UxProvider>().isContextMenu = false;
     }
     NavigatorProvider provider = context.read();
     provider.push(
@@ -41,6 +43,7 @@ class AppRouter {
   gotoAlbum(BuildContext context, int id) {
     if(context.read<UxProvider>().isOpenDrawer) {
       context.read<UxProvider>().changeDrawerState();
+      context.read<UxProvider>().isContextMenu = false;
     }
     NavigatorProvider provider = context.read();
     provider.push(
@@ -54,6 +57,7 @@ class AppRouter {
   gotoArtist(BuildContext context, String? id) {
     if(context.read<UxProvider>().isOpenDrawer) {
       context.read<UxProvider>().changeDrawerState();
+      context.read<UxProvider>().isContextMenu = false;
     }
     NavigatorProvider provider = context.read();
     provider.push(
@@ -67,6 +71,7 @@ class AppRouter {
   gotoMore(BuildContext context, List<dynamic> listData, String title) {
     if(context.read<UxProvider>().isOpenDrawer) {
       context.read<UxProvider>().changeDrawerState();
+      context.read<UxProvider>().isContextMenu = false;
     }
     NavigatorProvider provider = context.read();
     provider.push(
@@ -81,6 +86,7 @@ class AppRouter {
   gotoTest(BuildContext context) {
     if(context.read<UxProvider>().isOpenDrawer) {
       context.read<UxProvider>().changeDrawerState();
+      context.read<UxProvider>().isContextMenu = false;
     }
     NavigatorProvider provider = context.read();
     provider.push("test", context, const PageTest());
@@ -89,6 +95,7 @@ class AppRouter {
   gotoSetting(BuildContext context) {
     if(context.read<UxProvider>().isOpenDrawer) {
       context.read<UxProvider>().changeDrawerState();
+      context.read<UxProvider>().isContextMenu = false;
     }
     NavigatorProvider provider = context.read();
     provider.push("setting", context, const PageSetting());
@@ -97,6 +104,7 @@ class AppRouter {
   gotoSearch(BuildContext context) {
     if(context.read<UxProvider>().isOpenDrawer) {
       context.read<UxProvider>().changeDrawerState();
+      context.read<UxProvider>().isContextMenu = false;
     }
     NavigatorProvider provider = context.read();
     provider.push("search", context, const PageSearch());
