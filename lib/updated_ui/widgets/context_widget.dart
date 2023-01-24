@@ -54,7 +54,7 @@ class _ContextWidgetState extends State<ContextWidget> {
                     x -= 266;
                   }
                   if (y > AppConsts.pageSize(context).height / 2) {
-                    int btnCount = track.artists!.length + 2;
+                    int btnCount = track.artists!.length + track.albums!.length + 3;
                     y -= (30*btnCount)+100;
                   }
                   return Positioned(
@@ -62,7 +62,7 @@ class _ContextWidgetState extends State<ContextWidget> {
                     top: y.toDouble(),
                     width: 250,
                     child: FadeInUp(
-                      duration: Duration(milliseconds: 100),
+                      duration: const Duration(milliseconds: 100),
                         child: SmoothContainer(
                       padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
                       key: _keyRed,
@@ -111,10 +111,17 @@ class _ContextWidgetState extends State<ContextWidget> {
                           AppConsts.defaultHSpacer,
                           Text("Исполнители", style: AppStyle.subTitle(context),),
                           AppConsts.smallVSpacer,
-                          for(var e in track.artists!) Padding(padding: EdgeInsets.only(bottom: 8), child: GButton(onPressed: () {
+                          for(var e in track.artists!) Padding(padding: const EdgeInsets.only(bottom: 8), child: GButton(onPressed: () {
                             AppRouter().gotoArtist(context, e.id);
                             ux.isContextMenu = false;
                           }, title: e.name!),),
+                          AppConsts.defaultHSpacer,
+                          Text("Альбомы", style: AppStyle.subTitle(context),),
+                          AppConsts.smallVSpacer,
+                          for(var e in track.albums!) Padding(padding: const EdgeInsets.only(bottom: 8), child: GButton(onPressed: () {
+                            AppRouter().gotoAlbum(context, e.id!.toInt());
+                            ux.isContextMenu = false;
+                          }, title: e.title!),),
                         ],
                       ),
                     )),
@@ -124,7 +131,7 @@ class _ContextWidgetState extends State<ContextWidget> {
             ),
           );
         }
-        return SizedBox();
+        return const SizedBox();
       },
     );
   }

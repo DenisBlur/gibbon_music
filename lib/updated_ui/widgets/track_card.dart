@@ -26,6 +26,8 @@ class TrackCard extends StatelessWidget {
   final VoidCallback onPressed;
   final Track track;
 
+  //final Widget? trailing;
+
   @override
   Widget build(BuildContext context) {
     YandexProvider yandexProvider = context.watch();
@@ -100,6 +102,7 @@ class TrackCard extends StatelessWidget {
           AppConsts.fillSpacer,
           TrackCommandBar(isLike: isLike, id: track.id),
           Text(track.durationMs == null ? "" : Duration(milliseconds: track.durationMs!.toInt()).toHms()),
+
         ],
       ),
     ));

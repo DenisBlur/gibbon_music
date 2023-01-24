@@ -22,12 +22,8 @@ class MiniMusicVisualizer extends StatelessWidget {
     final List<int> duration = [900, 800, 700, 600, 500];
     List<Color> colorList = [
       FluentTheme.of(context).accentColor.light,
-      FluentTheme.of(context).accentColor.lighter,
-      FluentTheme.of(context).accentColor.lightest,
-      FluentTheme.of(context).accentColor.dark,
-      FluentTheme.of(context).accentColor.darker,
-      FluentTheme.of(context).accentColor.darkest,
       FluentTheme.of(context).accentColor.normal,
+      FluentTheme.of(context).accentColor.dark,
     ];
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +36,7 @@ class MiniMusicVisualizer extends StatelessWidget {
             active: active,
             curve: Curves.bounceOut,
             duration: duration[index % 5],
-            color: colorList[Random().nextInt(colorList.length)],
+            color: colorList[index],
             width: width,
             height: height,
           ),

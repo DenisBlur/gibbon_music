@@ -42,17 +42,31 @@ class UPlaylistWidget extends StatelessWidget {
                       color: backgroundColor,
                     ),
                     child: tracks.isNotEmpty
-                        ? ReorderableListView.builder(
-                            onReorder: (int oldIndex, int newIndex) {
-                              playListProvider.reorder(oldIndex, newIndex < oldIndex ? newIndex : newIndex - 1);
-                            },
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                key: ValueKey(index),
-                                title: Text(tracks[index]!.title!),
-                              );
-                            },
-                            itemCount: tracks.length,
+                        ? ImprovedScrolling(
+                            scrollController: controller,
+                            enableCustomMouseWheelScrolling: true,
+                            customMouseWheelScrollConfig: const CustomMouseWheelScrollConfig(
+                              scrollAmountMultiplier: AppConsts.scrollMultiplier,
+                            ),
+                            child: ReorderableListView.builder(
+                              onReorder: (int oldIndex, int newIndex) {
+                                playListProvider.reorder(oldIndex, newIndex < oldIndex ? newIndex : newIndex - 1);
+                              },
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                    key: ValueKey(index),
+                                    padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4, right: 32),
+                                    child: TrackCard(
+                                      track: tracks[index]!,
+                                      onPressed: () {
+                                        playListProvider.currentTrackIndex = index;
+                                      },
+                                    ));
+                              },
+                              itemCount: tracks.length,
+                              scrollController: controller,
+                              physics: Platform.isAndroid ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
+                            ),
                           )
                         : Center(child: Text("Ничего нет :(")))),
           ),
