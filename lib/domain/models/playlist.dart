@@ -272,8 +272,13 @@ class NewPlaylist with ChangeNotifier {
     } else {
       indexToAdd = currentTrack == null ? 0 : _loop.currentIndex + 1;
     }
-
+    print("added track $track");
     _tracks.insert(indexToAdd, track);
+
+    for (int i = 0; i < _ids.length; i++) {
+      if (_ids[i] >= indexToAdd) _ids[i]++;
+    }
+
     _ids.insert(_loop.currentIndex + 1, indexToAdd);
 
     _loop.size = _tracks.length;
