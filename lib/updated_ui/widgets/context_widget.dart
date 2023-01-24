@@ -54,7 +54,7 @@ class _ContextWidgetState extends State<ContextWidget> {
                     x -= 266;
                   }
                   if (y > AppConsts.pageSize(context).height / 2) {
-                    int btnCount = track.artists!.length + track.albums!.length + 3;
+                    int btnCount = track.artists!.length + track.albums!.length + 5;
                     y -= (30*btnCount)+100;
                   }
                   return Positioned(
@@ -95,6 +95,11 @@ class _ContextWidgetState extends State<ContextWidget> {
                             ],
                           ),
                           AppConsts.defaultVSpacer,
+                          GButton(onPressed: () {
+                            context.read<NewPlaylist>().removeTrack(track);
+                            ux.isContextMenu = false;
+                          }, title: "Удалить из очереди"),
+                          AppConsts.smallVSpacer,
                           GButton(onPressed: () {
                             context.read<NewPlaylist>().addTrackToEnd(track);
                             ux.isContextMenu = false;
