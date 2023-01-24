@@ -104,6 +104,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
               FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(lerpDouble(0.5, 1.0, shrinkOffset / expandedHeight)!.toDouble())
             ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
           ),
+
           Positioned(
             bottom: AppConsts.pageOffset.horizontal / 2,
             left: AppConsts.pageOffset.horizontal / 2,

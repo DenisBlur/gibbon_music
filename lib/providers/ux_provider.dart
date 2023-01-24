@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:yam_api/track/track.dart';
 
 class UxProvider extends ChangeNotifier {
   bool _isOpenDrawer = false;
@@ -11,7 +12,7 @@ class UxProvider extends ChangeNotifier {
   String currentAlbum = "";
   String currentArtist = "";
 
-  StreamController<TapUpDetails> onChangeDetails = StreamController.broadcast();
+  StreamController<TrackContextDetail> onChangeDetails = StreamController.broadcast();
 
   String get currentPlaylist => _currentPlaylist;
 
@@ -56,4 +57,12 @@ class UxProvider extends ChangeNotifier {
     isOpenPlaylist = !isOpenPlaylist;
   }
 
+}
+
+class TrackContextDetail {
+
+  TapUpDetails details;
+  Track track;
+
+  TrackContextDetail({required this.details, required this.track});
 }

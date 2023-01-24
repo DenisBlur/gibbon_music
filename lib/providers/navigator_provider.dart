@@ -1,7 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:provider/provider.dart';
 import 'package:stack/stack.dart' as s;
 
 import '../updated_ui/widgets/overlay_container.dart';
+import 'ux_provider.dart';
 
 class NavigatorProvider extends ChangeNotifier {
   NavigatorProvider();
@@ -16,6 +18,10 @@ class NavigatorProvider extends ChangeNotifier {
           builder: (context) => widget,
         ));
     _navigationStack.push(path);
+    if(context.read<UxProvider>().isOpenDrawer) {
+      context.read<UxProvider>().changeDrawerState();
+    }
+    context.read<UxProvider>().isContextMenu = false;
     notifyListeners();
   }
 
@@ -25,6 +31,10 @@ class NavigatorProvider extends ChangeNotifier {
       Navigator.pop(context);
       _navigationStack.pop();
     }
+    if(context.read<UxProvider>().isOpenDrawer) {
+      context.read<UxProvider>().changeDrawerState();
+    }
+    context.read<UxProvider>().isContextMenu = false;
     notifyListeners();
   }
 

@@ -328,6 +328,17 @@ class Client {
     return userPlaylists;
   }
 
+  Future<List<Track>> usersPlaylistsRecommendations(String kind) async {
+    ///Получение рекомендаций для плейлиста.
+    List<Track> returnList = [];
+    var result = await RequestClient(headers: headers).requestGet("/users/$userId/playlists/$kind/recommendations");
+    List<dynamic> jsonResult = jsonDecode(result)['result']['tracks'];
+    jsonResult.forEach((v) {
+      returnList.add(Track.fromJson(v));
+    });
+    return returnList;
+  }
+
   Future<QueuesList> getQueuesList() async {
     ///Получение всех очередей треков с разных устройств для синхронизации между ними
     var result = await RequestClient(headers: deviceHeaders).requestGet("/queues");

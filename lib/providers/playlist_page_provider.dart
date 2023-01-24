@@ -10,6 +10,7 @@ class PagePlaylistProvider {
   Chart chart = Chart();
 
   Future<void> init({required String uid, required String kind, bool? isChart = false}) async {
+    //client.usersPlaylistsRecommendations(kind);
     if(!isChart!) {
       mPlaylist = await client.playlist(uid, kind);
     } else {

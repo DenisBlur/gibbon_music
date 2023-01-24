@@ -16,19 +16,13 @@ class AppRouter {
   AppRouter();
 
   tryPop(BuildContext context) {
-    if(context.read<UxProvider>().isOpenDrawer) {
-      context.read<UxProvider>().changeDrawerState();
-      context.read<UxProvider>().isContextMenu = false;
-    }
+    context.read<UxProvider>().isContextMenu = false;
     NavigatorProvider provider = context.read();
     provider.pop(context);
   }
 
   gotoPlaylist(BuildContext context, String id, String kind, bool isChart) {
-    if(context.read<UxProvider>().isOpenDrawer) {
-      context.read<UxProvider>().changeDrawerState();
-      context.read<UxProvider>().isContextMenu = false;
-    }
+    context.read<UxProvider>().isContextMenu = false;
     NavigatorProvider provider = context.read();
     provider.push(
         "playlist",
@@ -41,10 +35,6 @@ class AppRouter {
   }
 
   gotoAlbum(BuildContext context, int id) {
-    if(context.read<UxProvider>().isOpenDrawer) {
-      context.read<UxProvider>().changeDrawerState();
-      context.read<UxProvider>().isContextMenu = false;
-    }
     NavigatorProvider provider = context.read();
     provider.push(
         "album",
@@ -55,10 +45,6 @@ class AppRouter {
   }
 
   gotoArtist(BuildContext context, String? id) {
-    if(context.read<UxProvider>().isOpenDrawer) {
-      context.read<UxProvider>().changeDrawerState();
-      context.read<UxProvider>().isContextMenu = false;
-    }
     NavigatorProvider provider = context.read();
     provider.push(
         "artist",
@@ -69,10 +55,6 @@ class AppRouter {
   }
 
   gotoMore(BuildContext context, List<dynamic> listData, String title) {
-    if(context.read<UxProvider>().isOpenDrawer) {
-      context.read<UxProvider>().changeDrawerState();
-      context.read<UxProvider>().isContextMenu = false;
-    }
     NavigatorProvider provider = context.read();
     provider.push(
         "test",
@@ -84,28 +66,16 @@ class AppRouter {
   }
 
   gotoTest(BuildContext context) {
-    if(context.read<UxProvider>().isOpenDrawer) {
-      context.read<UxProvider>().changeDrawerState();
-      context.read<UxProvider>().isContextMenu = false;
-    }
     NavigatorProvider provider = context.read();
     provider.push("test", context, const PageTest());
   }
 
   gotoSetting(BuildContext context) {
-    if(context.read<UxProvider>().isOpenDrawer) {
-      context.read<UxProvider>().changeDrawerState();
-      context.read<UxProvider>().isContextMenu = false;
-    }
     NavigatorProvider provider = context.read();
     provider.push("setting", context, const PageSetting());
   }
 
   gotoSearch(BuildContext context) {
-    if(context.read<UxProvider>().isOpenDrawer) {
-      context.read<UxProvider>().changeDrawerState();
-      context.read<UxProvider>().isContextMenu = false;
-    }
     NavigatorProvider provider = context.read();
     provider.push("search", context, const PageSearch());
   }

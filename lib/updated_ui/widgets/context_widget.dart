@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/updated_ui/controls/buttons.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_corner/smooth_corner.dart';
@@ -23,12 +24,12 @@ class _ContextWidgetState extends State<ContextWidget> {
   Widget build(BuildContext context) {
     UxProvider ux = context.watch();
     print("$x : $y");
-    return StreamBuilder<TapUpDetails>(
+    return StreamBuilder<TrackContextDetail>(
       stream: ux.onChangeDetails.stream,
       builder: (context, snapshot) {
         if (snapshot.hasData && ux.isContextMenu) {
-          var x = snapshot.data!.globalPosition.dx.toInt();
-          var y = snapshot.data!.globalPosition.dy.toInt();
+          var x = snapshot.data!.details.globalPosition.dx.toInt();
+          var y = snapshot.data!.details.globalPosition.dy.toInt();
 
           return FadeInUp(
             duration: AppConsts.fastAnimation,
@@ -66,12 +67,18 @@ class _ContextWidgetState extends State<ContextWidget> {
                           SizedBox(
                             width: 250,
                             height: 25,
-                            child: GButton(onPressed: () {}, title: "Hello!"),
+                            child: GButton(onPressed: () {
+                              context.read<NewPlaylist>().addTrackToEnd(snapshot.data!.track);
+                              ux.isContextMenu = false;
+                            }, title: "Добавить в конец"),
                           ),
                           SizedBox(
                             width: 250,
                             height: 25,
-                            child: GButton(onPressed: () {}, title: "Hello!"),
+                            child: GButton(onPressed: () {
+                              context.read<NewPlaylist>().addTrackAfterCurrent(snapshot.data!.track);
+                              ux.isContextMenu = false;
+                            }, title: "Добавить после текущего"),
                           )
                         ],
                       ),

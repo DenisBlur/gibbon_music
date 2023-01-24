@@ -50,20 +50,22 @@ class UPlaylistWidget extends StatelessWidget {
                     scrollAmountMultiplier: AppConsts.scrollMultiplier,
                   ),
                   child: ListView.builder(
-                  controller: controller,
-                  physics: Platform.isAndroid ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: TrackCard(
-                      track: tracks[index]!,
-                      onPressed: () => playListProvider.currentTrackIndex = index,
+                    controller: controller,
+                    physics: Platform.isAndroid ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: TrackCard(
+                        track: tracks[index]!,
+                        onPressed: () => playListProvider.currentTrackIndex = index,
+                      ),
                     ),
+                    itemCount: tracks.length,
                   ),
-                  itemCount: tracks.length,
                 ),
-              ),
             )),
       ),
     );
   }
 }
+
+

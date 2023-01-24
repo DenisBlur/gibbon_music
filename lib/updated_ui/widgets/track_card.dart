@@ -34,7 +34,7 @@ class TrackCard extends StatelessWidget {
     return GestureDetector(
         onSecondaryTapUp: (details) {
           UxProvider ux = context.read();
-          ux.onChangeDetails.add(details);
+          ux.onChangeDetails.add(TrackContextDetail(details: details, track: track));
           ux.isContextMenu = true;
         },
         child:GCardView(

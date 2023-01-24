@@ -25,8 +25,8 @@ class OverlayContainer extends StatelessWidget {
           const UPlaylistWidget(),
           const Align(alignment: Alignment.bottomCenter, child: PlayerMain()),
           Responsive.isDesktop(context) ? const DrawerWidget() : const SizedBox(),
-          const ContextWidget(),
           const Header(),
+          const ContextWidget(),
         ],
       ),
     );
