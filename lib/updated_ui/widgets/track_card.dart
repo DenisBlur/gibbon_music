@@ -1,9 +1,11 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/constants/ui_consts.dart';
 import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/extensions/string.dart';
+import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/updated_ui/widgets/ImageThumbnail.dart';
 import 'package:gibbon_music/updated_ui/widgets/card_view.dart';
@@ -32,8 +34,9 @@ class TrackCard extends StatelessWidget {
     bool isLike = yandexProvider.trackIsLiked(track.id.toString());
     String image = track.coverUri != null ? track.coverUri!.linkImage(100) : AppConsts.imageEmptyLink;
 
-    if(context.watch<NewPlaylist>().currentTrack!.id != null) {
+    if(context.watch<NewPlaylist>().currentTrack != null) {
       isSelected = track.id == context.watch<NewPlaylist>().currentTrack!.id;
+      isPlay = context.watch<AudioProvider>().playerState == PlayerState.playing;
     }
 
     return GestureDetector(
@@ -68,7 +71,7 @@ class TrackCard extends StatelessWidget {
                     child: Center(
                       child: MiniMusicVisualizer(
                         color: Colors.red,
-                        active: isSelected,
+                        active: isPlay,
                         width: 4,
                         height: 15,
                       ),
