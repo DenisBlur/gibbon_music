@@ -16,31 +16,32 @@ class GButton extends StatelessWidget {
 
     var theme = FluentTheme.of(context);
 
-    defaultStateColor = theme.cardColor.withOpacity(.5);
-    hoverStateColor = theme.accentColor.withOpacity(.4);
-    pressedStateColor = theme.accentColor.withOpacity(.2);
+    defaultStateColor = GThemeCreator().alphaBlend(theme.accentColor.withOpacity(.1), theme.cardColor);
+    hoverStateColor = GThemeCreator().alphaBlend(theme.accentColor.withOpacity(.4), theme.cardColor);
+    pressedStateColor = GThemeCreator().alphaBlend(theme.accentColor.withOpacity(.2), theme.cardColor);
 
-    return m.Material(
-      color: defaultStateColor,
-      borderRadius: BorderRadius.circular(4),
-      child: m.InkWell(
-        splashColor: pressedStateColor,
-        borderRadius: BorderRadius.circular(4),
-        onTap: () {
-          onPressed();
-        },
-        hoverColor: hoverStateColor,
-        child: AnimatedContainer(
-          padding: const EdgeInsets.only(left: 8, right: 8, bottom: 4, top: 2),
+
+    return HoverButton(
+      onPressed: () => onPressed(),
+      builder: (p0, state) {
+        Color bgColor = state.isPressing
+            ? pressedStateColor
+            : state.isHovering
+            ? hoverStateColor
+            : defaultStateColor;
+
+        return AnimatedContainer(
+          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 4),
           duration: AppConsts.defaultAnimation,
           curve: AppConsts.defaultCurve,
           decoration: BoxDecoration(
-            border: Border.all(color: theme.borderInputColor.withOpacity(.2), width: .5),
+            color: bgColor,
             borderRadius: BorderRadius.circular(4),
+            border: Border.all(color: theme.borderInputColor.withOpacity(state.isHovering ? .2 : 0), width: .3),
           ),
-          child: Text(title),
-        ),
-      ),
+          child: Text(title.toLowerCase(), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),),
+        );
+      },
     );
   }
 }
