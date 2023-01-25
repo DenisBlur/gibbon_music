@@ -136,12 +136,19 @@ import 'package:yam_api/track/track.dart';
 class NewPlaylist with ChangeNotifier {
   NewPlaylist();
 
+  final List<IPlaylistLoopStrategy> _loops = [
+    PlaylistLoopStrategy(),
+    NoLoopStrategy(),
+    OneTrackLoopStrategy(),
+  ];
+  int _currentLoopI = 0;
+
   final List<Track?> _tracks = [];
   final List<int> _ids = [];
 
   bool _shuffled = false;
 
-  IPlaylistLoopStrategy _loop = PlaylistLoopStrategy();
+  late IPlaylistLoopStrategy _loop = _loops[_currentLoopI];
 
   //region Events
 
@@ -338,6 +345,13 @@ class NewPlaylist with ChangeNotifier {
 
     _onPlaylistUpdateController.add(true);
     notifyListeners();
+  }
+
+  void nextLoop() {
+    _currentLoopI++;
+    _currentLoopI %= _loops.length;
+
+    loopStrategy = _loops[_currentLoopI];
   }
 
   //region private functions

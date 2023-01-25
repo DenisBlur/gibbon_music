@@ -50,6 +50,7 @@ class AudioProvider extends ChangeNotifier {
       notifyListeners();
     });
 
+
     // _playlistProvider.onCurrentTrackUpdated.subscribe((args) {
     //   preloadTrack(_playlistProvider.currentTrack!);
     //   notifyListeners();

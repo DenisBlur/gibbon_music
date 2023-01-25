@@ -2,6 +2,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/constants/ui_consts.dart';
+import 'package:gibbon_music/domain/interfaces/iplaylist_loop_strategy.dart';
+import 'package:gibbon_music/domain/models/loop_strategy/loop_strategies.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
@@ -13,6 +15,14 @@ import '../controls/buttons.dart';
 
 class PlayerMainControl extends StatelessWidget {
   const PlayerMainControl({Key? key}) : super(key: key);
+
+  IconData _getIconForLoop(IPlaylistLoopStrategy loopS) {
+    if (loopS is OneTrackLoopStrategy) return m.Icons.repeat_one_on_rounded;
+    if (loopS is PlaylistLoopStrategy) return m.Icons.repeat_on_rounded;
+    if (loopS is NoLoopStrategy) return m.Icons.repeat_rounded;
+
+    return m.Icons.repeat_rounded;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +41,7 @@ class PlayerMainControl extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              GIconButton(onPressed: () {}, icon: m.Icons.loop_rounded, size: 24),
+              GIconButton(onPressed: () => playList.nextLoop(), icon: _getIconForLoop(playList.loopStrategy), size: 24),
               AppConsts.defaultHSpacer,
               GIconButton(
                   onPressed: () {
@@ -59,7 +69,7 @@ class PlayerMainControl extends StatelessWidget {
                   icon: m.Icons.skip_next_rounded,
                   size: 24),
               AppConsts.defaultHSpacer,
-              GIconButton(onPressed: () =>  playList.shuffle = !playList.shuffled, icon: m.Icons.shuffle, size: 24)
+              GIconButton(onPressed: () => playList.shuffle = !playList.shuffled, icon: m.Icons.shuffle, size: 24)
             ],
           ),
           AppConsts.smallVSpacer,

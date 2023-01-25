@@ -102,7 +102,6 @@ class TrackCard extends StatelessWidget {
           AppConsts.fillSpacer,
           TrackCommandBar(isLike: isLike, id: track.id),
           Text(track.durationMs == null ? "" : Duration(milliseconds: track.durationMs!.toInt()).toHms()),
-
         ],
       ),
     ));
