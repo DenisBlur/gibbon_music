@@ -1,10 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.gibbonstudio.music.gibbon_music">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
    <application
         android:label="gibbon_music"
+        android:usesCleartextTraffic="true"
+        tools:targetApi = "m"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
