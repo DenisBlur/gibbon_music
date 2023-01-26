@@ -9,7 +9,7 @@ import 'package:gibbon_music/updated_ui/widgets/header.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
-import '../player/player_main.dart';
+import '../player/windows/player_main.dart';
 import 'playlist_widget.dart';
 
 class OverlayContainer extends StatelessWidget {
