@@ -49,8 +49,7 @@ class PagePlaylist extends StatelessWidget {
                         child: TrackCard(
                           track: mPagePlaylist.tracks![index]!.track!,
                           onPressed: () {
-                            playListProvider.tracks =  mPagePlaylist.tracks!.select((e, _) => e?.track,).toList();
-                            playListProvider.currentTrackIndex = index;
+                            playListProvider.setTracksWithActiveTrack(mPagePlaylist.tracks!.select((e, _) => e?.track,).toList(), index);
                             audioProvider.resume();
                           },
                         ),
