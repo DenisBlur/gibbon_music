@@ -16,7 +16,7 @@ class OneTrackLoopStrategy extends IPlaylistLoopStrategy {
   bool next() {
     if (canNext() == false) return false;
 
-    currentIndex++;
+    currentIndex = getNextIndex();
 
     return true;
   }
@@ -39,6 +39,11 @@ class OneTrackLoopStrategy extends IPlaylistLoopStrategy {
   bool canPrevious() {
     return _checkRange(currentIndex - 1);
   }
+
+  @override
+  int getNextIndex() {
+    return currentIndex + 1;
+  }
 }
 
 class PlaylistLoopStrategy extends IPlaylistLoopStrategy {
@@ -57,8 +62,7 @@ class PlaylistLoopStrategy extends IPlaylistLoopStrategy {
   bool next() {
     if (canNext() == false) return false;
 
-    currentIndex++;
-    currentIndex = currentIndex % size;
+    currentIndex = getNextIndex();
 
     return true;
   }
@@ -81,6 +85,11 @@ class PlaylistLoopStrategy extends IPlaylistLoopStrategy {
   bool canPrevious() {
     return _checkRange(currentIndex - 1);
   }
+
+  @override
+  int getNextIndex() {
+    return (currentIndex + 1) % size;
+  }
 }
 
 class NoLoopStrategy extends IPlaylistLoopStrategy {
@@ -99,7 +108,7 @@ class NoLoopStrategy extends IPlaylistLoopStrategy {
   bool next() {
     if (canNext() == false) return false;
 
-    currentIndex++;
+    currentIndex = getNextIndex();
 
     return true;
   }
@@ -121,5 +130,10 @@ class NoLoopStrategy extends IPlaylistLoopStrategy {
   @override
   bool canPrevious() {
     return _checkRange(currentIndex - 1);
+  }
+
+  @override
+  int getNextIndex() {
+    return currentIndex + 1;
   }
 }

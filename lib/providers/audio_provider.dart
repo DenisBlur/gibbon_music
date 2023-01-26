@@ -33,20 +33,27 @@ class AudioProvider extends ChangeNotifier {
 
   StreamSubscription? _onTrackChangeSubscribe;
 
+  // StreamSubscription? _onPlaylistChangeSubscribe;
+
   StreamSubscription? _onPlayerStateChangedSubscribe;
 
-  String _sourceUrl = "";
+  CancelableOperation? _setTrackOP;
 
   Future<void> init() async {
     _player = AudioPlayer();
-    //
-    // _playlistProvider.onNextTrackPlay.subscribe((args) => _changeTrack());
+
+    // preloadTrack
+    // setTrack
 
     _onTrackChangeSubscribe = _playlistProvider.onTrackChange.listen((event) {
-      if (_playlistProvider.currentTrack == null) {
-        pause();
-      } else {
-        preloadTrack(_playlistProvider.currentTrack!);
+      pause();
+      if (_playlistProvider.currentTrack != null) {
+        _setTrackOP?.cancel();
+        _setTrackOP = CancelableOperation.fromFuture(_setTrack(_playlistProvider.currentTrack!));
+        _setTrackOP!.then((_) async {
+          resume();
+          await _cacheNextTrack();
+        });
       }
 
       notifyListeners();
@@ -60,23 +67,8 @@ class AudioProvider extends ChangeNotifier {
     });
   }
 
-  void preloadTrack(Track track) async {
-    await _player.pause();
-    setSeek(0);
-
-    await _getTrackURLAsyncOperation?.cancel();
-
-     _getTrackURLAsyncOperation = CancelableOperation.fromFuture(client.downloadTrack(trackId: track.id, quality: QualityTrack.low));
-     _getTrackURLAsyncOperation?.then((trackURL) => _playTrack(trackURL));
-  }
-
   void setOneTrack(Track track) {
     _playlistProvider.tracks = ([track]);
-  }
-
-  void playTrack() {
-    preloadTrack(_playlistProvider.currentTrack!);
-    notifyListeners();
   }
 
   void resume() async {
@@ -98,22 +90,38 @@ class AudioProvider extends ChangeNotifier {
     await _player.setVolume(volume);
   }
 
-  void _playTrack(String url) async {
-    await _player.setSourceUrl(url);
-    resume();
+  Future _toCache(Track? track) async {
+    if (track == null) return;
+    var id = track.id.toString();
+    if (_player.audioCache.loadedFiles.containsKey(id) == false) {
+      var uri = await client.downloadTrack(trackId: track.id, quality: QualityTrack.low);
+      _player.audioCache.loadedFiles.addAll({id: Uri.parse(uri)});
+    }
+  }
+
+  Future _cacheNextTrack() async {
+    if (_playlistProvider.canNext()) {
+      await _toCache(_playlistProvider.nextInQueue());
+      print("next track cached!");
+    }
+  }
+
+  Future _setTrack(Track track) async {
+    await _toCache(track);
+    var uri = await _player.audioCache.load(track.id.toString());
+    await _player.setSourceUrl(uri.toString());
     notifyListeners();
   }
 
   @override
   Future<void> dispose() async {
-    // _playlistProvider.onTrackChange.
-    // _playlistProvider.onNextTrackPlay.unsubscribeAll();
-    // _playlistProvider.onCurrentTrackUpdated.unsubscribeAll();
     await _onTrackChangeSubscribe?.cancel();
     await _onPlayerStateChangedSubscribe?.cancel();
     super.dispose();
     await _player.dispose();
   }
+
+
 
   ///Удалить если чего
   IconData icon() {

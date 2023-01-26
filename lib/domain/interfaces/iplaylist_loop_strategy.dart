@@ -8,6 +8,8 @@ abstract class IPlaylistLoopStrategy {
 
   bool next();
 
+  int getNextIndex();
+
   bool previous();
 
   bool canNext();
