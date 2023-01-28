@@ -18,6 +18,7 @@ import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:gibbon_music/updated_ui/screens/page_init.dart';
 import 'package:gibbon_music/updated_ui/screens/page_landing.dart';
+import 'package:gibbon_music/updated_ui/widgets/overlay_container.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:window_manager/window_manager.dart';
@@ -116,7 +117,7 @@ class Load extends StatelessWidget {
     return FutureBuilder(
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return const UPageLanding();
+          return const OverlayContainer();
         } else {
           return const PageInit();
         }

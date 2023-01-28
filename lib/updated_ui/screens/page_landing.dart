@@ -30,7 +30,7 @@ class UPageLanding extends StatelessWidget {
     LandingProvider landingProvider = context.read();
     landingProvider.dispose();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => context.read<NavigatorProvider>().showOverlay(context));
+    // WidgetsBinding.instance.addPostFrameCallback((_) => context.read<NavigatorProvider>().showOverlay(context));
 
     return FutureBuilder(
       future: landingProvider.init(),

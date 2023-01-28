@@ -8,49 +8,34 @@ import 'ux_provider.dart';
 class NavigatorProvider extends ChangeNotifier {
   NavigatorProvider();
 
+  final navigatorKey = GlobalKey<NavigatorState>();
   final s.Stack<String> _navigationStack = s.Stack<String>();
-  bool _overlayCreated = false;
 
   push(String path, BuildContext context, Widget widget) {
-    Navigator.push(
-        context,
-        FluentPageRoute(
-          builder: (context) => widget,
-        ));
+    navigatorKey.currentState!.push(FluentPageRoute(
+      builder: (context) => widget,
+    ));
     _navigationStack.push(path);
-    if(context.read<UxProvider>().isOpenDrawer) {
-      context.read<UxProvider>().changeDrawerState();
-    }
-    context.read<UxProvider>().isContextMenu = false;
-    notifyListeners();
+    uxCloseWidget(context);
   }
 
   pop(BuildContext context) {
-    //что бы избежать ошибки используется GoRouter
-    if (Navigator.canPop(context)) {
-      Navigator.pop(context);
+    if (navigatorKey.currentState!.canPop()) {
+      navigatorKey.currentState!.pop();
       _navigationStack.pop();
     }
+    uxCloseWidget(context);
+  }
+
+  uxCloseWidget(BuildContext context) {
     if(context.read<UxProvider>().isOpenDrawer) {
       context.read<UxProvider>().changeDrawerState();
     }
+    if(context.read<UxProvider>().isOpenPlaylist) {
+      context.read<UxProvider>().changePlaylistState();
+    }
     context.read<UxProvider>().isContextMenu = false;
     notifyListeners();
-  }
-
-  showOverlay(BuildContext context) async {
-    OverlayState? overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-      opaque: false,
-      maintainState: true,
-      builder: (context) {
-        return const Positioned(top: 0, left: 0, bottom: 0, right: 0, child: OverlayContainer());
-      },
-    );
-    if (!_overlayCreated) {
-      overlayState?.insert(overlayEntry);
-      _overlayCreated = true;
-    }
   }
 
   bool get navigationCanBack => _navigationStack.isNotEmpty;
