@@ -9,7 +9,7 @@ import 'package:gibbon_music/updated_ui/widgets/ImageThumbnail.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
-import '../../constants/ui_consts.dart';
+import '../../constants/app_consts.dart';
 import '../../providers/ux_provider.dart';
 
 class ContextWidget extends StatefulWidget {

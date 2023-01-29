@@ -82,7 +82,7 @@ class GThemeCreator {
       brightness: Brightness.dark,
       cardColor: alphaBlend(Colors.white.withOpacity(.1), Colors.black),
       scaffoldBackgroundColor: Colors.black,
-      accentColor: systemAccentColor.accent.toAccentColor(),
+      accentColor: Colors.white.toAccentColor(),
       scrollbarTheme: const ScrollbarThemeData(
         backgroundColor: Colors.transparent,
         hoveringThickness: 1,
@@ -92,9 +92,9 @@ class GThemeCreator {
 
     lightNoColor = ThemeData(
       brightness: Brightness.light,
-      cardColor: alphaBlend(Colors.black.withOpacity(.1), Colors.white),
+      cardColor: alphaBlend(Colors.black.withOpacity(.05), Colors.white),
       scaffoldBackgroundColor: Colors.white,
-      accentColor: systemAccentColor.accent.toAccentColor(),
+      accentColor: Colors.black.toAccentColor(),
       scrollbarTheme: const ScrollbarThemeData(
         backgroundColor: Colors.transparent,
         hoveringThickness: 1,

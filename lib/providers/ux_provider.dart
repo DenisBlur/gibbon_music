@@ -64,6 +64,21 @@ class UxProvider extends ChangeNotifier {
     isOpenPlaylist = !isOpenPlaylist;
   }
 
+  showToast(BuildContext context) async {
+    OverlayState? overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(
+      opaque: false,
+      maintainState: true,
+      builder: (context) {
+        Future.delayed(Duration(seconds: 2)).then((value) {
+          overlayState?.dispose();
+        });
+        return Positioned(left: 0, bottom: 0, right: 0, child: Text("HELLLOOOOO!!!!!!"));
+      },
+    );
+    overlayState?.insert(overlayEntry);
+  }
+
 }
 
 class TrackContextDetail {

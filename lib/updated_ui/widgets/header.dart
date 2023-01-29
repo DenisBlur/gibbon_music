@@ -7,12 +7,14 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:window_manager/window_manager.dart';
 
-import '../../constants/ui_consts.dart';
+import '../../constants/app_consts.dart';
 import '../../providers/navigator_provider.dart';
 import '../../router.dart';
 
 class Header extends StatelessWidget {
-  const Header({Key? key}) : super(key: key);
+  const Header({Key? key, this.menu = true}) : super(key: key);
+
+  final bool? menu;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class Header extends StatelessWidget {
       builder: (_, provider, __) {
         List<Widget> headerButtons = [];
 
-        if (Platform.isWindows) {
+        if (Platform.isWindows && menu!) {
           headerButtons.add(
             HeaderButton(onPressed: () => AppRouter().tryPop(context), icon: m.Icons.arrow_back_rounded, showHide: provider.navigationCanBack),
           );
@@ -40,7 +42,7 @@ class Header extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          Platform.isAndroid ? "" : AppConsts.appTitle,
+                          Platform.isAndroid || !menu! ? "" : AppConsts.appTitle,
                           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                       )))),
@@ -49,7 +51,8 @@ class Header extends StatelessWidget {
           AppConsts.defaultHSpacer,
         );
 
-        headerButtons.add(
+        if(menu!) {
+          headerButtons.add(
           HeaderButton(
               onPressed: () {
                 AppRouter().gotoSearch(context);
@@ -57,6 +60,7 @@ class Header extends StatelessWidget {
               icon: m.Icons.search_rounded,
               showHide: true),
         );
+        }
 
         if (Platform.isWindows) {
           headerButtons.add(
@@ -95,7 +99,7 @@ class Header extends StatelessWidget {
         return ClipRRect(
           child: Container(
             height: AppConsts.windowHeader,
-            color: theme.scaffoldBackgroundColor,
+            color: theme.scaffoldBackgroundColor.withOpacity(!menu! ? 0 : 1),
             child: Row(
               children: headerButtons,
             ),

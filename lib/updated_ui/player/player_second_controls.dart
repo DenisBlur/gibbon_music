@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
-import 'package:gibbon_music/constants/ui_consts.dart';
+import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/audio_provider.dart';

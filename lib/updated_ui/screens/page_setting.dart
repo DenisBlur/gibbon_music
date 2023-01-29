@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
-import 'package:gibbon_music/constants/ui_consts.dart';
+import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
@@ -32,7 +32,7 @@ class PageSetting extends StatelessWidget {
                         ? Container(
                             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                             decoration: BoxDecoration(
-                                color: FluentTheme.of(context).accentColor,
+                                color: FluentTheme.of(context).cardColor,
                                 borderRadius: BorderRadius.circular(4),
                                 border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(.2), width: .6)),
                             child: const Text(

@@ -2,7 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 
-import '../../constants/ui_consts.dart';
+import '../../constants/app_consts.dart';
 import '../utils/dynamic_data.dart';
 
 class PageMore extends StatelessWidget {
