@@ -1,6 +1,6 @@
-# gibbon_music
+# Gibbon Music
 
-A new Flutter project.
+Wonderful Yandex music from gibbons!
 
 ## Getting Started
 
