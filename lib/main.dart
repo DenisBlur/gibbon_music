@@ -24,6 +24,8 @@ import 'package:provider/single_child_widget.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:yam_api/client.dart';
 
+import 'effects/MicaBackground.dart';
+
 
 Client client = Client();
 
@@ -74,6 +76,7 @@ Future<void> main() async {
       await windowManager.center();
     });
   }
+  MicaSupportClass.micaInit();
   runApp(const App());
 }
 

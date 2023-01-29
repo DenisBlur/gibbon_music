@@ -28,6 +28,7 @@ dependencies:
   shared_preferences: ^2.0.17
   url_launcher: ^6.1.8
   flutter_animate: ^3.0.0
+  image: any
   yam_api:
     path: yam_api
   event: any
@@ -42,3 +43,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
