@@ -16,6 +16,7 @@ import 'package:gibbon_music/providers/search_provider.dart';
 import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
+import 'package:gibbon_music/updated_ui/screens/page_auth.dart';
 import 'package:gibbon_music/updated_ui/screens/page_init.dart';
 import 'package:gibbon_music/updated_ui/screens/page_landing.dart';
 import 'package:provider/provider.dart';
@@ -73,9 +74,7 @@ Future<void> main() async {
       await windowManager.center();
     });
   }
-  client.init(token: "AQAAAAAV_ACCAAG8XkFW219h4UiInu2aEV4ZGL4").whenComplete(() {
-    runApp(const App());
-  });
+  runApp(const App());
 }
 
 class App extends StatefulWidget {
@@ -112,16 +111,6 @@ class Load extends StatelessWidget {
   const Load({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    YandexProvider provider = context.read();
-    return FutureBuilder(
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return const UPageLanding();
-        } else {
-          return const PageInit();
-        }
-      },
-      future: Future.delayed(const Duration(seconds: 1)),
-    );
+    return const PageAuth();
   }
 }

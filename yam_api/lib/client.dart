@@ -49,7 +49,10 @@ class Client {
 
   Status account = Status();
 
-  Future init({required String token}) async {
+  Future<bool> init({required String token}) async {
+    if(token.isEmpty) {
+      return false;
+    }
     this.token = token;
     device = await _device();
     headers = {'Authorization': 'OAuth $token'};
@@ -58,6 +61,7 @@ class Client {
       userId = value.account?.uid.toString();
     });
     deviceHeaders = {'Authorization': 'OAuth $token', 'X-Yandex-Music-Device': '$device'};
+    return account.account != null;
   }
 
   Future<String?> _device() async {
@@ -91,7 +95,7 @@ class Client {
   Future<Status> accountStatus() async {
     ///получение статуса аккаунта. Нет обязательных параметров.
     var result = await RequestClient(headers: headers).requestGet("/account/status");
-    return Status.fromJson(jsonDecode(result)["result"]);
+    return result.contains("error") ? Status() :  Status.fromJson(jsonDecode(result)["result"]);
   }
 
   Future<UserSettings> accountSettings() async {

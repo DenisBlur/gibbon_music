@@ -40,7 +40,7 @@ class ThemeProvider extends ChangeNotifier {
     if(SystemTheme.isDarkMode) {
       themeType = ThemeType.darkNoColor;
     } else {
-      themeType = ThemeType.lightColor;
+      themeType = ThemeType.lightNoColor;
     }
     themeCreator.init(accentColor: SystemTheme.accentColor);
     theme = getTheme();

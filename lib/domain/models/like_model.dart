@@ -5,16 +5,13 @@ import 'package:gibbon_music/main.dart';
 import 'package:yam_api/enums.dart';
 
 class LikeModel {
-  LikeModel() {
-    init();
-  }
 
   List<String>? trackLikesList;
   List<String>? playlistLikesList;
   List<String>? albumLikesList;
   List<String>? artistLikesList;
 
-  init() async {
+  Future<void> init() async {
     trackLikesList = await getLike(type: ObjectType.track);
     playlistLikesList = await getLike(type: ObjectType.playlist);
     albumLikesList = await getLike(type: ObjectType.album);

@@ -12,7 +12,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:yam_api/artist/artist.dart';
 import 'package:yam_api/artist/brief_info.dart';
 
-import '../../constants/ui_consts.dart';
+import '../../constants/app_consts.dart';
 import '../../providers/artist_page_provider.dart';
 import '../widgets/track_card.dart';
 

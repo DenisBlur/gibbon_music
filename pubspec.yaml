@@ -24,6 +24,10 @@ dependencies:
   flutter_sticky_header: ^0.6.5
   smooth_corner: ^1.1.0
   wave: ^0.2.2
+  webview_windows: ^0.2.2
+  shared_preferences: ^2.0.17
+  url_launcher: ^6.1.8
+  flutter_animate: ^3.0.0
   yam_api:
     path: yam_api
   event: any
