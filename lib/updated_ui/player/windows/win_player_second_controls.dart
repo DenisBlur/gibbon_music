@@ -4,7 +4,7 @@ import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/audio_provider.dart';
-import '../controls/buttons.dart';
+import '../../controls/buttons.dart';
 
 class PlayerSecondControl extends StatelessWidget {
   const PlayerSecondControl({Key? key}) : super(key: key);
