@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
-import '../../constants/ui_consts.dart';
+import '../../constants/app_consts.dart';
 import '../../providers/landing_provider.dart';
 import '../../providers/navigator_provider.dart';
 import '../controls/buttons.dart';

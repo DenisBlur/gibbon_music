@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
-import 'package:gibbon_music/constants/ui_consts.dart';
+import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/domain/interfaces/iplaylist_loop_strategy.dart';
 import 'package:gibbon_music/domain/models/loop_strategy/loop_strategies.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';

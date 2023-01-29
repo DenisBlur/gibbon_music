@@ -2,7 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
-import 'package:gibbon_music/constants/ui_consts.dart';
+import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';

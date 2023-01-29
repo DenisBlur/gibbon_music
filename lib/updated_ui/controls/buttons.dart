@@ -3,7 +3,8 @@ import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/updated_ui/theme_data.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
-import '../../constants/ui_consts.dart';
+import '../../constants/app_consts.dart';
+import '../widgets/image_hovered.dart';
 
 class GButton extends StatelessWidget {
   const GButton({Key? key, required this.onPressed, required this.title}) : super(key: key);
@@ -44,6 +45,40 @@ class GButton extends StatelessWidget {
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ),
+        );
+      },
+    );
+  }
+}
+
+class GImageButton extends StatelessWidget {
+  const GImageButton({Key? key, required this.onPressed, required this.uri, this.width = 48, this.height = 48}) : super(key: key);
+
+  final VoidCallback onPressed;
+  final String uri;
+  final double? width;
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) {
+    return HoverButton(
+      onPressed: onPressed,
+      builder: (p0, state) {
+        double imageState = 1.0;
+        if (state.isPressing) {
+          imageState = 0.9;
+        } else if (state.isHovering) {
+          imageState = 0.98;
+        } else {
+          imageState = .95;
+        }
+
+        return ImageHovered(
+          imageState: imageState,
+          uri: uri,
+          linkImage: false,
+          width: width,
+          height: height,
         );
       },
     );

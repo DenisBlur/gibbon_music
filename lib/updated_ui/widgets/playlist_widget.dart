@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:yam_api/track/track.dart';
 import 'package:flutter/material.dart' as m;
 
-import '../../constants/ui_consts.dart';
+import '../../constants/app_consts.dart';
 import '../../providers/ux_provider.dart';
 
 class UPlaylistWidget extends StatelessWidget {

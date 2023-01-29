@@ -1,4 +1,4 @@
-import 'package:gibbon_music/constants/ui_consts.dart';
+import 'package:gibbon_music/constants/app_consts.dart';
 
 extension StringNumberExtension on String {
   String spaceSeparateNumbers() {

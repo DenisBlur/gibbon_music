@@ -10,7 +10,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:yam_api/playlist/playlist.dart';
 
 import '../../constants/style_consts.dart';
-import '../../constants/ui_consts.dart';
+import '../../constants/app_consts.dart';
 import '../../providers/audio_provider.dart';
 import '../../providers/playlist_page_provider.dart';
 import '../../providers/playlist_provider.dart';

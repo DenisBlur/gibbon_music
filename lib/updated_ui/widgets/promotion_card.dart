@@ -5,7 +5,7 @@ import 'package:gibbon_music/updated_ui/widgets/image_hovered.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 import 'package:yam_api/landing/promotion.dart';
 
-import '../../constants/ui_consts.dart';
+import '../../constants/app_consts.dart';
 
 class PromotionCard extends StatelessWidget {
   const PromotionCard({Key? key, required this.data}) : super(key: key);
