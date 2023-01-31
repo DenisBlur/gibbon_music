@@ -2,15 +2,9 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/updated_ui/theme_data.dart';
 import 'package:system_theme/system_theme.dart';
 
-enum ThemeType {
-  darkColor,
-  lightColor,
-  darkNoColor,
-  lightNoColor
-}
+enum ThemeType { darkColor, lightColor, darkNoColor, lightNoColor, darkColorEffect, lightColorEffect, darkNoColorEffect, lightNoColorEffect }
 
 class ThemeProvider extends ChangeNotifier {
-
   GThemeCreator themeCreator = GThemeCreator();
   ThemeType themeType = ThemeType.lightNoColor;
   ThemeData? _theme;
@@ -22,7 +16,6 @@ class ThemeProvider extends ChangeNotifier {
     });
   }
 
-
   Color? get accentColor => _accentColor;
 
   set accentColor(Color? value) {
@@ -31,13 +24,14 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   ThemeData? get theme => _theme;
+
   set theme(ThemeData? value) {
     _theme = value;
     notifyListeners();
   }
 
   init() {
-    if(SystemTheme.isDarkMode) {
+    if (SystemTheme.isDarkMode) {
       themeType = ThemeType.darkNoColor;
     } else {
       themeType = ThemeType.lightNoColor;
@@ -52,8 +46,8 @@ class ThemeProvider extends ChangeNotifier {
     theme = getTheme();
   }
 
-  ThemeData? getTheme() {
-    switch(themeType) {
+  ThemeData? getTheme({ThemeType? type}) {
+    switch (type ?? themeType) {
       case ThemeType.darkColor:
         return themeCreator.darkColor;
       case ThemeType.lightColor:
@@ -62,9 +56,14 @@ class ThemeProvider extends ChangeNotifier {
         return themeCreator.darkNoColor;
       case ThemeType.lightNoColor:
         return themeCreator.lightNoColor;
+      case ThemeType.darkColorEffect:
+        return themeCreator.darkColorEffect;
+      case ThemeType.lightColorEffect:
+        return themeCreator.lightColorEffect;
+      case ThemeType.darkNoColorEffect:
+        return themeCreator.darkNoColorEffect;
+      case ThemeType.lightNoColorEffect:
+        return themeCreator.lightNoColorEffect;
     }
-
   }
-
-
 }

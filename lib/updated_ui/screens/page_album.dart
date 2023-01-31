@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';

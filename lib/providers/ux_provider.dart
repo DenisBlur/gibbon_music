@@ -71,12 +71,12 @@ class UxProvider extends ChangeNotifier {
       maintainState: true,
       builder: (context) {
         Future.delayed(Duration(seconds: 2)).then((value) {
-          overlayState?.dispose();
+          overlayState.dispose();
         });
         return Positioned(left: 0, bottom: 0, right: 0, child: Text("HELLLOOOOO!!!!!!"));
       },
     );
-    overlayState?.insert(overlayEntry);
+    overlayState.insert(overlayEntry);
   }
 
 }

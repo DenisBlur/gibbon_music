@@ -35,7 +35,7 @@ class AppConsts {
 
   static double windowHeader = 48;
 
-  static const double scrollMultiplier = 15;
+  static const double scrollMultiplier = 4;
   static final double playerHeight = Platform.isWindows ? 100 : 64;
 
   static const double defaultCardHeight = 258 - 32;

@@ -10,7 +10,7 @@ class QueueModel {
   Event<QueueSync> onSyncDevice = Event<QueueSync>();
 
   QueueModel(){
-    init();
+    //init();
   }
 
   String? queueId;

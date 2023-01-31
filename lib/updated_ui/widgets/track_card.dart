@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';

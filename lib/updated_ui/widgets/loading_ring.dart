@@ -1,5 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:animate_do/animate_do.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+
+import '../../constants/app_consts.dart';
 
 class LoadingRing extends StatelessWidget {
   const LoadingRing({Key? key}) : super(key: key);
@@ -10,13 +12,14 @@ class LoadingRing extends StatelessWidget {
 
     return ScaffoldPage(
       content: SizedBox(
-        height: pageSize.height,
-        width: pageSize.width,
-        child: FadeInUp(
-            child: Center(
-              child: ProgressRing(),
-            )),
-      ),
+          height: pageSize.height,
+          width: pageSize.width,
+          child: const Center(
+            child: ProgressRing(),
+          )
+              .animate()
+              .fadeIn(duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve)
+              .moveY(begin: 150, end: 0, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve)),
     );
   }
 }

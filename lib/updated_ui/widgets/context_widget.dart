@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
@@ -53,98 +52,93 @@ class _ContextWidgetState extends State<ContextWidget> {
             ux.contextMenuOffset = Offset(x,y);
           });
 
-          return FadeInUp(
-            duration: AppConsts.fastAnimation,
-            child: Stack(
-              children: [
-                HoverButton(onTapDown: () {
-                  ux.isContextMenu = false;
-                }, builder: (p0, state) {
-                  return Container(
-                    color: Colors.black.withOpacity(.5),
-                    width: AppConsts.pageSize(context).width,
-                    height: AppConsts.pageSize(context).height,
-                  );
-                }),
-                Consumer<UxProvider>(builder: (context, value, child) {
-                  return Positioned(
-                    left: value.contextMenuOffset.dx,
-                    top: value.contextMenuOffset.dy,
-                    width: 250,
-                    child: FadeInUp(
-                        duration: const Duration(milliseconds: 100),
-                        child: SmoothContainer(
-                          key: _globalKey,
-                          padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
-                          smoothness: 1,
-                          borderRadius: BorderRadius.circular(16),
-                          color: FluentTheme.of(context).cardColor,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(16),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Colors.black.withOpacity(.1),
-                                              offset: const Offset(0,4),
-                                              blurRadius: 5
-                                          )
-                                        ]
-                                    ),
-                                    child: ImageThumbnail(url: track.ogImage.toString().linkImage(100), height: 56, width: 56, radius: 16,),
-                                  ),
-                                  AppConsts.defaultHSpacer,
-                                  Expanded(child: Text(track.title.toString(), style: AppStyle.subTitle(context), maxLines: 1),),
-                                ],
+          return Stack(
+            children: [
+              HoverButton(onTapDown: () {
+                ux.isContextMenu = false;
+              }, builder: (p0, state) {
+                return Container(
+                  color: Colors.black.withOpacity(.5),
+                  width: AppConsts.pageSize(context).width,
+                  height: AppConsts.pageSize(context).height,
+                );
+              }),
+              Consumer<UxProvider>(builder: (context, value, child) {
+                return Positioned(
+                  left: value.contextMenuOffset.dx,
+                  top: value.contextMenuOffset.dy,
+                  width: 250,
+                  child: SmoothContainer(
+                    key: _globalKey,
+                    padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
+                    smoothness: 1,
+                    borderRadius: BorderRadius.circular(16),
+                    color: FluentTheme.of(context).cardColor,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black.withOpacity(.1),
+                                        offset: const Offset(0,4),
+                                        blurRadius: 5
+                                    )
+                                  ]
                               ),
-                              AppConsts.defaultVSpacer,
-                              GButton(onPressed: () {
-                                context.read<NewPlaylist>().removeTrack(track);
-                                ux.isContextMenu = false;
-                              }, title: "Удалить из очереди"),
-                              AppConsts.smallVSpacer,
-                              GButton(onPressed: () {
-                                context.read<NewPlaylist>().addTrackToEnd(track);
-                                ux.isContextMenu = false;
-                              }, title: "Добавить в конец"),
-                              AppConsts.smallVSpacer,
-                              GButton(onPressed: () {
-                                context.read<NewPlaylist>().addTrackAfterCurrent(track);
-                                ux.isContextMenu = false;
-                              }, title: "Добавить после текущего"),
-                              AppConsts.smallVSpacer,
-                              GButton(onPressed: () {
-                                ux.isContextMenu = false;
-                              }, title: "Моя волна по треку"),
-                              AppConsts.defaultHSpacer,
-                              Text("Исполнители", style: AppStyle.subTitle(context),),
-                              AppConsts.smallVSpacer,
-                              for(var e in track.artists!) Padding(padding: const EdgeInsets.only(bottom: 8), child: GButton(onPressed: () {
-                                AppRouter().gotoArtist(context, e.id);
-                                ux.isContextMenu = false;
-                              }, title: e.name!),),
-                              AppConsts.defaultHSpacer,
-                              Text("Альбомы", style: AppStyle.subTitle(context),),
-                              AppConsts.smallVSpacer,
-                              for(var e in track.albums!) Padding(padding: const EdgeInsets.only(bottom: 8), child: GButton(onPressed: () {
-                                AppRouter().gotoAlbum(context, e.id!.toInt());
-                                ux.isContextMenu = false;
-                              }, title: e.title!),),
-                            ],
-                          ),
-                        )),
-                  );
-                }),
-                getSize(),
-              ],
-            ),
+                              child: ImageThumbnail(url: track.ogImage.toString().linkImage(100), height: 56, width: 56, radius: 16,),
+                            ),
+                            AppConsts.defaultHSpacer,
+                            Expanded(child: Text(track.title.toString(), style: AppStyle.subTitle(context), maxLines: 1),),
+                          ],
+                        ),
+                        AppConsts.defaultVSpacer,
+                        GButton(onPressed: () {
+                          context.read<NewPlaylist>().removeTrack(track);
+                          ux.isContextMenu = false;
+                        }, title: "Удалить из очереди"),
+                        AppConsts.smallVSpacer,
+                        GButton(onPressed: () {
+                          context.read<NewPlaylist>().addTrackToEnd(track);
+                          ux.isContextMenu = false;
+                        }, title: "Добавить в конец"),
+                        AppConsts.smallVSpacer,
+                        GButton(onPressed: () {
+                          context.read<NewPlaylist>().addTrackAfterCurrent(track);
+                          ux.isContextMenu = false;
+                        }, title: "Добавить после текущего"),
+                        AppConsts.smallVSpacer,
+                        GButton(onPressed: () {
+                          ux.isContextMenu = false;
+                        }, title: "Моя волна по треку"),
+                        AppConsts.defaultHSpacer,
+                        Text("Исполнители", style: AppStyle.subTitle(context),),
+                        AppConsts.smallVSpacer,
+                        for(var e in track.artists!) Padding(padding: const EdgeInsets.only(bottom: 8), child: GButton(onPressed: () {
+                          AppRouter().gotoArtist(context, e.id);
+                          ux.isContextMenu = false;
+                        }, title: e.name!),),
+                        AppConsts.defaultHSpacer,
+                        Text("Альбомы", style: AppStyle.subTitle(context),),
+                        AppConsts.smallVSpacer,
+                        for(var e in track.albums!) Padding(padding: const EdgeInsets.only(bottom: 8), child: GButton(onPressed: () {
+                          AppRouter().gotoAlbum(context, e.id!.toInt());
+                          ux.isContextMenu = false;
+                        }, title: e.title!),),
+                      ],
+                    ),
+                  )
+                );
+              }),
+              getSize(),
+            ],
           );
         }
         return const SizedBox();

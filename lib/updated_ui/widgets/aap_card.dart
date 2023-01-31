@@ -1,6 +1,6 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
@@ -128,41 +128,39 @@ class CardContent extends StatelessWidget {
               Stack(
                 children: [
                   ImageHovered(imageState: imageState, uri: uri!),
-                  FadeInUp(
-                    duration: AppConsts.defaultAnimation,
-                    animate: state.isHovering,
-                    child: Container(
-                      width: AppConsts.defaultCardWidth,
-                      height: AppConsts.defaultCardWidth,
-                      decoration: ShapeDecoration(
-                        gradient: LinearGradient(colors: [
-                          FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
-                          FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0),
-                        ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
-                        shape: SmoothRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          smoothness: 1,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          GIconButton(onPressed: () {}, icon: m.Icons.favorite_border_rounded),
-                          AppConsts.smallHSpacer,
-                          GIconButton(
-                              onPressed: () {
-                                onPlay();
-                              },
-                              icon: m.Icons.play_arrow,
-                              contrastBackground: true,
-                              size: 26),
-                          AppConsts.smallHSpacer,
-                          GIconButton(onPressed: () {}, icon: m.Icons.more_horiz_rounded)
-                        ],
+                  Container(
+                    width: AppConsts.defaultCardWidth,
+                    height: AppConsts.defaultCardWidth,
+                    decoration: ShapeDecoration(
+                      gradient: LinearGradient(colors: [
+                        FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
+                        FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0),
+                      ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
+                      shape: SmoothRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                        smoothness: 1,
                       ),
                     ),
-                  )
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GIconButton(onPressed: () {}, icon: m.Icons.favorite_border_rounded),
+                        AppConsts.smallHSpacer,
+                        GIconButton(
+                            onPressed: () {
+                              onPlay();
+                            },
+                            icon: m.Icons.play_arrow,
+                            contrastBackground: true,
+                            size: 26),
+                        AppConsts.smallHSpacer,
+                        GIconButton(onPressed: () {}, icon: m.Icons.more_horiz_rounded)
+                      ],
+                    ),
+                  ).animate(target: state.isHovering ? 1 : 0)
+                      .fadeIn(duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve)
+                      .moveY(begin: 150, end: 0, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve),
                 ],
               ),
               Padding(
