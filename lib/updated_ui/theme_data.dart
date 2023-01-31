@@ -19,14 +19,17 @@ class GThemeCreator {
   Color? accentLightCardColor;
 
   static const double blendValue = 0.25;
+  static const double effectValue = 0.1;
 
   ThemeData? darkNoColor;
-
   ThemeData? lightNoColor;
-
   ThemeData? darkColor;
-
   ThemeData? lightColor;
+
+  ThemeData? darkNoColorEffect;
+  ThemeData? lightNoColorEffect;
+  ThemeData? darkColorEffect;
+  ThemeData? lightColorEffect;
 
 
   Color alphaBlend(Color foreground, Color background) {
@@ -123,6 +126,60 @@ class GThemeCreator {
       scaffoldBackgroundColor: accentLightBackgroundColor,
       micaBackgroundColor: accentLightMicaColor,
       inactiveBackgroundColor: accentLightMicaColor,
+      scrollbarTheme: ScrollbarThemeData(
+        backgroundColor: Colors.transparent,
+        scrollbarColor: systemAccentColor.accent,
+        hoveringThickness: 1,
+        thickness: 1,
+      ),
+      accentColor: systemAccentColor.accent.toAccentColor(),
+    );
+
+    darkNoColorEffect = ThemeData(
+      brightness: Brightness.dark,
+      cardColor: alphaBlend(Colors.white.withOpacity(.1), Colors.black).withOpacity(effectValue),
+      scaffoldBackgroundColor: Colors.black.withOpacity(effectValue),
+      accentColor: Colors.white.toAccentColor(),
+      scrollbarTheme: const ScrollbarThemeData(
+        backgroundColor: Colors.transparent,
+        hoveringThickness: 1,
+        thickness: 1,
+      ),
+    );
+
+    lightNoColorEffect = ThemeData(
+      brightness: Brightness.light,
+      cardColor: alphaBlend(Colors.black.withOpacity(.05), Colors.white).withOpacity(effectValue),
+      scaffoldBackgroundColor: Colors.white.withOpacity(effectValue),
+      accentColor: Colors.black.toAccentColor(),
+      scrollbarTheme: const ScrollbarThemeData(
+        backgroundColor: Colors.transparent,
+        hoveringThickness: 1,
+        thickness: 1,
+      ),
+    );
+
+    darkColorEffect = ThemeData(
+      brightness: Brightness.dark,
+      cardColor: accentDarkCardColor!.withOpacity(effectValue),
+      scaffoldBackgroundColor: accentDarkBackgroundColor!.withOpacity(effectValue),
+      micaBackgroundColor: accentDarkMicaColor!.withOpacity(effectValue),
+      inactiveBackgroundColor: accentDarkMicaColor!.withOpacity(effectValue),
+      scrollbarTheme: ScrollbarThemeData(
+        backgroundColor: Colors.transparent,
+        scrollbarColor: systemAccentColor.accent,
+        hoveringThickness: 1,
+        thickness: 1,
+      ),
+      accentColor: systemAccentColor.accent.toAccentColor(),
+    );
+
+    lightColorEffect = ThemeData(
+      brightness: Brightness.light,
+      cardColor: accentLightCardColor!.withOpacity(effectValue),
+      scaffoldBackgroundColor: accentLightBackgroundColor!.withOpacity(effectValue),
+      micaBackgroundColor: accentLightMicaColor!.withOpacity(effectValue),
+      inactiveBackgroundColor: accentLightMicaColor!.withOpacity(effectValue),
       scrollbarTheme: ScrollbarThemeData(
         backgroundColor: Colors.transparent,
         scrollbarColor: systemAccentColor.accent,

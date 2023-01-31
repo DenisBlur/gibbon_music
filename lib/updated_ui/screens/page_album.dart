@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:animate_do/animate_do.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
@@ -43,24 +42,21 @@ class PageAlbum extends StatelessWidget {
                   return CustomScaffold(children: [
                     SliverPersistentHeader(
                       pinned: true,
-                      delegate: ScrollHeader(
-                          expandedHeight: 200, info: mPageAlbum),
+                      delegate: ScrollHeader(expandedHeight: 200, info: mPageAlbum),
                     ),
                     SliverList(
                         delegate: SliverChildBuilderDelegate(
-                                (context, index) => Padding(
-                              padding: const EdgeInsets.only(top: 8),
-                              child: TrackCard(
-                                track: mPageAlbum.volumes![index],
-                                onPressed: () {
-                                  // playListProvider.
-                                  playListProvider.tracks = mPageAlbum.volumes!;
-                                  // playListProvider.se
-                                  playListProvider.currentTrackIndex = index;
-                                  audioProvider.resume();
-                                },
-                              ),
-                            ),
+                            (context, index) => Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: TrackCard(
+                                    track: mPageAlbum.volumes![index],
+                                    onPressed: () {
+                                      // playListProvider.
+                                      playListProvider.setTracksWithActiveTrack(mPageAlbum.volumes!, index);
+                                      audioProvider.resume();
+                                    },
+                                  ),
+                                ),
                             childCount: mPageAlbum.volumes!.length)),
                   ]);
                 } else {
@@ -104,7 +100,6 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
               FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(lerpDouble(0.5, 1.0, shrinkOffset / expandedHeight)!.toDouble())
             ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
           ),
-
           Positioned(
             bottom: AppConsts.pageOffset.horizontal / 2,
             left: AppConsts.pageOffset.horizontal / 2,

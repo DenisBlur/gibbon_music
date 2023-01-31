@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:math';
 
 import 'package:darq/darq.dart';
 import 'package:flutter/foundation.dart';
@@ -187,17 +186,7 @@ class NewPlaylist with ChangeNotifier {
   }
 
   set tracks(List<Track?>? tracks) {
-    _tracks.clear();
-    _tracks.addAll(tracks!);
-
-    _loop.size = _tracks.length;
-
-    currentTrackIndex = 0;
-    _indexing();
-
-    // launch events
-    _onPlaylistUpdateController.add(true);
-    notifyListeners();
+    setTracksWithActiveTrack(tracks, 0);
   }
 
   set currentTrackIndex(int index) {
@@ -208,6 +197,20 @@ class NewPlaylist with ChangeNotifier {
     _loop.currentIndex = index;
 
     _onTrackChangeController.add(true);
+    notifyListeners();
+  }
+
+  void setTracksWithActiveTrack(List<Track?>? tracks, int index) {
+    _tracks.clear();
+    _tracks.addAll(tracks!);
+
+    _loop.size = _tracks.length;
+
+    currentTrackIndex = index;
+    _indexing();
+
+    // launch events
+    _onPlaylistUpdateController.add(true);
     notifyListeners();
   }
 

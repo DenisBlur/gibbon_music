@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.4
-  xml: ^5.3.1
+  xml: ^6.2.2
   crypto: ^3.0.2
   json_annotation: ^4.5.0
   device_info_plus: ^8.0.0

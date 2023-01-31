@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:yam_api/track/track.dart';
 
 import '../../../providers/audio_provider.dart';
-import '../controls/buttons.dart';
+import '../../controls/buttons.dart';
 
 class PlayerMainControl extends StatelessWidget {
   const PlayerMainControl({Key? key}) : super(key: key);

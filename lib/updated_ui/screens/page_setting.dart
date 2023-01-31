@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/main.dart';
@@ -55,27 +56,44 @@ class PageSetting extends StatelessWidget {
                 AppConsts.defaultVSpacer,
                 SizedBox(
                   height: 100,
-                  child: ListView(
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return Padding(padding: const EdgeInsets.only(right: 8), child: ThemeCard(
+                        themeType: ThemeType.values[index],
+                      ),);
+                    },
+                    itemCount: ThemeType.values.length~/2,
                     scrollDirection: Axis.horizontal,
-                    children: const [
-                      ThemeCard(
-                        themeType: ThemeType.lightColor,
-                      ),
-                      AppConsts.smallHSpacer,
-                      ThemeCard(
-                        themeType: ThemeType.darkColor,
-                      ),
-                      AppConsts.smallHSpacer,
-                      ThemeCard(
-                        themeType: ThemeType.lightNoColor,
-                      ),
-                      AppConsts.smallHSpacer,
-                      ThemeCard(
-                        themeType: ThemeType.darkNoColor,
-                      ),
-                    ],
-                  ),
-                )
+                )),
+                AppConsts.defaultVSpacer,
+                const Text(
+                  "Темы с эффектом заднего фона",
+                  style: AppStyle.header1Style,
+                ),
+                AppConsts.defaultVSpacer,
+                SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        return Padding(padding: const EdgeInsets.only(right: 8), child: ThemeCard(
+                          themeType: ThemeType.values[4+index],
+                        ),);
+                      },
+                      itemCount: ThemeType.values.length~/2,
+                      scrollDirection: Axis.horizontal,
+                    )),
+                Button(child: Text("None"), onPressed: () async {
+                  await Window.setEffect(effect: WindowEffect.solid);
+                },),
+                Button(child: Text("Mica"), onPressed: () async {
+                  await Window.setEffect(effect: WindowEffect.mica, color: Colors.transparent, dark: FluentTheme.of(context).brightness.isDark);
+                },),
+                Button(child: Text("Tabbed"), onPressed: () async {
+                  await Window.setEffect(effect: WindowEffect.tabbed, color: Colors.transparent, dark: FluentTheme.of(context).brightness.isDark);
+                },),
+                Button(child: Text("Acrylic"), onPressed: () async {
+                  await Window.setEffect(effect: WindowEffect.acrylic, dark: FluentTheme.of(context).brightness.isDark);
+                },),
               ],
             )));
   }
@@ -91,21 +109,7 @@ class ThemeCard extends StatelessWidget {
     ThemeProvider theme = context.read();
 
     ThemeData themeData;
-
-    switch (themeType) {
-      case ThemeType.darkColor:
-        themeData = theme.themeCreator.darkColor!;
-        break;
-      case ThemeType.lightColor:
-        themeData = theme.themeCreator.lightColor!;
-        break;
-      case ThemeType.darkNoColor:
-        themeData = theme.themeCreator.darkNoColor!;
-        break;
-      case ThemeType.lightNoColor:
-        themeData = theme.themeCreator.lightNoColor!;
-        break;
-    }
+    themeData = theme.getTheme(type: themeType)!;
 
     return HoverButton(
       onPressed: () {

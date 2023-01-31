@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/updated_ui/utils/ui_utils.dart';
 
@@ -33,8 +35,8 @@ class AppConsts {
 
   static double windowHeader = 48;
 
-  static const double scrollMultiplier = 15;
-  static const double playerHeight = 100;
+  static const double scrollMultiplier = 4;
+  static final double playerHeight = Platform.isWindows ? 100 : 64;
 
   static const double defaultCardHeight = 258 - 32;
   static const double defaultCardWidth = 186 - 32;

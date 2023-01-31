@@ -35,6 +35,8 @@ class AudioProvider extends ChangeNotifier {
 
   StreamSubscription? _onPlayerStateChangedSubscribe;
 
+  String _sourceUrl = "";
+
   Future<void> init() async {
     _player = AudioPlayer();
     //
@@ -50,13 +52,6 @@ class AudioProvider extends ChangeNotifier {
       notifyListeners();
     });
 
-
-    // _playlistProvider.onCurrentTrackUpdated.subscribe((args) {
-    //   preloadTrack(_playlistProvider.currentTrack!);
-    //   notifyListeners();
-    // });
-    //
-
     _onPlayerStateChangedSubscribe = onPlayerStateChanged.listen((event) {
       if (event == PlayerState.completed) {
         _playlistProvider.onTrackEnd();
@@ -65,19 +60,14 @@ class AudioProvider extends ChangeNotifier {
     });
   }
 
-  // void _getTrackAsyncOperation(MTrack track) {
-  //   _getTrackURLAsyncOperation?.cancel();
-  //   _getTrackURLAsyncOperation = CancelableOperation.fromFuture(YamApi().downloadTrack(track.id, QualityTrack.low));
-  //   _getTrackURLAsyncOperation.then((trackURL) => _playTrack(trackURL));
-  // }
-
-  void preloadTrack(Track track) {
-    _player.pause();
+  void preloadTrack(Track track) async {
+    await _player.pause();
     setSeek(0);
 
-    _getTrackURLAsyncOperation?.cancel();
-    _getTrackURLAsyncOperation = CancelableOperation.fromFuture(client.downloadTrack(trackId: track.id, quality: QualityTrack.low));
-    _getTrackURLAsyncOperation?.then((trackURL) => _playTrack(trackURL));
+    await _getTrackURLAsyncOperation?.cancel();
+
+     _getTrackURLAsyncOperation = CancelableOperation.fromFuture(client.downloadTrack(trackId: track.id, quality: QualityTrack.low));
+     _getTrackURLAsyncOperation?.then((trackURL) => _playTrack(trackURL));
   }
 
   void setOneTrack(Track track) {
@@ -109,7 +99,7 @@ class AudioProvider extends ChangeNotifier {
   }
 
   void _playTrack(String url) async {
-    _player.setSourceUrl(url);
+    await _player.setSourceUrl(url);
     resume();
     notifyListeners();
   }
@@ -119,10 +109,10 @@ class AudioProvider extends ChangeNotifier {
     // _playlistProvider.onTrackChange.
     // _playlistProvider.onNextTrackPlay.unsubscribeAll();
     // _playlistProvider.onCurrentTrackUpdated.unsubscribeAll();
-    _onTrackChangeSubscribe?.cancel();
-    _onPlayerStateChangedSubscribe?.cancel();
+    await _onTrackChangeSubscribe?.cancel();
+    await _onPlayerStateChangedSubscribe?.cancel();
     super.dispose();
-    _player.dispose();
+    await _player.dispose();
   }
 
   ///Удалить если чего

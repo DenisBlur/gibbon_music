@@ -57,6 +57,7 @@ class _PageAuthState extends State<PageAuth> {
           });
         } else {
           updateStatus(false);
+          Navigator.pop(context);
           Navigator.push(
               context,
               FluentPageRoute(

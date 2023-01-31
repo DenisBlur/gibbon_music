@@ -1,6 +1,9 @@
 import 'dart:io' show Platform;
 
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_acrylic/flutter_acrylic.dart';
+import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/domain/models/like_model.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/domain/models/queue_model.dart';
@@ -11,17 +14,14 @@ import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/landing_provider.dart';
 import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/providers/playlist_page_provider.dart';
-import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/providers/search_provider.dart';
 import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:gibbon_music/updated_ui/screens/page_auth.dart';
 import 'package:gibbon_music/updated_ui/screens/page_init.dart';
-import 'package:gibbon_music/updated_ui/screens/page_landing.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:window_manager/window_manager.dart';
 import 'package:yam_api/client.dart';
 
 
@@ -56,25 +56,19 @@ List<SingleChildWidget> _providers = [
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows) {
-    await windowManager.ensureInitialized();
-
-    ///Убираем TitleBar, ставим минимальный размер приложения и центрируем
-    WindowOptions windowOptions = const WindowOptions(
-      minimumSize: Size(640, 360),
-      center: true,
-      size: Size(1280, 720),
-      skipTaskbar: false,
-      titleBarStyle: TitleBarStyle.hidden,
+    await Window.initialize();
+    await Window.setEffect(
+      effect: WindowEffect.acrylic,
+      color: Colors.transparent
     );
+    await Window.hideWindowControls();
 
-    ///показ приложения и центрирование, а так же установка фокуса на приложение
-    windowManager.waitUntilReadyToShow(windowOptions, () async {
-      await windowManager.show();
-      await windowManager.focus();
-      await windowManager.center();
-    });
   }
   runApp(const App());
+  doWhenWindowReady(() {
+    final win = appWindow;
+    win.alignment = Alignment.center;
+  });
 }
 
 class App extends StatefulWidget {
