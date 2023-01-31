@@ -1,13 +1,12 @@
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart' as m;
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
+import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/main.dart';
-import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/router.dart';
-import 'package:flutter/material.dart' as m;
 import 'package:provider/provider.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 import 'package:yam_api/album/album.dart';
