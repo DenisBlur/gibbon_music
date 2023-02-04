@@ -3,7 +3,6 @@ import 'dart:io' show Platform;
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
-import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/domain/models/like_model.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/domain/models/queue_model.dart';
@@ -19,11 +18,9 @@ import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:gibbon_music/updated_ui/screens/page_auth.dart';
-import 'package:gibbon_music/updated_ui/screens/page_init.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:yam_api/client.dart';
-
 
 Client client = Client();
 
@@ -57,12 +54,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows) {
     await Window.initialize();
-    await Window.setEffect(
-      effect: WindowEffect.acrylic,
-      color: Colors.transparent
-    );
+    await Window.setEffect(effect: WindowEffect.solid, color: Colors.black);
     await Window.hideWindowControls();
-
   }
   runApp(const App());
   doWhenWindowReady(() {
@@ -92,7 +85,9 @@ class _AppState extends State<App> {
         return FluentApp(
           debugShowCheckedModeBanner: false,
           showSemanticsDebugger: false,
-          home: const SafeArea(child: Load(),),
+          home: const SafeArea(
+            child: Load(),
+          ),
           theme: context.watch<ThemeProvider>().theme,
           color: context.watch<ThemeProvider>().accentColor,
         );
@@ -103,6 +98,7 @@ class _AppState extends State<App> {
 
 class Load extends StatelessWidget {
   const Load({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return const PageAuth();

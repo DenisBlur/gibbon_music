@@ -45,7 +45,7 @@ class CustomScroller extends StatelessWidget {
                 controller: controller,
                 physics: Platform.isAndroid ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
                 slivers: widgetsToSliver(slivers))
-            .animate()
+            .animate(delay: 450.ms)
             .fadeIn(duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve)
             .moveY(begin: 150, end: 0, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve),
       ),

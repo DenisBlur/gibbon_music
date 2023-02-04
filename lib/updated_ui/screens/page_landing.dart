@@ -4,7 +4,9 @@ import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/enums/e_list_typer.dart';
 import 'package:gibbon_music/main.dart';
+import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
+import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
@@ -87,7 +89,10 @@ class UPageLanding extends StatelessWidget {
                             padding: const EdgeInsets.only(bottom: 8),
                             child: TrackCard(
                               track: landingProvider.chart[index],
-                              onPressed: () {},
+                              onPressed: () {
+                                context.read<NewPlaylist>().setTracksWithActiveTrack(landingProvider.chart, index);
+                                context.read<AudioProvider>().resume();
+                              },
                             ),
                           ),
                       childCount: landingProvider.chart.length))
@@ -108,98 +113,114 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    Color waveColors = FluentTheme.of(context).accentColor;
+
     return Container(
       width: MediaQuery.of(context).size.width,
       height: expandedHeight,
-      color: FluentTheme.of(context).accentColor.withOpacity(.5),
-      child: Stack(
-        children: [
-          Center(
-            child: Text(
-              "МОЯ ВОЛНА",
-              style: AppStyle.title(context),
+      child: ShaderMask(
+        shaderCallback: (bounds) {
+          return const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [
+              0.1,
+              0.5,
+              0.9,
+            ],
+            colors: [Colors.transparent, Colors.black, Colors.transparent],
+          ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
+        },
+          blendMode: BlendMode.dstIn,
+        child: Stack(
+          children: [
+            Center(
+              child: Text(
+                "МОЯ ВОЛНА",
+                style: AppStyle.title(context),
+              ),
             ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: expandedHeight / 3,
-            child: WaveWidget(
-              config: CustomConfig(colors: [
-                FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0.1),
-                FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0.2),
-                FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0.4),
-                FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0.6),
-                FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
-                FluentTheme.of(context).scaffoldBackgroundColor,
-              ], durations: [
-                9500,
-                9600,
-                9700,
-                9800,
-                9900,
-                10000
-              ], heightPercentages: [
-                0.1,
-                0.2,
-                0.3,
-                0.4,
-                0.5,
-                0.6
-              ]),
-              size: const Size(double.infinity, double.infinity),
-            ),
-          ),
-          Positioned(
+            Positioned(
               left: 0,
               right: 0,
-              top: 0,
+              bottom: 1,
               height: expandedHeight / 3,
-              child: Transform.scale(
-                scaleY: -1,
-                alignment: Alignment.center,
-                child: WaveWidget(
-                  config: CustomConfig(colors: [
-                    FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0.1),
-                    FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0.2),
-                    FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0.4),
-                    FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0.6),
-                    FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
-                    FluentTheme.of(context).scaffoldBackgroundColor,
-                  ], durations: [
-                    9500,
-                    9600,
-                    9700,
-                    9800,
-                    9900,
-                    10000
-                  ], heightPercentages: [
-                    0.1,
-                    0.2,
-                    0.3,
-                    0.4,
-                    0.5,
-                    0.6
-                  ]),
-                  size: const Size(double.infinity, double.infinity),
-                ),
-              )),
-          Opacity(opacity: 1-shrinkOffset/expandedHeight, child: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 86),
-                child: GButton(onPressed: () {
+              child: WaveWidget(
+                config: CustomConfig(colors: [
+                  waveColors.withOpacity(0.1),
+                  waveColors.withOpacity(0.2),
+                  waveColors.withOpacity(0.4),
+                  waveColors.withOpacity(0.6),
+                  waveColors.withOpacity(0.8),
+                  waveColors,
+                ], durations: [
+                  9500,
+                  9600,
+                  9700,
+                  9800,
+                  9900,
+                  10000
+                ], heightPercentages: [
+                  0.1,
+                  0.2,
+                  0.3,
+                  0.4,
+                  0.5,
+                  0.6
+                ]),
+                size: const Size(double.infinity, double.infinity),
+              ),
+            ),
+            Positioned(
+                left: 0,
+                right: 0,
+                top: 0,
+                height: expandedHeight / 3,
+                child: Transform.scale(
+                  scaleY: -1,
+                  alignment: Alignment.center,
+                  child: WaveWidget(
+                    config: CustomConfig(colors: [
+                      waveColors.withOpacity(0.1),
+                      waveColors.withOpacity(0.2),
+                      waveColors.withOpacity(0.4),
+                      waveColors.withOpacity(0.6),
+                      waveColors.withOpacity(0.8),
+                      waveColors,
+                    ], durations: [
+                      9500,
+                      9600,
+                      9700,
+                      9800,
+                      9900,
+                      10000
+                    ], heightPercentages: [
+                      0.1,
+                      0.2,
+                      0.3,
+                      0.4,
+                      0.5,
+                      0.6
+                    ]),
+                    size: const Size(double.infinity, double.infinity),
+                  ),
+                )),
+            Opacity(opacity: 1-shrinkOffset/expandedHeight, child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 86),
+                  child: GButton(onPressed: () {
 
-                  client.rotorStationTracks("user:onyourwave").then((value) {
-                    context.read<YandexProvider>().startRadio(true, value.batchId!, "user:onyourwave");
-                    context.read<NewPlaylist>().tracks = value.sequence!.select((e, _) => e.track,).toList();
-                    context.read<NewPlaylist>().currentTrackIndex =  0;
-                  });
+                    client.rotorStationTracks("user:onyourwave").then((value) {
+                      context.read<YandexProvider>().startRadio(true, value.batchId!, "user:onyourwave");
+                      context.read<NewPlaylist>().tracks = value.sequence!.select((e, _) => e.track,).toList();
+                      context.read<NewPlaylist>().currentTrackIndex =  0;
+                    });
 
-                }, title: "воспроизвести"),
-              )),),
-        ],
-      ),
+                  }, title: "воспроизвести"),
+                )),),
+          ],
+        ),
+      )
     );
   }
 

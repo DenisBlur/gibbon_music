@@ -9,6 +9,7 @@ import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/updated_ui/widgets/ImageThumbnail.dart';
 import 'package:gibbon_music/updated_ui/widgets/card_view.dart';
+import 'package:gibbon_music/updated_ui/widgets/context_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 import 'package:yam_api/artist/brief_info.dart';
@@ -49,115 +50,11 @@ class TrackCard extends StatelessWidget {
             barrierDismissible: true,
             context: context,
             builder: (context) {
-              return Stack(
-                children: [
-                  Center(child: SmoothContainer(
-                    constraints: const BoxConstraints(
-                      maxWidth: 250,
-                      maxHeight: 450,
-                    ),
-                    padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
-                    smoothness: 1,
-                    borderRadius: BorderRadius.circular(16),
-                    color: FluentTheme.of(context).cardColor,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    boxShadow: [BoxShadow(color: Colors.black.withOpacity(.1), offset: const Offset(0, 4), blurRadius: 5)]),
-                                child: ImageThumbnail(
-                                  url: track.ogImage.toString().linkImage(100),
-                                  height: 56,
-                                  width: 56,
-                                  radius: 16,
-                                ),
-                              ),
-                              AppConsts.defaultHSpacer,
-                              Expanded(
-                                child: Text(track.title.toString(), style: AppStyle.subTitle(context), maxLines: 1),
-                              ),
-                            ],
-                          ),
-                          AppConsts.defaultVSpacer,
-                          GButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                context.read<NewPlaylist>().removeTrack(track);
-                              },
-                              title: "Удалить из очереди"),
-                          AppConsts.smallVSpacer,
-                          GButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                context.read<NewPlaylist>().addTrackToEnd(track);
-                              },
-                              title: "Добавить в конец"),
-                          AppConsts.smallVSpacer,
-                          GButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                context.read<NewPlaylist>().addTrackAfterCurrent(track);
-                              },
-                              title: "Добавить после текущего"),
-                          AppConsts.smallVSpacer,
-                          GButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              title: "Моя волна по треку"),
-                          AppConsts.defaultHSpacer,
-                          Text(
-                            "Исполнители",
-                            style: AppStyle.subTitle(context),
-                          ),
-                          AppConsts.smallVSpacer,
-                          for (var e in track.artists!)
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: GButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    AppRouter().gotoArtist(context, e.id);
-                                  },
-                                  title: e.name!),
-                            ),
-                          AppConsts.defaultHSpacer,
-                          Text(
-                            "Альбомы",
-                            style: AppStyle.subTitle(context),
-                          ),
-                          AppConsts.smallVSpacer,
-                          for (var e in track.albums!)
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: GButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    AppRouter().gotoAlbum(context, e.id!.toInt());
-                                  },
-                                  title: e.title!),
-                            ),
-                        ],
-                      ),
-                    )
-                  ),),
-                ],
-              );
+              return ContextWidget(track: track);
             },
           );
-
-          // UxProvider ux = context.read();
-          // ux.onChangeDetails.add(TrackContextDetail(details: details, track: track));
-          // ux.isContextMenu = true;
         },
+
         child: GCardView(
           onPressed: () {
             onPressed();
@@ -192,7 +89,7 @@ class TrackCard extends StatelessWidget {
               AppConsts.defaultHSpacer,
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
@@ -202,7 +99,7 @@ class TrackCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     ArtistsListWidgets(
-                      mInnerArtistList: track.artists,
+                      track: track,
                     )
                   ],
                 ),
@@ -217,17 +114,25 @@ class TrackCard extends StatelessWidget {
 }
 
 class ArtistsListWidgets extends StatelessWidget {
-  const ArtistsListWidgets({Key? key, required this.mInnerArtistList}) : super(key: key);
+  const ArtistsListWidgets({Key? key,required this.track}) : super(key: key);
 
-  final List<BriefInfo>? mInnerArtistList;
+  final Track track;
 
   @override
   Widget build(BuildContext context) {
     List<String> artistButtonList = [];
 
-    artistButtonList = mInnerArtistList!.select((element, index) => element.name.toString()).toList();
+    artistButtonList = track.artists!.select((element, index) => element.name.toString()).toList();
 
-    return GTextButton(onPressed: () {}, title: artistButtonList.join(", "));
+    return GTextButton(onPressed: () {
+      showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (context) {
+          return ContextWidget(track: track);
+        },
+      );
+    }, title: artistButtonList.join(", "));
   }
 }
 

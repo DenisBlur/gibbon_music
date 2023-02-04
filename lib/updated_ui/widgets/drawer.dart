@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/constants/app_consts.dart';
+import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:provider/provider.dart';
@@ -15,9 +16,9 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UxProvider uxProvider = context.watch();
+    ThemeProvider themeProvider = context.watch();
     var theme = FluentTheme.of(context);
-    var backgroundColor = theme.cardColor.withOpacity(.65);
-
+    var backgroundColor = theme.cardColor.withOpacity(themeProvider.isSystemTheme ? 1 : 0.65);
     return AnimatedPositioned(
         duration: AppConsts.defaultAnimation,
         curve: AppConsts.defaultCurve,
@@ -25,7 +26,6 @@ class DrawerWidget extends StatelessWidget {
         bottom: AppConsts.playerHeight,
         left: uxProvider.isOpenDrawer ? 0 : -350,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(0),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
             child: AnimatedContainer(

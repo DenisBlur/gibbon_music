@@ -1,14 +1,19 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:gibbon_music/updated_ui/theme_data.dart';
 import 'package:system_theme/system_theme.dart';
 
-enum ThemeType { darkColor, lightColor, darkNoColor, lightNoColor, darkColorEffect, lightColorEffect, darkNoColorEffect, lightNoColorEffect }
+enum ThemeType { darkColor, lightColor, darkNoColor, lightNoColor, systemTheme }
 
 class ThemeProvider extends ChangeNotifier {
   GThemeCreator themeCreator = GThemeCreator();
   ThemeType themeType = ThemeType.lightNoColor;
   ThemeData? _theme;
   Color? _accentColor;
+  bool isSystemTheme = false;
 
   ThemeProvider() {
     Future.delayed(const Duration(milliseconds: 1500)).then((value) {
@@ -43,6 +48,7 @@ class ThemeProvider extends ChangeNotifier {
 
   changeThemeType(ThemeType type) {
     themeType = type;
+    isSystemTheme = type == ThemeType.systemTheme;
     theme = getTheme();
   }
 
@@ -56,14 +62,26 @@ class ThemeProvider extends ChangeNotifier {
         return themeCreator.darkNoColor;
       case ThemeType.lightNoColor:
         return themeCreator.lightNoColor;
-      case ThemeType.darkColorEffect:
-        return themeCreator.darkColorEffect;
-      case ThemeType.lightColorEffect:
-        return themeCreator.lightColorEffect;
-      case ThemeType.darkNoColorEffect:
-        return themeCreator.darkNoColorEffect;
-      case ThemeType.lightNoColorEffect:
-        return themeCreator.lightNoColorEffect;
+      case ThemeType.systemTheme:
+        return themeCreator.buildSystemTheme();
+    }
+  }
+
+  Future<void> setEffect(bool isSystem) async {
+    if (!isSystem) {
+      await Window.setEffect(effect: WindowEffect.solid);
+      return;
+    }
+    bool isDark = SystemTheme.isDarkMode;
+    final deviceInfoPlugin = DeviceInfoPlugin();
+    if (Platform.isWindows) {
+      WindowsDeviceInfo windowsDeviceInfo = await deviceInfoPlugin.windowsInfo;
+      String product = windowsDeviceInfo.productName;
+      if (product.contains("11")) {
+        await Window.setEffect(effect: WindowEffect.mica, dark: isDark);
+      } else {
+        await Window.setEffect(effect: WindowEffect.acrylic, dark: isDark);
+      }
     }
   }
 }

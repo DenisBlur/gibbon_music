@@ -40,7 +40,6 @@ class OverlayContainer extends StatelessWidget {
                 .pageSize(context)
                 .height - 30,
           ),
-          const ContextWidget(),
         ],
       ),
     );

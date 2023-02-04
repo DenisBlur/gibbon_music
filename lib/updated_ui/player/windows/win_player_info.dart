@@ -42,7 +42,7 @@ class PlayerInfo extends StatelessWidget {
                 track.title!,
                 style: const TextStyle(fontSize:14),
               ),
-              ArtistsListWidgets(mInnerArtistList: track.artists!)
+              ArtistsListWidgets(track: track)
             ],
           ),
         ],

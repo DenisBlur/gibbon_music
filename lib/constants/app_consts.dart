@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/updated_ui/utils/ui_utils.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 class AppConsts {
   AppConsts._();
@@ -33,7 +34,7 @@ class AppConsts {
 
   static const Curve defaultCurve = Curves.fastLinearToSlowEaseIn;
 
-  static double windowHeader = 48;
+  static double windowHeader = appWindow.titleBarHeight;
 
   static const double scrollMultiplier = 4;
   static final double playerHeight = Platform.isWindows ? 100 : 64;

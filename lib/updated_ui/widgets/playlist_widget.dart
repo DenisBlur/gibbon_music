@@ -10,6 +10,7 @@ import 'package:yam_api/track/track.dart';
 import 'package:flutter/material.dart' as m;
 
 import '../../constants/app_consts.dart';
+import '../../providers/theme_provider.dart';
 import '../../providers/ux_provider.dart';
 
 class UPlaylistWidget extends StatelessWidget {
@@ -20,9 +21,10 @@ class UPlaylistWidget extends StatelessWidget {
     return Consumer<NewPlaylist>(
       builder: (context, playListProvider, child) {
         UxProvider uxProvider = context.watch();
+        ThemeProvider themeProvider = context.watch();
         List<Track?>? tracks = playListProvider.tracksQueue;
         var theme = FluentTheme.of(context);
-        var backgroundColor = theme.cardColor.withOpacity(.65);
+        var backgroundColor = theme.cardColor.withOpacity(themeProvider.isSystemTheme ? 1 : 0.65);
         final controller = ScrollController();
         return AnimatedPositioned(
           top: AppConsts.windowHeader,

@@ -39,21 +39,26 @@ class PagePlaylist extends StatelessWidget {
             return CustomScaffold(children: [
               SliverPersistentHeader(
                 pinned: true,
-                delegate: ScrollHeader(
-                    expandedHeight: 200, info: mPagePlaylist),
+                delegate: ScrollHeader(expandedHeight: 200, info: mPagePlaylist),
               ),
               SliverList(
                   delegate: SliverChildBuilderDelegate(
-                          (context, index) => Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: TrackCard(
-                          track: mPagePlaylist.tracks![index]!.track!,
-                          onPressed: () {
-                            playListProvider.setTracksWithActiveTrack(mPagePlaylist.tracks!.select((e, _) => e?.track,).toList(), index);
-                            audioProvider.resume();
-                          },
-                        ),
-                      ),
+                      (context, index) => Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: TrackCard(
+                              track: mPagePlaylist.tracks![index]!.track!,
+                              onPressed: () {
+                                playListProvider.setTracksWithActiveTrack(
+                                    mPagePlaylist.tracks!
+                                        .select(
+                                          (e, _) => e?.track,
+                                        )
+                                        .toList(),
+                                    index);
+                                audioProvider.resume();
+                              },
+                            ),
+                          ),
                       childCount: mPagePlaylist.tracks!.length)),
             ]);
           } else {
@@ -78,21 +83,33 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
           Transform.translate(
             offset: const Offset(0, -2),
             child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: expandedHeight,
-                child: ClipRRect(
-                  child: ImageFiltered(
-                    imageFilter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
+              width: MediaQuery.of(context).size.width,
+              height: expandedHeight,
+              child: ClipRRect(
+                child: ImageFiltered(
+                  imageFilter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
+                  child: ShaderMask(
+                    blendMode: BlendMode.dstIn,
+                    shaderCallback: (Rect bounds) {
+                      return const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: [0.0, 0.8],
+                        colors: [Colors.black, Colors.transparent],
+                      ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
+                    },
                     child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, fit: BoxFit.cover, image: info.ogImage!.linkImage(200)),
                   ),
-                )),
+                ),
+              ),
+            ),
           ),
           Container(
             width: MediaQuery.of(context).size.width,
             height: expandedHeight,
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-              FluentTheme.of(context).scaffoldBackgroundColor,
+              FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(shrinkOffset / expandedHeight),
               FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(lerpDouble(0.5, 1.0, shrinkOffset / expandedHeight)!.toDouble())
             ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
           ),

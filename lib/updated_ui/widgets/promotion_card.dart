@@ -50,10 +50,10 @@ class PromotionCard extends StatelessWidget {
                 height: AppConsts.wideCardHeight(context) - 16,
                 width: AppConsts.wideCardWidth(context),
               ),
-              Container(
+              AnimatedScale(scale: imageState+0.01, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve, child: Container(
                 padding: const EdgeInsets.only(bottom: 32, right: 16, left: 16),
                 width: AppConsts.wideCardWidth(context),
-                height: AppConsts.wideCardHeight(context),
+                height: AppConsts.wideCardHeight(context)-16,
                 decoration: ShapeDecoration(
                   gradient: LinearGradient(colors: [
                     FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
@@ -73,7 +73,7 @@ class PromotionCard extends StatelessWidget {
                     Text(data.heading!.toUpperCase(), style: AppStyle.prHeading(context), maxLines: 1, overflow: TextOverflow.ellipsis),
                   ],
                 ),
-              ),
+              ),),
             ],
           ),
         );
