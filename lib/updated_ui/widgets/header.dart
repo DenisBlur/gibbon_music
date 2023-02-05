@@ -43,7 +43,7 @@ class Header extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 Platform.isAndroid || !menu! ? "" : AppConsts.appTitle,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
               ),
             ),
           )),

@@ -3,17 +3,96 @@ import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/enums/e_list_typer.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/updated_ui/utils/dynamic_data.dart';
+import 'package:flutter/material.dart' as m;
 
 import '../../constants/style_consts.dart';
 import '../controls/buttons.dart';
 
-class DynamicListWidget extends StatelessWidget {
-  const DynamicListWidget({Key? key, required this.listData, required this.title, this.listType = ListType.standart, this.canMore = true}) : super(key: key);
+class DynamicListWidget extends StatefulWidget {
+  const DynamicListWidget({Key? key, required this.listData, required this.title, this.listType = ListType.standart, this.canMore = true})
+      : super(key: key);
 
   final List<dynamic> listData;
   final String title;
   final ListType? listType;
   final bool? canMore;
+
+  @override
+  State<DynamicListWidget> createState() => _DynamicListWidgetState();
+}
+
+class _DynamicListWidgetState extends State<DynamicListWidget> {
+  final ScrollController controller = ScrollController();
+  bool canNext = true;
+  bool canBefore = true;
+  double top = AppConsts.defaultCardHeight / 2;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.listData.isNotEmpty) {
+      controller.addListener(() {
+        updateArrows();
+      });
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        updateArrows();
+      });
+      if (widget.listType == ListType.wide) {
+        top = AppConsts.wideCardHeight / 2;
+      }
+    } else {
+      setState(() {
+        canBefore = false;
+        canNext = false;
+      });
+    }
+  }
+
+  updateArrows() {
+    var max = controller.position.maxScrollExtent;
+    var min = controller.position.minScrollExtent;
+    var offset = controller.offset;
+
+    if (min != max) {
+      setState(() {
+        if (offset >= max) {
+          canBefore = true;
+          canNext = false;
+        } else {
+          canNext = true;
+        }
+
+        if (offset <= min) {
+          canBefore = false;
+          canNext = true;
+        } else {
+          canBefore = true;
+        }
+      });
+    } else {
+      setState(() {
+        canBefore = false;
+        canNext = false;
+      });
+    }
+  }
+
+  scroll(bool next) {
+    var max = controller.position.maxScrollExtent;
+    var min = controller.position.minScrollExtent;
+    var offset = controller.offset;
+
+    if (next) {
+      var tempOffset = offset + 650;
+      if (tempOffset >= max) tempOffset = max + 56;
+      controller.animateTo(tempOffset, duration: AppConsts.fastAnimation, curve: AppConsts.defaultCurve);
+    } else {
+      var tempOffset = offset - 650;
+      if (tempOffset <= min) tempOffset = min - 56;
+      controller.animateTo(tempOffset, duration: AppConsts.fastAnimation, curve: AppConsts.defaultCurve);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,32 +107,70 @@ class DynamicListWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    widget.title,
                     style: AppStyle.subTitle(context),
                   ),
                   AppConsts.fillSpacer,
-                  canMore! ? GButton(onPressed: () {
-                    AppRouter().gotoMore(context, listData, title);
-                  }, title: "More") : const SizedBox(),
+                  if (widget.canMore! && widget.listData.isNotEmpty)
+                    GButton(
+                        onPressed: () {
+                          AppRouter().gotoMore(context, widget.listData, widget.title);
+                        },
+                        title: "More")
                 ],
               ),
             ),
             AppConsts.smallVSpacer,
-            SizedBox(
-              width: AppConsts.pageSize(context).width,
-              height: listType == ListType.standart ? AppConsts.defaultCardHeight : AppConsts.wideCardHeight(context),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(left: index == 0 ? AppConsts.pageOffset.horizontal / 2 : 0, right: AppConsts.pageOffset.horizontal / 2),
-                    child: getDynamicData(listData, index),
-                  );
-                },
-                itemCount: listData.length,
-              ),
-            ),
+            widget.listData.isNotEmpty
+                ? SizedBox(
+                    width: AppConsts.pageSize(context).width,
+                    height: widget.listType == ListType.standart ? AppConsts.defaultCardHeight : AppConsts.wideCardHeight,
+                    child: ListView.builder(
+                      controller: controller,
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding:
+                              EdgeInsets.only(left: index == 0 ? AppConsts.pageOffset.horizontal / 2 : 0, right: AppConsts.pageOffset.horizontal / 2),
+                          child: getDynamicData(widget.listData, index),
+                        );
+                      },
+                      itemCount: widget.listData.length,
+                    ),
+                  )
+                : Center(
+                    child: Text("Ничего нет :("),
+                  ),
           ],
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: top, left: 16, right: 16),
+          child: Row(
+            children: [
+              canBefore
+                  ? GIconButton(
+                      onPressed: () {
+                        scroll(false);
+                      },
+                      icon: m.Icons.navigate_before_rounded,
+                      contrastBackground: true,
+                      size: 24,
+                    )
+                  : const SizedBox(),
+              AppConsts.fillSpacer,
+              canNext
+                  ? GIconButton(
+                      onPressed: () {
+                        scroll(true);
+                      },
+                      icon: m.Icons.navigate_next_rounded,
+                      contrastBackground: true,
+                      size: 24,
+                    )
+                  : const SizedBox(),
+            ],
+          ),
         ),
       ],
     );

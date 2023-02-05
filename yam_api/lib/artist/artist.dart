@@ -129,7 +129,7 @@ class Artist {
   Stats? stats;
   CustomWave? customWave;
   List<PlaylistIds>? playlistIds;
-  List<MPlaylist>? playlists;
+  List<MPlaylist>? playlists = [];
 Artist copyWith({  Artist? artist,
   List<Album>? albums,
   List<Album>? alsoAlbums,

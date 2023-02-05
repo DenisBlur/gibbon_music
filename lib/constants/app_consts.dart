@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/updated_ui/utils/ui_utils.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 class AppConsts {
   AppConsts._();
@@ -10,7 +11,10 @@ class AppConsts {
   static const String imageEmptyLink = "https://avatars.mds.yandex.net/i?id=070e2d92627bd11f549d2479c13e8f30-4482423-images-thumbs&n=13&exp=1";
   static const String authLink = "https://oauth.yandex.ru/authorize?response_type=token&client_id=23cabbbdc6cd418abb4b39c32c41195d";
   static const String tokenGetLink = "https://github.com/MarshalX/yandex-music-api/discussions/513#discussioncomment-2729781";
+
   static const String tokenKey = "token";
+  static const String systemThemeKey = "systemTheme";
+  static const String themeIndexKey = "themeIndex";
 
   static const String yandexMusicLink = "https://music.yandex.ru/home";
   static const String yandexMusicApiLink = "https://github.com/MarshalX/yandex-music-api";
@@ -33,7 +37,7 @@ class AppConsts {
 
   static const Curve defaultCurve = Curves.fastLinearToSlowEaseIn;
 
-  static double windowHeader = 48;
+  static double windowHeader = appWindow.titleBarHeight;
 
   static const double scrollMultiplier = 4;
   static final double playerHeight = Platform.isWindows ? 100 : 64;
@@ -41,13 +45,9 @@ class AppConsts {
   static const double defaultCardHeight = 258 - 32;
   static const double defaultCardWidth = 186 - 32;
 
-  static double wideCardHeight(BuildContext context) {
-    return Responsive.isDesktop(context) ? 300 : 200;
-  }
+  static const double wideCardHeight = 300;
 
-  static double wideCardWidth(BuildContext context) {
-    return Responsive.isDesktop(context) ? 350 : 250;
-  }
+  static const double wideCardWidth = 350;
 
   static const SizedBox smallHSpacer = SizedBox(
     width: 8,

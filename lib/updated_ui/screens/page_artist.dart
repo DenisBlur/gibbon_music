@@ -13,7 +13,9 @@ import 'package:yam_api/artist/artist.dart';
 import 'package:yam_api/artist/brief_info.dart';
 
 import '../../constants/app_consts.dart';
+import '../../domain/models/playlist.dart';
 import '../../providers/artist_page_provider.dart';
+import '../../providers/audio_provider.dart';
 import '../widgets/track_card.dart';
 
 class PageArtist extends StatelessWidget {
@@ -48,7 +50,10 @@ class PageArtist extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 8),
                           child: TrackCard(
                             track: mPageArtist.popularTracks![index],
-                            onPressed: () {},
+                            onPressed: () {
+                              context.read<NewPlaylist>().setTracksWithActiveTrack(mPageArtist.popularTracks!, index);
+                              context.read<AudioProvider>().resume();
+                            },
                           ),
                         ),
                     childCount: mPageArtist.popularTracks!.length)),
@@ -86,39 +91,55 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    String image = info.ogImage!.isNotEmpty ? info.ogImage!.linkImage(200) : AppConsts.imageEmptyLink;
     return ClipRRect(
       child: Stack(
         children: [
           Transform.translate(
             offset: const Offset(0, -2),
             child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: expandedHeight,
-                child: ClipRRect(
-                  child: ImageFiltered(
-                    imageFilter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
-                    child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, fit: BoxFit.cover, image: info.cover!.uri!.linkImage(200)),
+              width: MediaQuery.of(context).size.width,
+              height: expandedHeight,
+              child: ClipRRect(
+                child: ImageFiltered(
+                  imageFilter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
+                  child: ShaderMask(
+                    blendMode: BlendMode.dstIn,
+                    shaderCallback: (Rect bounds) {
+                      return const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: [0.0, 0.8],
+                        colors: [Colors.black, Colors.transparent],
+                      ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
+                    },
+                    child: FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        fit: BoxFit.cover,
+                        image: image),
                   ),
-                )),
+                ),
+              ),
+            ),
           ),
           Container(
             width: MediaQuery.of(context).size.width,
             height: expandedHeight,
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-              FluentTheme.of(context).scaffoldBackgroundColor,
+              FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(shrinkOffset / expandedHeight),
               FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(lerpDouble(0.5, 1.0, shrinkOffset / expandedHeight)!.toDouble())
             ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
           ),
           Positioned(
             width: 100,
             height: 100,
-            bottom: AppConsts.pageOffset.horizontal/2,
-            left: AppConsts.pageOffset.horizontal/2,
+            bottom: AppConsts.pageOffset.horizontal / 2,
+            left: AppConsts.pageOffset.horizontal / 2,
             child: Transform.translate(
               offset: Offset(0, lerpDouble(0, -100, shrinkOffset / expandedHeight)!.toDouble()),
               child: ImageThumbnail(
-                url: info.cover!.uri!.linkImage(200),
+                url: image,
                 width: 100,
                 height: 100,
                 radius: 100,
@@ -126,9 +147,9 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
             ),
           ),
           Positioned(
-            top: (expandedHeight - shrinkOffset) - (100 + AppConsts.pageOffset.horizontal/2),
-            bottom: AppConsts.pageOffset.horizontal/2,
-            left: AppConsts.pageOffset.horizontal/2 + 100 + 16,
+            top: (expandedHeight - shrinkOffset) - (100 + AppConsts.pageOffset.horizontal / 2),
+            bottom: AppConsts.pageOffset.horizontal / 2,
+            left: AppConsts.pageOffset.horizontal / 2 + 100 + 16,
             child: Transform.translate(
               offset: Offset(0, lerpDouble(0, -100, shrinkOffset / expandedHeight)!.toDouble()),
               child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -141,7 +162,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
           Positioned(
             top: 0,
             bottom: 0,
-            left: AppConsts.pageOffset.horizontal/2,
+            left: AppConsts.pageOffset.horizontal / 2,
             child: Center(
               child: Transform.translate(
                 offset: Offset(0, lerpDouble(200, 0, shrinkOffset / expandedHeight)!.toDouble()),

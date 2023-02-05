@@ -44,7 +44,7 @@ class ArtistCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardContent(
-      uri: artist.cover!.uri,
+      uri: artist.cover != null ? artist.cover!.uri : null,
       title: artist.name!,
       subtitle: artist.genres!.isEmpty ? "" : artist.genres!.first,
       onPressed: () {
@@ -65,6 +65,7 @@ class PlaylistCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String uid = playlist.owner == null ? playlist.uid.toString() : playlist.owner!.uid.toString();
     String kind = playlist.kind.toString();
+    String? uri = playlist.cover!.uri ?? playlist.ogImage;
 
     NewPlaylist playListProvider = context.read();
 
@@ -76,7 +77,7 @@ class PlaylistCard extends StatelessWidget {
     }
 
     return CardContent(
-      uri: playlist.cover!.uri,
+      uri: uri,
       title: playlist.title,
       subtitle: "${playlist.trackCount} Треков",
       onPressed: () {
@@ -126,7 +127,7 @@ class CardContent extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  ImageHovered(imageState: imageState, uri: uri!),
+                  ImageHovered(imageState: imageState, uri: uri ?? AppConsts.imageEmptyLink, linkImage: uri != null),
                   Container(
                     width: AppConsts.defaultCardWidth,
                     height: AppConsts.defaultCardWidth,
@@ -158,8 +159,8 @@ class CardContent extends StatelessWidget {
                       ],
                     ),
                   ).animate(target: state.isHovering ? 1 : 0)
-                      .fadeIn(duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve)
-                      .moveY(begin: 150, end: 0, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve),
+                      .fadeIn(duration: AppConsts.fastAnimation, curve: AppConsts.defaultCurve)
+                      .moveY(begin: 10, end: 0, duration: AppConsts.fastAnimation, curve: AppConsts.defaultCurve),
                 ],
               ),
               Padding(
