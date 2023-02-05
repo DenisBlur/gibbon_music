@@ -262,14 +262,15 @@ class Client {
     return RotorTracks.fromJson(jsonDecode(result)["result"]);
   }
 
-  Future<String> rotorStationFeedback(RotorFeedback type, String batchId, trackId, station) async {
+  Future<String> rotorStationFeedback({required RotorFeedback type, required String batchId, String trackId = "0", required String station, int totalPlayedSeconds = 0}) async {
     String currentTime = "${DateTime.now().toIso8601String()}Z";
     var data = {
       "type" : type.name,
       "timestamp" : currentTime,
       "batch-id" : batchId,
       "from" : device,
-      "track_id" : trackId
+      "trackId" : int.parse(trackId),
+      "totalPlayedSeconds": totalPlayedSeconds.toDouble(),
     };
 
     var result = await RequestClient(headers: headers).requestPost(url: "/rotor/station/$station/feedback", body: data);
@@ -337,9 +338,9 @@ class Client {
     List<Track> returnList = [];
     var result = await RequestClient(headers: headers).requestGet("/users/$userId/playlists/$kind/recommendations");
     List<dynamic> jsonResult = jsonDecode(result)['result']['tracks'];
-    jsonResult.forEach((v) {
+    for (var v in jsonResult) {
       returnList.add(Track.fromJson(v));
-    });
+    }
     return returnList;
   }
 
@@ -398,31 +399,26 @@ class Client {
           returnList.add(MPlaylist.fromJson(playlist));
         }
         return returnList;
-        break;
       case ObjectType.artist:
         List<Artist>? returnList = [];
         for (var artist in mapResult) {
           returnList.add(Artist.fromJson(artist));
         }
         return returnList;
-        break;
       case ObjectType.album:
         List<Album>? returnList = [];
         for (var album in mapResult) {
           returnList.add(Album.fromJson(album));
         }
         return returnList;
-        break;
       case ObjectType.track:
         List<Track?>? returnList = [];
         for (var track in mapResult) {
           returnList.add(Track.fromJson(track));
         }
         return returnList;
-        break;
     }
 
-    return [];
   }
 
   Future<String> downloadTrack({required String? trackId, QualityTrack quality = QualityTrack.low}) async {

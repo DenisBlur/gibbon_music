@@ -63,10 +63,12 @@ class YandexProvider extends ChangeNotifier {
     isRadioPlaying = isRadio;
     this.batchId = batchId;
     this.station = station;
-    radioFeedback(RotorFeedback.radioStarted);
+    radioFeedback(type: RotorFeedback.radioStarted);
   }
 
-  Future radioFeedback(RotorFeedback type) async {
-    await client.rotorStationFeedback(type, batchId, "", station);
+  Future radioFeedback({required RotorFeedback type, String trackId = "0", int totalPlayedSeconds = 0}) async {
+    if(isRadioPlaying) {
+      await client.rotorStationFeedback(type: type, batchId: batchId, trackId: trackId, station: station, totalPlayedSeconds: totalPlayedSeconds);
+    }
   }
 }
