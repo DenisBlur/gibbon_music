@@ -11,10 +11,6 @@ class YandexProvider extends ChangeNotifier {
   LikeModel likeModel;
   QueueModel queueModel;
 
-  bool isRadioPlaying = false;
-  String batchId = "";
-  String station = "";
-
   YandexProvider({required this.likeModel, required this.queueModel});
 
   bool trackIsLiked(String trackId) {
@@ -59,16 +55,4 @@ class YandexProvider extends ChangeNotifier {
 
   updateQueuePosition() {}
 
-  Future startRadio(bool isRadio, String batchId, station) async {
-    isRadioPlaying = isRadio;
-    this.batchId = batchId;
-    this.station = station;
-    radioFeedback(type: RotorFeedback.radioStarted);
-  }
-
-  Future radioFeedback({required RotorFeedback type, String trackId = "0", int totalPlayedSeconds = 0}) async {
-    if(isRadioPlaying) {
-      await client.rotorStationFeedback(type: type, batchId: batchId, trackId: trackId, station: station, totalPlayedSeconds: totalPlayedSeconds);
-    }
-  }
 }

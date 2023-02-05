@@ -13,6 +13,7 @@ import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/landing_provider.dart';
 import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/providers/playlist_page_provider.dart';
+import 'package:gibbon_music/providers/radio_provider.dart';
 import 'package:gibbon_music/providers/search_provider.dart';
 import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
@@ -48,6 +49,7 @@ List<SingleChildWidget> _providers = [
   ChangeNotifierProvider(
     create: (context) => NavigatorProvider(),
   ),
+  Provider(create: (context) => RadioProvider(context.read(), context.read()))
 ];
 
 Future<void> main() async {

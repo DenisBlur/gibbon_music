@@ -6,6 +6,7 @@ import 'package:gibbon_music/enums/e_list_typer.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/playlist_provider.dart';
+import 'package:gibbon_music/providers/radio_provider.dart';
 import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:gibbon_music/router.dart';
@@ -205,19 +206,13 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                     size: const Size(double.infinity, double.infinity),
                   ),
                 )),
-            Opacity(opacity: 1-shrinkOffset/expandedHeight, child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 86),
-                  child: GButton(onPressed: () {
-
-                    client.rotorStationTracks("user:onyourwave").then((value) {
-                      context.read<YandexProvider>().startRadio(true, value.batchId!, "user:onyourwave");
-                      context.read<NewPlaylist>().tracks = value.sequence!.select((e, _) => e.track,).toList();
-                      context.read<NewPlaylist>().currentTrackIndex =  0;
-                    });
-
-                  }, title: "воспроизвести"),
-                )),),
+            // Opacity(opacity: 1-shrinkOffset/expandedHeight, child: Center(
+            //     child: Padding(
+            //       padding: const EdgeInsets.only(top: 86),
+            //       child: GButton(onPressed: () {
+            //         context.read<RadioProvider>().startRadio("user:onyourwave");
+            //       }, title: "воспроизвести"),
+            //     )),),
           ],
         ),
       )
