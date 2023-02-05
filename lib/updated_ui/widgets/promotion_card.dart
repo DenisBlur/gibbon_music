@@ -39,41 +39,46 @@ class PromotionCard extends StatelessWidget {
         }
 
         return SizedBox(
-          width: AppConsts.wideCardWidth(context),
-          height: AppConsts.wideCardHeight(context),
+          width: AppConsts.wideCardWidth,
+          height: AppConsts.wideCardHeight,
           child: Stack(
             children: [
               ImageHovered(
                 imageState: imageState,
                 uri: data.image!,
                 uriSize: 400,
-                height: AppConsts.wideCardHeight(context) - 16,
-                width: AppConsts.wideCardWidth(context),
+                height: AppConsts.wideCardHeight - 16,
+                width: AppConsts.wideCardWidth,
               ),
-              AnimatedScale(scale: imageState+0.01, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve, child: Container(
-                padding: const EdgeInsets.only(bottom: 32, right: 16, left: 16),
-                width: AppConsts.wideCardWidth(context),
-                height: AppConsts.wideCardHeight(context)-16,
-                decoration: ShapeDecoration(
-                  gradient: LinearGradient(colors: [
-                    FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
-                    FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0),
-                  ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
-                  shape: SmoothRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
-                    smoothness: 1,
+              AnimatedScale(
+                scale: imageState + 0.01,
+                duration: AppConsts.defaultAnimation,
+                curve: AppConsts.defaultCurve,
+                child: Container(
+                  padding: const EdgeInsets.only(bottom: 32, right: 16, left: 16),
+                  width: AppConsts.wideCardWidth,
+                  height: AppConsts.wideCardHeight-16,
+                  decoration: ShapeDecoration(
+                    gradient: LinearGradient(colors: [
+                      FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
+                      FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0),
+                    ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
+                    shape: SmoothRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                      smoothness: 1,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(data.title!, style: AppStyle.prTitle(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Text(data.subtitle!, style: AppStyle.prSubTitle(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Text(data.heading!.toUpperCase(), style: AppStyle.prHeading(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+                    ],
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(data.title!, style: AppStyle.prTitle(context), maxLines: 1, overflow: TextOverflow.ellipsis),
-                    Text(data.subtitle!, style: AppStyle.prSubTitle(context), maxLines: 1, overflow: TextOverflow.ellipsis),
-                    Text(data.heading!.toUpperCase(), style: AppStyle.prHeading(context), maxLines: 1, overflow: TextOverflow.ellipsis),
-                  ],
-                ),
-              ),),
+              ),
             ],
           ),
         );

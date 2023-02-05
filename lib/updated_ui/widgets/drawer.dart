@@ -16,42 +16,38 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UxProvider uxProvider = context.watch();
-    ThemeProvider themeProvider = context.watch();
     var theme = FluentTheme.of(context);
-    var backgroundColor = theme.cardColor.withOpacity(themeProvider.isSystemTheme ? 1 : 0.65);
+    var backgroundColor = theme.cardColor.withOpacity(0.65);
     return AnimatedPositioned(
-        duration: AppConsts.defaultAnimation,
-        curve: AppConsts.defaultCurve,
-        top: AppConsts.windowHeader,
-        bottom: AppConsts.playerHeight,
-        left: uxProvider.isOpenDrawer ? 0 : -350,
-        child: ClipRRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: AnimatedContainer(
-              width: 350,
-              curve: AppConsts.defaultCurve,
-              padding: const EdgeInsets.all(8),
-              duration: AppConsts.defaultAnimation,
-              decoration: BoxDecoration(
-                color: backgroundColor,
+      duration: AppConsts.defaultAnimation,
+      curve: AppConsts.defaultCurve,
+      top: AppConsts.windowHeader,
+      bottom: AppConsts.playerHeight,
+      left: uxProvider.isOpenDrawer ? 0 : -350,
+      child: Acrylic(
+        elevation: 5,
+        blurAmount: 20,
+        luminosityAlpha: .95,
+        tint: backgroundColor,
+        child: Container(
+          width: 350,
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppConsts.fillSpacer,
+              GIconButton(
+                onPressed: () {
+                  AppRouter().gotoSetting(context);
+                },
+                icon: m.Icons.settings,
+                size: 22,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppConsts.fillSpacer,
-                  GIconButton(
-                    onPressed: () {
-                      AppRouter().gotoSetting(context);
-                    },
-                    icon: m.Icons.settings,
-                    size: 22,
-                  ),
-                ],
-              ),
-            ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

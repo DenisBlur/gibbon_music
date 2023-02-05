@@ -21,10 +21,9 @@ class UPlaylistWidget extends StatelessWidget {
     return Consumer<NewPlaylist>(
       builder: (context, playListProvider, child) {
         UxProvider uxProvider = context.watch();
-        ThemeProvider themeProvider = context.watch();
         List<Track?>? tracks = playListProvider.tracksQueue;
         var theme = FluentTheme.of(context);
-        var backgroundColor = theme.cardColor.withOpacity(themeProvider.isSystemTheme ? 1 : 0.65);
+        var backgroundColor = theme.cardColor.withOpacity(0.65);
         final controller = ScrollController();
         return AnimatedPositioned(
           top: AppConsts.windowHeader,
@@ -32,46 +31,43 @@ class UPlaylistWidget extends StatelessWidget {
           right: uxProvider.isOpenPlaylist ? 0 : -450,
           duration: AppConsts.defaultAnimation,
           curve: AppConsts.defaultCurve,
-          child: ClipRRect(
-            child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                child: AnimatedContainer(
-                    width: 450,
-                    curve: AppConsts.defaultCurve,
-                    padding: const EdgeInsets.all(8),
-                    duration: AppConsts.defaultAnimation,
-                    decoration: BoxDecoration(
-                      color: backgroundColor,
-                    ),
-                    child: tracks.isNotEmpty
-                        ? ImprovedScrolling(
-                            scrollController: controller,
-                            enableCustomMouseWheelScrolling: true,
-                            customMouseWheelScrollConfig: const CustomMouseWheelScrollConfig(
-                              scrollAmountMultiplier: AppConsts.scrollMultiplier,
-                            ),
-                            child: ReorderableListView.builder(
-                              onReorder: (int oldIndex, int newIndex) {
-                                playListProvider.reorder(oldIndex, newIndex < oldIndex ? newIndex : newIndex - 1);
-                              },
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                    key: ValueKey(index),
-                                    padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4, right: 32),
-                                    child: TrackCard(
-                                      track: tracks[index]!,
-                                      onPressed: () {
-                                        playListProvider.currentTrackIndex = index;
-                                      },
-                                    ));
-                              },
-                              itemCount: tracks.length,
-                              scrollController: controller,
-                              physics: Platform.isAndroid ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
-                            ),
-                          )
-                        : Center(child: Text("Ничего нет :(")))),
-          ),
+          child: Acrylic(
+            elevation: 5,
+            blurAmount: 20,
+            luminosityAlpha: .95,
+            tint: backgroundColor,
+            child:Container(
+                width: 450,
+                padding: const EdgeInsets.all(8),
+                child: tracks.isNotEmpty
+                    ? ImprovedScrolling(
+                  scrollController: controller,
+                  enableCustomMouseWheelScrolling: true,
+                  customMouseWheelScrollConfig: const CustomMouseWheelScrollConfig(
+                    scrollAmountMultiplier: AppConsts.scrollMultiplier,
+                  ),
+                  child: ReorderableListView.builder(
+                    onReorder: (int oldIndex, int newIndex) {
+                      playListProvider.reorder(oldIndex, newIndex < oldIndex ? newIndex : newIndex - 1);
+                    },
+                    itemBuilder: (context, index) {
+                      return Padding(
+                          key: ValueKey(index),
+                          padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4, right: 32),
+                          child: TrackCard(
+                            track: tracks[index]!,
+                            onPressed: () {
+                              playListProvider.currentTrackIndex = index;
+                            },
+                          ));
+                    },
+                    itemCount: tracks.length,
+                    scrollController: controller,
+                    physics: Platform.isAndroid ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
+                  ),
+                )
+                    : Center(child: Text("Ничего нет :(")),
+          ),),
         );
       },
     );

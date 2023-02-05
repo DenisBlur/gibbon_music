@@ -38,11 +38,12 @@ class PlayerInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              SizedBox(width: AppConsts.pageSize(context).width / 6, child:Text(
                 track.title!,
                 style: const TextStyle(fontSize:14),
-              ),
-              ArtistsListWidgets(track: track)
+                overflow: TextOverflow.ellipsis,
+              ),),
+              SizedBox(width: AppConsts.pageSize(context).width / 6, child: ArtistsListWidgets(track: track),)
             ],
           ),
         ],

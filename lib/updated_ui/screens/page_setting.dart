@@ -1,10 +1,7 @@
-import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_acrylic/flutter_acrylic.dart';
-import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
+import 'package:gibbon_music/constants/style_consts.dart';
+import 'package:gibbon_music/domain/models/data_model.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
@@ -15,6 +12,7 @@ class PageSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DataModel dataModel = DataModel();
     String accName = client.account.account!.displayName.toString();
     String accLogin = client.account.account!.login.toString();
     bool? hasPlus = client.account.plus!.hasPlus;
@@ -59,24 +57,32 @@ class PageSetting extends StatelessWidget {
                 AppConsts.defaultVSpacer,
                 Row(
                   children: [
-                    Text("Системная тема", style: AppStyle.prTitle(context),),
+                    Text(
+                      "Системная тема",
+                      style: AppStyle.prTitle(context),
+                    ),
                     AppConsts.fillSpacer,
                     ToggleSwitch(
                       checked: context.read<ThemeProvider>().isSystemTheme,
                       onChanged: (value) {
-                        if(!context.read<ThemeProvider>().isSystemTheme) {
+                        if (!context.read<ThemeProvider>().isSystemTheme) {
                           context.read<ThemeProvider>().changeThemeType(ThemeType.systemTheme);
                           context.read<ThemeProvider>().setEffect(true);
+                          dataModel.writeBoolData(AppConsts.systemThemeKey, true);
                         } else {
                           context.read<ThemeProvider>().changeThemeType(ThemeType.lightColor);
                           context.read<ThemeProvider>().setEffect(false);
+                          dataModel.writeBoolData(AppConsts.systemThemeKey, false);
                         }
                       },
                     )
                   ],
                 ),
                 AppConsts.defaultVSpacer,
-                Text("Темы", style: AppStyle.prTitle(context),),
+                Text(
+                  "Темы",
+                  style: AppStyle.prTitle(context),
+                ),
                 AppConsts.smallVSpacer,
                 SizedBox(
                     height: 100,
@@ -86,6 +92,10 @@ class PageSetting extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 8),
                           child: ThemeCard(
                             themeType: ThemeType.values[index],
+                            onPressed: () {
+                              dataModel.writeBoolData(AppConsts.systemThemeKey, false);
+                              dataModel.writeIntData(AppConsts.themeIndexKey, index);
+                            },
                           ),
                         );
                       },
@@ -98,9 +108,10 @@ class PageSetting extends StatelessWidget {
 }
 
 class ThemeCard extends StatelessWidget {
-  const ThemeCard({Key? key, required this.themeType}) : super(key: key);
+  const ThemeCard({Key? key, required this.themeType, this.onPressed}) : super(key: key);
 
   final ThemeType themeType;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +124,7 @@ class ThemeCard extends StatelessWidget {
       onPressed: () {
         theme.changeThemeType(themeType);
         theme.setEffect(false);
+        onPressed!();
       },
       builder: (p0, state) {
         return AnimatedContainer(

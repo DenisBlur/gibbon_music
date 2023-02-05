@@ -65,6 +65,7 @@ class PlaylistCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String uid = playlist.owner == null ? playlist.uid.toString() : playlist.owner!.uid.toString();
     String kind = playlist.kind.toString();
+    String? uri = playlist.cover!.uri ?? playlist.ogImage;
 
     NewPlaylist playListProvider = context.read();
 
@@ -76,7 +77,7 @@ class PlaylistCard extends StatelessWidget {
     }
 
     return CardContent(
-      uri: playlist.cover!.uri,
+      uri: uri,
       title: playlist.title,
       subtitle: "${playlist.trackCount} Треков",
       onPressed: () {

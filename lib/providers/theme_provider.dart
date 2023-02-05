@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
+import 'package:gibbon_music/constants/app_consts.dart';
+import 'package:gibbon_music/domain/models/data_model.dart';
 import 'package:gibbon_music/updated_ui/theme_data.dart';
 import 'package:system_theme/system_theme.dart';
 
@@ -16,7 +18,7 @@ class ThemeProvider extends ChangeNotifier {
   bool isSystemTheme = false;
 
   ThemeProvider() {
-    Future.delayed(const Duration(milliseconds: 1500)).then((value) {
+    Future.delayed(const Duration(milliseconds: 2500)).then((value) {
       init();
     });
   }
@@ -35,15 +37,36 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  init() {
+  init() async {
+    themeCreator.init(accentColor: SystemTheme.accentColor);
+    theme = getTheme();
+    accentColor = themeCreator.mainAccentColor;
+
+    DataModel dataModel = DataModel();
+
+    bool? hasSystemTheme = await dataModel.findKey(AppConsts.systemThemeKey);
+    bool? hasThemeIndex = await dataModel.findKey(AppConsts.themeIndexKey);
+
+    if (hasSystemTheme!) {
+      bool? check = await dataModel.readBoolData(AppConsts.systemThemeKey);
+      if (check!) {
+        changeThemeType(ThemeType.systemTheme);
+        setEffect(true);
+        return;
+      }
+    }
+
+    if (hasThemeIndex!) {
+      int? index = await dataModel.readIntData(AppConsts.themeIndexKey);
+      theme = getTheme(type: ThemeType.values[index!]);
+      return;
+    }
+
     if (SystemTheme.isDarkMode) {
       themeType = ThemeType.darkNoColor;
     } else {
       themeType = ThemeType.lightNoColor;
     }
-    themeCreator.init(accentColor: SystemTheme.accentColor);
-    theme = getTheme();
-    accentColor = themeCreator.mainAccentColor;
   }
 
   changeThemeType(ThemeType type) {

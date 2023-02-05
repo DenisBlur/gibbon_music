@@ -13,7 +13,9 @@ import 'package:yam_api/artist/artist.dart';
 import 'package:yam_api/artist/brief_info.dart';
 
 import '../../constants/app_consts.dart';
+import '../../domain/models/playlist.dart';
 import '../../providers/artist_page_provider.dart';
+import '../../providers/audio_provider.dart';
 import '../widgets/track_card.dart';
 
 class PageArtist extends StatelessWidget {
@@ -48,7 +50,10 @@ class PageArtist extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 8),
                           child: TrackCard(
                             track: mPageArtist.popularTracks![index],
-                            onPressed: () {},
+                            onPressed: () {
+                              context.read<NewPlaylist>().setTracksWithActiveTrack(mPageArtist.popularTracks!, index);
+                              context.read<AudioProvider>().resume();
+                            },
                           ),
                         ),
                     childCount: mPageArtist.popularTracks!.length)),
@@ -86,6 +91,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    String image = info.ogImage!.isNotEmpty ? info.ogImage!.linkImage(200) : AppConsts.imageEmptyLink;
     return ClipRRect(
       child: Stack(
         children: [
@@ -107,7 +113,10 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                         colors: [Colors.black, Colors.transparent],
                       ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
                     },
-                    child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, fit: BoxFit.cover, image: info.ogImage!.linkImage(200)),
+                    child: FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        fit: BoxFit.cover,
+                        image: image),
                   ),
                 ),
               ),
@@ -130,7 +139,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
             child: Transform.translate(
               offset: Offset(0, lerpDouble(0, -100, shrinkOffset / expandedHeight)!.toDouble()),
               child: ImageThumbnail(
-                url: info.cover!.uri!.linkImage(200),
+                url: image,
                 width: 100,
                 height: 100,
                 radius: 100,
