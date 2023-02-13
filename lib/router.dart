@@ -1,10 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/updated_ui/screens/page_album.dart';
 import 'package:gibbon_music/updated_ui/screens/page_artist.dart';
+import 'package:gibbon_music/updated_ui/screens/page_fullscreen.dart';
 import 'package:gibbon_music/updated_ui/screens/page_playlist.dart';
 import 'package:gibbon_music/updated_ui/screens/page_search.dart';
 import 'package:gibbon_music/updated_ui/screens/page_setting.dart';
@@ -16,13 +16,11 @@ class AppRouter {
   AppRouter();
 
   tryPop(BuildContext context) {
-    context.read<UxProvider>().isContextMenu = false;
     NavigatorProvider provider = context.read();
     provider.pop(context);
   }
 
   gotoPlaylist(BuildContext context, String id, String kind, bool isChart) {
-    context.read<UxProvider>().isContextMenu = false;
     NavigatorProvider provider = context.read();
     provider.push(
         "playlist",
@@ -79,4 +77,29 @@ class AppRouter {
     NavigatorProvider provider = context.read();
     provider.push("search", context, const PageSearch());
   }
+
+  openFullscreen(BuildContext context) {
+    UxProvider provider = context.read();
+    Navigator.push(context, FluentPageRoute(builder: (context) => const PageFullscreen(),));
+    provider.isFullscreen = true;
+    fullscreen(true);
+  }
+
+  closeFullscreen(BuildContext context) {
+    UxProvider provider = context.read();
+    Navigator.pop(context);
+    provider.isFullscreen = false;
+    fullscreen(false);
+  }
+
+  Future fullscreen(bool enter) async {
+    if(enter) {
+      await Window.enterFullscreen();
+      await Window.hideWindowControls();
+    } else {
+      await Window.exitFullscreen();
+      await Window.hideWindowControls();
+    }
+  }
+
 }

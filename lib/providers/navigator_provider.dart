@@ -34,7 +34,6 @@ class NavigatorProvider extends ChangeNotifier {
     if(context.read<UxProvider>().isOpenPlaylist) {
       context.read<UxProvider>().changePlaylistState();
     }
-    context.read<UxProvider>().isContextMenu = false;
     notifyListeners();
   }
 

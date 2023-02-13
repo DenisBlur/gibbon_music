@@ -12,6 +12,8 @@ import 'package:yam_api/artist/brief_info.dart';
 import 'package:yam_api/playlist/playlist.dart';
 import 'package:yam_api/track/track.dart';
 
+import '../../domain/models/playlist.dart';
+import '../../providers/audio_provider.dart';
 import '../widgets/aap_card.dart';
 class PageSearch extends StatelessWidget {
   const PageSearch({Key? key}) : super(key: key);
@@ -47,7 +49,10 @@ class PageSearch extends StatelessWidget {
                         Track data = Track.fromJson(results);
                         widget = TrackCard(
                           track: data,
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<NewPlaylist>().setTracksWithActiveTrack([data], 0);
+                            context.read<AudioProvider>().resume();
+                          },
                         );
                         break;
                       default:
@@ -85,7 +90,10 @@ class PageSearch extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 8),
                         child: TrackCard(
                           track: search.searchResult.tracks!.results![i],
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<NewPlaylist>().setTracksWithActiveTrack(search.searchResult.tracks!.results!, i);
+                            context.read<AudioProvider>().resume();
+                          },
                         ),
                       ),
                       childCount: search.searchResult.tracks!.results!.length,
