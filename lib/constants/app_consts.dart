@@ -15,6 +15,7 @@ class AppConsts {
   static const String tokenKey = "token";
   static const String systemThemeKey = "systemTheme";
   static const String themeIndexKey = "themeIndex";
+  static const String firstSetupKey = "firstSetup";
 
   static const String yandexMusicLink = "https://music.yandex.ru/home";
   static const String yandexMusicApiLink = "https://github.com/MarshalX/yandex-music-api";

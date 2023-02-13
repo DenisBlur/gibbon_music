@@ -42,6 +42,7 @@ class GButton extends StatelessWidget {
             color: bgColor,
             child: Text(
               title.toLowerCase(),
+              textAlign: TextAlign.center,
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ),

@@ -1,11 +1,14 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/data_model.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/theme_provider.dart';
+import 'package:gibbon_music/updated_ui/controls/buttons.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart' as m;
 
 class PageSetting extends StatelessWidget {
   const PageSetting({Key? key}) : super(key: key);
@@ -62,16 +65,51 @@ class PageSetting extends StatelessWidget {
                       style: AppStyle.prTitle(context),
                     ),
                     AppConsts.fillSpacer,
+                    GIconButton(onPressed: () {
+                      showDialog(context: context, builder: (context) {
+                        return ContentDialog(
+                          title: const Text("Select effect"),
+                          content: SizedBox(
+                            height: 125,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                GButton(onPressed: () {
+                                  Navigator.pop(context);
+                                  context.read<ThemeProvider>().setEffect(isSystem: true, effect: WindowEffect.acrylic);
+                                }, title: "acrylic"),
+                                AppConsts.smallVSpacer,
+                                GButton(onPressed: () {
+                                  Navigator.pop(context);
+                                  context.read<ThemeProvider>().setEffect(isSystem: true, effect: WindowEffect.mica);
+                                }, title: "mica"),
+                                AppConsts.smallVSpacer,
+                                GButton(onPressed: () {
+                                  Navigator.pop(context);
+                                  context.read<ThemeProvider>().setEffect(isSystem: true, effect: WindowEffect.tabbed);
+                                }, title: "mica 2"),
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            GButton(onPressed: () {
+                              Navigator.pop(context);
+                            }, title: "Close")
+                          ],
+                        );
+                      },);
+                    }, icon: m.Icons.settings),
+                    AppConsts.defaultHSpacer,
                     ToggleSwitch(
                       checked: context.read<ThemeProvider>().isSystemTheme,
                       onChanged: (value) {
                         if (!context.read<ThemeProvider>().isSystemTheme) {
                           context.read<ThemeProvider>().changeThemeType(ThemeType.systemTheme);
-                          context.read<ThemeProvider>().setEffect(true);
+                          context.read<ThemeProvider>().setEffect(isSystem: true);
                           dataModel.writeBoolData(AppConsts.systemThemeKey, true);
                         } else {
                           context.read<ThemeProvider>().changeThemeType(ThemeType.lightColor);
-                          context.read<ThemeProvider>().setEffect(false);
+                          context.read<ThemeProvider>().setEffect(isSystem: false);
                           dataModel.writeBoolData(AppConsts.systemThemeKey, false);
                         }
                       },
@@ -123,7 +161,7 @@ class ThemeCard extends StatelessWidget {
     return HoverButton(
       onPressed: () {
         theme.changeThemeType(themeType);
-        theme.setEffect(false);
+        theme.setEffect(isSystem: false);
         onPressed!();
       },
       builder: (p0, state) {

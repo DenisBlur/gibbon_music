@@ -66,7 +66,7 @@ class GThemeCreator {
     systemTheme = ThemeData(
       brightness: mode,
       cardColor: alphaBlend(cardColor.withOpacity(.1), systemBackground).withOpacity(effectValue),
-      scaffoldBackgroundColor: systemBackground.withOpacity(effectValue),
+      scaffoldBackgroundColor: systemBackground.withOpacity(0),
       accentColor: accentColor,
     );
 

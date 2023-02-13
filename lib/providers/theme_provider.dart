@@ -51,7 +51,7 @@ class ThemeProvider extends ChangeNotifier {
       bool? check = await dataModel.readBoolData(AppConsts.systemThemeKey);
       if (check!) {
         changeThemeType(ThemeType.systemTheme);
-        setEffect(true);
+        setEffect(isSystem: true);
         return;
       }
     }
@@ -90,21 +90,23 @@ class ThemeProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> setEffect(bool isSystem) async {
+  Future<void> setEffect({required bool isSystem, WindowEffect effect = WindowEffect.solid}) async {
     if (!isSystem) {
       await Window.setEffect(effect: WindowEffect.solid);
       return;
     }
     bool isDark = SystemTheme.isDarkMode;
     final deviceInfoPlugin = DeviceInfoPlugin();
-    if (Platform.isWindows) {
+    if (Platform.isWindows && effect == WindowEffect.solid) {
       WindowsDeviceInfo windowsDeviceInfo = await deviceInfoPlugin.windowsInfo;
       String product = windowsDeviceInfo.productName;
       if (product.contains("11")) {
-        await Window.setEffect(effect: WindowEffect.mica, dark: isDark);
+        await Window.setEffect(effect: WindowEffect.tabbed, dark: isDark);
       } else {
         await Window.setEffect(effect: WindowEffect.acrylic, dark: isDark);
       }
+    } else {
+      await Window.setEffect(effect: effect, dark: isDark);
     }
   }
 }

@@ -27,6 +27,7 @@ class PromotionCard extends StatelessWidget {
           String uid = url.substring(7, url.length);
           AppRouter().gotoAlbum(context, int.parse(uid));
         }
+        print(data.url!);
       },
       builder: (p0, state) {
         double imageState = 1.0;

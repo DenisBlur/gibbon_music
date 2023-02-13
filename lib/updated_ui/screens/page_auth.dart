@@ -33,11 +33,25 @@ class _PageAuthState extends State<PageAuth> {
     final DataModel dataModel = DataModel();
     String localToken = await dataModel.readStringData(AppConsts.tokenKey);
     if (localToken.contains("null")) {
-      await controller.loadUrl(AppConsts.authLink);
       controller.url.listen((url) {
         if (url.contains("#access_token")) {
           String token = url.substring(url.indexOf("#access_token=") + 14, url.indexOf("&token_type=bearer"));
-          dataModel.writeStringData(AppConsts.tokenKey, token);
+          showDialog(context: context, builder: (context) {
+            return ContentDialog(
+               title: const Text("Token found"),
+              content: const Text("If you want to use another account, log out of your account."),
+              actions: [
+                GButton(onPressed: () {
+                  dataModel.writeStringData(AppConsts.tokenKey, token);
+                  initToken(token);
+                  Navigator.pop(context);
+                }, title: "Use"),
+                GButton(onPressed: () {
+                  Navigator.pop(context);
+                }, title: "another account"),
+              ],
+            );
+          },);
         }
       });
     } else {
@@ -203,7 +217,8 @@ class _PageAuthState extends State<PageAuth> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       GTextButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            await controller.loadUrl(AppConsts.authLink);
                             pageController.animateToPage(1, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve);
                           },
                           title: "use the browser"),
