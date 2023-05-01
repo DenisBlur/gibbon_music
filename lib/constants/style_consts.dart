@@ -7,14 +7,14 @@ class AppStyle {
 
   static TextStyle title(BuildContext context) {
     return TextStyle(
-      fontSize: Responsive.isDesktop(context) ? 32 : 24,
+      fontSize: Responsive.isDesktop(context) ? 32 : 32,
       fontWeight: FontWeight.bold
     );
   }
 
   static TextStyle subTitle(BuildContext context) {
     return TextStyle(
-        fontSize: Responsive.isDesktop(context) ? 20 : 16,
+        fontSize: Responsive.isDesktop(context) ? 20 : 20,
         fontWeight: FontWeight.bold,
         color: FluentTheme.of(context).uncheckedColor.withOpacity(.9)
     );

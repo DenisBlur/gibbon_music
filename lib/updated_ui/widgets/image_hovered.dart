@@ -3,7 +3,7 @@ import 'package:gibbon_music/extensions/string.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
 import '../../constants/app_consts.dart';
-import 'ImageThumbnail.dart';
+import 'Image_thumbnail.dart';
 
 class ImageHovered extends StatelessWidget {
   const ImageHovered(

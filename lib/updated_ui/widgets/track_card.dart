@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -7,7 +9,7 @@ import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
-import 'package:gibbon_music/updated_ui/widgets/ImageThumbnail.dart';
+import 'package:gibbon_music/updated_ui/widgets/Image_thumbnail.dart';
 import 'package:gibbon_music/updated_ui/widgets/card_view.dart';
 import 'package:gibbon_music/updated_ui/widgets/context_widget.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +39,9 @@ class TrackCard extends StatelessWidget {
     bool isPlay = false;
     bool isSelected = false;
     bool isLike = yandexProvider.trackIsLiked(track.id.toString());
-    String image = track.coverUri != null ? track.coverUri!.linkImage(100) : AppConsts.imageEmptyLink;
+    String image = track.coverUri != null ? track.coverUri!.linkImage(80) : AppConsts.imageEmptyLink;
+
+    double size = Platform.isWindows ? 44 : 56;
 
     if (context.watch<NewPlaylist>().currentTrack != null) {
       isSelected = track.id == context.watch<NewPlaylist>().currentTrack!.id;
@@ -66,14 +70,14 @@ class TrackCard extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  ImageThumbnail(url: image, height: 44, width: 44),
+                  ImageThumbnail(url: image, height: size, width: size),
                   AnimatedScale(
                     scale: isSelected ? 1 : 0,
                     duration: AppConsts.slowAnimation,
                     curve: AppConsts.defaultCurve,
                     child: Container(
-                        width: 44,
-                        height: 44,
+                        width: size,
+                        height: size,
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: FluentTheme.of(context).cardColor.withOpacity(.4)),
                         child: Center(
                           child: MiniMusicVisualizer(
@@ -105,7 +109,7 @@ class TrackCard extends StatelessWidget {
                 ),
               ),
               AppConsts.fillSpacer,
-              TrackCommandBar(isLike: isLike, id: track.id),
+              if(Platform.isWindows) TrackCommandBar(isLike: isLike, id: track.id),
               Text(track.durationMs == null ? "" : Duration(milliseconds: track.durationMs!.toInt()).toHms()),
             ],
           ),

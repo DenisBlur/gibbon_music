@@ -29,7 +29,9 @@ class Track {
     this.lyricsInfo,
     this.type,
     this.rememberPosition,
-    this.trackSharingFlag,});
+    this.trackSharingFlag,
+    this.backgroundVideoUri,
+  });
 
   Track.fromJson(dynamic json) {
     id = json['id'].toString();
@@ -65,7 +67,9 @@ class Track {
     type = json['type'];
     rememberPosition = json['rememberPosition'];
     trackSharingFlag = json['trackSharingFlag'];
+    backgroundVideoUri = json['backgroundVideoUri'] ?? "";
   }
+
   String? id;
   String? realId;
   String? title;
@@ -89,7 +93,10 @@ class Track {
   String? type;
   bool? rememberPosition;
   String? trackSharingFlag;
-  Track copyWith({  String? id,
+  String? backgroundVideoUri;
+
+  Track copyWith({
+    String? id,
     String? realId,
     String? title,
     String? trackSource,
@@ -112,30 +119,35 @@ class Track {
     String? type,
     bool? rememberPosition,
     String? trackSharingFlag,
-  }) => Track(  id: id ?? this.id,
-    realId: realId ?? this.realId,
-    title: title ?? this.title,
-    trackSource: trackSource ?? this.trackSource,
-    major: major ?? this.major,
-    available: available ?? this.available,
-    availableForPremiumUsers: availableForPremiumUsers ?? this.availableForPremiumUsers,
-    availableFullWithoutPermission: availableFullWithoutPermission ?? this.availableFullWithoutPermission,
-    availableForOptions: availableForOptions ?? this.availableForOptions,
-    durationMs: durationMs ?? this.durationMs,
-    storageDir: storageDir ?? this.storageDir,
-    fileSize: fileSize ?? this.fileSize,
-    r128: r128 ?? this.r128,
-    previewDurationMs: previewDurationMs ?? this.previewDurationMs,
-    artists: artists ?? this.artists,
-    albums: albums ?? this.albums,
-    coverUri: coverUri ?? this.coverUri,
-    ogImage: ogImage ?? this.ogImage,
-    lyricsAvailable: lyricsAvailable ?? this.lyricsAvailable,
-    lyricsInfo: lyricsInfo ?? this.lyricsInfo,
-    type: type ?? this.type,
-    rememberPosition: rememberPosition ?? this.rememberPosition,
-    trackSharingFlag: trackSharingFlag ?? this.trackSharingFlag,
-  );
+    String? backgroundVideoUri,
+  }) =>
+      Track(
+        id: id ?? this.id,
+        realId: realId ?? this.realId,
+        title: title ?? this.title,
+        trackSource: trackSource ?? this.trackSource,
+        major: major ?? this.major,
+        available: available ?? this.available,
+        availableForPremiumUsers: availableForPremiumUsers ?? this.availableForPremiumUsers,
+        availableFullWithoutPermission: availableFullWithoutPermission ?? this.availableFullWithoutPermission,
+        availableForOptions: availableForOptions ?? this.availableForOptions,
+        durationMs: durationMs ?? this.durationMs,
+        storageDir: storageDir ?? this.storageDir,
+        fileSize: fileSize ?? this.fileSize,
+        r128: r128 ?? this.r128,
+        previewDurationMs: previewDurationMs ?? this.previewDurationMs,
+        artists: artists ?? this.artists,
+        albums: albums ?? this.albums,
+        coverUri: coverUri ?? this.coverUri,
+        ogImage: ogImage ?? this.ogImage,
+        lyricsAvailable: lyricsAvailable ?? this.lyricsAvailable,
+        lyricsInfo: lyricsInfo ?? this.lyricsInfo,
+        type: type ?? this.type,
+        rememberPosition: rememberPosition ?? this.rememberPosition,
+        trackSharingFlag: trackSharingFlag ?? this.trackSharingFlag,
+        backgroundVideoUri: backgroundVideoUri ?? this.backgroundVideoUri,
+      );
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;
@@ -171,7 +183,7 @@ class Track {
     map['type'] = type;
     map['rememberPosition'] = rememberPosition;
     map['trackSharingFlag'] = trackSharingFlag;
+    map['backgroundVideoUri'] = backgroundVideoUri;
     return map;
   }
-
 }

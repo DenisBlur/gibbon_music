@@ -4,7 +4,7 @@ import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/updated_ui/controls/buttons.dart';
-import 'package:gibbon_music/updated_ui/widgets/ImageThumbnail.dart';
+import 'package:gibbon_music/updated_ui/widgets/Image_thumbnail.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 import 'package:yam_api/track/track.dart';

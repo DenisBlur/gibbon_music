@@ -63,7 +63,7 @@ class _PageWelcomeState extends State<PageWelcome> {
                     boxShadow: [BoxShadow(color: Colors.black.withOpacity(.25), blurRadius: 10, offset: const Offset(0, 10))]),
                 child: PageView(
                   controller: pageController,
-                  children: [const WelcomeSlide()],
+                  children: const [WelcomeSlide()],
                 ),
               ),
             ),

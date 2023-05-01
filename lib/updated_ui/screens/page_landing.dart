@@ -1,29 +1,21 @@
-import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/enums/e_list_typer.dart';
-import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
-import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/providers/radio_provider.dart';
-import 'package:gibbon_music/providers/theme_provider.dart';
-import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:gibbon_music/router.dart';
-import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 import 'package:gibbon_music/updated_ui/widgets/dynamic_list.dart';
+import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
 import '../../constants/app_consts.dart';
 import '../../providers/landing_provider.dart';
-import '../../providers/navigator_provider.dart';
 import '../controls/buttons.dart';
 import '../widgets/loading_ring.dart';
-
-import 'package:flutter/material.dart' as m;
 
 class UPageLanding extends StatelessWidget {
   const UPageLanding({Key? key}) : super(key: key);
@@ -32,8 +24,6 @@ class UPageLanding extends StatelessWidget {
   Widget build(BuildContext context) {
     LandingProvider landingProvider = context.read();
     landingProvider.dispose();
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) => context.read<NavigatorProvider>().showOverlay(context));
 
     return FutureBuilder(
       future: landingProvider.init(),
@@ -45,11 +35,16 @@ class UPageLanding extends StatelessWidget {
                 delegate: ScrollHeader(expandedHeight: 400),
               ),
               AppConsts.defaultVSpacer,
-              DynamicListWidget(
+              if(landingProvider.collections.isNotEmpty) DynamicListWidget(
+                listData: landingProvider.userPlaylists,
+                title: 'Ваши плейлисты',
+              ),
+              AppConsts.defaultVSpacer,
+              if(landingProvider.collections.isNotEmpty) DynamicListWidget(
                 listData: landingProvider.collections,
                 title: 'Собираем для вас',
               ),
-              AppConsts.defaultVSpacer,
+              if(landingProvider.collections.isNotEmpty) AppConsts.defaultVSpacer,
               DynamicListWidget(
                 listData: landingProvider.promotions,
                 title: 'Интересно сейчас',
@@ -67,8 +62,8 @@ class UPageLanding extends StatelessWidget {
                 title: 'Новые релизы',
               ),
               AppConsts.defaultVSpacer,
-              DynamicListWidget(listData: landingProvider.playContext, title: 'Вы недавно слушали'),
-              AppConsts.defaultVSpacer,
+              if(landingProvider.playContext.isNotEmpty) DynamicListWidget(listData: landingProvider.playContext, title: 'Вы недавно слушали'),
+              if(landingProvider.playContext.isNotEmpty) AppConsts.defaultVSpacer,
               Row(
                 children: [
                   Text(
@@ -111,12 +106,11 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
 
   ScrollHeader({required this.expandedHeight});
-
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     Color waveColors = FluentTheme.of(context).accentColor;
 
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: expandedHeight,
       child: ShaderMask(
@@ -206,13 +200,13 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                     size: const Size(double.infinity, double.infinity),
                   ),
                 )),
-            // Opacity(opacity: 1-shrinkOffset/expandedHeight, child: Center(
-            //     child: Padding(
-            //       padding: const EdgeInsets.only(top: 86),
-            //       child: GButton(onPressed: () {
-            //         context.read<RadioProvider>().startRadio("user:onyourwave");
-            //       }, title: "воспроизвести"),
-            //     )),),
+            Opacity(opacity: 1-shrinkOffset/expandedHeight, child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 86),
+                  child: GButton(onPressed: () {
+                    context.read<RadioProvider>().startRadio("user:onyourwave");
+                  }, title: "воспроизвести"),
+                )),),
           ],
         ),
       )

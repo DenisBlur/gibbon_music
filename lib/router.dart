@@ -52,12 +52,13 @@ class AppRouter {
         ));
   }
 
-  gotoMore(BuildContext context, List<dynamic> listData, String title) {
+  gotoMore({required BuildContext context, List<dynamic>? listData, required String title, Future<List<dynamic>?>? future}) {
     NavigatorProvider provider = context.read();
     provider.push(
         "test",
         context,
         PageMore(
+          future: future,
           title: title,
           listData: listData,
         ));
@@ -80,7 +81,11 @@ class AppRouter {
 
   openFullscreen(BuildContext context) {
     UxProvider provider = context.read();
-    Navigator.push(context, FluentPageRoute(builder: (context) => const PageFullscreen(),));
+    Navigator.push(
+        context,
+        FluentPageRoute(
+          builder: (context) => const PageFullscreen(),
+        ));
     provider.isFullscreen = true;
     fullscreen(true);
   }
@@ -93,7 +98,7 @@ class AppRouter {
   }
 
   Future fullscreen(bool enter) async {
-    if(enter) {
+    if (enter) {
       await Window.enterFullscreen();
       await Window.hideWindowControls();
     } else {
@@ -101,5 +106,4 @@ class AppRouter {
       await Window.hideWindowControls();
     }
   }
-
 }

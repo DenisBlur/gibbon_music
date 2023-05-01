@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/updated_ui/player/windows/win_player_controls.dart';
-import 'package:gibbon_music/updated_ui/widgets/ImageThumbnail.dart';
+import 'package:gibbon_music/updated_ui/widgets/Image_thumbnail.dart';
 import 'package:gibbon_music/updated_ui/widgets/playlist_widget.dart';
 import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';

@@ -6,7 +6,6 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/main.dart';
-import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:yam_api/enums.dart';
 import 'package:yam_api/track/track.dart';
 
@@ -34,8 +33,6 @@ class AudioProvider extends ChangeNotifier {
   StreamSubscription? _onTrackChangeSubscribe;
 
   StreamSubscription? _onPlayerStateChangedSubscribe;
-
-  String _sourceUrl = "";
 
   Future<void> init() async {
     _player = AudioPlayer();
@@ -118,18 +115,10 @@ class AudioProvider extends ChangeNotifier {
   ///Удалить если чего
   IconData icon() {
     switch (playerState) {
-      // case PlayerState.stopped:
-      //   return m.Icons.stop_rounded;
-      //   break;
       case PlayerState.playing:
         return m.Icons.pause;
-        break;
       case PlayerState.paused:
         return m.Icons.play_arrow;
-        break;
-      // case PlayerState.completed:
-      //   return m.Icons.not_interested;
-      //   break;
       default:
         return m.Icons.not_interested;
     }

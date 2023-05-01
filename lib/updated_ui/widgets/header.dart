@@ -87,7 +87,7 @@ class Header extends StatelessWidget {
           ));
         }
 
-        return WindowTitleBarBox(
+        return Platform.isWindows ? WindowTitleBarBox(
             child: ClipRRect(
           child: Container(
             height: AppConsts.windowHeader,
@@ -96,7 +96,7 @@ class Header extends StatelessWidget {
               children: headerButtons,
             ),
           ),
-        ));
+        )) : SizedBox();
       },
     );
   }

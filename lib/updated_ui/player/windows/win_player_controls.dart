@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
@@ -6,7 +8,6 @@ import 'package:gibbon_music/domain/interfaces/iplaylist_loop_strategy.dart';
 import 'package:gibbon_music/domain/models/loop_strategy/loop_strategies.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/extensions/duration.dart';
-import 'package:gibbon_music/providers/playlist_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:yam_api/track/track.dart';
@@ -42,97 +43,102 @@ class PlayerMainControl extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Stack(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GIconButton(onPressed: () => playList.nextLoop(), icon: _getIconForLoop(playList.loopStrategy), size: 24),
-                AppConsts.defaultHSpacer,
-                GIconButton(
-                    onPressed: () {
-                      playList.previousTrack();
-                    },
-                    icon: m.Icons.skip_previous_rounded,
-                    size: 24),
-                AppConsts.defaultHSpacer,
-                GIconButton(
-                    onPressed: () {
-                      if (provider.playerState == PlayerState.playing) {
-                        provider.pause();
-                      } else {
-                        provider.resume();
-                      }
-                    },
-                    icon: provider.icon(),
-                    contrastBackground: true,
-                    size: 26),
-                AppConsts.defaultHSpacer,
-                GIconButton(
-                    onPressed: () {
-                      playList.nextTrack();
-                    },
-                    icon: m.Icons.skip_next_rounded,
-                    size: 24),
-                AppConsts.defaultHSpacer,
-                GIconButton(onPressed: () => playList.shuffle = !playList.shuffled, icon: m.Icons.shuffle, size: 24),
-              ],
-            ),
-            Row(
-              children: [
-                if(isFullscreen) AppConsts.fillSpacer,
-                if (isFullscreen) GIconButton(
-                    onPressed: () {
-                      context.read<UxProvider>().changePlaylistState();
-                    },
-                    icon: m.Icons.playlist_play_rounded,
-                    size: 24),
-                if(isFullscreen) AppConsts.defaultHSpacer,
-                if(isFullscreen) FlyoutTarget(
-                  controller: controller,
-                  child: GIconButton(
+          Stack(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GIconButton(onPressed: () => playList.nextLoop(), icon: _getIconForLoop(playList.loopStrategy), size: Platform.isAndroid ? 36 : 24),
+                  AppConsts.defaultHSpacer,
+                  GIconButton(
                       onPressed: () {
-                        controller.showFlyout(
-                            builder: (context) {
-                              return FlyoutContent(child: Consumer<UxProvider>(builder: (context, ux, child) {
-                                return Container(
-                                  padding: const EdgeInsets.all(8),
-                                  width: 100,
-                                  height: 20,
-                                  child: Slider(
-                                    label: (ux.playerVolume * 100).toInt().toString(),
-                                    min: 0,
-                                    style: SliderThemeData(
-                                      labelBackgroundColor: FluentTheme.of(context).accentColor,
-                                      trackHeight: ButtonState.all(2),
-                                    ),
-                                    max: 1,
-                                    value: ux.playerVolume,
-                                    onChanged: (value) {
-                                      provider.setVolume(value);
-                                      ux.playerVolume = value;
-                                    },
-                                  ),
-                                );
-                              }));
-                            },
-                            dismissWithEsc: true,
-                            barrierColor: Colors.black.withOpacity(0.01),
-                            barrierDismissible: true);
+                        playList.previousTrack();
                       },
-                      icon: m.Icons.volume_up_rounded,
-                      size: 24),
-                ),
-                if(isFullscreen) AppConsts.defaultHSpacer,
-                if (isFullscreen) GIconButton(
-                    onPressed: () {
-                      AppRouter().closeFullscreen(context);
-                    },
-                    icon: m.Icons.close_fullscreen_rounded,
-                    size: 24),
-              ],
-            )
-          ],),
+                      icon: m.Icons.skip_previous_rounded,
+                      size: Platform.isAndroid ? 36 : 24),
+                  AppConsts.defaultHSpacer,
+                  GIconButton(
+                      onPressed: () {
+                        if (provider.playerState == PlayerState.playing) {
+                          provider.pause();
+                        } else {
+                          provider.resume();
+                        }
+                      },
+                      icon: provider.icon(),
+                      contrastBackground: true,
+                      size: Platform.isAndroid ? 38 : 26),
+                  AppConsts.defaultHSpacer,
+                  GIconButton(
+                      onPressed: () {
+                        playList.nextTrack();
+                      },
+                      icon: m.Icons.skip_next_rounded,
+                      size: Platform.isAndroid ? 36 : 24),
+                  AppConsts.defaultHSpacer,
+                  GIconButton(onPressed: () => playList.shuffle = !playList.shuffled, icon: m.Icons.shuffle, size: Platform.isAndroid ? 36 : 24),
+                ],
+              ),
+              Row(
+                children: [
+                  if (isFullscreen) AppConsts.fillSpacer,
+                  if (isFullscreen)
+                    GIconButton(
+                        onPressed: () {
+                          context.read<UxProvider>().changePlaylistState();
+                        },
+                        icon: m.Icons.playlist_play_rounded,
+                        size: 24),
+                  if (isFullscreen) AppConsts.defaultHSpacer,
+                  if (isFullscreen)
+                    FlyoutTarget(
+                      controller: controller,
+                      child: GIconButton(
+                          onPressed: () {
+                            controller.showFlyout(
+                                builder: (context) {
+                                  return FlyoutContent(child: Consumer<UxProvider>(builder: (context, ux, child) {
+                                    return Container(
+                                      padding: const EdgeInsets.all(8),
+                                      width: 100,
+                                      height: 20,
+                                      child: Slider(
+                                        label: (ux.playerVolume * 100).toInt().toString(),
+                                        min: 0,
+                                        style: SliderThemeData(
+                                          labelBackgroundColor: FluentTheme.of(context).accentColor,
+                                          trackHeight: ButtonState.all(2),
+                                        ),
+                                        max: 1,
+                                        value: ux.playerVolume,
+                                        onChanged: (value) {
+                                          provider.setVolume(value);
+                                          ux.playerVolume = value;
+                                        },
+                                      ),
+                                    );
+                                  }));
+                                },
+                                dismissWithEsc: true,
+                                barrierColor: Colors.black.withOpacity(0.01),
+                                barrierDismissible: true);
+                          },
+                          icon: m.Icons.volume_up_rounded,
+                          size: 24),
+                    ),
+                  if (isFullscreen) AppConsts.defaultHSpacer,
+                  if (isFullscreen)
+                    GIconButton(
+                        onPressed: () {
+                          AppRouter().closeFullscreen(context);
+                        },
+                        icon: m.Icons.close_fullscreen_rounded,
+                        size: 24),
+                ],
+              )
+            ],
+          ),
           AppConsts.smallVSpacer,
           StreamBuilder(
               stream: provider.onPositionChanged,

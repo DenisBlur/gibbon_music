@@ -13,7 +13,6 @@ import '../../constants/style_consts.dart';
 import '../../constants/app_consts.dart';
 import '../../providers/audio_provider.dart';
 import '../../providers/playlist_page_provider.dart';
-import '../../providers/playlist_provider.dart';
 import '../widgets/loading_ring.dart';
 import '../widgets/track_card.dart';
 

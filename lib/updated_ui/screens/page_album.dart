@@ -4,13 +4,11 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/extensions/string.dart';
-import 'package:gibbon_music/providers/playlist_provider.dart';
-import 'package:gibbon_music/updated_ui/widgets/loading_ring.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
+import 'package:gibbon_music/updated_ui/widgets/loading_ring.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:yam_api/album/album.dart';
-import 'package:yam_api/playlist/playlist.dart';
 
 import '../../constants/style_consts.dart';
 import '../../providers/album_page_provider.dart';

@@ -5,7 +5,9 @@ import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/data_model.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/theme_provider.dart';
+import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/updated_ui/controls/buttons.dart';
+import 'package:gibbon_music/updated_ui/theme_data.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart' as m;
@@ -115,6 +117,50 @@ class PageSetting extends StatelessWidget {
                       },
                     )
                   ],
+                ),
+                AppConsts.defaultVSpacer,
+                Consumer<UxProvider>(
+                  builder: (context, ux, child) {
+                    return Row(
+                      children: [
+                        Text(
+                          "Плавная прокрутка",
+                          style: AppStyle.prTitle(context),
+                        ),
+                        AppConsts.fillSpacer,
+                        ToggleSwitch(
+                          checked: ux.smoothScroll,
+                          onChanged: (value) {
+                            if (!ux.smoothScroll) {
+                              ux.changeSmoothScrollState();
+                              dataModel.writeBoolData(AppConsts.smoothScrollKey, true);
+                            } else {
+                              ux.changeSmoothScrollState();
+                              dataModel.writeBoolData(AppConsts.smoothScrollKey, false);
+                            }
+                          },
+                        )
+                      ],
+                    );
+                  },
+                ),
+                AppConsts.smallVSpacer,
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: GThemeCreator().alphaBlend(Colors.yellow.withOpacity(.2), FluentTheme.of(context).cardColor),
+                    border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(.4), width: .2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(FluentIcons.warning),
+                      AppConsts.smallHSpacer,
+                      Text(
+                          "Attention when smooth scrolling is enabled, your laptop's touchpad or touch screen will not work!"
+                      ),
+                    ],
+                  )
                 ),
                 AppConsts.defaultVSpacer,
                 Text(

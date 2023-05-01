@@ -4,6 +4,8 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
+import 'package:gibbon_music/providers/ux_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/dynamic_data.dart';
 
@@ -43,7 +45,7 @@ class CustomScroller extends StatelessWidget {
         padding: AppConsts.pagePadding(context),
         child: CustomScrollView(
                 controller: controller,
-                physics: Platform.isAndroid ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
+                physics: !context.watch<UxProvider>().smoothScroll ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
                 slivers: widgetsToSliver(slivers))
             .animate(delay: 450.ms)
             .fadeIn(duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve)

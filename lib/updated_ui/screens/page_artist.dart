@@ -3,7 +3,8 @@ import 'dart:ui';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/extensions/string.dart';
-import 'package:gibbon_music/updated_ui/widgets/ImageThumbnail.dart';
+import 'package:gibbon_music/main.dart';
+import 'package:gibbon_music/updated_ui/widgets/Image_thumbnail.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 import 'package:gibbon_music/updated_ui/widgets/dynamic_list.dart';
 import 'package:gibbon_music/updated_ui/widgets/loading_ring.dart';
@@ -11,11 +12,13 @@ import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:yam_api/artist/artist.dart';
 import 'package:yam_api/artist/brief_info.dart';
+import 'package:yam_api/track/track.dart';
 
 import '../../constants/app_consts.dart';
 import '../../domain/models/playlist.dart';
 import '../../providers/artist_page_provider.dart';
 import '../../providers/audio_provider.dart';
+import '../../router.dart';
 import '../widgets/track_card.dart';
 
 class PageArtist extends StatelessWidget {
@@ -27,12 +30,17 @@ class PageArtist extends StatelessWidget {
   Widget build(BuildContext context) {
     PageArtistProvider artistProvider = context.read();
     artistProvider.dispose();
-
     return FutureBuilder(
       future: artistProvider.init(id),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           Artist mPageArtist = artistProvider.mArtist;
+          List<Track> allTracks = [];
+          Future getAllTracks() async {
+            var data = await client.getArtistTracks(mPageArtist.briefInfo!.id!);
+            allTracks = data.tracks!;
+          }
+
           return CustomScaffold(children: [
             SliverPersistentHeader(
               pinned: true,
@@ -50,8 +58,11 @@ class PageArtist extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 8),
                           child: TrackCard(
                             track: mPageArtist.popularTracks![index],
-                            onPressed: () {
-                              context.read<NewPlaylist>().setTracksWithActiveTrack(mPageArtist.popularTracks!, index);
+                            onPressed: () async {
+                              if (allTracks.isEmpty) {
+                                await getAllTracks();
+                              }
+                              context.read<NewPlaylist>().setTracksWithActiveTrack(allTracks, index);
                               context.read<AudioProvider>().resume();
                             },
                           ),
@@ -60,7 +71,10 @@ class PageArtist extends StatelessWidget {
             AppConsts.defaultVSpacer,
             DynamicListWidget(
               listData: mPageArtist.albums!,
-              title: "Альбомы",
+              title: "Популярные альбомы",
+              onMore: () async {
+                AppRouter().gotoMore(context: context, title: "Альбомы ${mPageArtist.briefInfo!.name}", future: client.getArtistAlbums(mPageArtist.briefInfo!.id!));
+              },
             ),
             AppConsts.defaultVSpacer,
             DynamicListWidget(

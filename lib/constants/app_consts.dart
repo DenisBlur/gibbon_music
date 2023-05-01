@@ -16,6 +16,7 @@ class AppConsts {
   static const String systemThemeKey = "systemTheme";
   static const String themeIndexKey = "themeIndex";
   static const String firstSetupKey = "firstSetup";
+  static const String smoothScrollKey = "smoothScroll";
 
   static const String yandexMusicLink = "https://music.yandex.ru/home";
   static const String yandexMusicApiLink = "https://github.com/MarshalX/yandex-music-api";
@@ -38,10 +39,10 @@ class AppConsts {
 
   static const Curve defaultCurve = Curves.fastLinearToSlowEaseIn;
 
-  static double windowHeader = appWindow.titleBarHeight;
+  static double windowHeader = Platform.isWindows ? appWindow.titleBarHeight : 0;
 
   static const double scrollMultiplier = 4;
-  static final double playerHeight = Platform.isWindows ? 100 : 64;
+  static final double playerHeight = Platform.isWindows ? 100 : 0;
 
   static const double defaultCardHeight = 258 - 32;
   static const double defaultCardWidth = 186 - 32;

@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:ui';
-
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
@@ -8,10 +5,8 @@ import 'package:gibbon_music/updated_ui/controls/buttons.dart';
 import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
 import 'package:yam_api/track/track.dart';
-import 'package:flutter/material.dart' as m;
 
 import '../../constants/app_consts.dart';
-import '../../providers/theme_provider.dart';
 import '../../providers/ux_provider.dart';
 
 class UPlaylistWidget extends StatelessWidget {
@@ -24,7 +19,7 @@ class UPlaylistWidget extends StatelessWidget {
         UxProvider uxProvider = context.watch();
         List<Track?>? tracks = playListProvider.tracksQueue;
         var theme = FluentTheme.of(context);
-        var backgroundColor = theme.cardColor.withOpacity(0.65);
+        var backgroundColor = theme.cardColor;
         final controller = ScrollController();
         return AnimatedPositioned(
           top: AppConsts.windowHeader,
@@ -32,21 +27,18 @@ class UPlaylistWidget extends StatelessWidget {
           right: uxProvider.isOpenPlaylist ? uxProvider.isFullscreen ? 16 : 0 : uxProvider.isFullscreen ? -(AppConsts.pageSize(context).width-32) : -450,
           duration: AppConsts.defaultAnimation,
           curve: AppConsts.defaultCurve,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(uxProvider.isFullscreen ? 16 : 0),
-            child: Acrylic(
-              elevation: 5,
-              blurAmount: 20,
-              luminosityAlpha: .95,
-              tint: backgroundColor,
-              child:Column(
+          child: Container(
+            color: backgroundColor,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(uxProvider.isFullscreen ? 16 : 0),
+              child: Column(
                 children: [
                   if(uxProvider.isFullscreen) Center(child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: GButton(onPressed: () {
-              uxProvider.isOpenPlaylist = false;
-            }, title: "CLOSE"),
-          )),
+                    padding: const EdgeInsets.all(16),
+                    child: GButton(onPressed: () {
+                      uxProvider.isOpenPlaylist = false;
+                    }, title: "CLOSE"),
+                  )),
                   Expanded(child: Container(
                     width: uxProvider.isFullscreen ? AppConsts.pageSize(context).width-32 : 450,
                     padding: const EdgeInsets.all(8),
@@ -74,29 +66,17 @@ class UPlaylistWidget extends StatelessWidget {
                         },
                         itemCount: tracks.length,
                         scrollController: controller,
-                        physics: Platform.isAndroid ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
+                        physics: !context.watch<UxProvider>().smoothScroll ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
                       ),
                     )
-                        : Center(child: Text("Ничего нет :(")),
+                        : const Center(child: Text("Ничего нет :(")),
                   ),),
                 ],
-              )),
+              ),
+            ),
           )
         );
       },
     );
   }
 }
-
-// ListView.builder(
-// controller: controller,
-// physics: Platform.isAndroid ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
-// itemBuilder: (context, index) => Padding(
-// padding: const EdgeInsets.only(bottom: 8),
-// child: TrackCard(
-// track: tracks[index]!,
-// onPressed: () => playListProvider.currentTrackIndex = index,
-// ),
-// ),
-// itemCount: tracks.length,
-// ),

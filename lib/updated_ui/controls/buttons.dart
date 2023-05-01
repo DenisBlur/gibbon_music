@@ -1,5 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/updated_ui/theme_data.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
@@ -28,24 +27,78 @@ class GButton extends StatelessWidget {
         Color bgColor = state.isPressing
             ? pressedStateColor
             : state.isHovering
+            ? hoverStateColor
+            : defaultStateColor;
+
+        return AnimatedContainer(
+          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 4),
+          duration: AppConsts.defaultAnimation,
+          curve: AppConsts.defaultCurve,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color: bgColor,
+          ),
+          child: Text(
+            title.toLowerCase(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class GDrawerButton extends StatelessWidget {
+  const GDrawerButton({Key? key, required this.onPressed, required this.title, required this.icon}) : super(key: key);
+
+  final VoidCallback onPressed;
+  final String title;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    Color defaultStateColor, hoverStateColor, pressedStateColor;
+
+    var theme = FluentTheme.of(context);
+
+    defaultStateColor = Colors.transparent;
+    hoverStateColor = GThemeCreator().alphaBlend(theme.accentColor.withOpacity(.1), theme.cardColor);
+    pressedStateColor = GThemeCreator().alphaBlend(theme.accentColor.withOpacity(.2), theme.cardColor);
+
+    return HoverButton(
+      onPressed: () => onPressed(),
+      builder: (p0, state) {
+        Color bgColor = state.isPressing
+            ? pressedStateColor
+            : state.isHovering
                 ? hoverStateColor
                 : defaultStateColor;
 
-        return SmoothClipRRect(
-          smoothness: 1,
-          borderRadius: BorderRadius.circular(4),
-          side: BorderSide(color: theme.borderInputColor.withOpacity(state.isHovering ? .2 : 0), width: .3),
-          child: AnimatedContainer(
-            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 4),
-            duration: AppConsts.defaultAnimation,
-            curve: AppConsts.defaultCurve,
+        return AnimatedContainer(
+          padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 4),
+          duration: AppConsts.defaultAnimation,
+          curve: AppConsts.defaultCurve,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
             color: bgColor,
-            child: Text(
-              title.toLowerCase(),
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            ),
+            border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(state.isHovering ? .2: 0), width: .4)
           ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 20,
+              ),
+              AppConsts.smallHSpacer,
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 16),
+              ),
+            ],
+          )
         );
       },
     );

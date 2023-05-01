@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/enums/e_list_typer.dart';
@@ -9,13 +11,14 @@ import '../../constants/style_consts.dart';
 import '../controls/buttons.dart';
 
 class DynamicListWidget extends StatefulWidget {
-  const DynamicListWidget({Key? key, required this.listData, required this.title, this.listType = ListType.standart, this.canMore = true})
+  const DynamicListWidget({Key? key, required this.listData, required this.title, this.listType = ListType.standart, this.canMore = true, this.onMore})
       : super(key: key);
 
   final List<dynamic> listData;
   final String title;
   final ListType? listType;
   final bool? canMore;
+  final VoidCallback? onMore;
 
   @override
   State<DynamicListWidget> createState() => _DynamicListWidgetState();
@@ -114,7 +117,12 @@ class _DynamicListWidgetState extends State<DynamicListWidget> {
                   if (widget.canMore! && widget.listData.isNotEmpty)
                     GButton(
                         onPressed: () {
-                          AppRouter().gotoMore(context, widget.listData, widget.title);
+                          if(widget.onMore != null) {
+                            widget.onMore!();
+                          } else
+                          {
+                            AppRouter().gotoMore(context: context, listData: widget.listData, title: widget.title);
+                          }
                         },
                         title: "More")
                 ],
@@ -139,12 +147,12 @@ class _DynamicListWidgetState extends State<DynamicListWidget> {
                       itemCount: widget.listData.length,
                     ),
                   )
-                : Center(
+                : const Center(
                     child: Text("Ничего нет :("),
                   ),
           ],
         ),
-        Padding(
+        if(Platform.isWindows) Padding(
           padding: EdgeInsets.only(top: top, left: 16, right: 16),
           child: Row(
             children: [

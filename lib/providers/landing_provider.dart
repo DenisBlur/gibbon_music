@@ -1,5 +1,6 @@
 import 'package:darq/darq.dart';
 import 'package:gibbon_music/main.dart';
+import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:yam_api/album/album.dart';
 import 'package:yam_api/genres/genres.dart';
 import 'package:yam_api/landing/entities.dart';
@@ -18,6 +19,7 @@ class LandingProvider {
   late List<MPlaylist> newPlaylists = [];
   late List<Album> newReleases = [];
   late List<MPlaylist> collections = [];
+  late List<MPlaylist> userPlaylists = [];
   late List<Genres> genres = [];
 
   Future<void> init() async {
@@ -49,14 +51,20 @@ class LandingProvider {
 
     var futureFeed = client.feed().then((value) {
       var feed = value;
-      collections = feed.generatedPlaylists!.select((element, index) => element.data!,).toList();
+      collections = feed.generatedPlaylists!
+          .select(
+            (element, index) => element.data!,
+          )
+          .toList();
     });
 
     var futureGenres = client.genres().then((value) {
       genres = value;
     });
 
-    await Future.wait([futureLanding, futureNewReleases, futureNewPlaylists, futureFeed,futureGenres]);
+    userPlaylists = await client.userPlaylists();
+
+    await Future.wait([futureLanding, futureNewReleases, futureNewPlaylists, futureFeed, futureGenres]);
   }
 
   Future<void> dispose() async {

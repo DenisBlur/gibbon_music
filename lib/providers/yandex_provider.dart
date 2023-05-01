@@ -1,7 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gibbon_music/domain/models/like_model.dart';
-import 'package:gibbon_music/main.dart';
 import 'package:yam_api/enums.dart';
 import 'package:yam_api/track/track.dart';
 

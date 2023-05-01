@@ -1,16 +1,37 @@
-import 'dart:async';
-
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:yam_api/track/track.dart';
 
+import '../constants/app_consts.dart';
+import '../domain/models/data_model.dart';
+
 class UxProvider extends ChangeNotifier {
+
+  UxProvider() {
+    init();
+  }
+
+  init() async {
+    DataModel dataModel = DataModel();
+    bool? hasSmoothScroll = await dataModel.findKey(AppConsts.smoothScrollKey);
+    if(hasSmoothScroll!) {
+      smoothScroll = (await dataModel.readBoolData(AppConsts.smoothScrollKey))!;
+    }
+  }
+
   bool _isOpenDrawer = false;
   bool _isOpenPlaylist = false;
   bool _isFullscreen = false;
+  bool _smoothScroll = false;
+  bool _orientationLandscape = false;
   double _playerVolume = 1.0;
   String _currentPlaylist = "";
   String currentAlbum = "";
   String currentArtist = "";
+
+
+  bool get orientationLandscape => _orientationLandscape;
+
+  bool get smoothScroll => _smoothScroll;
 
   String get currentPlaylist => _currentPlaylist;
 
@@ -21,6 +42,11 @@ class UxProvider extends ChangeNotifier {
   bool get isOpenPlaylist => _isOpenPlaylist;
 
   bool get isFullscreen => _isFullscreen;
+
+  set orientationLandscape(bool value) {
+    _orientationLandscape = value;
+    notifyListeners();
+  }
 
   set isFullscreen(bool value) {
     _isFullscreen = value;
@@ -47,6 +73,11 @@ class UxProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  set smoothScroll(bool value) {
+    _smoothScroll = value;
+    notifyListeners();
+  }
+
   changeDrawerState() {
     isOpenDrawer = !isOpenDrawer;
   }
@@ -55,19 +86,9 @@ class UxProvider extends ChangeNotifier {
     isOpenPlaylist = !isOpenPlaylist;
   }
 
-  showToast(BuildContext context) async {
-    OverlayState? overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-      opaque: false,
-      maintainState: true,
-      builder: (context) {
-        Future.delayed(Duration(seconds: 2)).then((value) {
-          overlayState.dispose();
-        });
-        return Positioned(left: 0, bottom: 0, right: 0, child: Text("HELLLOOOOO!!!!!!"));
-      },
-    );
-    overlayState.insert(overlayEntry);
+  changeSmoothScrollState() {
+    smoothScroll = !smoothScroll;
+    notifyListeners();
   }
 
 }

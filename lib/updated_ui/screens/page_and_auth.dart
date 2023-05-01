@@ -70,7 +70,7 @@ class _PageAuthState extends State<PageAuth> {
 
   void initToken(String token) async {
     await client.init(token: token).then(
-      (value) {
+          (value) {
         if (!value) {
           updateStatus(true);
           Future.delayed(const Duration(seconds: 1)).then((value) {
@@ -168,114 +168,114 @@ class _PageAuthState extends State<PageAuth> {
 
   Widget tokenAuth() {
     return Container(
-            height: 300,
-            constraints: const BoxConstraints(maxWidth: 300),
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
-                    ),
-                    color: FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(.8),
-                    border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(.1), width: .2),
+        height: 300,
+        constraints: const BoxConstraints(maxWidth: 300),
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(8),
+                  topRight: Radius.circular(8),
+                ),
+                color: FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(.8),
+                border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(.1), width: .2),
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    "MUSIC",
+                    style: AppStyle.subTitle(context),
                   ),
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        "MUSIC",
-                        style: AppStyle.subTitle(context),
-                      ),
-                      AppConsts.smallVSpacer,
-                      TextBox(
-                        controller: textEditingController,
-                        onSubmitted: (value) {
-                          initToken(value);
+                  AppConsts.smallVSpacer,
+                  TextBox(
+                    controller: textEditingController,
+                    onSubmitted: (value) {
+                      initToken(value);
+                    },
+                    maxLines: 1,
+                    placeholder: "User token",
+                  ),
+                  AppConsts.smallVSpacer,
+                  GButton(
+                      onPressed: () {
+                        initToken(textEditingController.text);
+                      },
+                      title: "Log in"),
+                  AppConsts.smallVSpacer,
+                  GTextButton(
+                      onPressed: () async {
+                        if (!await launchUrl(Uri.parse(AppConsts.tokenGetLink))) {
+                          throw Exception('Could not launch');
+                        }
+                      },
+                      title: "how do I find out the token?"),
+                ],
+              ),
+            ),
+            if (Platform.isWindows) Container(
+              decoration: BoxDecoration(
+                color: FluentTheme.of(context).cardColor.withOpacity(.6),
+                border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(.1), width: .2),
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  GTextButton(
+                      onPressed: () async {
+                        await controller.loadUrl(AppConsts.authLink);
+                        pageController.animateToPage(1, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve);
+                      },
+                      title: "use the browser"),
+                ],
+              ),
+            ),
+            Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(8),
+                    bottomRight: Radius.circular(8),
+                  ),
+                  color: FluentTheme.of(context).cardColor.withOpacity(.4),
+                  border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(.1), width: .2),
+                ),
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GImageButton(
+                        onPressed: () async {
+                          if (!await launchUrl(Uri.parse(AppConsts.yandexMusicApiLink))) {
+                            throw Exception('Could not launch');
+                          }
                         },
-                        maxLines: 1,
-                        placeholder: "User token",
-                      ),
-                      AppConsts.smallVSpacer,
-                      GButton(
-                          onPressed: () {
-                            initToken(textEditingController.text);
-                          },
-                          title: "Log in"),
-                      AppConsts.smallVSpacer,
-                      GTextButton(
-                          onPressed: () async {
-                            if (!await launchUrl(Uri.parse(AppConsts.tokenGetLink))) {
-                              throw Exception('Could not launch');
-                            }
-                          },
-                          title: "how do I find out the token?"),
-                    ],
-                  ),
-                ),
-                if (Platform.isWindows) Container(
-                  decoration: BoxDecoration(
-                    color: FluentTheme.of(context).cardColor.withOpacity(.6),
-                    border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(.1), width: .2),
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      GTextButton(
-                          onPressed: () async {
-                            await controller.loadUrl(AppConsts.authLink);
-                            pageController.animateToPage(1, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve);
-                          },
-                          title: "use the browser"),
-                    ],
-                  ),
-                ),
-                Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(8),
-                        bottomRight: Radius.circular(8),
-                      ),
-                      color: FluentTheme.of(context).cardColor.withOpacity(.4),
-                      border: Border.all(color: FluentTheme.of(context).borderInputColor.withOpacity(.1), width: .2),
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GImageButton(
-                            onPressed: () async {
-                              if (!await launchUrl(Uri.parse(AppConsts.yandexMusicApiLink))) {
-                                throw Exception('Could not launch');
-                              }
-                            },
-                            uri: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"),
-                        AppConsts.smallHSpacer,
-                        GImageButton(
-                            onPressed: () async {
-                              if (!await launchUrl(Uri.parse(AppConsts.telegramLink))) {
-                                throw Exception('Could not launch');
-                              }
-                            },
-                            uri: "https://img.icons8.com/color/512/telegram-app.png"),
-                        AppConsts.smallHSpacer,
-                        GImageButton(
-                            onPressed: () async {
-                              if (!await launchUrl(Uri.parse(AppConsts.yandexMusicLink))) {
-                                throw Exception('Could not launch');
-                              }
-                            },
-                            uri: "https://yastatic.net/s3/doc-binary/freeze/ru/music/eb46606ef5c2f78e06c7289d712e9d7e7a3712a1.png"),
-                      ],
-                    )),
-              ],
-            ))
+                        uri: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"),
+                    AppConsts.smallHSpacer,
+                    GImageButton(
+                        onPressed: () async {
+                          if (!await launchUrl(Uri.parse(AppConsts.telegramLink))) {
+                            throw Exception('Could not launch');
+                          }
+                        },
+                        uri: "https://img.icons8.com/color/512/telegram-app.png"),
+                    AppConsts.smallHSpacer,
+                    GImageButton(
+                        onPressed: () async {
+                          if (!await launchUrl(Uri.parse(AppConsts.yandexMusicLink))) {
+                            throw Exception('Could not launch');
+                          }
+                        },
+                        uri: "https://yastatic.net/s3/doc-binary/freeze/ru/music/eb46606ef5c2f78e06c7289d712e9d7e7a3712a1.png"),
+                  ],
+                )),
+          ],
+        ))
         .animate(target: errorAuth ? 1 : 0)
         .shimmer(color: FluentTheme.of(context).accentColor, delay: 400.ms, duration: 1800.ms)
         .color(end: Colors.red)

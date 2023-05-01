@@ -53,7 +53,7 @@ List<SingleChildWidget> _providers = [
   ChangeNotifierProvider(
     create: (context) => NavigatorProvider(),
   ),
-  Provider(create: (context) => RadioProvider(context.read(), context.read()))
+  Provider(create: (context) => RadioProvider(context.read()))
 ];
 
 Future<void> main() async {
@@ -64,11 +64,14 @@ Future<void> main() async {
     await Window.hideWindowControls();
   }
   runApp(const App());
-  doWhenWindowReady(() {
-    final win = appWindow;
-    win.alignment = Alignment.center;
-    win.minSize = const Size(720, 480);
-  });
+
+  if (Platform.isWindows) {
+    doWhenWindowReady(() {
+      final win = appWindow;
+      win.alignment = Alignment.center;
+      win.minSize = const Size(720, 480);
+    });
+  }
 }
 
 class App extends StatefulWidget {
@@ -79,7 +82,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   @override
   void initState() {
     super.initState();
@@ -91,7 +93,7 @@ class _AppState extends State<App> {
     if (check!) {
       bool? firstSetup = await dataModel.readBoolData(AppConsts.firstSetupKey);
       if (firstSetup!) {
-        return const Load();
+        return const PageAuth();
       } else {
         return const PageWelcome();
       }
@@ -109,31 +111,20 @@ class _AppState extends State<App> {
           debugShowCheckedModeBanner: false,
           showSemanticsDebugger: false,
           home: SafeArea(
-              child: FutureBuilder(future: getData(), builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return snapshot.data as Widget;
-                } else {
-                  return const LoadingRing();
-                }
-              }),
+            child: FutureBuilder(
+                future: getData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return snapshot.data as Widget;
+                  } else {
+                    return const LoadingRing();
+                  }
+                }),
           ),
-          theme: context
-              .watch<ThemeProvider>()
-              .theme,
-          color: context
-              .watch<ThemeProvider>()
-              .accentColor,
+          theme: context.watch<ThemeProvider>().theme,
+          color: context.watch<ThemeProvider>().accentColor,
         );
       },
     );
-  }
-}
-
-class Load extends StatelessWidget {
-  const Load({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const PageAuth();
   }
 }

@@ -1,10 +1,11 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/constants/app_consts.dart';
+import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/router.dart';
-import 'package:gibbon_music/updated_ui/screens/page_fullscreen.dart';
 import 'package:provider/provider.dart';
+
 import '../../../providers/audio_provider.dart';
 import '../../controls/buttons.dart';
 
@@ -15,7 +16,6 @@ class PlayerSecondControl extends StatelessWidget {
   Widget build(BuildContext context) {
     Size pageSize = MediaQuery.of(context).size;
     AudioProvider provider = context.watch();
-    bool isFullscreen = context.watch<UxProvider>().isFullscreen;
 
     FlyoutController controller = FlyoutController();
 

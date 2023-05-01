@@ -26,6 +26,7 @@ import 'package:yam_api/rotor/rotor_tracks.dart';
 import 'package:yam_api/search/search_sugges.dart';
 import 'package:yam_api/settings.dart';
 import 'package:yam_api/supplement/supplement.dart';
+import 'package:yam_api/track/get_sign_track.dart';
 
 import 'account/status.dart';
 import 'account/user_settings.dart';
@@ -50,7 +51,7 @@ class Client {
   Status account = Status();
 
   Future<bool> init({required String token}) async {
-    if(token.isEmpty) {
+    if (token.isEmpty) {
       return false;
     }
     this.token = token;
@@ -95,7 +96,7 @@ class Client {
   Future<Status> accountStatus() async {
     ///получение статуса аккаунта. Нет обязательных параметров.
     var result = await RequestClient(headers: headers).requestGet("/account/status");
-    return result.contains("error") ? Status() :  Status.fromJson(jsonDecode(result)["result"]);
+    return result.contains("error") ? Status() : Status.fromJson(jsonDecode(result)["result"]);
   }
 
   Future<UserSettings> accountSettings() async {
@@ -148,7 +149,7 @@ class Client {
     var jsonResult = jsonDecode(result);
     List<dynamic> jsonList = jsonResult["result"];
     List<Genres> returnList = [];
-    for(var e in jsonList) {
+    for (var e in jsonList) {
       returnList.add(Genres.fromJson(e));
     }
     return returnList;
@@ -207,7 +208,6 @@ class Client {
     String currentTime = "${DateTime.now().toIso8601String()}Z";
     String data = "?track-id=$trackId"
         "&from=$device"
-        "&play-id=,"
         "&uid=$userId"
         "&timestamp=$currentTime"
         "&client-now=$currentTime";
@@ -262,14 +262,15 @@ class Client {
     return RotorTracks.fromJson(jsonDecode(result)["result"]);
   }
 
-  Future<String> rotorStationFeedback({required RotorFeedback type, required String batchId, String trackId = "0", required String station, int totalPlayedSeconds = 0}) async {
+  Future<String> rotorStationFeedback(
+      {required RotorFeedback type, required String batchId, String trackId = "0", required String station, int totalPlayedSeconds = 0}) async {
     String currentTime = "${DateTime.now().toIso8601String()}Z";
     var data = {
-      "type" : type.name,
-      "timestamp" : currentTime,
-      "batch-id" : batchId,
-      "from" : device,
-      "trackId" : int.parse(trackId),
+      "type": type.name,
+      "timestamp": currentTime,
+      "batch-id": batchId,
+      "from": device,
+      "trackId": int.parse(trackId),
       "totalPlayedSeconds": totalPlayedSeconds.toDouble(),
     };
 
@@ -294,10 +295,10 @@ class Client {
     return ArtistTracks.fromJson(jsonDecode(result)["result"]);
   }
 
-  Future<ArtistAlbums> getArtistAlbums(String artistId) async {
+  Future<List<dynamic>?> getArtistAlbums(String artistId) async {
     ///Получение альбомов артиста
     var result = await RequestClient(headers: headers).requestGet("/artists/$artistId/direct-albums");
-    return ArtistAlbums.fromJson(jsonDecode(result)["result"]);
+    return ArtistAlbums.fromJson(jsonDecode(result)["result"]).albums;
   }
 
   Future<String> likeAction({required String objectId, required ObjectType objectType, required bool remove}) async {
@@ -363,24 +364,24 @@ class Client {
     return result;
   }
 
-  Future<String> createQueue(List<Track?>? tracks, int currentIndex, String objectId, ObjectType type) async {
+  Future<String> createQueue(
+      {String id = "", required List<Track?>? tracks, required int currentIndex, String objectId = "", required ObjectType type}) async {
     ///Создание новой очереди треков
     List<Tracks> queueTracks = [];
     for (var element in tracks!) {
       queueTracks.add(Tracks(
-          albumId: element!.albums!.isEmpty ? "" : element.albums!.first.id.toString(),
-          trackId: element.id,
-          from: "desktop_win-default-album-default"));
+        albumId: element!.albums!.isEmpty ? "" : element.albums!.first.id.toString(),
+        trackId: element.id,
+      ));
     }
     var data = QueueItem(
-            id: const Uuid().v1(),
-            initialContext: MainContext(id: userId, description: "Hello", login: "tokar-denis2017", type: type.name),
+            id: id.isNotEmpty ? id : const Uuid().v1(),
+            initialContext: MainContext(id: userId, description: const Uuid().v1().toString(), login: "tokar-denis2017", type: type.name),
             currentIndex: currentIndex,
             modified: formatISOTime(DateTime.now()),
             tracks: queueTracks)
         .toJson();
-
-    var result = await RequestClient(headers: deviceHeaders).requestPost(url: "/queues/", body: data);
+    var result = await RequestClient(headers: deviceHeaders).requestPost(url: "/queues", body: data);
     return result;
   }
 
@@ -418,7 +419,6 @@ class Client {
         }
         return returnList;
     }
-
   }
 
   Future<String> downloadTrack({required String? trackId, QualityTrack quality = QualityTrack.low}) async {
@@ -444,15 +444,27 @@ class Client {
     }
   }
 
-// Future<> name() async {
-//   ///Получение полного списка всех новых релизов (альбомов)
-//   var result = await RequestClient(headers: headers).requestGet("/landing3/new-playlists");
-//   return .fromJson(jsonDecode(result)["result"]);
-// }
-// Future<> name() async {
-//   ///Получение полного списка всех новых релизов (альбомов)
-//   var result = await RequestClient(headers: headers).requestGet("/landing3/new-playlists");
-//   return .fromJson(jsonDecode(result)["result"]);
-// }
+  Future<List<dynamic>?> getUserPlaylists() async {
+    ///Получение списка плейлистов пользователя
+    List<MPlaylist> returnList = [];
+    var result = await RequestClient(headers: headers).requestGet("/users/$userId/playlists/list");
+    List<dynamic> resultList = jsonDecode(result)["result"];
+    for (var element in resultList) {
+      returnList.add(MPlaylist.fromJson(element));
+    }
+    return returnList;
+  }
 
+  Future getTrackLyric(Track track) async {
+    ///Получение текста песни
+    var sign = await TrackSign().sign(track);
+    var result = await RequestClient(headers: headers)
+        .requestGet("/tracks/${track.id}:${track.albums![0].id}/lyrics?format=LRC&timeStamp=${sign.timestamp}&sign=${sign.signature}");
+  }
+
+// Future<> name() async {
+//   ///Получение полного списка всех новых релизов (альбомов)
+//   var result = await RequestClient(headers: headers).requestGet("/landing3/new-playlists");
+//   return .fromJson(jsonDecode(result)["result"]);
+// }
 }

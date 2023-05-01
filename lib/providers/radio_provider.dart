@@ -1,16 +1,13 @@
 import 'dart:async';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:darq/darq.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:yam_api/enums.dart';
 import 'package:yam_api/track/track.dart';
 
 import '../main.dart';
-import 'audio_provider.dart';
 
 class RadioProvider {
-  final AudioProvider _audioProvider;
   final NewPlaylist _playlistProvider;
 
   bool isRadioPlaying = false;
@@ -19,23 +16,17 @@ class RadioProvider {
 
   List<Track?> radioTracks = [];
 
-  StreamSubscription? _onFeedback;
-  StreamSubscription? _onPlayerStateChangedSubscribe;
-
-  RadioProvider(this._audioProvider, this._playlistProvider) {
+  RadioProvider(this._playlistProvider) {
     initRadioModule();
   }
 
-  initRadioModule() {
-
-
-  }
+  initRadioModule() {}
 
   Future startRadio(station) async {
     isRadioPlaying = true;
     this.station = station;
     getRadioTracks(true);
-    radioFeedback(type: RotorFeedback.radioStarted);
+    await radioFeedback(type: RotorFeedback.radioStarted);
   }
 
   Future radioFeedback({required RotorFeedback type, String trackId = "0", int totalPlayedSeconds = 0}) async {
@@ -45,26 +36,26 @@ class RadioProvider {
   }
 
   Future getRadioTracks(bool isStarting) async {
-    client.rotorStationTracks(station).then((value) {
+    client.rotorStationTracks(station).then((value) async {
       batchId = value.batchId!;
-      var retList = value.sequence!.select((e, _) => e.track,).toList();
+      var retList = value.sequence!
+          .select(
+            (e, _) => e.track,
+          )
+          .toList();
       if (isStarting) {
         radioTracks = retList;
       } else {
-        radioTracks +=retList;
+        radioTracks += retList;
       }
       _playlistProvider.tracks = radioTracks;
-      if(isStarting) _playlistProvider.currentTrackIndex = 0;
+      if (isStarting) {
+        _playlistProvider.currentTrackIndex = 0;
+        await client.createQueue(tracks: _playlistProvider.tracks, currentIndex: 0, type: ObjectType.track,id: batchId);
+        await client.playAudio(_playlistProvider.currentTrack!.id.toString());
+      }
     });
   }
 
-  checkSize() {
-    var size = _playlistProvider.tracksQueue.length-1;
-
-    // if(curIndex == size) {
-    //   getRadioTracks(false);
-    // }
-
-  }
-
+  checkSize() {}
 }

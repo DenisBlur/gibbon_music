@@ -17,6 +17,7 @@ dependencies:
   device_info_plus: ^8.0.0
   uuid: ^3.0.6
   intl: ^0.17.0
+  cryptography: ^2.5.0
 
 dev_dependencies:
   flutter_test:

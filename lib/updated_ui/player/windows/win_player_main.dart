@@ -4,7 +4,6 @@ import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/updated_ui/player/windows/win_player_controls.dart';
 import 'package:gibbon_music/updated_ui/player/windows/win_player_second_controls.dart';
-import 'package:gibbon_music/updated_ui/utils/ui_utils.dart';
 import 'package:provider/provider.dart';
 
 import 'win_player_info.dart';
