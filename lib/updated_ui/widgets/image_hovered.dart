@@ -21,13 +21,10 @@ class ImageHovered extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = FluentTheme.of(context);
     return AnimatedScale(
         scale: imageState!,
         duration: AppConsts.defaultAnimation,
         curve: AppConsts.defaultCurve,
-        child: Container(
-          child: ImageThumbnail(url: linkImage! ? uri.linkImage(uriSize!) : uri, width: width!, height: height!, radius: 24),
-        ));
+        child: ImageThumbnail(url: linkImage! ? uri.linkImage(uriSize!) : uri, width: width!, height: height!, radius: 24));
   }
 }

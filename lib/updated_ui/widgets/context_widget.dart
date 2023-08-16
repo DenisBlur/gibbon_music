@@ -25,7 +25,10 @@ class ContextWidget extends StatelessWidget {
                 maxHeight: 450,
               ),
               padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
-              color: FluentTheme.of(context).cardColor.withOpacity(1),
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(22, 22, 22, 1),
+                borderRadius: BorderRadius.circular(8)
+              ),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -74,12 +77,6 @@ class ContextWidget extends StatelessWidget {
                         },
                         child: const Text("Добавить после текущего")),
                     AppConsts.smallVSpacer,
-                    Button(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text("Моя волна по треку")),
-                    AppConsts.defaultHSpacer,
                     Text(
                       "Исполнители",
                       style: AppStyle.subTitle(context),
@@ -95,7 +92,7 @@ class ContextWidget extends StatelessWidget {
                             },
                             child: Text(e.name!)),
                       ),
-                    AppConsts.defaultHSpacer,
+                    AppConsts.smallVSpacer,
                     Text(
                       "Альбомы",
                       style: AppStyle.subTitle(context),

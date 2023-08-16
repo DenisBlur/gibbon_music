@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
@@ -16,6 +14,10 @@ class CustomScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    children.add(const SizedBox(
+      height: 120,
+    ));
+
     return SafeArea(
       child: ScaffoldPage(
         padding: AppConsts.pageInsets(context),
@@ -35,9 +37,6 @@ class CustomScroller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    slivers.add(const SizedBox(
-      height: 120,
-    ));
     return ImprovedScrolling(
       scrollController: controller,
       enableCustomMouseWheelScrolling: true,

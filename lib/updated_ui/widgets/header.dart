@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart' as m;
 

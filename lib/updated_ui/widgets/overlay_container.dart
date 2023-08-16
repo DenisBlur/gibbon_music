@@ -3,7 +3,6 @@ import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/updated_ui/screens/page_landing.dart';
-import 'package:gibbon_music/updated_ui/utils/ui_utils.dart';
 import 'package:gibbon_music/updated_ui/widgets/header.dart';
 import 'package:gibbon_music/updated_ui/widgets/lyric_widget.dart';
 import 'package:provider/provider.dart';

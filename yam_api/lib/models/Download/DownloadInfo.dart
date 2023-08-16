@@ -1,4 +1,3 @@
-
 class DownloadInfoModel {
   final List<ResultBean>? result;
 
@@ -6,17 +5,17 @@ class DownloadInfoModel {
 
   static DownloadInfoModel fromMap(Map<String, dynamic> map) {
     DownloadInfoModel modelBean = DownloadInfoModel(
-      map['result']!=null ? ([...(map['result'] as List).map((o) => ResultBean.fromMap(o))]) : null,
+      map['result'] != null ? ([...(map['result'] as List).map((o) => ResultBean.fromMap(o))]) : null,
     );
     return modelBean;
   }
 
   Map toJson() => {
-    "result": result?.map((o)=>o.toJson()).toList(growable: false),
-  }..removeWhere((k,v)=>v==null);
+        "result": result?.map((o) => o.toJson()).toList(growable: false),
+      }..removeWhere((k, v) => v == null);
 }
 
-class ResultBean  {
+class ResultBean {
   final String? codec;
   final bool? gain;
   final bool? preview;
@@ -39,11 +38,11 @@ class ResultBean  {
   }
 
   Map toJson() => {
-    "codec": codec,
-    "gain": gain,
-    "preview": preview,
-    "downloadInfoUrl": downloadInfoUrl,
-    "direct": direct,
-    "bitrateInKbps": bitrateInKbps,
-  }..removeWhere((k,v)=>v==null);
+        "codec": codec,
+        "gain": gain,
+        "preview": preview,
+        "downloadInfoUrl": downloadInfoUrl,
+        "direct": direct,
+        "bitrateInKbps": bitrateInKbps,
+      }..removeWhere((k, v) => v == null);
 }

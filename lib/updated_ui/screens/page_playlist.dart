@@ -119,7 +119,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
             child: Transform.translate(
               offset: Offset(0, lerpDouble(0, -100, shrinkOffset / expandedHeight)!.toDouble()),
               child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text("Плейлист", maxLines: 1, ),
+                const Text("Плейлист", maxLines: 1, ),
                 Text(info.title!, maxLines: 1, style: AppStyle.title(context)),
                 Text("Создатель: ${info.owner!.name}", maxLines: 1,),
               ]),

@@ -212,7 +212,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                       onPressed: () {
                         context.read<RadioProvider>().startRadio("user:onyourwave");
                       },
-                      child: Text("воспроизвести")),
+                      child: const Text("воспроизвести")),
                 )),
               ),
             ],

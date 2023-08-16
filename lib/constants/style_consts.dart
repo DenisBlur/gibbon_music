@@ -41,7 +41,7 @@ class AppStyle {
 
 
   static TextStyle subHeader1Style(BuildContext context) {
-    return TextStyle(
+    return const TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
     );
@@ -53,7 +53,7 @@ class AppStyle {
   );
 
   static TextStyle subTrackHeaderStyle(BuildContext context) {
-    return TextStyle(
+    return const TextStyle(
         fontSize: 16,
     );
   }

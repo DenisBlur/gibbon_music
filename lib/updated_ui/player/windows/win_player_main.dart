@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
@@ -19,7 +17,7 @@ class PlayerMain extends StatelessWidget {
       if (value.currentTrack != null) {
         return Container(
           margin: const EdgeInsets.all(16),
-          padding: const EdgeInsets.only(left: 16, right: 16),
+          padding: const EdgeInsets.only(left: 32, right: 32),
           width: AppConsts.pageSize(context).width,
           height: AppConsts.playerHeight,
           decoration: BoxDecoration(

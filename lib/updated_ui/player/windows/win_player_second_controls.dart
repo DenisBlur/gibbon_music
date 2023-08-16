@@ -1,7 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:gibbon_music/constants/app_consts.dart';
-import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:provider/provider.dart';
@@ -27,9 +26,9 @@ class PlayerSecondControl extends StatelessWidget {
         children: [
           IconButton(
               onPressed: () async {
-                provider.lyric = await client.getTrackLyric(provider.currentTrack!);
+                context.read<UxProvider>().changeLyricState();
               },
-              icon: const Icon(m.Icons.text_fields_rounded,
+              icon: Icon(context.watch<UxProvider>().isOpenLyric ? m.Icons.text_snippet_rounded :  m.Icons.text_snippet_outlined,
                   size: 24)),
           IconButton(
               onPressed: () {

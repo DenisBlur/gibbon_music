@@ -115,7 +115,7 @@ class _PageAuthState extends State<PageAuth> {
                                 onPressed: () {
                                   pageController.animateToPage(0, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve);
                                 },
-                                child: Text("back")),
+                                child: const Text("back")),
                             AppConsts.defaultHSpacer,
                             const Text("Is the browser not working? go back to the previous authorization method.")
                           ],
@@ -167,7 +167,7 @@ class _PageAuthState extends State<PageAuth> {
                           onPressed: () {
                             initToken(textEditingController.text);
                           },
-                          child: Text("Log in")),
+                          child: const Text("Log in")),
                       AppConsts.smallVSpacer,
                       Button(
                           onPressed: () async {
@@ -175,7 +175,7 @@ class _PageAuthState extends State<PageAuth> {
                               throw Exception('Could not launch');
                             }
                           },
-                          child: Text("how do I find out the token?")),
+                          child: const Text("how do I find out the token?")),
                     ],
                   ),
                 ),

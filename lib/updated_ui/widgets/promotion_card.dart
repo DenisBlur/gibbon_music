@@ -2,7 +2,6 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/router.dart';
-import 'package:gibbon_music/updated_ui/widgets/image_hovered.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:yam_api/landing/promotion.dart';
 
@@ -28,7 +27,6 @@ class PromotionCard extends StatelessWidget {
           String uid = url.substring(7, url.length);
           AppRouter().gotoAlbum(context, int.parse(uid));
         }
-        print(data.url!);
       },
       builder: (p0, state) {
         double imageState = 1.0;

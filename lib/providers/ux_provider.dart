@@ -18,6 +18,7 @@ class UxProvider extends ChangeNotifier {
     }
   }
 
+  bool _isOpenLyric= false;
   bool _isOpenPlaylist = false;
   bool _isFullscreen = false;
   bool _smoothScroll = false;
@@ -27,6 +28,8 @@ class UxProvider extends ChangeNotifier {
   String currentAlbum = "";
   String currentArtist = "";
 
+
+  bool get isOpenLyric => _isOpenLyric;
 
   bool get orientationLandscape => _orientationLandscape;
 
@@ -39,6 +42,12 @@ class UxProvider extends ChangeNotifier {
   bool get isOpenPlaylist => _isOpenPlaylist;
 
   bool get isFullscreen => _isFullscreen;
+
+
+  set isOpenLyric(bool value) {
+    _isOpenLyric = value;
+    notifyListeners();
+  }
 
   set orientationLandscape(bool value) {
     _orientationLandscape = value;
@@ -68,6 +77,10 @@ class UxProvider extends ChangeNotifier {
   set smoothScroll(bool value) {
     _smoothScroll = value;
     notifyListeners();
+  }
+
+  changeLyricState() {
+    isOpenLyric = !isOpenLyric;
   }
 
   changePlaylistState() {

@@ -6,7 +6,6 @@ import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/material.dart' as m;
 
 class PageSetting extends StatelessWidget {
   const PageSetting({Key? key}) : super(key: key);

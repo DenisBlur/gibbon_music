@@ -1,12 +1,8 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/updated_ui/screens/page_auth.dart';
-import 'package:gibbon_music/updated_ui/screens/page_setting.dart';
-import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import '../../constants/app_consts.dart';
 import '../../domain/models/data_model.dart';

@@ -1,6 +1,5 @@
 import 'package:darq/darq.dart';
 import 'package:gibbon_music/main.dart';
-import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:yam_api/album/album.dart';
 import 'package:yam_api/genres/genres.dart';
 import 'package:yam_api/landing/entities.dart';

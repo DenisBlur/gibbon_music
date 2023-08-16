@@ -119,7 +119,7 @@ class PageSearch extends StatelessWidget {
                   ));
                 }
               } else {
-                lists.add(Text("Ничего нет :)"));
+                lists.add(const Text("Ничего нет :)"));
               }
 
               return CustomScaffold(

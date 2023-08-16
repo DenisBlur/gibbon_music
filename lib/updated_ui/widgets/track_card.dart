@@ -53,7 +53,6 @@ class TrackCard extends StatelessWidget {
             },
           );
         },
-
         child: GCardView(
           onPressed: () {
             onPressed();
@@ -63,29 +62,31 @@ class TrackCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ClipRRect(borderRadius: BorderRadius.circular(8), child:
-              Stack(
-                children: [
-                  ImageThumbnail(url: image, height: size, width: size),
-                  AnimatedScale(
-                    scale: isSelected ? 1 : 0,
-                    duration: AppConsts.slowAnimation,
-                    curve: AppConsts.defaultCurve,
-                    child: Container(
-                        width: size,
-                        height: size,
-                        decoration: BoxDecoration( color: FluentTheme.of(context).cardColor.withOpacity(.4)),
-                        child: Center(
-                          child: MiniMusicVisualizer(
-                            color: Colors.red,
-                            active: isPlay,
-                            width: 4,
-                            height: 15,
-                          ),
-                        )),
-                  ),
-                ],
-              ),),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Stack(
+                  children: [
+                    ImageThumbnail(url: image, height: size, width: size),
+                    AnimatedScale(
+                      scale: isSelected ? 1 : 0,
+                      duration: AppConsts.slowAnimation,
+                      curve: AppConsts.defaultCurve,
+                      child: Container(
+                          width: size,
+                          height: size,
+                          decoration: BoxDecoration(color: FluentTheme.of(context).cardColor.withOpacity(.4)),
+                          child: Center(
+                            child: MiniMusicVisualizer(
+                              color: Colors.red,
+                              active: isPlay,
+                              width: 4,
+                              height: 15,
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+              ),
               AppConsts.defaultHSpacer,
               Expanded(
                 child: Column(
@@ -105,7 +106,7 @@ class TrackCard extends StatelessWidget {
                 ),
               ),
               AppConsts.fillSpacer,
-              if(Platform.isWindows) TrackCommandBar(isLike: isLike, id: track.id),
+              if (Platform.isWindows) TrackCommandBar(isLike: isLike, id: track.id),
               Text(track.durationMs == null ? "" : Duration(milliseconds: track.durationMs!.toInt()).toHms()),
             ],
           ),
@@ -114,7 +115,7 @@ class TrackCard extends StatelessWidget {
 }
 
 class ArtistsListWidgets extends StatelessWidget {
-  const ArtistsListWidgets({Key? key,required this.track}) : super(key: key);
+  const ArtistsListWidgets({Key? key, required this.track}) : super(key: key);
 
   final Track track;
 
@@ -124,15 +125,20 @@ class ArtistsListWidgets extends StatelessWidget {
 
     artistButtonList = track.artists!.select((element, index) => element.name.toString()).toList();
 
-    return Button(onPressed: () {
-      showDialog(
-        barrierDismissible: true,
-        context: context,
-        builder: (context) {
-          return ContextWidget(track: track);
-        },
-      );
-    }, child: Text( artistButtonList.join(", ")));
+    return HoverButton(
+      onPressed: () {
+        showDialog(
+          barrierDismissible: true,
+          context: context,
+          builder: (context) {
+            return ContextWidget(track: track);
+          },
+        );
+      },
+      builder: (context, Set<ButtonStates> state) {
+        return Text(artistButtonList.join(", "), maxLines: 1, style: TextStyle(color: state.isHovering ? FluentTheme.of(context).accentColor : Colors.white.withOpacity(.5)),);
+      },
+    );
   }
 }
 
@@ -151,12 +157,14 @@ class TrackCommandBar extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          onPressed: () {
-            likeAction();
-          },
-          icon: Icon(isLike ? m.Icons.favorite : m.Icons.favorite_border_rounded,
-            color: isLike ? Colors.red : FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1), size: 24,)
-        ),
+            onPressed: () {
+              likeAction();
+            },
+            icon: Icon(
+              isLike ? m.Icons.favorite : m.Icons.favorite_border_rounded,
+              color: isLike ? Colors.red : FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
+              size: 24,
+            )),
         AppConsts.defaultHSpacer,
       ],
     );

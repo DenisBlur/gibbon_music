@@ -41,7 +41,7 @@ class UPlaylistWidget extends StatelessWidget {
                           onPressed: () {
                             uxProvider.isOpenPlaylist = false;
                           },
-                          child: Text("CLOSE")),
+                          child: const Text("CLOSE")),
                     )),
                   Expanded(
                     child: Container(

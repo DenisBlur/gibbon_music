@@ -17,7 +17,7 @@ class LyricWidget extends StatelessWidget {
       return AnimatedPositioned(
         left: AppConsts.pageSize(context).width / 2 - 300,
         right: AppConsts.pageSize(context).width / 2 - 300,
-        top: (AppConsts.pageSize(context).height - AppConsts.playerHeight) - 300,
+        top: (AppConsts.pageSize(context).height - AppConsts.playerHeight) - (uxProvider.isOpenLyric ? 300 : 0),
         bottom: AppConsts.playerHeight,
         duration: AppConsts.defaultAnimation,
         curve: AppConsts.defaultCurve,
