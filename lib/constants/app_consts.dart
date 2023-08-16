@@ -44,12 +44,12 @@ class AppConsts {
   static const double scrollMultiplier = 4;
   static final double playerHeight = Platform.isWindows ? 100 : 0;
 
-  static const double defaultCardHeight = 258 - 32;
-  static const double defaultCardWidth = 186 - 32;
+  static const double defaultCardHeight = 100;
+  static const double defaultCardWidth = 240;
 
-  static const double wideCardHeight = 300;
+  static const double wideCardHeight = 250;
 
-  static const double wideCardWidth = 350;
+  static const double wideCardWidth = 250;
 
   static const SizedBox smallHSpacer = SizedBox(
     width: 8,
@@ -81,8 +81,8 @@ class AppConsts {
 
   static EdgeInsets pagePadding(BuildContext context) {
     return !Responsive.isDesktop(context)
-        ? EdgeInsets.only(bottom: playerHeight, top: windowHeader)
-        : EdgeInsets.only(bottom: playerHeight, top: windowHeader);
+        ? EdgeInsets.only(bottom: 0, top: windowHeader)
+        : EdgeInsets.only(bottom: 0, top: windowHeader);
   }
 
   static Size pageSize(BuildContext context) {

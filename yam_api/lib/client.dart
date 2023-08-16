@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import 'package:xml/xml.dart';
 import 'package:yam_api/album/album.dart';
@@ -27,6 +26,7 @@ import 'package:yam_api/search/search_sugges.dart';
 import 'package:yam_api/settings.dart';
 import 'package:yam_api/supplement/supplement.dart';
 import 'package:yam_api/track/get_sign_track.dart';
+import 'package:yam_api/track/track_lyric.dart';
 
 import 'account/status.dart';
 import 'account/user_settings.dart';
@@ -47,6 +47,8 @@ class Client {
 
   Map<String, String> headers = {};
   Map<String, String> deviceHeaders = {};
+
+  bool hqEnable = false;
 
   Status account = Status();
 
@@ -193,14 +195,15 @@ class Client {
   String formatISOTime(DateTime date) {
     //converts date into the following format:
 // or 2019-06-04T12:08:56.235-0700
-    var duration = date.timeZoneOffset;
-    if (duration.isNegative) {
-      return (DateFormat("yyyy-MM-ddTHH:mm:ss.mmm").format(date) +
-          "-${duration.inHours.toString().padLeft(2, '0')}${(duration.inMinutes - (duration.inHours * 60)).toString().padLeft(2, '0')}");
-    } else {
-      return (DateFormat("yyyy-MM-ddTHH:mm:ss.mmm").format(date) +
-          "+${duration.inHours.toString().padLeft(2, '0')}${(duration.inMinutes - (duration.inHours * 60)).toString().padLeft(2, '0')}");
-    }
+  return "";
+//     var duration = date.timeZoneOffset;
+//     if (duration.isNegative) {
+//       return (DateFormat("yyyy-MM-ddTHH:mm:ss.mmm").format(date) +
+//           "-${duration.inHours.toString().padLeft(2, '0')}${(duration.inMinutes - (duration.inHours * 60)).toString().padLeft(2, '0')}");
+//     } else {
+//       return (DateFormat("yyyy-MM-ddTHH:mm:ss.mmm").format(date) +
+//           "+${duration.inHours.toString().padLeft(2, '0')}${(duration.inMinutes - (duration.inHours * 60)).toString().padLeft(2, '0')}");
+//     }
   }
 
   Future<String> playAudio(String trackId) async {
@@ -426,7 +429,18 @@ class Client {
     if (!responseInfo.contains("error")) {
       var jsonResult = jsonDecode(responseInfo);
       var trackInfo = DownloadInfo.fromMap(jsonResult);
-      int downloadIndex = quality.index > trackInfo.result!.length - 1 ? trackInfo.result!.length - 1 : quality.index;
+
+      int downloadIndex = 0;
+
+      for (int i = 0; i < trackInfo.result!.length; i++) {
+        if (trackInfo.result![i].bitrateInKbps == 320) {
+          downloadIndex = i;
+          break;
+        } else {
+          downloadIndex = i;
+        }
+      }
+
       var response = await http.get(Uri.parse(trackInfo.result![downloadIndex].downloadInfoUrl.toString()), headers: headers);
       if (response.statusCode == 200) {
         final document = XmlDocument.parse(response.body);
@@ -455,11 +469,14 @@ class Client {
     return returnList;
   }
 
-  Future getTrackLyric(Track track) async {
+  Future<TrackLyric> getTrackLyric(Track track) async {
     ///Получение текста песни
-    var sign = await TrackSign().sign(track);
-    var result = await RequestClient(headers: headers)
-        .requestGet("/tracks/${track.id}:${track.albums![0].id}/lyrics?format=LRC&timeStamp=${sign.timestamp}&sign=${sign.signature}");
+    var response = await http.get(Uri.parse("http://176.9.7.93:4000/lyrics/${track.id}"), headers: headers);
+    if(response.body == '{"error":"400"}') {
+      return TrackLyric();
+    } else {
+      return TrackLyric.fromJson(jsonDecode(response.body));
+    }
   }
 
 // Future<> name() async {

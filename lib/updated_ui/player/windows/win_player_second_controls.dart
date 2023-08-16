@@ -7,7 +7,6 @@ import 'package:gibbon_music/router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/audio_provider.dart';
-import '../../controls/buttons.dart';
 
 class PlayerSecondControl extends StatelessWidget {
   const PlayerSecondControl({Key? key}) : super(key: key);
@@ -26,16 +25,22 @@ class PlayerSecondControl extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          GIconButton(
+          IconButton(
+              onPressed: () async {
+                provider.lyric = await client.getTrackLyric(provider.currentTrack!);
+              },
+              icon: const Icon(m.Icons.text_fields_rounded,
+                  size: 24)),
+          IconButton(
               onPressed: () {
                 context.read<UxProvider>().changePlaylistState();
               },
-              icon: m.Icons.playlist_play_rounded,
-              size: 24),
+              icon: const Icon(m.Icons.playlist_play_rounded,
+                  size: 24)),
           AppConsts.smallHSpacer,
           FlyoutTarget(
             controller: controller,
-            child: GIconButton(
+            child: IconButton(
                 onPressed: () {
                   controller.showFlyout(
                       builder: (context) {
@@ -65,16 +70,16 @@ class PlayerSecondControl extends StatelessWidget {
                       barrierColor: Colors.black.withOpacity(0.01),
                       barrierDismissible: true);
                 },
-                icon: m.Icons.volume_up_rounded,
-                size: 24),
+                icon: const Icon(m.Icons.volume_up_rounded,
+                    size: 24)),
           ),
           AppConsts.smallHSpacer,
-          GIconButton(
+          IconButton(
               onPressed: () {
                 AppRouter().openFullscreen(context);
               },
-              icon: m.Icons.fullscreen,
-              size: 24),
+              icon: const Icon(m.Icons.fullscreen,
+                  size: 24)),
         ],
       ),
     );

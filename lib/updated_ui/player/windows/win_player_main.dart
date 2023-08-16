@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
@@ -16,12 +18,16 @@ class PlayerMain extends StatelessWidget {
     return Consumer<AudioProvider>(builder: (_, value, __) {
       if (value.currentTrack != null) {
         return Container(
+          margin: const EdgeInsets.all(16),
           padding: const EdgeInsets.only(left: 16, right: 16),
           width: AppConsts.pageSize(context).width,
           height: AppConsts.playerHeight,
-          color: FluentTheme.of(context).cardColor,
-          child: Stack(
-            children: const [
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(24, 24, 24, 1),
+            borderRadius: BorderRadius.circular(16)
+          ),
+          child: const Stack(
+            children: [
               PlayerInfo(),
               Center(
                 child: PlayerMainControl(),

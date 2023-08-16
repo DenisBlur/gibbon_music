@@ -50,9 +50,10 @@ class MoreContent extends StatelessWidget {
             return Center(child: getDynamicData(listData, index));
           }, childCount: listData.length),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: AppConsts.pageSize(context).width ~/ (AppConsts.defaultCardHeight - 64),
+              crossAxisCount: AppConsts.pageSize(context).width ~/ (AppConsts.defaultCardHeight+112),
+              mainAxisSpacing: 16,
               childAspectRatio: 8,
-              crossAxisSpacing: 8,
+              crossAxisSpacing: 16,
               mainAxisExtent: AppConsts.defaultCardHeight))
     ]);
   }

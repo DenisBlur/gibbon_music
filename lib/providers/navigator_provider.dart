@@ -26,9 +26,6 @@ class NavigatorProvider extends ChangeNotifier {
   }
 
   uxCloseWidget(BuildContext context) {
-    if(context.read<UxProvider>().isOpenDrawer) {
-      context.read<UxProvider>().changeDrawerState();
-    }
     if(context.read<UxProvider>().isOpenPlaylist) {
       context.read<UxProvider>().changePlaylistState();
     }

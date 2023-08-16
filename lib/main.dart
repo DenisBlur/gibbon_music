@@ -2,7 +2,6 @@ import 'dart:io' show Platform;
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/domain/models/data_model.dart';
 import 'package:gibbon_music/domain/models/like_model.dart';
@@ -17,7 +16,6 @@ import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/providers/playlist_page_provider.dart';
 import 'package:gibbon_music/providers/radio_provider.dart';
 import 'package:gibbon_music/providers/search_provider.dart';
-import 'package:gibbon_music/providers/theme_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:gibbon_music/updated_ui/screens/page_auth.dart';
@@ -25,6 +23,7 @@ import 'package:gibbon_music/updated_ui/screens/page_welcome.dart';
 import 'package:gibbon_music/updated_ui/widgets/loading_ring.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:system_theme/system_theme.dart';
 import 'package:yam_api/client.dart';
 
 Client client = Client();
@@ -36,9 +35,6 @@ List<SingleChildWidget> _providers = [
   Provider(create: (_) => PagePlaylistProvider()),
   ChangeNotifierProvider(
     create: (_) => SearchProvider(searchModel: SearchModel()),
-  ),
-  ChangeNotifierProvider(
-    create: (_) => ThemeProvider(),
   ),
   ChangeNotifierProvider(
     create: (context) => YandexProvider(likeModel: LikeModel(), queueModel: QueueModel()),
@@ -58,11 +54,6 @@ List<SingleChildWidget> _providers = [
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isWindows) {
-    await Window.initialize();
-    await Window.setEffect(effect: WindowEffect.solid, color: Colors.black);
-    await Window.hideWindowControls();
-  }
   runApp(const App());
 
   if (Platform.isWindows) {
@@ -108,6 +99,10 @@ class _AppState extends State<App> {
       providers: _providers,
       builder: (context, child) {
         return FluentApp(
+          theme: FluentThemeData(
+            brightness: Brightness.dark,
+            accentColor: SystemTheme.accentColor.accent.toAccentColor(),
+          ),
           debugShowCheckedModeBanner: false,
           showSemanticsDebugger: false,
           home: SafeArea(
@@ -121,8 +116,6 @@ class _AppState extends State<App> {
                   }
                 }),
           ),
-          theme: context.watch<ThemeProvider>().theme,
-          color: context.watch<ThemeProvider>().accentColor,
         );
       },
     );

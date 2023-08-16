@@ -8,6 +8,7 @@ import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:yam_api/enums.dart';
 import 'package:yam_api/track/track.dart';
+import 'package:yam_api/track/track_lyric.dart';
 
 class AudioProvider extends ChangeNotifier {
   AudioProvider(this._playlistProvider) {
@@ -17,6 +18,15 @@ class AudioProvider extends ChangeNotifier {
   final NewPlaylist _playlistProvider;
 
   late AudioPlayer _player;
+
+  TrackLyric _lyric = TrackLyric();
+
+  TrackLyric get lyric => _lyric;
+
+  set lyric(TrackLyric value) {
+    _lyric = value;
+    notifyListeners();
+  }
 
   Stream<PlayerState> get onPlayerStateChanged => _player.onPlayerStateChanged;
 
@@ -61,10 +71,10 @@ class AudioProvider extends ChangeNotifier {
     await _player.pause();
     setSeek(0);
 
+    lyric = await client.getTrackLyric(_playlistProvider.currentTrack!);
     await _getTrackURLAsyncOperation?.cancel();
-
-     _getTrackURLAsyncOperation = CancelableOperation.fromFuture(client.downloadTrack(trackId: track.id, quality: QualityTrack.low));
-     _getTrackURLAsyncOperation?.then((trackURL) => _playTrack(trackURL));
+    _getTrackURLAsyncOperation = CancelableOperation.fromFuture(client.downloadTrack(trackId: track.id, quality: QualityTrack.low));
+    _getTrackURLAsyncOperation?.then((trackURL) => _playTrack(trackURL));
   }
 
   void setOneTrack(Track track) {

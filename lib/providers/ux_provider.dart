@@ -18,7 +18,6 @@ class UxProvider extends ChangeNotifier {
     }
   }
 
-  bool _isOpenDrawer = false;
   bool _isOpenPlaylist = false;
   bool _isFullscreen = false;
   bool _smoothScroll = false;
@@ -36,8 +35,6 @@ class UxProvider extends ChangeNotifier {
   String get currentPlaylist => _currentPlaylist;
 
   double get playerVolume => _playerVolume;
-
-  bool get isOpenDrawer => _isOpenDrawer;
 
   bool get isOpenPlaylist => _isOpenPlaylist;
 
@@ -63,11 +60,6 @@ class UxProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  set isOpenDrawer(bool value) {
-    _isOpenDrawer = value;
-    notifyListeners();
-  }
-
   set currentPlaylist(String value) {
     _currentPlaylist = value;
     notifyListeners();
@@ -76,10 +68,6 @@ class UxProvider extends ChangeNotifier {
   set smoothScroll(bool value) {
     _smoothScroll = value;
     notifyListeners();
-  }
-
-  changeDrawerState() {
-    isOpenDrawer = !isOpenDrawer;
   }
 
   changePlaylistState() {

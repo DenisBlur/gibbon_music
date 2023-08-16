@@ -14,7 +14,6 @@ import '../../constants/style_consts.dart';
 import '../../providers/album_page_provider.dart';
 import '../../providers/audio_provider.dart';
 import '../../router.dart';
-import '../controls/buttons.dart';
 import '../widgets/track_card.dart';
 
 class PageAlbum extends StatelessWidget {
@@ -106,9 +105,9 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
             height: expandedHeight,
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-                  FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(shrinkOffset / expandedHeight),
-                  FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(lerpDouble(0.5, 1.0, shrinkOffset / expandedHeight)!.toDouble())
-                ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
+              FluentTheme.of(context).inactiveBackgroundColor.withOpacity(shrinkOffset / expandedHeight),
+              FluentTheme.of(context).inactiveBackgroundColor.withOpacity(lerpDouble(0.5, 1.0, shrinkOffset / expandedHeight)!.toDouble())
+            ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
           ),
           Positioned(
             bottom: AppConsts.pageOffset.horizontal / 2,
@@ -116,19 +115,21 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
             child: Transform.translate(
               offset: Offset(0, lerpDouble(0, -100, shrinkOffset / expandedHeight)!.toDouble()),
               child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text("Альбом", maxLines: 1, style: TextStyle(color: FluentTheme.of(context).uncheckedColor.withOpacity(.5))),
+                const Text(
+                  "Альбом",
+                  maxLines: 1,
+                ),
                 Text(info.title!, maxLines: 1, style: AppStyle.title(context)),
                 Row(
                   children: [
-                    Text(
+                    const Text(
                       "Исполнитель: ",
-                      style: TextStyle(color: FluentTheme.of(context).uncheckedColor.withOpacity(.5)),
                     ),
-                    GTextButton(
+                    Button(
                         onPressed: () {
                           AppRouter().gotoArtist(context, info.artists!.first.id);
                         },
-                        title: "${info.artists!.first.name} • ${info.year}")
+                        child: Text("${info.artists!.first.name} • ${info.year}"))
                   ],
                 ),
               ]),

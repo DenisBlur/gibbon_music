@@ -1,5 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/updated_ui/screens/page_album.dart';
@@ -87,23 +86,12 @@ class AppRouter {
           builder: (context) => const PageFullscreen(),
         ));
     provider.isFullscreen = true;
-    fullscreen(true);
   }
 
   closeFullscreen(BuildContext context) {
     UxProvider provider = context.read();
     Navigator.pop(context);
     provider.isFullscreen = false;
-    fullscreen(false);
   }
 
-  Future fullscreen(bool enter) async {
-    if (enter) {
-      await Window.enterFullscreen();
-      await Window.hideWindowControls();
-    } else {
-      await Window.exitFullscreen();
-      await Window.hideWindowControls();
-    }
-  }
 }

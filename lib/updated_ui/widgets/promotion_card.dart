@@ -1,8 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
+import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/updated_ui/widgets/image_hovered.dart';
-import 'package:smooth_corner/smooth_corner.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:yam_api/landing/promotion.dart';
 
 import '../../constants/app_consts.dart';
@@ -36,39 +37,39 @@ class PromotionCard extends StatelessWidget {
         } else if (state.isHovering) {
           imageState = 0.98;
         } else {
-          imageState = .95;
+          imageState = 1;
         }
 
-        return SizedBox(
+        return ClipRRect(borderRadius: BorderRadius.circular(8), child: SizedBox(
           width: AppConsts.wideCardWidth,
           height: AppConsts.wideCardHeight,
           child: Stack(
             children: [
-              ImageHovered(
-                imageState: imageState,
-                uri: data.image!,
-                uriSize: 400,
-                height: AppConsts.wideCardHeight - 16,
+              FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: data.image!.linkImage(400),
                 width: AppConsts.wideCardWidth,
+                height: AppConsts.wideCardHeight,
+                fit: BoxFit.cover,
+              ),
+              Container(
+                width: AppConsts.wideCardWidth,
+                height: AppConsts.wideCardHeight,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                    Color.fromRGBO(34, 34, 34, 1),
+                    Color.fromRGBO(34, 34, 34, 0),
+                  ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
+                ),
               ),
               AnimatedScale(
                 scale: imageState + 0.01,
                 duration: AppConsts.defaultAnimation,
                 curve: AppConsts.defaultCurve,
                 child: Container(
-                  padding: const EdgeInsets.only(bottom: 32, right: 16, left: 16),
+                  padding: const EdgeInsets.only(bottom: 0, right: 16, left: 16),
                   width: AppConsts.wideCardWidth,
                   height: AppConsts.wideCardHeight-16,
-                  decoration: ShapeDecoration(
-                    gradient: LinearGradient(colors: [
-                      FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
-                      FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0),
-                    ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
-                    shape: SmoothRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                      smoothness: 1,
-                    ),
-                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +83,7 @@ class PromotionCard extends StatelessWidget {
               ),
             ],
           ),
-        );
+        ),);
       },
     );
   }

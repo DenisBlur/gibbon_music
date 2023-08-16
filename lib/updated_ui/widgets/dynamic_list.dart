@@ -3,15 +3,16 @@ import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/enums/e_list_typer.dart';
+import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/updated_ui/utils/dynamic_data.dart';
 import 'package:flutter/material.dart' as m;
 
 import '../../constants/style_consts.dart';
-import '../controls/buttons.dart';
 
 class DynamicListWidget extends StatefulWidget {
-  const DynamicListWidget({Key? key, required this.listData, required this.title, this.listType = ListType.standart, this.canMore = true, this.onMore})
+  const DynamicListWidget(
+      {Key? key, required this.listData, required this.title, this.listType = ListType.standart, this.canMore = true, this.onMore})
       : super(key: key);
 
   final List<dynamic> listData;
@@ -28,7 +29,7 @@ class _DynamicListWidgetState extends State<DynamicListWidget> {
   final ScrollController controller = ScrollController();
   bool canNext = true;
   bool canBefore = true;
-  double top = AppConsts.defaultCardHeight / 2;
+  double top = AppConsts.defaultCardHeight / 2 + 16;
 
   @override
   void initState() {
@@ -42,7 +43,7 @@ class _DynamicListWidgetState extends State<DynamicListWidget> {
         updateArrows();
       });
       if (widget.listType == ListType.wide) {
-        top = AppConsts.wideCardHeight / 2;
+        top = AppConsts.wideCardHeight / 2 + 16;
       }
     } else {
       setState(() {
@@ -115,16 +116,16 @@ class _DynamicListWidgetState extends State<DynamicListWidget> {
                   ),
                   AppConsts.fillSpacer,
                   if (widget.canMore! && widget.listData.isNotEmpty)
-                    GButton(
-                        onPressed: () {
-                          if(widget.onMore != null) {
-                            widget.onMore!();
-                          } else
-                          {
-                            AppRouter().gotoMore(context: context, listData: widget.listData, title: widget.title);
-                          }
-                        },
-                        title: "More")
+                    Button(
+                      child: const Text("Смотреть всё"),
+                      onPressed: () {
+                        if (widget.onMore != null) {
+                          widget.onMore!();
+                        } else {
+                          AppRouter().gotoMore(context: context, listData: widget.listData, title: widget.title);
+                        }
+                      },
+                    )
                 ],
               ),
             ),
@@ -132,7 +133,7 @@ class _DynamicListWidgetState extends State<DynamicListWidget> {
             widget.listData.isNotEmpty
                 ? SizedBox(
                     width: AppConsts.pageSize(context).width,
-                    height: widget.listType == ListType.standart ? AppConsts.defaultCardHeight : AppConsts.wideCardHeight,
+                    height: widget.listType == ListType.wide ? AppConsts.wideCardHeight : AppConsts.defaultCardHeight,
                     child: ListView.builder(
                       controller: controller,
                       physics: const BouncingScrollPhysics(),
@@ -152,34 +153,47 @@ class _DynamicListWidgetState extends State<DynamicListWidget> {
                   ),
           ],
         ),
-        if(Platform.isWindows) Padding(
-          padding: EdgeInsets.only(top: top, left: 16, right: 16),
-          child: Row(
-            children: [
-              canBefore
-                  ? GIconButton(
-                      onPressed: () {
-                        scroll(false);
-                      },
-                      icon: m.Icons.navigate_before_rounded,
-                      contrastBackground: true,
-                      size: 24,
-                    )
-                  : const SizedBox(),
-              AppConsts.fillSpacer,
-              canNext
-                  ? GIconButton(
-                      onPressed: () {
-                        scroll(true);
-                      },
-                      icon: m.Icons.navigate_next_rounded,
-                      contrastBackground: true,
-                      size: 24,
-                    )
-                  : const SizedBox(),
-            ],
+        if (Platform.isWindows)
+          Padding(
+            padding: EdgeInsets.only(top: top, left: 16, right: 16),
+            child: Row(
+              children: [
+                canBefore
+                    ? IconButton(
+                        onPressed: () {
+                          scroll(false);
+                        },
+                        icon: const Icon(
+                          m.Icons.navigate_before_rounded,
+                          size: 24,
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor: ButtonState.all(
+                            const Color.fromRGBO(0, 0, 0, 1),
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+                AppConsts.fillSpacer,
+                canNext
+                    ? IconButton(
+                        onPressed: () {
+                          scroll(true);
+                        },
+                        icon: const Icon(
+                          m.Icons.navigate_next_rounded,
+                          size: 24,
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor: ButtonState.all(
+                            const Color.fromRGBO(0, 0, 0, 1),
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+              ],
+            ),
           ),
-        ),
       ],
     );
   }

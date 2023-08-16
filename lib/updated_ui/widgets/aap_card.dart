@@ -1,20 +1,17 @@
 import 'package:darq/darq.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart' as m;
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
+import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:provider/provider.dart';
-import 'package:smooth_corner/smooth_corner.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:yam_api/album/album.dart';
 import 'package:yam_api/artist/brief_info.dart';
 import 'package:yam_api/playlist/playlist.dart';
-
-import '../controls/buttons.dart';
-import 'image_hovered.dart';
 
 class AlbumCard extends StatelessWidget {
   const AlbumCard({Key? key, required this.album}) : super(key: key);
@@ -106,74 +103,68 @@ class CardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: AppConsts.defaultCardHeight,
-      width: AppConsts.defaultCardWidth,
-      child: HoverButton(
+    return HoverButton(
         onPressed: () => onPressed(),
         builder: (p0, state) {
-          double imageState = 1.0;
+          double jState = 1.0;
           if (state.isPressing) {
-            imageState = 0.9;
+            jState = 0.9;
           } else if (state.isHovering) {
-            imageState = 0.98;
+            jState = 0.98;
           } else {
-            imageState = .95;
+            jState = 1;
           }
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  ImageHovered(imageState: imageState, uri: uri ?? AppConsts.imageEmptyLink, linkImage: uri != null),
-                  Container(
-                    width: AppConsts.defaultCardWidth,
-                    height: AppConsts.defaultCardWidth,
-                    decoration: ShapeDecoration(
-                      gradient: LinearGradient(colors: [
-                        FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
-                        FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(0),
-                      ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
-                      shape: SmoothRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                        smoothness: 1,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+          return AnimatedScale(
+            scale: jState,
+            duration: Animate.defaultDuration,
+            curve: AppConsts.defaultCurve,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                height: AppConsts.defaultCardHeight,
+                width: AppConsts.defaultCardWidth,
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(34, 34, 34, 1),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Stack(
                       children: [
-                        GIconButton(onPressed: () {}, icon: m.Icons.favorite_border_rounded),
-                        AppConsts.smallHSpacer,
-                        GIconButton(
-                            onPressed: () {
-                              onPlay();
-                            },
-                            icon: m.Icons.play_arrow,
-                            contrastBackground: true,
-                            size: 26),
-                        AppConsts.smallHSpacer,
-                        GIconButton(onPressed: () {}, icon: m.Icons.more_horiz_rounded)
+                        FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          image: uri != null ? uri!.linkImage(200) : AppConsts.imageEmptyLink,
+                          height: AppConsts.defaultCardHeight,
+                          width: AppConsts.defaultCardWidth/2,
+                          fit: BoxFit.cover,
+                        ),
+                        Container(
+                          height: AppConsts.defaultCardHeight,
+                          width: AppConsts.defaultCardWidth,
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(colors: [
+                              Color.fromRGBO(34, 34, 34, 1),
+                              Color.fromRGBO(34, 34, 34, 1),
+                              Color.fromRGBO(34, 34, 34, 0),
+                            ], begin: Alignment.centerRight, end: Alignment.centerLeft),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(title!, maxLines: 1, overflow: TextOverflow.clip, style: AppStyle.cardHeaderStyle),
+                              Text(subtitle!, maxLines: 1, overflow: TextOverflow.clip, style: AppStyle.subTrackHeaderStyle(context)),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  ).animate(target: state.isHovering ? 1 : 0)
-                      .fadeIn(duration: AppConsts.fastAnimation, curve: AppConsts.defaultCurve)
-                      .moveY(begin: 10, end: 0, duration: AppConsts.fastAnimation, curve: AppConsts.defaultCurve),
-                ],
+                  ],
+                ),
               ),
-              Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
-                    Text(upTitle!.toUpperCase(), maxLines: 1, overflow: TextOverflow.clip, style: AppStyle.upCardHeaderStyle(context)),
-                    Text(title!, maxLines: 1, overflow: TextOverflow.clip, style: AppStyle.cardHeaderStyle),
-                    Text(subtitle!, maxLines: 1, overflow: TextOverflow.clip, style: AppStyle.subTrackHeaderStyle(context)),
-                  ]))
-            ],
+            ),
           );
-        },
-      ),
-    );
+        });
   }
 }

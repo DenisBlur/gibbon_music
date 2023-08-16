@@ -14,7 +14,6 @@ import 'package:wave/wave.dart';
 
 import '../../constants/app_consts.dart';
 import '../../providers/landing_provider.dart';
-import '../controls/buttons.dart';
 import '../widgets/loading_ring.dart';
 
 class UPageLanding extends StatelessWidget {
@@ -31,20 +30,23 @@ class UPageLanding extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           return CustomScaffold(
             children: [
-              SliverPersistentHeader(
-                delegate: ScrollHeader(expandedHeight: 400),
+              const Text(
+                "Главная",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
               ),
               AppConsts.defaultVSpacer,
-              if(landingProvider.collections.isNotEmpty) DynamicListWidget(
-                listData: landingProvider.userPlaylists,
-                title: 'Ваши плейлисты',
-              ),
+              if (landingProvider.collections.isNotEmpty)
+                DynamicListWidget(
+                  listData: landingProvider.userPlaylists,
+                  title: 'Ваши плейлисты',
+                ),
               AppConsts.defaultVSpacer,
-              if(landingProvider.collections.isNotEmpty) DynamicListWidget(
-                listData: landingProvider.collections,
-                title: 'Собираем для вас',
-              ),
-              if(landingProvider.collections.isNotEmpty) AppConsts.defaultVSpacer,
+              if (landingProvider.collections.isNotEmpty)
+                DynamicListWidget(
+                  listData: landingProvider.collections,
+                  title: 'Собираем для вас',
+                ),
+              if (landingProvider.collections.isNotEmpty) AppConsts.defaultVSpacer,
               DynamicListWidget(
                 listData: landingProvider.promotions,
                 title: 'Интересно сейчас',
@@ -62,8 +64,8 @@ class UPageLanding extends StatelessWidget {
                 title: 'Новые релизы',
               ),
               AppConsts.defaultVSpacer,
-              if(landingProvider.playContext.isNotEmpty) DynamicListWidget(listData: landingProvider.playContext, title: 'Вы недавно слушали'),
-              if(landingProvider.playContext.isNotEmpty) AppConsts.defaultVSpacer,
+              if (landingProvider.playContext.isNotEmpty) DynamicListWidget(listData: landingProvider.playContext, title: 'Вы недавно слушали'),
+              if (landingProvider.playContext.isNotEmpty) AppConsts.defaultVSpacer,
               Row(
                 children: [
                   Text(
@@ -71,11 +73,11 @@ class UPageLanding extends StatelessWidget {
                     style: AppStyle.subTitle(context),
                   ),
                   AppConsts.fillSpacer,
-                  GButton(
+                  Button(
                       onPressed: () {
                         AppRouter().gotoPlaylist(context, "", "", true);
                       },
-                      title: "More")
+                      child: const Text("Смотреть всё"))
                 ],
               ),
               AppConsts.smallVSpacer,
@@ -106,111 +108,116 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
 
   ScrollHeader({required this.expandedHeight});
+
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     Color waveColors = FluentTheme.of(context).accentColor;
 
     return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: expandedHeight,
-      child: ShaderMask(
-        shaderCallback: (bounds) {
-          return const LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [
-              0.1,
-              0.5,
-              0.9,
-            ],
-            colors: [Colors.transparent, Colors.black, Colors.transparent],
-          ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
-        },
+        width: MediaQuery.of(context).size.width,
+        height: expandedHeight,
+        child: ShaderMask(
+          shaderCallback: (bounds) {
+            return const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [
+                0.1,
+                0.5,
+                0.9,
+              ],
+              colors: [Colors.transparent, Colors.black, Colors.transparent],
+            ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
+          },
           blendMode: BlendMode.dstIn,
-        child: Stack(
-          children: [
-            Center(
-              child: Text(
-                "МОЯ ВОЛНА",
-                style: AppStyle.title(context),
+          child: Stack(
+            children: [
+              Center(
+                child: Text(
+                  "МОЯ ВОЛНА",
+                  style: AppStyle.title(context),
+                ),
               ),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 1,
-              height: expandedHeight / 3,
-              child: WaveWidget(
-                config: CustomConfig(colors: [
-                  waveColors.withOpacity(0.1),
-                  waveColors.withOpacity(0.2),
-                  waveColors.withOpacity(0.4),
-                  waveColors.withOpacity(0.6),
-                  waveColors.withOpacity(0.8),
-                  waveColors,
-                ], durations: [
-                  9500,
-                  9600,
-                  9700,
-                  9800,
-                  9900,
-                  10000
-                ], heightPercentages: [
-                  0.1,
-                  0.2,
-                  0.3,
-                  0.4,
-                  0.5,
-                  0.6
-                ]),
-                size: const Size(double.infinity, double.infinity),
-              ),
-            ),
-            Positioned(
+              Positioned(
                 left: 0,
                 right: 0,
-                top: 0,
+                bottom: 1,
                 height: expandedHeight / 3,
-                child: Transform.scale(
-                  scaleY: -1,
-                  alignment: Alignment.center,
-                  child: WaveWidget(
-                    config: CustomConfig(colors: [
-                      waveColors.withOpacity(0.1),
-                      waveColors.withOpacity(0.2),
-                      waveColors.withOpacity(0.4),
-                      waveColors.withOpacity(0.6),
-                      waveColors.withOpacity(0.8),
-                      waveColors,
-                    ], durations: [
-                      9500,
-                      9600,
-                      9700,
-                      9800,
-                      9900,
-                      10000
-                    ], heightPercentages: [
-                      0.1,
-                      0.2,
-                      0.3,
-                      0.4,
-                      0.5,
-                      0.6
-                    ]),
-                    size: const Size(double.infinity, double.infinity),
-                  ),
-                )),
-            Opacity(opacity: 1-shrinkOffset/expandedHeight, child: Center(
-                child: Padding(
+                child: WaveWidget(
+                  config: CustomConfig(colors: [
+                    waveColors.withOpacity(0.1),
+                    waveColors.withOpacity(0.2),
+                    waveColors.withOpacity(0.4),
+                    waveColors.withOpacity(0.6),
+                    waveColors.withOpacity(0.8),
+                    waveColors,
+                  ], durations: [
+                    9500,
+                    9600,
+                    9700,
+                    9800,
+                    9900,
+                    10000
+                  ], heightPercentages: [
+                    0.1,
+                    0.2,
+                    0.3,
+                    0.4,
+                    0.5,
+                    0.6
+                  ]),
+                  size: const Size(double.infinity, double.infinity),
+                ),
+              ),
+              Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  height: expandedHeight / 3,
+                  child: Transform.scale(
+                    scaleY: -1,
+                    alignment: Alignment.center,
+                    child: WaveWidget(
+                      config: CustomConfig(colors: [
+                        waveColors.withOpacity(0.1),
+                        waveColors.withOpacity(0.2),
+                        waveColors.withOpacity(0.4),
+                        waveColors.withOpacity(0.6),
+                        waveColors.withOpacity(0.8),
+                        waveColors,
+                      ], durations: [
+                        9500,
+                        9600,
+                        9700,
+                        9800,
+                        9900,
+                        10000
+                      ], heightPercentages: [
+                        0.1,
+                        0.2,
+                        0.3,
+                        0.4,
+                        0.5,
+                        0.6
+                      ]),
+                      size: const Size(double.infinity, double.infinity),
+                    ),
+                  )),
+              Opacity(
+                opacity: 1 - shrinkOffset / expandedHeight,
+                child: Center(
+                    child: Padding(
                   padding: const EdgeInsets.only(top: 86),
-                  child: GButton(onPressed: () {
-                    context.read<RadioProvider>().startRadio("user:onyourwave");
-                  }, title: "воспроизвести"),
-                )),),
-          ],
-        ),
-      )
-    );
+                  child: Button(
+                      onPressed: () {
+                        context.read<RadioProvider>().startRadio("user:onyourwave");
+                      },
+                      child: Text("воспроизвести")),
+                )),
+              ),
+            ],
+          ),
+        ));
   }
 
   @override

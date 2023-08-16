@@ -17,20 +17,20 @@ class Tracks {
       this.recent,});
 
   Tracks.fromJson(dynamic json) {
-    id = json['id'];
+    id = json['id'].toString();
     track = json['track'] != null ? Track.fromJson(json['track']) : null;
     timestamp = json['timestamp'];
     playCount = json['playCount'];
     chart = json['chart'] != null ? Chart.fromJson(json['chart']) : null;
     recent = json['recent'];
   }
-  num? id;
+  String? id;
   Track? track;
   String? timestamp;
   num? playCount;
   Chart? chart;
   bool? recent;
-Tracks copyWith({  num? id,
+Tracks copyWith({  String? id,
   Track? track,
   String? timestamp,
   num? playCount,

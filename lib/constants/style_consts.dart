@@ -14,9 +14,8 @@ class AppStyle {
 
   static TextStyle subTitle(BuildContext context) {
     return TextStyle(
-        fontSize: Responsive.isDesktop(context) ? 20 : 20,
-        fontWeight: FontWeight.bold,
-        color: FluentTheme.of(context).uncheckedColor.withOpacity(.9)
+        fontSize: Responsive.isDesktop(context) ? 16 : 16,
+      color: FluentTheme.of(context).inactiveColor.withOpacity(.8)
     );
   }
 
@@ -28,9 +27,8 @@ class AppStyle {
   }
 
   static TextStyle prSubTitle(BuildContext context) {
-    return TextStyle(
+    return const TextStyle(
         fontSize: 14,
-        color: FluentTheme.of(context).uncheckedColor.withOpacity(.9)
     );
   }
 
@@ -46,7 +44,6 @@ class AppStyle {
     return TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
-        color: FluentTheme.of(context).uncheckedColor.withOpacity(.6)
     );
   }
 
@@ -58,7 +55,6 @@ class AppStyle {
   static TextStyle subTrackHeaderStyle(BuildContext context) {
     return TextStyle(
         fontSize: 16,
-        color: FluentTheme.of(context).uncheckedColor.withOpacity(.6)
     );
   }
 

@@ -26,15 +26,9 @@ class Header extends StatelessWidget {
           headerButtons.add(
             HeaderButton(onPressed: () => AppRouter().tryPop(context), icon: m.Icons.arrow_back_rounded, showHide: provider.navigationCanBack),
           );
-          headerButtons.add(
-            HeaderButton(
-                onPressed: () {
-                  context.read<UxProvider>().changeDrawerState();
-                },
-                icon: m.Icons.menu_rounded,
-                showHide: true),
-          );
         }
+
+        headerButtons.add(AppConsts.defaultHSpacer);
 
         headerButtons.add(
           Expanded(
@@ -66,7 +60,7 @@ class Header extends StatelessWidget {
         if (Platform.isWindows) {
           headerButtons.add(MinimizeWindowButton(
             colors: WindowButtonColors(
-                iconNormal: FluentTheme.of(context).uncheckedColor
+                iconNormal: theme.activeColor
             ),
           ));
         }
@@ -74,7 +68,7 @@ class Header extends StatelessWidget {
         if (Platform.isWindows) {
           headerButtons.add(MaximizeWindowButton(
             colors: WindowButtonColors(
-                iconNormal: FluentTheme.of(context).uncheckedColor
+                iconNormal: theme.activeColor
             ),
           ));
         }
@@ -82,7 +76,7 @@ class Header extends StatelessWidget {
         if (Platform.isWindows) {
           headerButtons.add(CloseWindowButton(
             colors: WindowButtonColors(
-              iconNormal: FluentTheme.of(context).uncheckedColor
+              iconNormal: theme.activeColor
             ),
           ));
         }
@@ -91,12 +85,12 @@ class Header extends StatelessWidget {
             child: ClipRRect(
           child: Container(
             height: AppConsts.windowHeader,
-            color: theme.scaffoldBackgroundColor.withOpacity(!menu! ? 0 : .2),
+            color: theme.inactiveBackgroundColor.withOpacity(1),
             child: Row(
               children: headerButtons,
             ),
           ),
-        )) : SizedBox();
+        )) : const SizedBox();
       },
     );
   }

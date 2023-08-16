@@ -35,6 +35,9 @@ class CustomScroller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    slivers.add(const SizedBox(
+      height: 120,
+    ));
     return ImprovedScrolling(
       scrollController: controller,
       enableCustomMouseWheelScrolling: true,

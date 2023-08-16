@@ -35,6 +35,7 @@ class PagePlaylist extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             MPlaylist mPagePlaylist = pagePlaylistProvider.mPlaylist;
+
             return CustomScaffold(children: [
               SliverPersistentHeader(
                 pinned: true,
@@ -61,7 +62,7 @@ class PagePlaylist extends StatelessWidget {
                       childCount: mPagePlaylist.tracks!.length)),
             ]);
           } else {
-            return LoadingRing();
+            return const LoadingRing();
           }
         });
   }
@@ -108,8 +109,8 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
             height: expandedHeight,
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-              FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(shrinkOffset / expandedHeight),
-              FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(lerpDouble(0.5, 1.0, shrinkOffset / expandedHeight)!.toDouble())
+              FluentTheme.of(context).inactiveBackgroundColor.withOpacity(shrinkOffset / expandedHeight),
+              FluentTheme.of(context).inactiveBackgroundColor.withOpacity(lerpDouble(0.5, 1.0, shrinkOffset / expandedHeight)!.toDouble())
             ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
           ),
           Positioned(
@@ -118,9 +119,9 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
             child: Transform.translate(
               offset: Offset(0, lerpDouble(0, -100, shrinkOffset / expandedHeight)!.toDouble()),
               child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text("Плейлист", maxLines: 1, style: TextStyle(color: FluentTheme.of(context).uncheckedColor.withOpacity(.5))),
+                Text("Плейлист", maxLines: 1, ),
                 Text(info.title!, maxLines: 1, style: AppStyle.title(context)),
-                Text("Создатель: ${info.owner!.name}", maxLines: 1, style: TextStyle(color: FluentTheme.of(context).uncheckedColor.withOpacity(.5))),
+                Text("Создатель: ${info.owner!.name}", maxLines: 1,),
               ]),
             ),
           ),

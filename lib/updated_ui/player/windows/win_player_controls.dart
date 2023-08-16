@@ -14,7 +14,6 @@ import 'package:yam_api/track/track.dart';
 
 import '../../../providers/audio_provider.dart';
 import '../../../router.dart';
-import '../../controls/buttons.dart';
 
 class PlayerMainControl extends StatelessWidget {
   const PlayerMainControl({Key? key}) : super(key: key);
@@ -49,16 +48,15 @@ class PlayerMainControl extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  GIconButton(onPressed: () => playList.nextLoop(), icon: _getIconForLoop(playList.loopStrategy), size: Platform.isAndroid ? 36 : 24),
+                  IconButton(onPressed: () => playList.nextLoop(), icon: Icon(_getIconForLoop(playList.loopStrategy), size: 24)),
                   AppConsts.defaultHSpacer,
-                  GIconButton(
+                  IconButton(
                       onPressed: () {
                         playList.previousTrack();
                       },
-                      icon: m.Icons.skip_previous_rounded,
-                      size: Platform.isAndroid ? 36 : 24),
+                      icon: const Icon(m.Icons.skip_previous_rounded, size: 24)),
                   AppConsts.defaultHSpacer,
-                  GIconButton(
+                  IconButton(
                       onPressed: () {
                         if (provider.playerState == PlayerState.playing) {
                           provider.pause();
@@ -66,35 +64,36 @@ class PlayerMainControl extends StatelessWidget {
                           provider.resume();
                         }
                       },
-                      icon: provider.icon(),
-                      contrastBackground: true,
-                      size: Platform.isAndroid ? 38 : 26),
+                      style: ButtonStyle(backgroundColor: ButtonState.all(FluentTheme.of(context).inactiveColor.withOpacity(1))),
+                      icon: Icon(
+                        provider.icon(),
+                        size: 26,
+                        color: FluentTheme.of(context).inactiveBackgroundColor,
+                      )),
                   AppConsts.defaultHSpacer,
-                  GIconButton(
+                  IconButton(
                       onPressed: () {
                         playList.nextTrack();
                       },
-                      icon: m.Icons.skip_next_rounded,
-                      size: Platform.isAndroid ? 36 : 24),
+                      icon: const Icon(m.Icons.skip_next_rounded, size: 24)),
                   AppConsts.defaultHSpacer,
-                  GIconButton(onPressed: () => playList.shuffle = !playList.shuffled, icon: m.Icons.shuffle, size: Platform.isAndroid ? 36 : 24),
+                  IconButton(onPressed: () => playList.shuffle = !playList.shuffled, icon: const Icon(m.Icons.shuffle, size: 24)),
                 ],
               ),
               Row(
                 children: [
                   if (isFullscreen) AppConsts.fillSpacer,
                   if (isFullscreen)
-                    GIconButton(
+                    IconButton(
                         onPressed: () {
                           context.read<UxProvider>().changePlaylistState();
                         },
-                        icon: m.Icons.playlist_play_rounded,
-                        size: 24),
+                        icon: const Icon(m.Icons.playlist_play_rounded, size: 24)),
                   if (isFullscreen) AppConsts.defaultHSpacer,
                   if (isFullscreen)
                     FlyoutTarget(
                       controller: controller,
-                      child: GIconButton(
+                      child: IconButton(
                           onPressed: () {
                             controller.showFlyout(
                                 builder: (context) {
@@ -124,17 +123,15 @@ class PlayerMainControl extends StatelessWidget {
                                 barrierColor: Colors.black.withOpacity(0.01),
                                 barrierDismissible: true);
                           },
-                          icon: m.Icons.volume_up_rounded,
-                          size: 24),
+                          icon: const Icon(m.Icons.volume_up_rounded, size: 24)),
                     ),
                   if (isFullscreen) AppConsts.defaultHSpacer,
                   if (isFullscreen)
-                    GIconButton(
+                    IconButton(
                         onPressed: () {
                           AppRouter().closeFullscreen(context);
                         },
-                        icon: m.Icons.close_fullscreen_rounded,
-                        size: 24),
+                        icon: const Icon(m.Icons.close_fullscreen_rounded, size: 24)),
                 ],
               )
             ],

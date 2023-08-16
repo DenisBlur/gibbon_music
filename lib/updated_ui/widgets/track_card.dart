@@ -8,21 +8,16 @@ import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
-import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/updated_ui/widgets/Image_thumbnail.dart';
 import 'package:gibbon_music/updated_ui/widgets/card_view.dart';
 import 'package:gibbon_music/updated_ui/widgets/context_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:smooth_corner/smooth_corner.dart';
-import 'package:yam_api/artist/brief_info.dart';
 import 'package:yam_api/track/track.dart';
 import 'package:yam_api/yam_api.dart';
 
 import '../../constants/style_consts.dart';
 import '../../domain/models/playlist.dart';
 import '../../providers/yandex_provider.dart';
-import '../../router.dart';
-import '../controls/buttons.dart';
 import '../other/music_visualizer.dart';
 
 class TrackCard extends StatelessWidget {
@@ -68,6 +63,7 @@ class TrackCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              ClipRRect(borderRadius: BorderRadius.circular(8), child:
               Stack(
                 children: [
                   ImageThumbnail(url: image, height: size, width: size),
@@ -78,7 +74,7 @@ class TrackCard extends StatelessWidget {
                     child: Container(
                         width: size,
                         height: size,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: FluentTheme.of(context).cardColor.withOpacity(.4)),
+                        decoration: BoxDecoration( color: FluentTheme.of(context).cardColor.withOpacity(.4)),
                         child: Center(
                           child: MiniMusicVisualizer(
                             color: Colors.red,
@@ -89,7 +85,7 @@ class TrackCard extends StatelessWidget {
                         )),
                   ),
                 ],
-              ),
+              ),),
               AppConsts.defaultHSpacer,
               Expanded(
                 child: Column(
@@ -128,7 +124,7 @@ class ArtistsListWidgets extends StatelessWidget {
 
     artistButtonList = track.artists!.select((element, index) => element.name.toString()).toList();
 
-    return GTextButton(onPressed: () {
+    return Button(onPressed: () {
       showDialog(
         barrierDismissible: true,
         context: context,
@@ -136,7 +132,7 @@ class ArtistsListWidgets extends StatelessWidget {
           return ContextWidget(track: track);
         },
       );
-    }, title: artistButtonList.join(", "));
+    }, child: Text( artistButtonList.join(", ")));
   }
 }
 
@@ -154,12 +150,12 @@ class TrackCommandBar extends StatelessWidget {
 
     return Row(
       children: [
-        GIconButton(
+        IconButton(
           onPressed: () {
             likeAction();
           },
-          icon: isLike ? m.Icons.favorite : m.Icons.favorite_border_rounded,
-          iconColor: isLike ? FluentTheme.of(context).accentColor : Colors.transparent,
+          icon: Icon(isLike ? m.Icons.favorite : m.Icons.favorite_border_rounded,
+            color: isLike ? Colors.red : FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1), size: 24,)
         ),
         AppConsts.defaultHSpacer,
       ],

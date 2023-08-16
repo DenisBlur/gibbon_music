@@ -8,16 +8,21 @@ class TrackSign {
 
   Future<Sign> sign(Track track) async {
 
-    var trackId = track.id!;
-    var timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    var message = '$trackId$timestamp';
-    var key = _signKey;
-    var hmacSign = Hmac(sha256, utf8.encode(key)).convert(utf8.encode(message)).bytes;
-    var signature = utf8.decode(base64.encode(hmacSign).codeUnits);
 
-    Sign sign = Sign(signature, timestamp);
+    var trackId = int.parse(track.id!);
 
-    return sign;
+    int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    String message = '${trackId}${timestamp}';
+
+    List<int> keyBytes = utf8.encode(_signKey);
+    List<int> msgBytes = utf8.encode(message);
+
+    List<int> hmacSign = Hmac(sha256, keyBytes).convert(msgBytes).bytes;
+    String signature = base64Encode(hmacSign);
+
+    print(signature);
+
+    return Sign(signature, timestamp);
   }
 }
 
