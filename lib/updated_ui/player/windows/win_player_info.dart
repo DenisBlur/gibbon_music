@@ -14,7 +14,8 @@ class PlayerInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     NewPlaylist playlist = context.watch();
     Track? track = playlist.currentTrack;
-    return SizedBox(
+    return Container(
+      margin: const EdgeInsets.only(left: 32),
       width: AppConsts.pageSize(context).width,
       height: AppConsts.pageSize(context).height,
       child: Row(

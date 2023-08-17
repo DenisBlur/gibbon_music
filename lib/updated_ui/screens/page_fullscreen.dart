@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_meedu_videoplayer/meedu_player.dart' as mp;
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/updated_ui/player/windows/win_player_controls.dart';
@@ -11,6 +14,7 @@ import 'package:yam_api/track/track.dart';
 
 import '../../constants/style_consts.dart';
 import '../../domain/models/playlist.dart';
+import '../../main.dart';
 import '../widgets/header.dart';
 
 class PageFullscreen extends StatelessWidget {
@@ -26,13 +30,35 @@ class PageFullscreen extends StatelessWidget {
       padding: const EdgeInsets.all(0),
       content: Stack(
         children: [
+
+          if(track!.backgroundVideoUri != null && track.backgroundVideoUri != " " && track.backgroundVideoUri != "")
+            Opacity(opacity: 1, child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: SizedBox(
+                child: mp.MeeduVideoPlayer(
+                  controller: meeduPlayerController,
+                ),
+              ),
+            ),),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaY: 1500, sigmaX: 1500),
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: Color.fromRGBO(24, 24, 24, .5),),
+                height: AppConsts.pageSize(context).height,
+                width: AppConsts.pageSize(context).width,
+              ),
+            ),
+          ),
           Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ImageThumbnail(
-                    url: track!.ogImage!.linkImage(600), width: AppConsts.pageSize(context).width / 4, height: AppConsts.pageSize(context).width / 4),
+                    url: track.ogImage!.linkImage(600), width: AppConsts.pageSize(context).width / 4, height: AppConsts.pageSize(context).width / 4),
                 SizedBox(
                   width: AppConsts.pageSize(context).width / 4,
                   child: Text(

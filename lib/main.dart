@@ -2,6 +2,7 @@ import 'dart:io' show Platform;
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_meedu_videoplayer/meedu_player.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/domain/models/data_model.dart';
 import 'package:gibbon_music/domain/models/like_model.dart';
@@ -14,7 +15,6 @@ import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/providers/landing_provider.dart';
 import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/providers/playlist_page_provider.dart';
-import 'package:gibbon_music/providers/radio_provider.dart';
 import 'package:gibbon_music/providers/search_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
@@ -27,6 +27,14 @@ import 'package:system_theme/system_theme.dart';
 import 'package:yam_api/client.dart';
 
 Client client = Client();
+final meeduPlayerController = MeeduPlayerController(controlsEnabled: false, fits: [
+  BoxFit.cover,
+  BoxFit.cover,
+  BoxFit.cover,
+  BoxFit.cover,
+  BoxFit.cover,
+  BoxFit.cover,
+]);
 
 List<SingleChildWidget> _providers = [
   Provider(create: (_) => LandingProvider()),
@@ -49,10 +57,10 @@ List<SingleChildWidget> _providers = [
   ChangeNotifierProvider(
     create: (context) => NavigatorProvider(),
   ),
-  Provider(create: (context) => RadioProvider(context.read()))
 ];
 
 Future<void> main() async {
+  initMeeduPlayer();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const App());
 

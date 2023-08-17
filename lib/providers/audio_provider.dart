@@ -4,6 +4,7 @@ import 'package:async/async.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:flutter_meedu_videoplayer/meedu_player.dart' as mp;
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:yam_api/enums.dart';
@@ -49,11 +50,42 @@ class AudioProvider extends ChangeNotifier {
     //
     // _playlistProvider.onNextTrackPlay.subscribe((args) => _changeTrack());
 
-    _onTrackChangeSubscribe = _playlistProvider.onTrackChange.listen((event) {
+    _onTrackChangeSubscribe = _playlistProvider.onTrackChange.listen((event) async {
+
+      if(event is RadioFeedback) {
+        await client.radio.sendRadioFeedback(RadioFeedback.trackStarted, _playlistProvider.currentTrack!.id.toString(), 0);
+        switch(event) {
+          case RadioFeedback.trackStarted:
+            break;
+          case RadioFeedback.trackFinished:
+            await client.radio.sendRadioFeedback(event, _playlistProvider.currentTrack!.id.toString(), 0.1);
+            break;
+          case RadioFeedback.skip:
+            await client.radio.sendRadioFeedback(event, _playlistProvider.currentTrack!.id.toString(), await getDuration());
+            break;
+          case RadioFeedback.radioStarted:
+          case RadioFeedback.off:
+          case RadioFeedback.on:
+          case RadioFeedback.getTracks:
+            break;
+        }
+      }
+
       if (_playlistProvider.currentTrack == null) {
         pause();
       } else {
         preloadTrack(_playlistProvider.currentTrack!);
+        if (currentTrack!.backgroundVideoUri != null && currentTrack!.backgroundVideoUri != " " && currentTrack!.backgroundVideoUri != "") {
+          meeduPlayerController.setDataSource(
+            mp.DataSource(
+              type: mp.DataSourceType.network,
+              source: currentTrack!.backgroundVideoUri,
+            ),
+            autoplay: true,
+            looping: true,
+          );
+          meeduPlayerController.toggleVideoFit();
+        }
       }
 
       notifyListeners();
@@ -109,6 +141,11 @@ class AudioProvider extends ChangeNotifier {
     await _player.setSourceUrl(url);
     resume();
     notifyListeners();
+  }
+
+  Future<double> getDuration() async {
+   var position =  await _player.getCurrentPosition();
+   return position!.inSeconds.toDouble();
   }
 
   @override

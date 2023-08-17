@@ -19,7 +19,7 @@ class LyricWidget extends StatelessWidget {
         right: AppConsts.pageSize(context).width / 2 - 300,
         top: (AppConsts.pageSize(context).height - AppConsts.playerHeight) - (uxProvider.isOpenLyric ? 300 : 0),
         bottom: AppConsts.playerHeight,
-        duration: AppConsts.defaultAnimation,
+        duration: AppConsts.slowAnimation,
         curve: AppConsts.defaultCurve,
         child: Container(
           height: 450,

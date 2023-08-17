@@ -5,7 +5,10 @@ import 'package:darq/darq.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gibbon_music/domain/interfaces/iplaylist_loop_strategy.dart';
 import 'package:gibbon_music/domain/models/loop_strategy/loop_strategies.dart';
+import 'package:yam_api/enums.dart';
 import 'package:yam_api/track/track.dart';
+
+import '../../main.dart';
 
 class NewPlaylist with ChangeNotifier {
   NewPlaylist();
@@ -21,6 +24,15 @@ class NewPlaylist with ChangeNotifier {
   final List<int> _ids = [];
 
   bool _shuffled = false;
+
+  bool _radio = false;
+
+  bool get radio => _radio;
+
+  set radio(bool value) {
+    _radio = value;
+    notifyListeners();
+  }
 
   late IPlaylistLoopStrategy _loop = _loops[_currentLoopI];
 
@@ -71,8 +83,14 @@ class NewPlaylist with ChangeNotifier {
 
     _loop.currentIndex = index;
 
-    _onTrackChangeController.add(true);
+    _onTrackChangeController.add(false);
     notifyListeners();
+  }
+
+  Future<void> startRadio() async {
+    List<Track> tracks = await client.radio.createRadioSession();
+    radio = true;
+    setTracksWithActiveTrack(tracks, 0);
   }
 
   void setTracksWithActiveTrack(List<Track?>? tracks, int index) {
@@ -85,7 +103,7 @@ class NewPlaylist with ChangeNotifier {
     _indexing();
 
     // launch events
-    _onPlaylistUpdateController.add(true);
+    _onPlaylistUpdateController.add(radio);
     notifyListeners();
   }
 
@@ -109,15 +127,19 @@ class NewPlaylist with ChangeNotifier {
 
   bool get shuffled => _shuffled;
 
-
   List<Track?> get tracks => _tracks; //endregion
 
   void nextTrack() {
     if (_loop.next() == false) {
+      getRadioTrack();
       return;
     }
 
-    _onTrackChangeController.add(true);
+    if (radio) {
+      _onTrackChangeController.add(RadioFeedback.skip);
+    } else {
+      _onTrackChangeController.add(null);
+    }
     notifyListeners();
   }
 
@@ -126,17 +148,34 @@ class NewPlaylist with ChangeNotifier {
       return;
     }
 
-    _onTrackChangeController.add(true);
+    if (radio) {
+      _onTrackChangeController.add(RadioFeedback.skip);
+    } else {
+      _onTrackChangeController.add(null);
+    }
     notifyListeners();
   }
 
   void onTrackEnd() {
     if (_loop.endTrack() == false) {
+      getRadioTrack();
       return;
     }
 
-    _onTrackChangeController.add(true);
+    if (radio) {
+      _onTrackChangeController.add(RadioFeedback.trackFinished);
+    } else {
+      _onTrackChangeController.add(null);
+    }
     notifyListeners();
+  }
+
+  Future<void> getRadioTrack() async {
+    if(radio) {
+      List<Track> tracks = await client.radio.getRadioTracks();
+      setTracksWithActiveTrack(tracks, 0);
+    } else {
+    }
   }
 
   bool canNext() => _loop.canNext();
@@ -201,7 +240,7 @@ class NewPlaylist with ChangeNotifier {
       _loop.currentIndex--;
     }
 
-    if (currentTrack) _onTrackChangeController.add(true);
+    if (currentTrack) _onTrackChangeController.add(null);
     _onPlaylistUpdateController.add(true);
     notifyListeners();
   }

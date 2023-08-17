@@ -17,7 +17,8 @@ class PlayerSecondControl extends StatelessWidget {
 
     FlyoutController controller = FlyoutController();
 
-    return SizedBox(
+    return Container(
+      margin: const EdgeInsets.only(right: 32),
       width: pageSize.width,
       height: AppConsts.playerHeight,
       child: Row(

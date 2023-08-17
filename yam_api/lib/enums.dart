@@ -6,4 +6,4 @@ enum SearchType {all, user, playlist, artist, album, track, podcast }
 
 enum ChartSelect { russia, world }
 
-enum RotorFeedback {radioStarted, trackStarted, trackFinished, skip}
+enum RadioFeedback {off, on, radioStarted, trackStarted, trackFinished, skip, getTracks}

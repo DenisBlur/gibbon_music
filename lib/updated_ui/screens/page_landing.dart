@@ -2,8 +2,8 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/enums/e_list_typer.dart';
+import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
-import 'package:gibbon_music/providers/radio_provider.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 import 'package:gibbon_music/updated_ui/widgets/dynamic_list.dart';
@@ -11,6 +11,8 @@ import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
+import 'package:yam_api/enums.dart';
+import 'package:yam_api/track/track.dart';
 
 import '../../constants/app_consts.dart';
 import '../../providers/landing_provider.dart';
@@ -24,12 +26,21 @@ class UPageLanding extends StatelessWidget {
     LandingProvider landingProvider = context.read();
     landingProvider.dispose();
 
+    void set(List<Track> value) {
+      context.read<NewPlaylist>().setTracksWithActiveTrack(value, 0);
+    }
+
     return FutureBuilder(
       future: landingProvider.init(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return CustomScaffold(
             children: [
+              Button(
+                  onPressed: () async {
+                    await context.read<NewPlaylist>().startRadio();
+                  },
+                  child: const Text("воспроизвести")),
               const Text(
                 "Главная",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
@@ -210,7 +221,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                   padding: const EdgeInsets.only(top: 86),
                   child: Button(
                       onPressed: () {
-                        context.read<RadioProvider>().startRadio("user:onyourwave");
+                        client.radio.createRadioSession();
                       },
                       child: const Text("воспроизвести")),
                 )),

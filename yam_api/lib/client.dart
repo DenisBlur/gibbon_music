@@ -18,10 +18,8 @@ import 'package:yam_api/landing/new_releases.dart';
 import 'package:yam_api/playlist/playlist.dart';
 import 'package:yam_api/queue/queue_item.dart';
 import 'package:yam_api/queue/queues_list.dart';
+import 'package:yam_api/radio.dart';
 import 'package:yam_api/request_client.dart';
-import 'package:yam_api/rotor/dashboard.dart';
-import 'package:yam_api/rotor/list_stations.dart';
-import 'package:yam_api/rotor/rotor_tracks.dart';
 import 'package:yam_api/search/search_sugges.dart';
 import 'package:yam_api/settings.dart';
 import 'package:yam_api/supplement/supplement.dart';
@@ -38,6 +36,9 @@ import 'track/track.dart';
 import 'track/track_similar.dart';
 
 class Client {
+
+  Radio radio = Radio();
+
   String token = "";
   String language = "ru";
 
@@ -63,6 +64,9 @@ class Client {
       userId = value.account?.uid.toString();
     });
     deviceHeaders = {'Authorization': 'OAuth $token', 'X-Yandex-Music-Device': '$device'};
+
+    radio.init(headers, device!);
+
     return account.account != null;
   }
 
@@ -247,38 +251,6 @@ class Client {
     return SearchSuggest.fromJson(jsonDecode(result)["result"]);
   }
 
-  Future<Dashboard> rotorStationsDashboard() async {
-    ///Получение рекомендованных станций текущего пользователя
-    var result = await RequestClient(headers: headers).requestGet("/rotor/stations/dashboard");
-    return Dashboard.fromJson(jsonDecode(result)["result"]);
-  }
-
-  Future<ListStations> rotorStationsList() async {
-    ///Получение всех радиостанций с настройками пользователя
-    var result = await RequestClient(headers: headers).requestGet("/rotor/stations/list");
-    return ListStations.fromJson(jsonDecode(result));
-  }
-
-  Future<RotorTracks> rotorStationTracks(String station) async {
-    var result = await RequestClient(headers: headers).requestGet("/rotor/station/$station/tracks");
-    return RotorTracks.fromJson(jsonDecode(result)["result"]);
-  }
-
-  Future<String> rotorStationFeedback(
-      {required RotorFeedback type, required String batchId, String trackId = "0", required String station, int totalPlayedSeconds = 0}) async {
-    String currentTime = "${DateTime.now().toIso8601String()}Z";
-    var data = {
-      "type": type.name,
-      "timestamp": currentTime,
-      "batch-id": batchId,
-      "from": device,
-      "trackId": int.parse(trackId),
-      "totalPlayedSeconds": totalPlayedSeconds.toDouble(),
-    };
-
-    var result = await RequestClient(headers: headers).requestPost(url: "/rotor/station/$station/feedback", body: data);
-    return result;
-  }
 
   Future<MPlaylist> playlist(String uid, String playlistKind) async {
     var result = await RequestClient(headers: headers).requestGet("/users/$uid/playlists/$playlistKind");
