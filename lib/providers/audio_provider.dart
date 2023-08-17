@@ -63,10 +63,13 @@ class AudioProvider extends ChangeNotifier {
           case RadioFeedback.skip:
             await client.radio.sendRadioFeedback(event, _playlistProvider.currentTrack!.id.toString(), await getDuration());
             break;
+          case RadioFeedback.getTracks:
+            await client.radio.sendRadioFeedback(RadioFeedback.trackStarted, _playlistProvider.currentTrack!.id.toString(), 0);
+            break;
           case RadioFeedback.radioStarted:
           case RadioFeedback.off:
           case RadioFeedback.on:
-          case RadioFeedback.getTracks:
+
             break;
         }
       }

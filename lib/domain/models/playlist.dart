@@ -73,7 +73,7 @@ class NewPlaylist with ChangeNotifier {
   }
 
   set tracks(List<Track?>? tracks) {
-    setTracksWithActiveTrack(tracks, 0);
+    setTracksWithActiveTrack(tracks, 0, false);
   }
 
   set currentTrackIndex(int index) {
@@ -90,10 +90,14 @@ class NewPlaylist with ChangeNotifier {
   Future<void> startRadio() async {
     List<Track> tracks = await client.radio.createRadioSession();
     radio = true;
-    setTracksWithActiveTrack(tracks, 0);
+    loopStrategy = NoLoopStrategy();
+    setTracksWithActiveTrack(tracks, 0, false);
   }
 
-  void setTracksWithActiveTrack(List<Track?>? tracks, int index) {
+  void setTracksWithActiveTrack(List<Track?>? tracks, int index, bool stopRadio) {
+    if(stopRadio) {
+      radio = false;
+    }
     _tracks.clear();
     _tracks.addAll(tracks!);
 
@@ -103,7 +107,11 @@ class NewPlaylist with ChangeNotifier {
     _indexing();
 
     // launch events
-    _onPlaylistUpdateController.add(radio);
+    if (radio) {
+      _onTrackChangeController.add(RadioFeedback.getTracks);
+    } else {
+      _onTrackChangeController.add(null);
+    }
     notifyListeners();
   }
 
@@ -173,7 +181,7 @@ class NewPlaylist with ChangeNotifier {
   Future<void> getRadioTrack() async {
     if(radio) {
       List<Track> tracks = await client.radio.getRadioTracks();
-      setTracksWithActiveTrack(tracks, 0);
+      setTracksWithActiveTrack(tracks, 0, false);
     } else {
     }
   }

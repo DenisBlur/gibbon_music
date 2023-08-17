@@ -39,6 +39,7 @@ class Radio {
         body: '{"event":{"type":"radioStarted","from":"radio-mobile-user-onyourwave-default","timestamp":"$timestamp"},"batchId":"$batchId"}');
 
     if (radioStartFeedback.statusCode == 200) {
+      await sendRadioFeedback(RadioFeedback.trackStarted, sequence[0].id.toString(), 0);
       return sequence;
     }
 
@@ -55,7 +56,6 @@ class Radio {
 
     var trackFeedback = await http.post(Uri.parse("$baseUrl/rotor/session/$radioSessionId/feedback"),
         headers: headers, body: feedback == RadioFeedback.trackStarted ? bodyStart : bodySkip);
-    print(trackFeedback.body);
   }
 
   Future<List<Track>> getRadioTracks() async {

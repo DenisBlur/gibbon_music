@@ -62,7 +62,7 @@ class PageArtist extends StatelessWidget {
                               if (allTracks.isEmpty) {
                                 await getAllTracks();
                               }
-                              context.read<NewPlaylist>().setTracksWithActiveTrack(allTracks, index);
+                              context.read<NewPlaylist>().setTracksWithActiveTrack(allTracks, index, true);
                               context.read<AudioProvider>().resume();
                             },
                           ),

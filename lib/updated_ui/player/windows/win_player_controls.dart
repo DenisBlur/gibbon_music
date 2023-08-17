@@ -46,7 +46,7 @@ class PlayerMainControl extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  IconButton(onPressed: () => playList.nextLoop(), icon: Icon(_getIconForLoop(playList.loopStrategy), size: 24)),
+                  context.watch<NewPlaylist>().radio ? const SizedBox() : IconButton(onPressed: () => playList.nextLoop(), icon: Icon(_getIconForLoop(playList.loopStrategy), size: 24)),
                   AppConsts.defaultHSpacer,
                   IconButton(
                       onPressed: () {
@@ -75,7 +75,7 @@ class PlayerMainControl extends StatelessWidget {
                       },
                       icon: const Icon(m.Icons.skip_next_rounded, size: 24)),
                   AppConsts.defaultHSpacer,
-                  IconButton(onPressed: () => playList.shuffle = !playList.shuffled, icon: const Icon(m.Icons.shuffle, size: 24)),
+                  context.watch<NewPlaylist>().radio ? const SizedBox() : IconButton(onPressed: () => playList.shuffle = !playList.shuffled, icon: const Icon(m.Icons.shuffle, size: 24)),
                 ],
               ),
               Row(

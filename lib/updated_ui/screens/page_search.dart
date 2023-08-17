@@ -50,7 +50,7 @@ class PageSearch extends StatelessWidget {
                         widget = TrackCard(
                           track: data,
                           onPressed: () {
-                            context.read<NewPlaylist>().setTracksWithActiveTrack([data], 0);
+                            context.read<NewPlaylist>().setTracksWithActiveTrack([data], 0, true);
                             context.read<AudioProvider>().resume();
                           },
                         );
@@ -91,7 +91,7 @@ class PageSearch extends StatelessWidget {
                         child: TrackCard(
                           track: search.searchResult.tracks!.results![i],
                           onPressed: () {
-                            context.read<NewPlaylist>().setTracksWithActiveTrack(search.searchResult.tracks!.results!, i);
+                            context.read<NewPlaylist>().setTracksWithActiveTrack(search.searchResult.tracks!.results!, i, true);
                             context.read<AudioProvider>().resume();
                           },
                         ),

@@ -49,7 +49,7 @@ class PageAlbum extends StatelessWidget {
                                     track: mPageAlbum.volumes![index],
                                     onPressed: () {
                                       // playListProvider.
-                                      playListProvider.setTracksWithActiveTrack(mPageAlbum.volumes!, index);
+                                      playListProvider.setTracksWithActiveTrack(mPageAlbum.volumes!, index, true);
                                       audioProvider.resume();
                                     },
                                   ),

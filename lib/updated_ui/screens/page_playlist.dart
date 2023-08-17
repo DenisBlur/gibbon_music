@@ -54,7 +54,7 @@ class PagePlaylist extends StatelessWidget {
                                           (e, _) => e?.track,
                                         )
                                         .toList(),
-                                    index);
+                                    index, true);
                                 audioProvider.resume();
                               },
                             ),

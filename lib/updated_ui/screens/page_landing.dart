@@ -26,10 +26,6 @@ class UPageLanding extends StatelessWidget {
     LandingProvider landingProvider = context.read();
     landingProvider.dispose();
 
-    void set(List<Track> value) {
-      context.read<NewPlaylist>().setTracksWithActiveTrack(value, 0);
-    }
-
     return FutureBuilder(
       future: landingProvider.init(),
       builder: (context, snapshot) {
@@ -99,7 +95,7 @@ class UPageLanding extends StatelessWidget {
                             child: TrackCard(
                               track: landingProvider.chart[index],
                               onPressed: () {
-                                context.read<NewPlaylist>().setTracksWithActiveTrack(landingProvider.chart, index);
+                                context.read<NewPlaylist>().setTracksWithActiveTrack(landingProvider.chart, index, true);
                                 context.read<AudioProvider>().resume();
                               },
                             ),
