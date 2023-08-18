@@ -29,6 +29,10 @@ class NewPlaylist with ChangeNotifier {
 
   bool get radio => _radio;
 
+  RadioDiversity radioDiversity = RadioDiversity.defaultDiversity;
+  RadioLanguage radioLanguage = RadioLanguage.any;
+  RadioMoodEnergy radioMoodEnergy = RadioMoodEnergy.all;
+
   set radio(bool value) {
     _radio = value;
     notifyListeners();
@@ -88,6 +92,23 @@ class NewPlaylist with ChangeNotifier {
   }
 
   Future<void> startRadio() async {
+    List<Track> tracks = await client.radio.startRotorRadio();
+    radio = true;
+    loopStrategy = NoLoopStrategy();
+    setTracksWithActiveTrack(tracks, 0, false);
+  }
+
+  Future<void> updateRadio({RadioDiversity radioDiversity = RadioDiversity.none, RadioMoodEnergy radioMoodEnergy = RadioMoodEnergy.none, RadioLanguage radioLanguage = RadioLanguage.none}) async {
+    if(radioDiversity != RadioDiversity.none){
+      this.radioDiversity = radioDiversity;
+    }
+    if(radioMoodEnergy != RadioMoodEnergy.none){
+      this.radioMoodEnergy = radioMoodEnergy;
+    }
+    if(radioLanguage != RadioLanguage.none){
+      this.radioLanguage = radioLanguage;
+    }
+    await client.radio.sendRotorStationSetting(radioDiversity: this.radioDiversity, radioMoodEnergy: this.radioMoodEnergy, radioLanguage: this.radioLanguage);
     List<Track> tracks = await client.radio.startRotorRadio();
     radio = true;
     loopStrategy = NoLoopStrategy();

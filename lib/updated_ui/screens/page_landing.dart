@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/rendering.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/enums/e_list_typer.dart';
@@ -12,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import 'package:yam_api/enums.dart';
-import 'package:yam_api/track/track.dart';
+import 'package:yam_api/radio/setting2.dart';
 
 import '../../constants/app_consts.dart';
 import '../../providers/landing_provider.dart';
@@ -106,9 +107,57 @@ class UPageLanding extends StatelessWidget {
                                 child: const Text("воспроизвести")),
                             Button(
                                 onPressed: () async {
-                                  await client.radio.startRotorRadio();
+                                  await client.radio.sendRotorStationSetting(
+                                      radioDiversity: RadioDiversity.defaultDiversity,
+                                      radioMoodEnergy: RadioMoodEnergy.all,
+                                      radioLanguage: RadioLanguage.any);
                                 },
                                 child: const Text("тест")),
+                            SizedBox(
+                              width: AppConsts.pageSize(context).width,
+                              height: 26,
+                              child: ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    return FilledButton(
+                                      child: Text(RadioDiversity.values[index].name),
+                                      onPressed: () async {
+                                        await context.read<NewPlaylist>().updateRadio(radioDiversity: RadioDiversity.values[index]);
+                                      },
+                                    );
+                                  },
+                                  itemCount: RadioDiversity.values.length-1,
+                                  scrollDirection: Axis.horizontal),
+                            ),
+                            SizedBox(
+                              width: AppConsts.pageSize(context).width,
+                              height: 26,
+                              child: ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    return FilledButton(
+                                      child: Text(RadioMoodEnergy.values[index].name),
+                                      onPressed: () async {
+                                        await context.read<NewPlaylist>().updateRadio(radioMoodEnergy: RadioMoodEnergy.values[index]);
+                                      },
+                                    );
+                                  },
+                                  itemCount: RadioMoodEnergy.values.length-1,
+                                  scrollDirection: Axis.horizontal),
+                            ),
+                            SizedBox(
+                              width: AppConsts.pageSize(context).width,
+                              height: 26,
+                              child: ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    return FilledButton(
+                                      child: Text(RadioLanguage.values[index].name),
+                                      onPressed: () async {
+                                        await context.read<NewPlaylist>().updateRadio(radioLanguage: RadioLanguage.values[index]);
+                                      },
+                                    );
+                                  },
+                                  itemCount: RadioLanguage.values.length-1,
+                                  scrollDirection: Axis.horizontal),
+                            ),
                           ],
                         )
                       ],
