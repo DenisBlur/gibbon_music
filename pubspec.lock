@@ -1093,8 +1093,8 @@ packages:
   yam_api:
     dependency: "direct main"
     description:
-      path: yam_api
-      relative: true
+      path: "C:\\Users\\der-1\\StudioProjects\\yam_api"
+      relative: false
     source: path
     version: "0.0.1"
 sdks:

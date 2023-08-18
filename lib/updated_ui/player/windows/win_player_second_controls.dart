@@ -31,7 +31,7 @@ class PlayerSecondControl extends StatelessWidget {
                 context.read<UxProvider>().changeLyricState();
               },
               icon: Icon(context.watch<UxProvider>().isOpenLyric ? m.Icons.text_snippet_rounded : m.Icons.text_snippet_outlined, size: 24)),
-          context.watch<NewPlaylist>().radio
+          !context.watch<NewPlaylist>().radio
               ? const SizedBox()
               : IconButton(
                   onPressed: () {

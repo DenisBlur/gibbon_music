@@ -11,20 +11,20 @@ class LyricWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UxProvider uxProvider = context.watch();
-    var backgroundColor = const Color.fromRGBO(24, 24, 24, 1);
+    var backgroundColor = Color.fromRGBO(24, 24, 24, context.watch<UxProvider>().isFullscreen ? .8 : 1);
 
     return Consumer<AudioProvider>(builder: (context, audioProvider, child) {
       return AnimatedPositioned(
-        left: AppConsts.pageSize(context).width / 2 - 300,
-        right: AppConsts.pageSize(context).width / 2 - 300,
-        top: (AppConsts.pageSize(context).height - AppConsts.playerHeight) - (uxProvider.isOpenLyric ? 300 : 0),
-        bottom: AppConsts.playerHeight,
+        left: context.watch<UxProvider>().isFullscreen ? 0 : AppConsts.pageSize(context).width / 2 - 300,
+        right: context.watch<UxProvider>().isFullscreen ? 0 : AppConsts.pageSize(context).width / 2 - 300,
+        top: context.watch<UxProvider>().isFullscreen ? 0 : (AppConsts.pageSize(context).height - AppConsts.playerHeight) - (uxProvider.isOpenLyric ? 300 : 0),
+        bottom: context.watch<UxProvider>().isFullscreen ? 0 : AppConsts.playerHeight,
         duration: AppConsts.slowAnimation,
         curve: AppConsts.defaultCurve,
         child: Container(
           height: 450,
           width: 450,
-          margin: EdgeInsets.only(right: 16, bottom: 32, top: AppConsts.pageSize(context).height / 6),
+          margin: EdgeInsets.only(right: context.watch<UxProvider>().isFullscreen ? 0 : 16, bottom: context.watch<UxProvider>().isFullscreen ? 0 : 32, top: context.watch<UxProvider>().isFullscreen ? 0 : AppConsts.pageSize(context).height / 6),
           decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(8)),
           child: audioProvider.lyric.lines != null
               ? ListView.builder(
@@ -99,12 +99,12 @@ class LyricText extends StatelessWidget {
                   }
 
                   return Padding(
-                    padding: EdgeInsets.only(top: first ? 350 : 0, bottom: last ? 350 : 0),
+                    padding: EdgeInsets.only(top: first ? 350 : 8, bottom: last ? 350 : 8),
                     child: AnimatedDefaultTextStyle(
                       style: TextStyle(
-                          fontSize: select ? 18 : 12,
+                          fontSize: select ? context.watch<UxProvider>().isFullscreen ? 24 : 18 : context.watch<UxProvider>().isFullscreen ? 18 : 16,
                           fontWeight: select ? FontWeight.bold : FontWeight.normal,
-                          color: FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(select ? 1 : .25)),
+                          color: FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(select ? 1 : .4)),
                       duration: AppConsts.slowAnimation,
                       curve: AppConsts.defaultCurve,
                       textAlign: TextAlign.center,

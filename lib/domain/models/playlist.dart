@@ -88,7 +88,7 @@ class NewPlaylist with ChangeNotifier {
   }
 
   Future<void> startRadio() async {
-    List<Track> tracks = await client.radio.createRadioSession();
+    List<Track> tracks = await client.radio.startRotorRadio();
     radio = true;
     loopStrategy = NoLoopStrategy();
     setTracksWithActiveTrack(tracks, 0, false);
@@ -180,7 +180,7 @@ class NewPlaylist with ChangeNotifier {
 
   Future<void> getRadioTrack() async {
     if(radio) {
-      List<Track> tracks = await client.radio.getRadioTracks();
+      List<Track> tracks = await client.radio.getRotorTracks();
       setTracksWithActiveTrack(tracks, 0, false);
     } else {
     }

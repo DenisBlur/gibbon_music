@@ -51,25 +51,37 @@ class AudioProvider extends ChangeNotifier {
     // _playlistProvider.onNextTrackPlay.subscribe((args) => _changeTrack());
 
     _onTrackChangeSubscribe = _playlistProvider.onTrackChange.listen((event) async {
-
-      if(event is RadioFeedback) {
-        await client.radio.sendRadioFeedback(RadioFeedback.trackStarted, _playlistProvider.currentTrack!.id.toString(), 0);
-        switch(event) {
+      if (event is RadioFeedback) {
+        await client.radio.sendRotorRadioFeedback(
+            feedback: RadioFeedback.trackStarted,
+            trackId: _playlistProvider.currentTrack!.id.toString(),
+            albumId: _playlistProvider.currentTrack!.albums![0].id.toString());
+        switch (event) {
           case RadioFeedback.trackStarted:
             break;
           case RadioFeedback.trackFinished:
-            await client.radio.sendRadioFeedback(event, _playlistProvider.currentTrack!.id.toString(), 0.1);
+            await client.radio.sendRotorRadioFeedback(
+                feedback: event,
+                trackId: _playlistProvider.currentTrack!.id.toString(),
+                albumId: _playlistProvider.currentTrack!.albums![0].id.toString(),
+                seconds: 0.1);
             break;
           case RadioFeedback.skip:
-            await client.radio.sendRadioFeedback(event, _playlistProvider.currentTrack!.id.toString(), await getDuration());
+            await client.radio.sendRotorRadioFeedback(
+                feedback: event,
+                trackId: _playlistProvider.currentTrack!.id.toString(),
+                albumId: _playlistProvider.currentTrack!.albums![0].id.toString(),
+                seconds: await getDuration());
             break;
           case RadioFeedback.getTracks:
-            await client.radio.sendRadioFeedback(RadioFeedback.trackStarted, _playlistProvider.currentTrack!.id.toString(), 0);
+            await client.radio.sendRotorRadioFeedback(
+                feedback: RadioFeedback.trackStarted,
+                trackId: _playlistProvider.currentTrack!.id.toString(),
+                albumId: _playlistProvider.currentTrack!.albums![0].id.toString());
             break;
           case RadioFeedback.radioStarted:
           case RadioFeedback.off:
           case RadioFeedback.on:
-
             break;
         }
       }
@@ -78,17 +90,17 @@ class AudioProvider extends ChangeNotifier {
         pause();
       } else {
         preloadTrack(_playlistProvider.currentTrack!);
-        if (currentTrack!.backgroundVideoUri != null && currentTrack!.backgroundVideoUri != " " && currentTrack!.backgroundVideoUri != "") {
-          meeduPlayerController.setDataSource(
-            mp.DataSource(
-              type: mp.DataSourceType.network,
-              source: currentTrack!.backgroundVideoUri,
-            ),
-            autoplay: true,
-            looping: true,
-          );
-          meeduPlayerController.toggleVideoFit();
-        }
+        // if (currentTrack!.backgroundVideoUri != null && currentTrack!.backgroundVideoUri != " " && currentTrack!.backgroundVideoUri != "") {
+        //   meeduPlayerController.setDataSource(
+        //     mp.DataSource(
+        //       type: mp.DataSourceType.network,
+        //       source: currentTrack!.backgroundVideoUri,
+        //     ),
+        //     autoplay: true,
+        //     looping: true,
+        //   );
+        //   meeduPlayerController.toggleVideoFit();
+        // }
       }
 
       notifyListeners();
@@ -147,8 +159,8 @@ class AudioProvider extends ChangeNotifier {
   }
 
   Future<double> getDuration() async {
-   var position =  await _player.getCurrentPosition();
-   return position!.inSeconds.toDouble();
+    var position = await _player.getCurrentPosition();
+    return position!.inSeconds.toDouble();
   }
 
   @override

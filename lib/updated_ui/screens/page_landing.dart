@@ -23,6 +23,8 @@ class UPageLanding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color waveColors = FluentTheme.of(context).accentColor;
+
     LandingProvider landingProvider = context.read();
     landingProvider.dispose();
 
@@ -32,14 +34,100 @@ class UPageLanding extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           return CustomScaffold(
             children: [
-              Button(
-                  onPressed: () async {
-                    await context.read<NewPlaylist>().startRadio();
-                  },
-                  child: const Text("воспроизвести")),
               const Text(
                 "Главная",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
+              ),
+              AppConsts.defaultVSpacer,
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: [
+                          FluentTheme.of(context).cardColor,
+                          FluentTheme.of(context).cardColor.withOpacity(.1),
+                        ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                        borderRadius: BorderRadius.circular(8)),
+                    width: AppConsts.pageSize(context).width / 3,
+                    height: 350,
+                    child: Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: WaveWidget(
+                            config: CustomConfig(colors: [
+                              waveColors.withOpacity(0.1),
+                              waveColors.withOpacity(0.2),
+                              waveColors.withOpacity(0.4),
+                              waveColors.withOpacity(0.6),
+                              waveColors,
+                            ], durations: [
+                              9600,
+                              9700,
+                              9800,
+                              9900,
+                              10000
+                            ], heightPercentages: [
+                              0.2,
+                              0.3,
+                              0.4,
+                              0.5,
+                              0.6
+                            ]),
+                            size: const Size(double.infinity, double.infinity),
+                          ),
+                        ),
+                        Container(
+                          width: AppConsts.pageSize(context).width,
+                          height: 350,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                                Colors.black.withOpacity(.25),
+                                Colors.black,
+                              ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                              borderRadius: BorderRadius.circular(8)),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: AppConsts.pageSize(context).width / 3,
+                            ),
+                            const Text(
+                              "МОЯ ВОЛНА",
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                            ),
+                            AppConsts.defaultVSpacer,
+                            Button(
+                                onPressed: () async {
+                                  await context.read<NewPlaylist>().startRadio();
+                                },
+                                child: const Text("воспроизвести")),
+                            Button(
+                                onPressed: () async {
+                                  await client.radio.startRotorRadio();
+                                },
+                                child: const Text("тест")),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  AppConsts.bigHSpacer,
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                        FluentTheme.of(context).accentColor.light,
+                        FluentTheme.of(context).accentColor.darkest,
+                      ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    width: 350,
+                    height: 350,
+                  ),
+                  AppConsts.smallHSpacer,
+                ],
               ),
               AppConsts.defaultVSpacer,
               if (landingProvider.collections.isNotEmpty)
