@@ -1,5 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/rendering.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/enums/e_list_typer.dart';
@@ -8,6 +7,7 @@ import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 import 'package:gibbon_music/updated_ui/widgets/dynamic_list.dart';
+import 'package:gibbon_music/updated_ui/widgets/radio_widget.dart';
 import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
 import 'package:wave/config.dart';
@@ -24,7 +24,6 @@ class UPageLanding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color waveColors = FluentTheme.of(context).accentColor;
 
     LandingProvider landingProvider = context.read();
     landingProvider.dispose();
@@ -40,144 +39,7 @@ class UPageLanding extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
               ),
               AppConsts.defaultVSpacer,
-              Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          FluentTheme.of(context).cardColor,
-                          FluentTheme.of(context).cardColor.withOpacity(.1),
-                        ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                        borderRadius: BorderRadius.circular(8)),
-                    width: AppConsts.pageSize(context).width / 3,
-                    height: 350,
-                    child: Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: WaveWidget(
-                            config: CustomConfig(colors: [
-                              waveColors.withOpacity(0.1),
-                              waveColors.withOpacity(0.2),
-                              waveColors.withOpacity(0.4),
-                              waveColors.withOpacity(0.6),
-                              waveColors,
-                            ], durations: [
-                              9600,
-                              9700,
-                              9800,
-                              9900,
-                              10000
-                            ], heightPercentages: [
-                              0.2,
-                              0.3,
-                              0.4,
-                              0.5,
-                              0.6
-                            ]),
-                            size: const Size(double.infinity, double.infinity),
-                          ),
-                        ),
-                        Container(
-                          width: AppConsts.pageSize(context).width,
-                          height: 350,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                                Colors.black.withOpacity(.25),
-                                Colors.black,
-                              ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: AppConsts.pageSize(context).width / 3,
-                            ),
-                            const Text(
-                              "МОЯ ВОЛНА",
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                            ),
-                            AppConsts.defaultVSpacer,
-                            Button(
-                                onPressed: () async {
-                                  await context.read<NewPlaylist>().startRadio();
-                                },
-                                child: const Text("воспроизвести")),
-                            Button(
-                                onPressed: () async {
-                                  await client.radio.sendRotorStationSetting(
-                                      radioDiversity: RadioDiversity.defaultDiversity,
-                                      radioMoodEnergy: RadioMoodEnergy.all,
-                                      radioLanguage: RadioLanguage.any);
-                                },
-                                child: const Text("тест")),
-                            SizedBox(
-                              width: AppConsts.pageSize(context).width,
-                              height: 26,
-                              child: ListView.builder(
-                                  itemBuilder: (context, index) {
-                                    return FilledButton(
-                                      child: Text(RadioDiversity.values[index].name),
-                                      onPressed: () async {
-                                        await context.read<NewPlaylist>().updateRadio(radioDiversity: RadioDiversity.values[index]);
-                                      },
-                                    );
-                                  },
-                                  itemCount: RadioDiversity.values.length-1,
-                                  scrollDirection: Axis.horizontal),
-                            ),
-                            SizedBox(
-                              width: AppConsts.pageSize(context).width,
-                              height: 26,
-                              child: ListView.builder(
-                                  itemBuilder: (context, index) {
-                                    return FilledButton(
-                                      child: Text(RadioMoodEnergy.values[index].name),
-                                      onPressed: () async {
-                                        await context.read<NewPlaylist>().updateRadio(radioMoodEnergy: RadioMoodEnergy.values[index]);
-                                      },
-                                    );
-                                  },
-                                  itemCount: RadioMoodEnergy.values.length-1,
-                                  scrollDirection: Axis.horizontal),
-                            ),
-                            SizedBox(
-                              width: AppConsts.pageSize(context).width,
-                              height: 26,
-                              child: ListView.builder(
-                                  itemBuilder: (context, index) {
-                                    return FilledButton(
-                                      child: Text(RadioLanguage.values[index].name),
-                                      onPressed: () async {
-                                        await context.read<NewPlaylist>().updateRadio(radioLanguage: RadioLanguage.values[index]);
-                                      },
-                                    );
-                                  },
-                                  itemCount: RadioLanguage.values.length-1,
-                                  scrollDirection: Axis.horizontal),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  AppConsts.bigHSpacer,
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                        FluentTheme.of(context).accentColor.light,
-                        FluentTheme.of(context).accentColor.darkest,
-                      ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    width: 350,
-                    height: 350,
-                  ),
-                  AppConsts.smallHSpacer,
-                ],
-              ),
+              const RadioWidget(),
               AppConsts.defaultVSpacer,
               if (landingProvider.collections.isNotEmpty)
                 DynamicListWidget(

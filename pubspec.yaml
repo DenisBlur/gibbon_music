@@ -29,7 +29,7 @@ dependencies:
   flutter_meedu_videoplayer: any
   image: any
   yam_api:
-    path: API_PATH
+    path: C:\Users\der-1\StudioProjects\yam_api
   event: any
   async: any
   stack: any

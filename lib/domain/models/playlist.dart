@@ -113,6 +113,7 @@ class NewPlaylist with ChangeNotifier {
     radio = true;
     loopStrategy = NoLoopStrategy();
     setTracksWithActiveTrack(tracks, 0, false);
+    notifyListeners();
   }
 
   void setTracksWithActiveTrack(List<Track?>? tracks, int index, bool stopRadio) {
