@@ -90,17 +90,17 @@ class AudioProvider extends ChangeNotifier {
         pause();
       } else {
         preloadTrack(_playlistProvider.currentTrack!);
-        // if (currentTrack!.backgroundVideoUri != null && currentTrack!.backgroundVideoUri != " " && currentTrack!.backgroundVideoUri != "") {
-        //   meeduPlayerController.setDataSource(
-        //     mp.DataSource(
-        //       type: mp.DataSourceType.network,
-        //       source: currentTrack!.backgroundVideoUri,
-        //     ),
-        //     autoplay: true,
-        //     looping: true,
-        //   );
-        //   meeduPlayerController.toggleVideoFit();
-        // }
+        if (currentTrack!.backgroundVideoUri != null && currentTrack!.backgroundVideoUri != " " && currentTrack!.backgroundVideoUri != "") {
+          meeduPlayerController.setDataSource(
+            mp.DataSource(
+              type: mp.DataSourceType.network,
+              source: currentTrack!.backgroundVideoUri,
+            ),
+            autoplay: true,
+            looping: true,
+          );
+          meeduPlayerController.toggleVideoFit();
+        }
       }
 
       notifyListeners();

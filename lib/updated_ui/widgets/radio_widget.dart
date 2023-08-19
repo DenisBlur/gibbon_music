@@ -1,8 +1,11 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import 'package:yam_api/enums.dart';
+import 'package:flutter/material.dart' as m;
 
 import '../../constants/app_consts.dart';
 import '../../domain/models/playlist.dart';
@@ -13,16 +16,13 @@ class RadioWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color waveColors = FluentTheme.of(context).accentColor;
+    AudioProvider au = context.read();
+    NewPlaylist playlistProvider = context.read();
 
     return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            FluentTheme.of(context).cardColor,
-            FluentTheme.of(context).cardColor.withOpacity(.1),
-          ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-          borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(color: const Color.fromRGBO(20, 20, 20, 1), borderRadius: BorderRadius.circular(8)),
       width: AppConsts.pageSize(context).width,
-      height: 350,
+      height: 650,
       child: Stack(
         children: [
           ClipRRect(
@@ -52,12 +52,24 @@ class RadioWidget extends StatelessWidget {
           ),
           Container(
             width: AppConsts.pageSize(context).width,
-            height: 350,
+            height: 650,
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
+                  Colors.black,
                   Colors.black.withOpacity(.25),
                   Colors.black,
                 ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                borderRadius: BorderRadius.circular(8)),
+          ),
+          Container(
+            width: AppConsts.pageSize(context).width,
+            height: 650,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  Colors.black,
+                  Colors.black.withOpacity(.25),
+                  Colors.black,
+                ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
                 borderRadius: BorderRadius.circular(8)),
           ),
           Column(
@@ -67,17 +79,38 @@ class RadioWidget extends StatelessWidget {
               SizedBox(
                 width: AppConsts.pageSize(context).width,
               ),
-              const Text(
-                "МОЯ ВОЛНА",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-              ),
               AppConsts.defaultVSpacer,
               Button(
                   onPressed: () async {
-                    await context.read<NewPlaylist>().startRadio();
+                    if (playlistProvider.radio) {
+                      if (au.playerState == PlayerState.playing) {
+                        au.pause();
+                      } else {
+                        au.resume();
+                      }
+                    } else {
+                      await playlistProvider.startRadio();
+                    }
                   },
-                  child: const Text("воспроизвести")),
+                  style: ButtonStyle(
+                    backgroundColor: ButtonState.all(Colors.transparent),
+                    border: ButtonState.all(BorderSide(color: Colors.transparent))
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(playlistProvider.radio ? context.watch<AudioProvider>().icon() : m.Icons.play_arrow, size: 28),
+                      AppConsts.defaultHSpacer,
+                      Text(
+                        "МОЯ ВОЛНА".toUpperCase(),
+                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  )),
               AppConsts.defaultVSpacer,
+              Text("ПО ХАРАКТЕРУ", style: TextStyle(fontWeight: FontWeight.bold, color: FluentTheme.of(context).cardColor.withOpacity(.6), fontSize: 12),),
+              AppConsts.smallVSpacer,
               SizedBox(
                 width: 136 * (RadioDiversity.values.length - 1),
                 height: 46,
@@ -95,6 +128,8 @@ class RadioWidget extends StatelessWidget {
                     scrollDirection: Axis.horizontal),
               ),
               AppConsts.defaultVSpacer,
+              Text("ПОД НАСТРОЕНИЕ", style: TextStyle(fontWeight: FontWeight.bold, color: FluentTheme.of(context).cardColor.withOpacity(.6), fontSize: 12),),
+              AppConsts.smallVSpacer,
               SizedBox(
                 width: 136 * (RadioMoodEnergy.values.length - 1),
                 height: 46,
@@ -112,6 +147,8 @@ class RadioWidget extends StatelessWidget {
                     scrollDirection: Axis.horizontal),
               ),
               AppConsts.defaultVSpacer,
+              Text("ПО ЯЗЫКУ", style: TextStyle(fontWeight: FontWeight.bold, color: FluentTheme.of(context).cardColor.withOpacity(.6), fontSize: 12),),
+              AppConsts.smallVSpacer,
               SizedBox(
                 width: 136 * (RadioLanguage.values.length - 1),
                 height: 46,
@@ -148,13 +185,23 @@ class RadioChangeButton extends StatelessWidget {
     return HoverButton(
       onPressed: () => voidCallback(),
       builder: (p0, state) {
-        return AnimatedContainer(
-          width: 120,
-          margin: const EdgeInsets.only(left: 8, right: 8),
-          duration: AppConsts.slowAnimation,
+        return AnimatedScale(
+          scale: state.isPressing
+              ? .8
+              : state.isHovering
+                  ? .9
+                  : 1,
+          duration: AppConsts.defaultAnimation,
           curve: AppConsts.defaultCurve,
-          decoration: BoxDecoration(color: selected ? FluentTheme.of(context).accentColor : Color.fromRGBO(50, 50, 50, 1), borderRadius: BorderRadius.circular(24)),
-          child: Center(child: Text(title)),
+          child: AnimatedContainer(
+            width: 120,
+            margin: const EdgeInsets.only(left: 8, right: 8),
+            duration: AppConsts.slowAnimation,
+            curve: AppConsts.defaultCurve,
+            decoration: BoxDecoration(
+                color: selected ? FluentTheme.of(context).accentColor : const Color.fromRGBO(50, 50, 50, 1), borderRadius: BorderRadius.circular(24)),
+            child: Center(child: Text(title)),
+          ),
         );
       },
     );

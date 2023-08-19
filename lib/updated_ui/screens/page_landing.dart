@@ -34,11 +34,6 @@ class UPageLanding extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           return CustomScaffold(
             children: [
-              const Text(
-                "Главная",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
-              ),
-              AppConsts.defaultVSpacer,
               const RadioWidget(),
               AppConsts.defaultVSpacer,
               if (landingProvider.collections.isNotEmpty)

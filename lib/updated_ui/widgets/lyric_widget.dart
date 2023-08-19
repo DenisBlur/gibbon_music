@@ -15,9 +15,9 @@ class LyricWidget extends StatelessWidget {
 
     return Consumer<AudioProvider>(builder: (context, audioProvider, child) {
       return AnimatedPositioned(
-        left: context.watch<UxProvider>().isFullscreen ? 0 : AppConsts.pageSize(context).width / 2 - 300,
-        right: context.watch<UxProvider>().isFullscreen ? 0 : AppConsts.pageSize(context).width / 2 - 300,
-        top: context.watch<UxProvider>().isFullscreen ? 0 : (AppConsts.pageSize(context).height - AppConsts.playerHeight) - (uxProvider.isOpenLyric ? 300 : 0),
+        left: context.watch<UxProvider>().isFullscreen ? 0 : AppConsts.pageSize(context).width / 2 - 450,
+        right: context.watch<UxProvider>().isFullscreen ? 0 : AppConsts.pageSize(context).width / 2 - 450,
+        top: context.watch<UxProvider>().isFullscreen ? 0 : (AppConsts.pageSize(context).height - AppConsts.playerHeight) - (uxProvider.isOpenLyric ? 450 : 0),
         bottom: context.watch<UxProvider>().isFullscreen ? 0 : AppConsts.playerHeight,
         duration: AppConsts.slowAnimation,
         curve: AppConsts.defaultCurve,
