@@ -19,7 +19,6 @@ import 'package:gibbon_music/providers/search_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/providers/yandex_provider.dart';
 import 'package:gibbon_music/updated_ui/screens/page_auth.dart';
-import 'package:gibbon_music/updated_ui/screens/page_welcome.dart';
 import 'package:gibbon_music/updated_ui/widgets/loading_ring.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -86,21 +85,6 @@ class _AppState extends State<App> {
     super.initState();
   }
 
-  Future<Widget> getData() async {
-    DataModel dataModel = DataModel();
-    bool? check = await dataModel.findKey(AppConsts.firstSetupKey);
-    if (check!) {
-      bool? firstSetup = await dataModel.readBoolData(AppConsts.firstSetupKey);
-      if (firstSetup!) {
-        return const PageAuth();
-      } else {
-        return const PageWelcome();
-      }
-    } else {
-      return const PageWelcome();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -113,16 +97,8 @@ class _AppState extends State<App> {
           ),
           debugShowCheckedModeBanner: false,
           showSemanticsDebugger: false,
-          home: SafeArea(
-            child: FutureBuilder(
-                future: getData(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return snapshot.data as Widget;
-                  } else {
-                    return const LoadingRing();
-                  }
-                }),
+          home: const SafeArea(
+            child: PageAuth(),
           ),
         );
       },

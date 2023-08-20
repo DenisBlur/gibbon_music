@@ -77,6 +77,13 @@ class ContextWidget extends StatelessWidget {
                         },
                         child: const Text("Добавить после текущего")),
                     AppConsts.smallVSpacer,
+                    Button(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          context.read<NewPlaylist>().startRadio(station: "track:${track.albums![0].id}");
+                        },
+                        child: const Text("Моя волна по треку")),
+                    AppConsts.smallVSpacer,
                     Text(
                       "Исполнители",
                       style: AppStyle.subTitle(context),

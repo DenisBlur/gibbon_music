@@ -91,7 +91,7 @@ class NewPlaylist with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> startRadio() async {
+  Future<void> startRadio({String station = "user:onyourwave"}) async {
     List<Track> tracks = await client.radio.startRotorRadio();
     radio = true;
     loopStrategy = NoLoopStrategy();

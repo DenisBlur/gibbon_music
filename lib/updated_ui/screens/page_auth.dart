@@ -89,40 +89,52 @@ class _PageAuthState extends State<PageAuth> {
                 child: Container(
                   width: AppConsts.pageSize(context).width,
                   height: AppConsts.pageSize(context).height,
-                  decoration: BoxDecoration(
-                    color: FluentTheme.of(context).cardColor.withOpacity(.4),
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(20, 20, 20, .4),
                   ),
                 ),
               ),
             ),
-            PageView(
-              controller: pageController,
+            Row(
               children: [
-                Center(
+                Container(
+                  width: 350,
+                  color: const Color.fromRGBO(20, 20, 20, 1),
+                  padding: const EdgeInsets.all(64),
+                  height: AppConsts.pageSize(context).height,
                   child: tokenAuth(),
                 ),
-                if (Platform.isWindows)
-                  Column(
-                    children: [
-                      Container(
-                        color: FluentTheme.of(context).scaffoldBackgroundColor,
-                        padding: const EdgeInsets.all(16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Button(
-                                onPressed: () {
-                                  pageController.animateToPage(0, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve);
-                                },
-                                child: const Text("back")),
-                            AppConsts.defaultHSpacer,
-                            const Text("Is the browser not working? go back to the previous authorization method.")
+                Expanded(
+                  child: PageView(
+                    controller: pageController,
+                    children: const [
+                      Center(
+                        child: UpdateWidget(
+                          title: "RADIO UPDATE",
+                          corrections: [
+                            "Теперь музыка всегда играет только в высоком качестве",
+                            "Исправлены ошибки",
+                            "Обновлена главная страница",
+                            "Обновлена страница авторизации",
+                            "Обвнолены виджеты: Артист, Альбом, Плейлист",
+                          ],
+                          adding: [
+                            "Радио",
+                            "Выбор настроек для радио",
+                            "Текст песен [BETA]",
+                          ],
+                          remove: [
+                            "Темы",
+                            'Страница "Настройки"',
+                            "Боковое меню",
+                            "Некоторые библиотеки",
+                            "Получение токена через браузер внутри приложения"
                           ],
                         ),
                       )
                     ],
-                  )
+                  ),
+                ),
               ],
             ),
             const Header(menu: false),
@@ -131,60 +143,131 @@ class _PageAuthState extends State<PageAuth> {
   }
 
   Widget tokenAuth() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Text(
+          "Авторизация",
+          style: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        AppConsts.bigVSpacer,
+        TextBox(
+          controller: textEditingController,
+          onSubmitted: (value) {
+            initToken(value);
+          },
+          maxLines: 1,
+          placeholder: "Ваш токен",
+        ),
+        AppConsts.smallVSpacer,
+        Button(
+            onPressed: () {
+              initToken(textEditingController.text);
+            },
+            child: const Text("Войти")),
+        AppConsts.bigVSpacer,
+        Button(
+            onPressed: () async {
+              if (!await launchUrl(Uri.parse(AppConsts.tokenGetLink))) {
+                throw Exception('Could not launch');
+              }
+            },
+            style: ButtonStyle(
+                backgroundColor: ButtonState.all(Colors.transparent), border: ButtonState.all(const BorderSide(color: Colors.transparent))),
+            child: const Text("как мне узнать токен?")),
+      ],
+    );
+  }
+}
+
+class UpdateWidget extends StatelessWidget {
+  const UpdateWidget(
+      {Key? key, this.corrections = const ["Без изменений"], this.adding = const ["Без изменений"], this.remove = const ["Без изменений"], required this.title})
+      : super(key: key);
+
+  final String title;
+  final List<String> corrections;
+  final List<String> adding;
+  final List<String> remove;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-            height: 300,
-            constraints: const BoxConstraints(maxWidth: 300),
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(20, 20, 20, .8),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      width: AppConsts.pageSize(context).width / 2,
+      height: AppConsts.pageSize(context).height / 1.5,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage,
+                    image: "https://cdn.dribbble.com/userupload/4484825/file/original-36fd81878bb930608eabf4da7c60f48d.png?resize=1024x1280",
+                    width: AppConsts.pageSize(context).width,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Container(
+                        color: const Color.fromRGBO(20, 20, 20, .6),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
-                    color: FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(.8),
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        "MUSIC",
-                        style: AppStyle.subTitle(context),
-                      ),
-                      AppConsts.smallVSpacer,
-                      TextBox(
-                        controller: textEditingController,
-                        onSubmitted: (value) {
-                          initToken(value);
-                        },
-                        maxLines: 1,
-                        placeholder: "User token",
-                      ),
-                      AppConsts.smallVSpacer,
-                      Button(
-                          onPressed: () {
-                            initToken(textEditingController.text);
-                          },
-                          child: const Text("Log in")),
-                      AppConsts.smallVSpacer,
-                      Button(
-                          onPressed: () async {
-                            if (!await launchUrl(Uri.parse(AppConsts.tokenGetLink))) {
-                              throw Exception('Could not launch');
-                            }
-                          },
-                          child: const Text("how do I find out the token?")),
-                    ],
-                  ),
-                ),
-              ],
-            ))
-        .animate(target: errorAuth ? 1 : 0)
-        .shimmer(color: FluentTheme.of(context).accentColor, delay: 400.ms, duration: 1800.ms)
-        .color(end: Colors.red)
-        .scaleXY(end: 1.1, curve: Curves.easeInOutCubic)
-        .shakeX(hz: 10, curve: Curves.easeInOutCubic);
+                  )
+                ],
+              ),
+            ),
+            AppConsts.defaultVSpacer,
+            const Text(
+              "Исправления",
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+            for (int i = 0; i < corrections.length; i++) Text("-${corrections[i]}", style: TextStyle(fontSize: 12, color: Colors.white.withOpacity(.6))),
+            AppConsts.defaultVSpacer,
+            const Text(
+              "Добавлено",
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+            for (int i = 0; i < adding.length; i++) Text("-${adding[i]}", style: TextStyle(fontSize: 12, color: Colors.white.withOpacity(.6))),
+            AppConsts.defaultVSpacer,
+            const Text(
+              "Удалено",
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
+            for (int i = 0; i < remove.length; i++) Text("-${remove[i]}", style: TextStyle(fontSize: 12, color: Colors.white.withOpacity(.6))),
+          ],
+        ),
+      ),
+    );
   }
 }
