@@ -117,9 +117,13 @@ class AudioProvider extends ChangeNotifier {
   void preloadTrack(Track track) async {
     await _player.pause();
     setSeek(0);
-    await client.queue.playAudio(_playlistProvider.currentTrack!.id!, _playlistProvider.currentTrack!.albums![0].id.toString(),
-        _playlistProvider.currentTrack!.durationMs!.toDouble());
-    lyric = await client.getTrackLyric(_playlistProvider.currentTrack!);
+    if(_playlistProvider.currentTrack!.albums!.isNotEmpty) {
+      client.queue.playAudio(_playlistProvider.currentTrack!.id!, _playlistProvider.currentTrack!.albums![0].id.toString(),
+          _playlistProvider.currentTrack!.durationMs!.toDouble());
+    }
+    client.getTrackLyric(_playlistProvider.currentTrack!).then((value) {
+      lyric = value;
+    });
     await _getTrackURLAsyncOperation?.cancel();
     _getTrackURLAsyncOperation = CancelableOperation.fromFuture(client.downloadTrack(trackId: track.id, quality: QualityTrack.low));
     _getTrackURLAsyncOperation?.then((trackURL) => _playTrack(trackURL));
