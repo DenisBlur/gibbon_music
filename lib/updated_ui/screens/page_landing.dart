@@ -24,7 +24,6 @@ class UPageLanding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     LandingProvider landingProvider = context.read();
     landingProvider.dispose();
 
@@ -35,6 +34,7 @@ class UPageLanding extends StatelessWidget {
           return CustomScaffold(
             children: [
               const RadioWidget(),
+
               AppConsts.defaultVSpacer,
               if (landingProvider.collections.isNotEmpty)
                 DynamicListWidget(
@@ -42,6 +42,8 @@ class UPageLanding extends StatelessWidget {
                   title: 'Ваши плейлисты',
                 ),
               AppConsts.defaultVSpacer,
+              if (landingProvider.playContext.isNotEmpty) DynamicListWidget(listData: landingProvider.playContext, title: 'Вы недавно слушали'),
+              if (landingProvider.playContext.isNotEmpty) AppConsts.defaultVSpacer,
               if (landingProvider.collections.isNotEmpty)
                 DynamicListWidget(
                   listData: landingProvider.collections,
@@ -65,8 +67,6 @@ class UPageLanding extends StatelessWidget {
                 title: 'Новые релизы',
               ),
               AppConsts.defaultVSpacer,
-              if (landingProvider.playContext.isNotEmpty) DynamicListWidget(listData: landingProvider.playContext, title: 'Вы недавно слушали'),
-              if (landingProvider.playContext.isNotEmpty) AppConsts.defaultVSpacer,
               Row(
                 children: [
                   Text(
@@ -89,7 +89,7 @@ class UPageLanding extends StatelessWidget {
                             child: TrackCard(
                               track: landingProvider.chart[index],
                               onPressed: () {
-                                context.read<NewPlaylist>().setTracksWithActiveTrack(landingProvider.chart, index, true);
+                                context.read<NewPlaylist>().setTracksWithActiveTrack("414787002:1076", QueueType.various, landingProvider.chart, index, true);
                                 context.read<AudioProvider>().resume();
                               },
                             ),

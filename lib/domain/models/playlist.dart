@@ -11,7 +11,16 @@ import 'package:yam_api/track/track.dart';
 import '../../main.dart';
 
 class NewPlaylist with ChangeNotifier {
-  NewPlaylist();
+  NewPlaylist() {
+    firstQueue();
+  }
+
+  firstQueue() async {
+    await client.queue.getQueue().then((value) async {
+      radio = value;
+      setTracksWithActiveTrack(client.radio.currentStation, QueueType.radio, await client.queue.getQueueTracks(), client.queue.currentPosition, value);
+    });
+  }
 
   final List<IPlaylistLoopStrategy> _loops = [
     PlaylistLoopStrategy(),
@@ -77,7 +86,7 @@ class NewPlaylist with ChangeNotifier {
   }
 
   set tracks(List<Track?>? tracks) {
-    setTracksWithActiveTrack(tracks, 0, false);
+    setTracksWithActiveTrack(client.radio.currentStation, QueueType.radio, tracks, 0, false);
   }
 
   set currentTrackIndex(int index) {
@@ -91,11 +100,13 @@ class NewPlaylist with ChangeNotifier {
     notifyListeners();
   }
 
+
+
   Future<void> startRadio({String station = "user:onyourwave"}) async {
     List<Track> tracks = await client.radio.startRotorRadio();
     radio = true;
     loopStrategy = NoLoopStrategy();
-    setTracksWithActiveTrack(tracks, 0, false);
+    setTracksWithActiveTrack(client.radio.currentStation, QueueType.radio, tracks, 0, false);
   }
 
   Future<void> updateRadio({RadioDiversity radioDiversity = RadioDiversity.none, RadioMoodEnergy radioMoodEnergy = RadioMoodEnergy.none, RadioLanguage radioLanguage = RadioLanguage.none}) async {
@@ -112,14 +123,15 @@ class NewPlaylist with ChangeNotifier {
     List<Track> tracks = await client.radio.startRotorRadio();
     radio = true;
     loopStrategy = NoLoopStrategy();
-    setTracksWithActiveTrack(tracks, 0, false);
+    setTracksWithActiveTrack(client.radio.currentStation, QueueType.radio, tracks, 0, false);
     notifyListeners();
   }
 
-  void setTracksWithActiveTrack(List<Track?>? tracks, int index, bool stopRadio) {
+  Future<void> setTracksWithActiveTrack(String id, QueueType type, List<Track?>? tracks, int index, bool stopRadio) async {
     if(stopRadio) {
       radio = false;
     }
+
     _tracks.clear();
     _tracks.addAll(tracks!);
 
@@ -133,6 +145,13 @@ class NewPlaylist with ChangeNotifier {
       _onTrackChangeController.add(RadioFeedback.getTracks);
     } else {
       _onTrackChangeController.add(null);
+    }
+
+    if(client.queue.currentQueueId != id) {
+      client.queue.currentQueueId = id;
+      await client.queue.postQueue(tracks, id, type.name, type.name, index);
+    } else {
+      await client.queue.updateQueue(_loop.currentIndex);
     }
     notifyListeners();
   }
@@ -170,6 +189,7 @@ class NewPlaylist with ChangeNotifier {
     } else {
       _onTrackChangeController.add(null);
     }
+    client.queue.updateQueue(_loop.currentIndex);
     notifyListeners();
   }
 
@@ -183,6 +203,7 @@ class NewPlaylist with ChangeNotifier {
     } else {
       _onTrackChangeController.add(null);
     }
+    client.queue.updateQueue(_loop.currentIndex);
     notifyListeners();
   }
 
@@ -197,14 +218,14 @@ class NewPlaylist with ChangeNotifier {
     } else {
       _onTrackChangeController.add(null);
     }
+    client.queue.updateQueue(_loop.currentIndex);
     notifyListeners();
   }
 
   Future<void> getRadioTrack() async {
     if(radio) {
       List<Track> tracks = await client.radio.getRotorTracks();
-      setTracksWithActiveTrack(tracks, 0, false);
-    } else {
+      setTracksWithActiveTrack(client.radio.currentStation, QueueType.radio, tracks, 0, false);
     }
   }
 

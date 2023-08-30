@@ -230,7 +230,7 @@ class UpdateWidget extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                         child: Text(
                           title,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 26,
                             fontWeight: FontWeight.bold,
                           ),

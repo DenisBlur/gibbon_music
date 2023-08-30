@@ -4,13 +4,10 @@ import 'package:gibbon_music/domain/models/like_model.dart';
 import 'package:yam_api/enums.dart';
 import 'package:yam_api/track/track.dart';
 
-import '../domain/models/queue_model.dart';
-
 class YandexProvider extends ChangeNotifier {
   LikeModel likeModel;
-  QueueModel queueModel;
 
-  YandexProvider({required this.likeModel, required this.queueModel});
+  YandexProvider({required this.likeModel});
 
   bool trackIsLiked(String trackId) {
     return likeModel.trackIsLiked(trackId: trackId);
@@ -47,11 +44,5 @@ class YandexProvider extends ChangeNotifier {
     await likeModel.artistActionLike(artistId: artistId);
     notifyListeners();
   }
-
-  Future createQueue(List<Track?>? tracks, int currentIndex, String objectId, ObjectType type) async {
-    await queueModel.createQueue(tracks, currentIndex, objectId, type);
-  }
-
-  updateQueuePosition() {}
 
 }

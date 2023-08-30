@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:yam_api/artist/artist.dart';
 import 'package:yam_api/artist/brief_info.dart';
+import 'package:yam_api/enums.dart';
 import 'package:yam_api/track/track.dart';
 
 import '../../constants/app_consts.dart';
@@ -62,7 +63,7 @@ class PageArtist extends StatelessWidget {
                               if (allTracks.isEmpty) {
                                 await getAllTracks();
                               }
-                              context.read<NewPlaylist>().setTracksWithActiveTrack(allTracks, index, true);
+                              context.read<NewPlaylist>().setTracksWithActiveTrack(id.toString(), QueueType.various, allTracks, index, true);
                               context.read<AudioProvider>().resume();
                             },
                           ),
@@ -73,7 +74,8 @@ class PageArtist extends StatelessWidget {
               listData: mPageArtist.albums!,
               title: "Популярные альбомы",
               onMore: () async {
-                AppRouter().gotoMore(context: context, title: "Альбомы ${mPageArtist.briefInfo!.name}", future: client.getArtistAlbums(mPageArtist.briefInfo!.id!));
+                AppRouter().gotoMore(
+                    context: context, title: "Альбомы ${mPageArtist.briefInfo!.name}", future: client.getArtistAlbums(mPageArtist.briefInfo!.id!));
               },
             ),
             AppConsts.defaultVSpacer,
@@ -127,10 +129,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                         colors: [Colors.black, Colors.transparent],
                       ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
                     },
-                    child: FadeInImage.memoryNetwork(
-                        placeholder: kTransparentImage,
-                        fit: BoxFit.cover,
-                        image: image),
+                    child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, fit: BoxFit.cover, image: image),
                   ),
                 ),
               ),
@@ -151,14 +150,17 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
             bottom: AppConsts.pageOffset.horizontal / 2,
             left: AppConsts.pageOffset.horizontal / 2,
             child: Transform.translate(
-              offset: Offset(0, lerpDouble(0, -100, shrinkOffset / expandedHeight)!.toDouble()),
-              child: ImageThumbnail(
-                url: image,
-                width: 100,
-                height: 100,
-                radius: 100,
-              ),
-            ),
+                offset: Offset(0, lerpDouble(0, -100, shrinkOffset / expandedHeight)!.toDouble()),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage,
+                    image: image,
+                    width: AppConsts.pageSize(context).width,
+                    height: AppConsts.pageSize(context).height,
+                    fit: BoxFit.cover,
+                  ),
+                )),
           ),
           Positioned(
             top: (expandedHeight - shrinkOffset) - (100 + AppConsts.pageOffset.horizontal / 2),
@@ -167,9 +169,15 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
             child: Transform.translate(
               offset: Offset(0, lerpDouble(0, -100, shrinkOffset / expandedHeight)!.toDouble()),
               child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                const Text("Исполнитель", maxLines: 1, ),
+                const Text(
+                  "Исполнитель",
+                  maxLines: 1,
+                ),
                 Text(info.name!, maxLines: 1, style: AppStyle.title(context)),
-                Text("$stats слушателей за месяц", maxLines: 1, ),
+                Text(
+                  "$stats слушателей за месяц",
+                  maxLines: 1,
+                ),
               ]),
             ),
           ),

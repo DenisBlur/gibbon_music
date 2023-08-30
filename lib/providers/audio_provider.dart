@@ -117,7 +117,7 @@ class AudioProvider extends ChangeNotifier {
   void preloadTrack(Track track) async {
     await _player.pause();
     setSeek(0);
-    await client.playAudio(_playlistProvider.currentTrack!.id!, _playlistProvider.currentTrack!.albums![0].id.toString(),
+    await client.queue.playAudio(_playlistProvider.currentTrack!.id!, _playlistProvider.currentTrack!.albums![0].id.toString(),
         _playlistProvider.currentTrack!.durationMs!.toDouble());
     lyric = await client.getTrackLyric(_playlistProvider.currentTrack!);
     await _getTrackURLAsyncOperation?.cancel();

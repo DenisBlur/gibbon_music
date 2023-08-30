@@ -7,6 +7,7 @@ import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:yam_api/enums.dart';
 import 'package:yam_api/playlist/playlist.dart';
 
 import '../../constants/style_consts.dart';
@@ -48,7 +49,7 @@ class PagePlaylist extends StatelessWidget {
                             child: TrackCard(
                               track: mPagePlaylist.tracks![index]!.track!,
                               onPressed: () {
-                                playListProvider.setTracksWithActiveTrack(
+                                playListProvider.setTracksWithActiveTrack("$id:$kind", QueueType.various,
                                     mPagePlaylist.tracks!
                                         .select(
                                           (e, _) => e?.track,

@@ -7,7 +7,6 @@ import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/domain/models/data_model.dart';
 import 'package:gibbon_music/domain/models/like_model.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
-import 'package:gibbon_music/domain/models/queue_model.dart';
 import 'package:gibbon_music/domain/models/search_model.dart';
 import 'package:gibbon_music/providers/album_page_provider.dart';
 import 'package:gibbon_music/providers/artist_page_provider.dart';
@@ -44,7 +43,7 @@ List<SingleChildWidget> _providers = [
     create: (_) => SearchProvider(searchModel: SearchModel()),
   ),
   ChangeNotifierProvider(
-    create: (context) => YandexProvider(likeModel: LikeModel(), queueModel: QueueModel()),
+    create: (context) => YandexProvider(likeModel: LikeModel()),
   ),
   ChangeNotifierProvider(create: (_) => NewPlaylist()),
   ChangeNotifierProvider(
@@ -61,6 +60,7 @@ List<SingleChildWidget> _providers = [
 Future<void> main() async {
   initMeeduPlayer();
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemTheme.accentColor.load();
   runApp(const App());
 
   if (Platform.isWindows) {

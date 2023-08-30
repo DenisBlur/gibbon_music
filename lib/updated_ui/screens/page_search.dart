@@ -9,12 +9,14 @@ import 'package:gibbon_music/updated_ui/widgets/dynamic_list.dart';
 import 'package:provider/provider.dart';
 import 'package:yam_api/album/album.dart';
 import 'package:yam_api/artist/brief_info.dart';
+import 'package:yam_api/enums.dart';
 import 'package:yam_api/playlist/playlist.dart';
 import 'package:yam_api/track/track.dart';
 
 import '../../domain/models/playlist.dart';
 import '../../providers/audio_provider.dart';
 import '../widgets/aap_card.dart';
+
 class PageSearch extends StatelessWidget {
   const PageSearch({Key? key}) : super(key: key);
 
@@ -50,7 +52,7 @@ class PageSearch extends StatelessWidget {
                         widget = TrackCard(
                           track: data,
                           onPressed: () {
-                            context.read<NewPlaylist>().setTracksWithActiveTrack([data], 0, true);
+                            context.read<NewPlaylist>().setTracksWithActiveTrack("search", QueueType.search, [data], 0, true);
                             context.read<AudioProvider>().resume();
                           },
                         );
@@ -58,7 +60,7 @@ class PageSearch extends StatelessWidget {
                       default:
                         break;
                     }
-                    lists.add( Text(
+                    lists.add(Text(
                       "Лучший результат",
                       style: AppStyle.subTitle(context),
                     ));
@@ -91,7 +93,9 @@ class PageSearch extends StatelessWidget {
                         child: TrackCard(
                           track: search.searchResult.tracks!.results![i],
                           onPressed: () {
-                            context.read<NewPlaylist>().setTracksWithActiveTrack(search.searchResult.tracks!.results!, i, true);
+                            context
+                                .read<NewPlaylist>()
+                                .setTracksWithActiveTrack("search", QueueType.search, search.searchResult.tracks!.results!, i, true);
                             context.read<AudioProvider>().resume();
                           },
                         ),

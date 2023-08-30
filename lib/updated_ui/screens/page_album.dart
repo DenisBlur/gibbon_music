@@ -9,6 +9,7 @@ import 'package:gibbon_music/updated_ui/widgets/loading_ring.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:yam_api/album/album.dart';
+import 'package:yam_api/enums.dart';
 
 import '../../constants/style_consts.dart';
 import '../../providers/album_page_provider.dart';
@@ -49,7 +50,7 @@ class PageAlbum extends StatelessWidget {
                                     track: mPageAlbum.volumes![index],
                                     onPressed: () {
                                       // playListProvider.
-                                      playListProvider.setTracksWithActiveTrack(mPageAlbum.volumes!, index, true);
+                                      playListProvider.setTracksWithActiveTrack(id.toString(), QueueType.album, mPageAlbum.volumes!, index, true);
                                       audioProvider.resume();
                                     },
                                   ),
