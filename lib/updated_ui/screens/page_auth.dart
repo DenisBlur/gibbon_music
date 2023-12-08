@@ -1,184 +1,215 @@
-import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
-import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/data_model.dart';
-import 'package:gibbon_music/main.dart';
-import 'package:gibbon_music/updated_ui/screens/page_init.dart';
+import 'package:gibbon_music/providers/auth_provider.dart';
 import 'package:gibbon_music/updated_ui/widgets/header.dart';
+import 'package:flutter/material.dart' as m;
+import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class PageAuth extends StatefulWidget {
-  const PageAuth({Key? key}) : super(key: key);
+// ignore: must_be_immutable
+class PageAuth extends StatelessWidget {
+  PageAuth({Key? key}) : super(key: key);
 
-  @override
-  State<PageAuth> createState() => _PageAuthState();
-}
-
-class _PageAuthState extends State<PageAuth> {
   final DataModel dataModel = DataModel();
   PageController pageController = PageController();
   TextEditingController textEditingController = TextEditingController();
-  bool errorAuth = false;
   final currentImage = AppConsts.authBgImagesLinks[Random().nextInt(AppConsts.authBgImagesLinks.length)];
-
-  Future webInitialize() async {
-    String localToken = await dataModel.readStringData(AppConsts.tokenKey);
-    if (localToken.contains("null") && Platform.isWindows) {
-    } else {
-      initToken(localToken);
-    }
-  }
-
-  void initToken(String token) async {
-    await client.init(token: token).then(
-      (value) {
-        if (!value) {
-          updateStatus(true);
-          Future.delayed(const Duration(seconds: 1)).then((value) {
-            setState(() {
-              updateStatus(false);
-            });
-          });
-        } else {
-          dataModel.writeStringData(AppConsts.tokenKey, token);
-          updateStatus(false);
-          Navigator.pop(context);
-          Navigator.push(
-              context,
-              FluentPageRoute(
-                builder: (context) => PageInit(token: token),
-              ));
-        }
-      },
-    );
-  }
-
-  void updateStatus(bool er) {
-    setState(() {
-      errorAuth = er;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    webInitialize();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldPage(
-        padding: const EdgeInsets.all(0),
-        content: Stack(
-          children: [
-            FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                image: currentImage,
-                fit: BoxFit.cover,
-                height: AppConsts.pageSize(context).height,
-                width: AppConsts.pageSize(context).width),
-            ClipRRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: Container(
-                  width: AppConsts.pageSize(context).width,
+    return Consumer<AuthProvider>(builder: (context, ap, child) {
+      return ScaffoldPage(
+          padding: const EdgeInsets.all(0),
+          content: Stack(
+            children: [
+              FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: currentImage,
+                  fit: BoxFit.cover,
                   height: AppConsts.pageSize(context).height,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(20, 20, 20, .4),
+                  width: AppConsts.pageSize(context).width),
+              ClipRRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Container(
+                    width: AppConsts.pageSize(context).width,
+                    height: AppConsts.pageSize(context).height,
+                    decoration: const BoxDecoration(
+                      color: Color.fromRGBO(20, 20, 20, .4),
+                    ),
                   ),
                 ),
               ),
+              Row(
+                children: [
+                  Container(
+                    width: 350,
+                    color: const Color.fromRGBO(20, 20, 20, 1),
+                    padding: const EdgeInsets.all(64),
+                    height: AppConsts.pageSize(context).height,
+                    child: ap.waitBrowser
+                        ? const Center(
+                            child: ProgressRing(),
+                          )
+                        : tokenAuth(ap),
+                  ),
+                  Expanded(
+                    child: PageView(
+                      controller: pageController,
+                      children: const [
+                        Center(
+                          child: UpdateWidget(
+                            title: "RADIO UPDATE",
+                            corrections: [
+                              "Теперь музыка всегда играет только в высоком качестве",
+                              "Исправлены ошибки",
+                              "Обновлена главная страница",
+                              "Обновлена страница авторизации",
+                              "Обвнолены виджеты: Артист, Альбом, Плейлист",
+                              "Исправлены ошибки при получении треков",
+                              "Оптимизирована работа с сетью"
+                            ],
+                            adding: [
+                              "Радио",
+                              "Выбор настроек для радио",
+                              "Текст песен [BETA]",
+                              "Дополнительные отправки на сервер (для рекомендаций)"
+                            ],
+                            remove: [
+                              "Темы",
+                              'Страница "Настройки"',
+                              "Боковое меню",
+                              "Некоторые библиотеки",
+                              "Получение токена через браузер внутри приложения"
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const Header(menu: false),
+            ],
+          ));
+    });
+  }
+
+  Widget tokenAuth(AuthProvider ap) {
+    return PageView(
+      controller: ap.pageController,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              "Авторизация",
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
             ),
+            AppConsts.bigVSpacer,
+            TextBox(
+              controller: textEditingController,
+              onSubmitted: (value) {
+                ap.writeTelephone(value);
+              },
+              maxLines: 1,
+              placeholder: "Номер телефона",
+            ),
+            AppConsts.smallVSpacer,
+            if (ap.error)
+              Text(
+                "Недопустимый формат номера",
+                style: TextStyle(color: Colors.red),
+              ),
+            AppConsts.smallVSpacer,
+            if (ap.loading) const ProgressBar(),
+            Button(
+                onPressed: () async {
+                  ap.writeTelephone(textEditingController.text);
+                },
+                child: const Text("Войти")),
+            Button(
+              onPressed: () {
+                ap.anotherLogin();
+              },
+              child: const Text("Войти с помощью QR кода"),
+            ),
+            AppConsts.bigVSpacer,
+            Button(
+              onPressed: () async {
+                if (!await launchUrl(Uri.parse(AppConsts.tokenGetLink))) {
+                  throw Exception('Could not launch');
+                }
+              },
+              style: ButtonStyle(
+                backgroundColor: ButtonState.all(Colors.transparent),
+              ),
+              child: const Text("как мне узнать токен?"),
+            ),
+          ],
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              "Авторизация",
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            AppConsts.bigVSpacer,
+            TextBox(
+              controller: textEditingController,
+              onSubmitted: (value) {
+                ap.sendCode(value);
+              },
+              maxLines: 1,
+              placeholder: "СМС Код",
+            ),
+            if (ap.loading) const ProgressBar(),
+            AppConsts.smallHSpacer,
+            if (ap.phoneCode)
+              Button(
+                  onPressed: () async {
+                    ap.sendCode(textEditingController.text);
+                  },
+                  child: const Text("Отправить")),
+          ],
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
             Row(
               children: [
-                Container(
-                  width: 350,
-                  color: const Color.fromRGBO(20, 20, 20, 1),
-                  padding: const EdgeInsets.all(64),
-                  height: AppConsts.pageSize(context).height,
-                  child: tokenAuth(),
-                ),
-                Expanded(
-                  child: PageView(
-                    controller: pageController,
-                    children: const [
-                      Center(
-                        child: UpdateWidget(
-                          title: "RADIO UPDATE",
-                          corrections: [
-                            "Теперь музыка всегда играет только в высоком качестве",
-                            "Исправлены ошибки",
-                            "Обновлена главная страница",
-                            "Обновлена страница авторизации",
-                            "Обвнолены виджеты: Артист, Альбом, Плейлист",
-                          ],
-                          adding: [
-                            "Радио",
-                            "Выбор настроек для радио",
-                            "Текст песен [BETA]",
-                          ],
-                          remove: [
-                            "Темы",
-                            'Страница "Настройки"',
-                            "Боковое меню",
-                            "Некоторые библиотеки",
-                            "Получение токена через браузер внутри приложения"
-                          ],
-                        ),
-                      )
-                    ],
+                IconButton(icon: const Icon(m.Icons.navigate_before_rounded, size: 24), onPressed: () {
+                  ap.restartAuth();
+                },),
+                AppConsts.smallHSpacer,
+                const Text(
+                  "QR Code",
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
-            const Header(menu: false),
+            AppConsts.bigHSpacer,
+            if (ap.byteImage != null) Image.memory(ap.byteImage!),
           ],
-        ));
-  }
-
-  Widget tokenAuth() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Text(
-          "Авторизация",
-          style: TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        AppConsts.bigVSpacer,
-        TextBox(
-          controller: textEditingController,
-          onSubmitted: (value) {
-            initToken(value);
-          },
-          maxLines: 1,
-          placeholder: "Ваш токен",
-        ),
-        AppConsts.smallVSpacer,
-        Button(
-            onPressed: () {
-              initToken(textEditingController.text);
-            },
-            child: const Text("Войти")),
-        AppConsts.bigVSpacer,
-        Button(
-            onPressed: () async {
-              if (!await launchUrl(Uri.parse(AppConsts.tokenGetLink))) {
-                throw Exception('Could not launch');
-              }
-            },
-            style: ButtonStyle(
-                backgroundColor: ButtonState.all(Colors.transparent),),
-            child: const Text("как мне узнать токен?")),
+        )
       ],
     );
   }
@@ -186,7 +217,11 @@ class _PageAuthState extends State<PageAuth> {
 
 class UpdateWidget extends StatelessWidget {
   const UpdateWidget(
-      {Key? key, this.corrections = const ["Без изменений"], this.adding = const ["Без изменений"], this.remove = const ["Без изменений"], required this.title})
+      {Key? key,
+      this.corrections = const ["Без изменений"],
+      this.adding = const ["Без изменений"],
+      this.remove = const ["Без изменений"],
+      required this.title})
       : super(key: key);
 
   final String title;
@@ -248,7 +283,8 @@ class UpdateWidget extends StatelessWidget {
                 fontSize: 14,
               ),
             ),
-            for (int i = 0; i < corrections.length; i++) Text("-${corrections[i]}", style: TextStyle(fontSize: 12, color: Colors.white.withOpacity(.6))),
+            for (int i = 0; i < corrections.length; i++)
+              Text("-${corrections[i]}", style: TextStyle(fontSize: 12, color: Colors.white.withOpacity(.6))),
             AppConsts.defaultVSpacer,
             const Text(
               "Добавлено",
