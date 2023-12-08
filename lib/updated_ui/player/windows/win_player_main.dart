@@ -2,17 +2,12 @@ import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_meedu_videoplayer/meedu_player.dart' as mp;
 import 'package:gibbon_music/constants/app_consts.dart';
-import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:gibbon_music/updated_ui/player/windows/win_player_controls.dart';
 import 'package:gibbon_music/updated_ui/player/windows/win_player_second_controls.dart';
 import 'package:provider/provider.dart';
-import 'package:wave/config.dart';
-import 'package:wave/wave.dart';
 
-import '../../../main.dart';
 import 'win_player_info.dart';
 
 class PlayerMain extends StatelessWidget {
@@ -33,21 +28,6 @@ class PlayerMain extends StatelessWidget {
             decoration: BoxDecoration(color: const Color.fromRGBO(24, 24, 24, 1), borderRadius: BorderRadius.circular(16)),
             child: Stack(
               children: [
-                if (value.currentTrack!.backgroundVideoUri != null &&
-                    value.currentTrack!.backgroundVideoUri != " " &&
-                    value.currentTrack!.backgroundVideoUri != "")
-                  Opacity(
-                    opacity: .5,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: SizedBox(
-                        width: 250,
-                        child: mp.MeeduVideoPlayer(
-                          controller: meeduPlayerController,
-                        ),
-                      ),
-                    ),
-                  ),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: BackdropFilter(

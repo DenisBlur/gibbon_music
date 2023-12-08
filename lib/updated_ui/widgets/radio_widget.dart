@@ -94,7 +94,6 @@ class RadioWidget extends StatelessWidget {
                   },
                   style: ButtonStyle(
                     backgroundColor: ButtonState.all(Colors.transparent),
-                    border: ButtonState.all(const BorderSide(color: Colors.transparent))
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,

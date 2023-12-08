@@ -2,7 +2,6 @@ import 'dart:io' show Platform;
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_meedu_videoplayer/meedu_player.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/domain/models/data_model.dart';
 import 'package:gibbon_music/domain/models/like_model.dart';
@@ -25,14 +24,7 @@ import 'package:system_theme/system_theme.dart';
 import 'package:yam_api/client.dart';
 
 Client client = Client();
-final meeduPlayerController = MeeduPlayerController(controlsEnabled: false, fits: [
-  BoxFit.cover,
-  BoxFit.cover,
-  BoxFit.cover,
-  BoxFit.cover,
-  BoxFit.cover,
-  BoxFit.cover,
-]);
+
 
 List<SingleChildWidget> _providers = [
   Provider(create: (_) => LandingProvider()),
@@ -58,7 +50,6 @@ List<SingleChildWidget> _providers = [
 ];
 
 Future<void> main() async {
-  initMeeduPlayer();
   WidgetsFlutterBinding.ensureInitialized();
   await SystemTheme.accentColor.load();
   runApp(const App());

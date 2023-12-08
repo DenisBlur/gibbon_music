@@ -177,7 +177,7 @@ class _PageAuthState extends State<PageAuth> {
               }
             },
             style: ButtonStyle(
-                backgroundColor: ButtonState.all(Colors.transparent), border: ButtonState.all(const BorderSide(color: Colors.transparent))),
+                backgroundColor: ButtonState.all(Colors.transparent),),
             child: const Text("как мне узнать токен?")),
       ],
     );

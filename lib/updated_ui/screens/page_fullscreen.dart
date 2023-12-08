@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_meedu_videoplayer/meedu_player.dart' as mp;
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/updated_ui/player/windows/win_player_controls.dart';
@@ -34,18 +33,6 @@ class PageFullscreen extends StatelessWidget {
       padding: const EdgeInsets.all(0),
       content: Stack(
         children: [
-          if (track!.backgroundVideoUri != null && track.backgroundVideoUri != " " && track.backgroundVideoUri != "")
-            Opacity(
-              opacity: 1,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: SizedBox(
-                  child: mp.MeeduVideoPlayer(
-                    controller: meeduPlayerController,
-                  ),
-                ),
-              ),
-            ),
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: BackdropFilter(
@@ -96,7 +83,7 @@ class PageFullscreen extends StatelessWidget {
                 Stack(
                   children: [
                     ImageThumbnail(
-                        url: track.ogImage!.linkImage(600),
+                        url: track!.ogImage!.linkImage(600),
                         width: AppConsts.pageSize(context).width / 4,
                         height: AppConsts.pageSize(context).width / 4),
                     LyricWidget(),
