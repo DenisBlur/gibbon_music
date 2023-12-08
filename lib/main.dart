@@ -10,6 +10,7 @@ import 'package:gibbon_music/domain/models/search_model.dart';
 import 'package:gibbon_music/providers/album_page_provider.dart';
 import 'package:gibbon_music/providers/artist_page_provider.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
+import 'package:gibbon_music/providers/auth_provider.dart';
 import 'package:gibbon_music/providers/landing_provider.dart';
 import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/providers/playlist_page_provider.dart';
@@ -24,7 +25,6 @@ import 'package:system_theme/system_theme.dart';
 import 'package:yam_api/client.dart';
 
 Client client = Client();
-
 
 List<SingleChildWidget> _providers = [
   Provider(create: (_) => LandingProvider()),
@@ -47,6 +47,7 @@ List<SingleChildWidget> _providers = [
   ChangeNotifierProvider(
     create: (context) => NavigatorProvider(),
   ),
+  ChangeNotifierProvider(create: (context) => AuthProvider(),)
 ];
 
 Future<void> main() async {
@@ -88,7 +89,7 @@ class _AppState extends State<App> {
           ),
           debugShowCheckedModeBanner: false,
           showSemanticsDebugger: false,
-          home: const SafeArea(
+          home: SafeArea(
             child: PageAuth(),
           ),
         );

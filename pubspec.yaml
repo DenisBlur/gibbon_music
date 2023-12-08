@@ -33,6 +33,9 @@ dependencies:
   async: any
   stack: any
 
+dependency_overrides:
+  puppeteer: ^3.6.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
