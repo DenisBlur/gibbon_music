@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/enums/e_list_typer.dart';
 import 'package:gibbon_music/router.dart';
@@ -111,11 +111,10 @@ class _DynamicListWidgetState extends State<DynamicListWidget> {
                 children: [
                   Text(
                     widget.title,
-                    style: AppStyle.subTitle(context),
                   ),
                   AppConsts.fillSpacer,
                   if (widget.canMore! && widget.listData.isNotEmpty)
-                    Button(
+                    FilledButton(
                       child: const Text("Смотреть всё"),
                       onPressed: () {
                         if (widget.onMore != null) {
@@ -166,11 +165,6 @@ class _DynamicListWidgetState extends State<DynamicListWidget> {
                           m.Icons.navigate_before_rounded,
                           size: 24,
                         ),
-                        style: ButtonStyle(
-                          backgroundColor: ButtonState.all(
-                            const Color.fromRGBO(0, 0, 0, 1),
-                          ),
-                        ),
                       )
                     : const SizedBox(),
                 AppConsts.fillSpacer,
@@ -182,11 +176,6 @@ class _DynamicListWidgetState extends State<DynamicListWidget> {
                         icon: const Icon(
                           m.Icons.navigate_next_rounded,
                           size: 24,
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor: ButtonState.all(
-                            const Color.fromRGBO(0, 0, 0, 1),
-                          ),
                         ),
                       )
                     : const SizedBox(),

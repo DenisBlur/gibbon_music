@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/main.dart';
@@ -50,7 +50,6 @@ class PageArtist extends StatelessWidget {
             ),
             Text(
               "Популярные треки",
-              style: AppStyle.subTitle(context),
             ),
             AppConsts.defaultVSpacer,
             SliverList(
@@ -138,11 +137,6 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
           Container(
             width: MediaQuery.of(context).size.width,
             height: expandedHeight,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-              FluentTheme.of(context).inactiveBackgroundColor.withOpacity(shrinkOffset / expandedHeight),
-              FluentTheme.of(context).inactiveBackgroundColor.withOpacity(lerpDouble(0.5, 1.0, shrinkOffset / expandedHeight)!.toDouble())
-            ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
           ),
           Positioned(
             width: 100,
@@ -173,7 +167,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                   "Исполнитель",
                   maxLines: 1,
                 ),
-                Text(info.name!, maxLines: 1, style: AppStyle.title(context)),
+                Text(info.name!, maxLines: 1,),
                 Text(
                   "$stats слушателей за месяц",
                   maxLines: 1,
@@ -190,7 +184,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                 offset: Offset(0, lerpDouble(200, 0, shrinkOffset / expandedHeight)!.toDouble()),
                 child: Row(
                   children: [
-                    Text(info.name!, maxLines: 1, style: AppStyle.title(context)),
+                    Text(info.name!, maxLines: 1, ),
                   ],
                 ),
               ),

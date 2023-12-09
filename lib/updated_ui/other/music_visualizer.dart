@@ -1,4 +1,6 @@
-import 'package:fluent_ui/fluent_ui.dart';
+
+
+import 'package:flutter/material.dart';
 
 class MiniMusicVisualizer extends StatelessWidget {
   const MiniMusicVisualizer({
@@ -19,9 +21,9 @@ class MiniMusicVisualizer extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<int> duration = [900, 800, 700, 600, 500];
     List<Color> colorList = [
-      FluentTheme.of(context).accentColor.light,
-      FluentTheme.of(context).accentColor.normal,
-      FluentTheme.of(context).accentColor.dark,
+      Theme.of(context).colorScheme.primary.withOpacity(0.2),
+      Theme.of(context).colorScheme.primary.withOpacity(0.6),
+      Theme.of(context).colorScheme.primary.withOpacity(0.8),
     ];
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:darq/darq.dart';
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/extensions/duration.dart';
 import 'package:gibbon_music/extensions/string.dart';
@@ -74,7 +74,7 @@ class TrackCard extends StatelessWidget {
                       child: Container(
                           width: size,
                           height: size,
-                          decoration: BoxDecoration(color: FluentTheme.of(context).cardColor.withOpacity(.4)),
+                          decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer.withOpacity(.4)),
                           child: Center(
                             child: MiniMusicVisualizer(
                               color: Colors.red,
@@ -96,7 +96,6 @@ class TrackCard extends StatelessWidget {
                     Text(
                       track.title.toString(),
                       maxLines: 1,
-                      style: AppStyle.trackHeaderStyle,
                       overflow: TextOverflow.ellipsis,
                     ),
                     ArtistsListWidgets(
@@ -125,8 +124,8 @@ class ArtistsListWidgets extends StatelessWidget {
 
     artistButtonList = track.artists!.select((element, index) => element.name.toString()).toList();
 
-    return HoverButton(
-      onPressed: () {
+    return InkWell(
+      onTap: () {
         showDialog(
           barrierDismissible: true,
           context: context,
@@ -135,9 +134,10 @@ class ArtistsListWidgets extends StatelessWidget {
           },
         );
       },
-      builder: (context, Set<ButtonStates> state) {
-        return Text(artistButtonList.join(", "), maxLines: 1, style: TextStyle(color: state.isHovering ? FluentTheme.of(context).accentColor : Colors.white.withOpacity(.5)),);
-      },
+      child: Text(
+        artistButtonList.join(", "),
+        maxLines: 1,
+      ),
     );
   }
 }
@@ -162,7 +162,6 @@ class TrackCommandBar extends StatelessWidget {
             },
             icon: Icon(
               isLike ? m.Icons.favorite : m.Icons.favorite_border_rounded,
-              color: isLike ? Colors.red : FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(1),
               size: 24,
             )),
         AppConsts.defaultHSpacer,

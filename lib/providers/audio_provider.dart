@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart' as m;
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:yam_api/enums.dart';
@@ -171,11 +170,11 @@ class AudioProvider extends ChangeNotifier {
   IconData icon() {
     switch (playerState) {
       case PlayerState.playing:
-        return m.Icons.pause;
+        return Icons.pause;
       case PlayerState.paused:
-        return m.Icons.play_arrow;
+        return Icons.play_arrow;
       default:
-        return m.Icons.not_interested;
+        return Icons.not_interested;
     }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:gibbon_music/updated_ui/screens/page_album.dart';
@@ -82,7 +82,7 @@ class AppRouter {
     UxProvider provider = context.read();
     Navigator.push(
         context,
-        FluentPageRoute(
+        MaterialPageRoute(
           builder: (context) => const PageFullscreen(),
         ));
     provider.isFullscreen = true;

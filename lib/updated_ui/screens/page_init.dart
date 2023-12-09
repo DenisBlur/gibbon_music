@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
@@ -28,7 +28,7 @@ class _PageInitState extends State<PageInit> {
           Navigator.pop(context);
           Navigator.push(
               context,
-              FluentPageRoute(
+              MaterialPageRoute(
                 builder: (context) => const OverlayContainer(),
               ));
         });
@@ -41,8 +41,8 @@ class _PageInitState extends State<PageInit> {
   @override
   Widget build(BuildContext context) {
     Size pageSize = MediaQuery.of(context).size;
-    return ScaffoldPage(
-      content: SizedBox(
+    return Scaffold(
+      body: SizedBox(
           height: pageSize.height,
           width: pageSize.width,
           child: Column(
@@ -54,15 +54,14 @@ class _PageInitState extends State<PageInit> {
                 height: 0,
                 color: SystemTheme.accentColor.accent,
               ),
-              Text(
+              const Text(
                 "получение данных о пользователе.",
-                style: AppStyle.subTitle(context),
               )
                   .animate()
                   .fadeIn(duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve)
                   .moveY(begin: 150, end: 0, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve),
               AppConsts.bigVSpacer,
-              const ProgressRing()
+              const CircularProgressIndicator()
                   .animate(delay: 250.ms)
                   .fadeIn(duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve)
                   .moveY(begin: 150, end: 0, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve),

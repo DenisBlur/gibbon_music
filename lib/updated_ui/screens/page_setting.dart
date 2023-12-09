@@ -1,4 +1,5 @@
-import 'package:fluent_ui/fluent_ui.dart';
+
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/data_model.dart';
@@ -17,9 +18,8 @@ class PageSetting extends StatelessWidget {
     String accLogin = client.account.account!.login.toString();
     bool? hasPlus = client.account.plus!.hasPlus;
     return SafeArea(
-        child: ScaffoldPage(
-            padding: EdgeInsets.zero,
-            content: CustomScaffold(
+        child: Scaffold(
+            body: CustomScaffold(
               children: [
                 AppConsts.smallVSpacer,
                 Row(
@@ -27,14 +27,12 @@ class PageSetting extends StatelessWidget {
                   children: [
                     Text(
                       accName,
-                      style: AppStyle.header1Style,
                     ),
                     AppConsts.smallHSpacer,
                     hasPlus == true
                         ? Container(
                             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                             decoration: BoxDecoration(
-                                color: FluentTheme.of(context).cardColor,
                                 borderRadius: BorderRadius.circular(4),),
                             child: const Text(
                               "PLUS",
@@ -46,19 +44,16 @@ class PageSetting extends StatelessWidget {
                 ),
                 Text(
                   accLogin,
-                  style: AppStyle.subTrackHeaderStyle(context),
                 ),
                 AppConsts.defaultVSpacer,
                 const Text(
                   "Персонализация",
-                  style: AppStyle.header1Style,
                 ),
                 AppConsts.defaultVSpacer,
-                Row(
+                const Row(
                   children: [
                     Text(
                       "Системная тема",
-                      style: AppStyle.prTitle(context),
                     ),
                     AppConsts.defaultHSpacer,
                   ],
@@ -68,13 +63,12 @@ class PageSetting extends StatelessWidget {
                   builder: (context, ux, child) {
                     return Row(
                       children: [
-                        Text(
+                        const Text(
                           "Плавная прокрутка",
-                          style: AppStyle.prTitle(context),
                         ),
                         AppConsts.fillSpacer,
-                        ToggleSwitch(
-                          checked: ux.smoothScroll,
+                        Switch(
+                          value: ux.smoothScroll,
                           onChanged: (value) {
                             if (!ux.smoothScroll) {
                               ux.changeSmoothScrollState();
@@ -97,7 +91,7 @@ class PageSetting extends StatelessWidget {
                   ),
                   child: const Row(
                     children: [
-                      Icon(FluentIcons.warning),
+                      Icon(Icons.warning_rounded),
                       AppConsts.smallHSpacer,
                       Text(
                           "Attention when smooth scrolling is enabled, your laptop's touchpad or touch screen will not work!"
@@ -106,9 +100,8 @@ class PageSetting extends StatelessWidget {
                   )
                 ),
                 AppConsts.defaultVSpacer,
-                Text(
+                const Text(
                   "Темы",
-                  style: AppStyle.prTitle(context),
                 ),
                 AppConsts.smallVSpacer,
               ],

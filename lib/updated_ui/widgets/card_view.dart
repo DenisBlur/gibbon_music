@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import '../../constants/app_consts.dart';
 
 class GCardView extends StatelessWidget {
@@ -10,34 +10,16 @@ class GCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color defaultStateColor, hoverStateColor, pressedStateColor;
-
-    var theme = FluentTheme.of(context);
-
-    defaultStateColor = theme.cardColor.withOpacity(0);
-    hoverStateColor = theme.cardColor.withOpacity(.4);
-    pressedStateColor = theme.accentColor.withOpacity(.2);
-
-    return HoverButton(
-      onPressed: () => onPressed(),
-      builder: (p0, state) {
-        Color bgColor = state.isPressing
-            ? pressedStateColor
-            : state.isHovering
-            ? hoverStateColor
-            : defaultStateColor;
-
-        return AnimatedContainer(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(radius),
-            color: bgColor,
-          ),
-          duration: AppConsts.defaultAnimation,
-          curve: AppConsts.defaultCurve,
-          child: child,
-        );
-      },
-    );
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: onPressed,child: AnimatedContainer(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(radius),
+      ),
+      duration: AppConsts.defaultAnimation,
+      curve: AppConsts.defaultCurve,
+      child: child,
+    ),);
 
   }
 }

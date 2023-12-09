@@ -1,5 +1,5 @@
 import 'package:darq/darq.dart';
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
@@ -103,68 +103,58 @@ class CardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HoverButton(
-        onPressed: () => onPressed(),
-        builder: (p0, state) {
-          double jState = 1.0;
-          if (state.isPressing) {
-            jState = 0.9;
-          } else if (state.isHovering) {
-            jState = 0.98;
-          } else {
-            jState = 1;
-          }
-          return AnimatedScale(
-            scale: jState,
-            duration: Animate.defaultDuration,
-            curve: AppConsts.defaultCurve,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                height: AppConsts.defaultCardHeight,
-                width: AppConsts.defaultCardWidth,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(34, 34, 34, 1),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Stack(
-                      children: [
-                        FadeInImage.memoryNetwork(
-                          placeholder: kTransparentImage,
-                          image: uri != null ? uri!.linkImage(200) : AppConsts.imageEmptyLink,
-                          height: AppConsts.defaultCardHeight,
-                          width: AppConsts.defaultCardWidth/2,
-                          fit: BoxFit.cover,
+    return InkWell(
+        onTap: () => onPressed(),
+        child: AnimatedScale(
+          scale: 1,
+          duration: Animate.defaultDuration,
+          curve: AppConsts.defaultCurve,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Container(
+              height: AppConsts.defaultCardHeight,
+              width: AppConsts.defaultCardWidth,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Stack(
+                    children: [
+                      FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image: uri != null ? uri!.linkImage(200) : AppConsts.imageEmptyLink,
+                        height: AppConsts.defaultCardHeight,
+                        width: AppConsts.defaultCardWidth/2,
+                        fit: BoxFit.cover,
+                      ),
+                      Container(
+                        height: AppConsts.defaultCardHeight,
+                        width: AppConsts.defaultCardWidth,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            Theme.of(context).colorScheme.secondaryContainer,
+                            Theme.of(context).colorScheme.secondaryContainer,
+                            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0),
+                          ], begin: Alignment.centerRight, end: Alignment.centerLeft),
                         ),
-                        Container(
-                          height: AppConsts.defaultCardHeight,
-                          width: AppConsts.defaultCardWidth,
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              Color.fromRGBO(34, 34, 34, 1),
-                              Color.fromRGBO(34, 34, 34, 1),
-                              Color.fromRGBO(34, 34, 34, 0),
-                            ], begin: Alignment.centerRight, end: Alignment.centerLeft),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(title!, maxLines: 1, overflow: TextOverflow.clip, style: AppStyle.cardHeaderStyle),
-                              Text(subtitle!, maxLines: 1, overflow: TextOverflow.clip, style: AppStyle.subTrackHeaderStyle(context)),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(title!, maxLines: 1, overflow: TextOverflow.clip),
+                            Text(subtitle!, maxLines: 1, overflow: TextOverflow.clip),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
-          );
-        });
+          ),
+        ),);
   }
 }

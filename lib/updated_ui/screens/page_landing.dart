@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/enums/e_list_typer.dart';
@@ -69,12 +69,11 @@ class UPageLanding extends StatelessWidget {
               AppConsts.defaultVSpacer,
               Row(
                 children: [
-                  Text(
+                  const Text(
                     "Чарт",
-                    style: AppStyle.subTitle(context),
                   ),
                   AppConsts.fillSpacer,
-                  Button(
+                  FilledButton(
                       onPressed: () {
                         AppRouter().gotoPlaylist(context, "", "", true);
                       },
@@ -112,7 +111,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    Color waveColors = FluentTheme.of(context).accentColor;
+    Color waveColors = Theme.of(context).colorScheme.primary;
 
     return SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -133,10 +132,9 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
           blendMode: BlendMode.dstIn,
           child: Stack(
             children: [
-              Center(
+              const Center(
                 child: Text(
                   "МОЯ ВОЛНА",
-                  style: AppStyle.title(context),
                 ),
               ),
               Positioned(
@@ -209,7 +207,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                 child: Center(
                     child: Padding(
                   padding: const EdgeInsets.only(top: 86),
-                  child: Button(
+                  child: FilledButton(
                       onPressed: () {
                         client.radio.createRadioSession();
                       },

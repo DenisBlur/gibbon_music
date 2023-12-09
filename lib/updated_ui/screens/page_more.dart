@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 import 'package:gibbon_music/updated_ui/widgets/loading_ring.dart';
@@ -42,7 +42,6 @@ class MoreContent extends StatelessWidget {
       AppConsts.defaultVSpacer,
       Text(
         title,
-        style: AppStyle.title(context),
       ),
       AppConsts.defaultVSpacer,
       SliverGrid(

@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
@@ -15,7 +15,7 @@ class PlayerMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color waveColors = FluentTheme.of(context).accentColor;
+    Color waveColors = Theme.of(context).colorScheme.primary;
 
     return Consumer<AudioProvider>(builder: (_, value, __) {
       if (value.currentTrack != null) {
@@ -25,7 +25,7 @@ class PlayerMain extends StatelessWidget {
             margin: const EdgeInsets.all(16),
             width: AppConsts.pageSize(context).width,
             height: AppConsts.playerHeight,
-            decoration: BoxDecoration(color: const Color.fromRGBO(24, 24, 24, 1), borderRadius: BorderRadius.circular(16)),
+            decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer, borderRadius: BorderRadius.circular(16)),
             child: Stack(
               children: [
                 ClipRRect(
@@ -37,19 +37,6 @@ class PlayerMain extends StatelessWidget {
                       height: AppConsts.pageSize(context).width,
                     ),
                   ),
-                ),
-                Container(
-                  width: 250,
-                  height: AppConsts.pageSize(context).width,
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                    colors: [
-                      Color.fromRGBO(24, 24, 24, 1),
-                      Color.fromRGBO(24, 24, 24, 0),
-                    ],
-                    begin: Alignment.centerRight,
-                    end: Alignment.centerLeft,
-                  )),
                 ),
                 const PlayerInfo(),
                 const Center(
@@ -64,7 +51,7 @@ class PlayerMain extends StatelessWidget {
             .fadeIn(duration: AppConsts.slowAnimation, curve: AppConsts.defaultCurve)
             .moveY(begin: 150, end: 0, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve)
             .then()
-            .shimmer(duration: 2500.ms, color: FluentTheme.of(context).accentColor.withOpacity(.2));
+            .shimmer(duration: 2500.ms, color: Theme.of(context).colorScheme.primary.withOpacity(.2));
       } else {
         return const SizedBox();
       }

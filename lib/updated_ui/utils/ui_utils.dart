@@ -1,4 +1,6 @@
-import 'package:fluent_ui/fluent_ui.dart';
+
+
+import 'package:flutter/material.dart';
 
 class Responsive extends StatelessWidget {
   const Responsive({required this.mobile, required this.tablet, required this.desktop, Key? key}) : super(key: key);

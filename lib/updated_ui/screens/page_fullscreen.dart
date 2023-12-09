@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/extensions/string.dart';
@@ -27,11 +27,10 @@ class PageFullscreen extends StatelessWidget {
   Widget build(BuildContext context) {
     NewPlaylist playlist = context.watch();
     Track? track = playlist.currentTrack;
-    Color waveColors = FluentTheme.of(context).accentColor;
+    Color waveColors = Theme.of(context).colorScheme.primary;
 
-    return ScaffoldPage(
-      padding: const EdgeInsets.all(0),
-      content: Stack(
+    return Scaffold(
+      body: Stack(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
@@ -46,54 +45,19 @@ class PageFullscreen extends StatelessWidget {
               ),
             ),
           ),
-          AnimatedOpacity(
-            opacity: context.watch<NewPlaylist>().radio ? 1 : 0,
-            duration: AppConsts.slowAnimation,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: WaveWidget(
-                config: CustomConfig(colors: [
-                  waveColors.withOpacity(0.1),
-                  waveColors.withOpacity(0.2),
-                  waveColors.withOpacity(0.4),
-                  waveColors.withOpacity(0.6),
-                  waveColors,
-                ], durations: [
-                  9600,
-                  9700,
-                  9800,
-                  9900,
-                  10000
-                ], heightPercentages: [
-                  0.2,
-                  0.3,
-                  0.4,
-                  0.5,
-                  0.6
-                ]),
-                size: const Size(double.infinity, double.infinity),
-              ),
-            ),
-          ),
           Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Stack(
-                  children: [
-                    ImageThumbnail(
-                        url: track!.ogImage!.linkImage(600),
-                        width: AppConsts.pageSize(context).width / 4,
-                        height: AppConsts.pageSize(context).width / 4),
-                    LyricWidget(),
-                  ],
-                ),
+                ImageThumbnail(
+                    url: track!.ogImage!.linkImage(600),
+                    width: AppConsts.pageSize(context).width / 4,
+                    height: AppConsts.pageSize(context).width / 4),
                 SizedBox(
                   width: AppConsts.pageSize(context).width / 4,
                   child: Text(
                     track.title!,
-                    style: AppStyle.title(context),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),

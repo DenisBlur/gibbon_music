@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/providers/navigator_provider.dart';
 import 'package:gibbon_music/router.dart';
@@ -25,7 +25,7 @@ class OverlayContainer extends StatelessWidget {
               AppRouter().tryPop(context);
               return false;
             },
-            child: const SafeArea(
+            child: const Material(child: SafeArea(
               child: Stack(
                 children: [
                   AnimatedPositioned(
@@ -34,12 +34,11 @@ class OverlayContainer extends StatelessWidget {
                     child: NavigationSystem(),
                   ),
                   UPlaylistWidget(),
-                  LyricWidget(),
                   Header(),
                   Align(alignment: Alignment.bottomCenter, child: PlayerMain()),
                 ],
               ),
-            ));
+            )),);
       },
     );
   }
@@ -58,7 +57,7 @@ class NavigationSystem extends StatelessWidget {
         if (settings.name == "/") {
           page = const UPageLanding();
         }
-        return FluentPageRoute(builder: (context) => page);
+        return MaterialPageRoute(builder: (context) => page);
       },
     );
   }

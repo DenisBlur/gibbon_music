@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/updated_ui/utils/ui_utils.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 

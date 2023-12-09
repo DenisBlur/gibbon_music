@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart' as m;
 
@@ -16,7 +16,7 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = FluentTheme.of(context);
+    var theme = Theme.of(context);
     return Consumer<NavigatorProvider>(
       builder: (_, provider, __) {
         List<Widget> headerButtons = [];
@@ -59,7 +59,7 @@ class Header extends StatelessWidget {
         if (Platform.isWindows) {
           headerButtons.add(MinimizeWindowButton(
             colors: WindowButtonColors(
-                iconNormal: theme.activeColor
+                iconNormal: theme.colorScheme.primary
             ),
           ));
         }
@@ -67,7 +67,7 @@ class Header extends StatelessWidget {
         if (Platform.isWindows) {
           headerButtons.add(MaximizeWindowButton(
             colors: WindowButtonColors(
-                iconNormal: theme.activeColor
+                iconNormal: theme.colorScheme.primary
             ),
           ));
         }
@@ -75,7 +75,7 @@ class Header extends StatelessWidget {
         if (Platform.isWindows) {
           headerButtons.add(CloseWindowButton(
             colors: WindowButtonColors(
-              iconNormal: theme.activeColor
+              iconNormal: theme.colorScheme.primary
             ),
           ));
         }
@@ -84,7 +84,7 @@ class Header extends StatelessWidget {
             child: ClipRRect(
           child: Container(
             height: AppConsts.windowHeader,
-            color: theme.inactiveBackgroundColor.withOpacity(1),
+            color: theme.colorScheme.background,
             child: Row(
               children: headerButtons,
             ),

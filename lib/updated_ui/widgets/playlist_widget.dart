@@ -1,4 +1,5 @@
-import 'package:fluent_ui/fluent_ui.dart';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
@@ -17,7 +18,6 @@ class UPlaylistWidget extends StatelessWidget {
       builder: (context, playListProvider, child) {
         UxProvider uxProvider = context.watch();
         List<Track?>? tracks = playListProvider.tracksQueue;
-        var backgroundColor = const Color.fromRGBO(24, 24, 24, 1);
         final controller = ScrollController();
         return AnimatedPositioned(
             top: uxProvider.isOpenPlaylist ? AppConsts.playerHeight : AppConsts.pageSize(context).height,
@@ -27,8 +27,8 @@ class UPlaylistWidget extends StatelessWidget {
             curve: AppConsts.defaultCurve,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: backgroundColor,
+                borderRadius: BorderRadius.circular(16),
+                color: Theme.of(context).colorScheme.primaryContainer,
               ),
               margin: EdgeInsets.only(right: 16, bottom: 32, top: AppConsts.pageSize(context).height / 4),
               child: Column(
@@ -37,7 +37,7 @@ class UPlaylistWidget extends StatelessWidget {
                     Center(
                         child: Padding(
                       padding: const EdgeInsets.all(16),
-                      child: Button(
+                      child: FilledButton(
                           onPressed: () {
                             uxProvider.isOpenPlaylist = false;
                           },

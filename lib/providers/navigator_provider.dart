@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stack/stack.dart' as s;
 import 'ux_provider.dart';
@@ -10,7 +10,7 @@ class NavigatorProvider extends ChangeNotifier {
   final s.Stack<String> _navigationStack = s.Stack<String>();
 
   push(String path, BuildContext context, Widget widget) {
-    navigatorKey.currentState!.push(FluentPageRoute(
+    navigatorKey.currentState!.push(MaterialPageRoute(
       builder: (context) => widget,
     ));
     _navigationStack.push(path);

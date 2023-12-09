@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -103,8 +103,7 @@ class LyricText extends StatelessWidget {
                     child: AnimatedDefaultTextStyle(
                       style: TextStyle(
                           fontSize: select ? context.watch<UxProvider>().isFullscreen ? 24 : 18 : context.watch<UxProvider>().isFullscreen ? 18 : 16,
-                          fontWeight: select ? FontWeight.bold : FontWeight.normal,
-                          color: FluentTheme.of(context).scaffoldBackgroundColor.withOpacity(select ? 1 : .4)),
+                          fontWeight: select ? FontWeight.bold : FontWeight.normal,),
                       duration: AppConsts.slowAnimation,
                       curve: AppConsts.defaultCurve,
                       textAlign: TextAlign.center,

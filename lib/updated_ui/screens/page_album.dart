@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/extensions/string.dart';
@@ -30,38 +30,37 @@ class PageAlbum extends StatelessWidget {
     albumProvider.dispose();
 
     return SafeArea(
-        child: ScaffoldPage(
-            padding: const EdgeInsets.all(0),
-            content: FutureBuilder(
-              future: albumProvider.init(id),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  Album mPageAlbum = albumProvider.mAlbum;
-                  return CustomScaffold(children: [
-                    SliverPersistentHeader(
-                      pinned: true,
-                      delegate: ScrollHeader(expandedHeight: 200, info: mPageAlbum),
-                    ),
-                    SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                            (context, index) => Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: TrackCard(
-                                    track: mPageAlbum.volumes![index],
-                                    onPressed: () {
-                                      // playListProvider.
-                                      playListProvider.setTracksWithActiveTrack(id.toString(), QueueType.album, mPageAlbum.volumes!, index, true);
-                                      audioProvider.resume();
-                                    },
-                                  ),
-                                ),
-                            childCount: mPageAlbum.volumes!.length)),
-                  ]);
-                } else {
-                  return const LoadingRing();
-                }
-              },
-            )));
+        child: Scaffold(
+            body: FutureBuilder(
+      future: albumProvider.init(id),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          Album mPageAlbum = albumProvider.mAlbum;
+          return CustomScaffold(children: [
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: ScrollHeader(expandedHeight: 200, info: mPageAlbum),
+            ),
+            SliverList(
+                delegate: SliverChildBuilderDelegate(
+                    (context, index) => Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: TrackCard(
+                            track: mPageAlbum.volumes![index],
+                            onPressed: () {
+                              // playListProvider.
+                              playListProvider.setTracksWithActiveTrack(id.toString(), QueueType.album, mPageAlbum.volumes!, index, true);
+                              audioProvider.resume();
+                            },
+                          ),
+                        ),
+                    childCount: mPageAlbum.volumes!.length)),
+          ]);
+        } else {
+          return const LoadingRing();
+        }
+      },
+    )));
   }
 }
 
@@ -104,11 +103,6 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
           Container(
             width: MediaQuery.of(context).size.width,
             height: expandedHeight,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-              FluentTheme.of(context).inactiveBackgroundColor.withOpacity(shrinkOffset / expandedHeight),
-              FluentTheme.of(context).inactiveBackgroundColor.withOpacity(lerpDouble(0.5, 1.0, shrinkOffset / expandedHeight)!.toDouble())
-            ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
           ),
           Positioned(
             bottom: AppConsts.pageOffset.horizontal / 2,
@@ -120,13 +114,13 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
                   "Альбом",
                   maxLines: 1,
                 ),
-                Text(info.title!, maxLines: 1, style: AppStyle.title(context)),
+                Text(info.title!, maxLines: 1),
                 Row(
                   children: [
                     const Text(
                       "Исполнитель: ",
                     ),
-                    Button(
+                    FilledButton(
                         onPressed: () {
                           AppRouter().gotoArtist(context, info.artists!.first.id);
                         },
@@ -144,7 +138,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
               child: Transform.translate(
                 offset: Offset(0, lerpDouble(200, 0, shrinkOffset / expandedHeight)!.toDouble()),
                 child: Row(
-                  children: [Text(info.title!, maxLines: 1, style: AppStyle.title(context))],
+                  children: [Text(info.title!, maxLines: 1)],
                 ),
               ),
             ),

@@ -1,4 +1,5 @@
-import 'package:fluent_ui/fluent_ui.dart';
+
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/providers/search_provider.dart';
@@ -24,9 +25,8 @@ class PageSearch extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController controller = TextEditingController();
     return SafeArea(
-        child: ScaffoldPage(
-            padding: EdgeInsets.zero,
-            content: Consumer<SearchProvider>(builder: (_, search, __) {
+        child: Scaffold(
+            body: Consumer<SearchProvider>(builder: (_, search, __) {
               List<Widget> lists = [];
               if (search.suggest.suggestions != null && search.suggest.suggestions!.isNotEmpty) {
                 if (!search.isSuggests && search.searchResult.tracks != null) {
@@ -62,7 +62,6 @@ class PageSearch extends StatelessWidget {
                     }
                     lists.add(Text(
                       "Лучший результат",
-                      style: AppStyle.subTitle(context),
                     ));
                     lists.add(AppConsts.smallVSpacer);
                     lists.add(widget);
@@ -83,7 +82,6 @@ class PageSearch extends StatelessWidget {
                   lists.add(AppConsts.bigVSpacer);
                   lists.add(Text(
                     "Треки",
-                    style: AppStyle.subTitle(context),
                   ));
                   lists.add(AppConsts.smallVSpacer);
                   lists.add(SliverList(
@@ -111,7 +109,6 @@ class PageSearch extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                             child: Text(
                               search.suggest.suggestions![i],
-                              style: AppStyle.trackHeaderStyle,
                             )),
                         onPressed: () {
                           search.getSearch(search.suggest.suggestions![i]);
@@ -131,7 +128,7 @@ class PageSearch extends StatelessWidget {
                   Container(
                       height: 60.0,
                       alignment: Alignment.centerLeft,
-                      child: TextBox(
+                      child: TextField(
                         controller: controller,
                         onChanged: (value) {
                           search.getSuggest(value);
@@ -140,7 +137,9 @@ class PageSearch extends StatelessWidget {
                           search.getSearch(value);
                         },
                         autofocus: true,
-                        placeholder: "Search...",
+                        decoration: InputDecoration(
+                          label: Text("Search...")
+                        ),
                       )),
                   for (var e in lists) e,
                 ],

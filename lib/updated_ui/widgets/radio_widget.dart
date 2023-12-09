@@ -1,5 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/providers/audio_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:wave/config.dart';
@@ -15,7 +15,7 @@ class RadioWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color waveColors = FluentTheme.of(context).accentColor;
+    Color waveColors = Theme.of(context).colorScheme.primary;
     AudioProvider au = context.read();
     NewPlaylist playlistProvider = context.read();
 
@@ -55,22 +55,20 @@ class RadioWidget extends StatelessWidget {
             height: 650,
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-                  Colors.black,
-                  Colors.black.withOpacity(.25),
-                  Colors.black,
-                ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                borderRadius: BorderRadius.circular(8)),
+                  Theme.of(context).colorScheme.background,
+                  Theme.of(context).colorScheme.background.withOpacity(.25),
+                  Theme.of(context).colorScheme.background,
+                ], begin: Alignment.centerLeft, end: Alignment.centerRight),),
           ),
           Container(
             width: AppConsts.pageSize(context).width,
             height: 650,
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-                  Colors.black,
-                  Colors.black.withOpacity(.25),
-                  Colors.black,
-                ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
-                borderRadius: BorderRadius.circular(8)),
+                  Theme.of(context).colorScheme.background,
+                  Theme.of(context).colorScheme.background.withOpacity(.25),
+                  Theme.of(context).colorScheme.background,
+                ], begin: Alignment.bottomCenter, end: Alignment.topCenter),),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +78,7 @@ class RadioWidget extends StatelessWidget {
                 width: AppConsts.pageSize(context).width,
               ),
               AppConsts.defaultVSpacer,
-              Button(
+              TextButton(
                   onPressed: () async {
                     if (playlistProvider.radio) {
                       if (au.playerState == PlayerState.playing) {
@@ -92,9 +90,6 @@ class RadioWidget extends StatelessWidget {
                       await playlistProvider.startRadio();
                     }
                   },
-                  style: ButtonStyle(
-                    backgroundColor: ButtonState.all(Colors.transparent),
-                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -108,7 +103,7 @@ class RadioWidget extends StatelessWidget {
                     ],
                   )),
               AppConsts.defaultVSpacer,
-              Text("ПО ХАРАКТЕРУ", style: TextStyle(fontWeight: FontWeight.bold, color: FluentTheme.of(context).cardColor.withOpacity(.6), fontSize: 12),),
+              Text("ПО ХАРАКТЕРУ"),
               AppConsts.smallVSpacer,
               SizedBox(
                 width: 136 * (RadioDiversity.values.length - 1),
@@ -127,7 +122,7 @@ class RadioWidget extends StatelessWidget {
                     scrollDirection: Axis.horizontal),
               ),
               AppConsts.defaultVSpacer,
-              Text("ПОД НАСТРОЕНИЕ", style: TextStyle(fontWeight: FontWeight.bold, color: FluentTheme.of(context).cardColor.withOpacity(.6), fontSize: 12),),
+              Text("ПОД НАСТРОЕНИЕ"),
               AppConsts.smallVSpacer,
               SizedBox(
                 width: 136 * (RadioMoodEnergy.values.length - 1),
@@ -146,7 +141,7 @@ class RadioWidget extends StatelessWidget {
                     scrollDirection: Axis.horizontal),
               ),
               AppConsts.defaultVSpacer,
-              Text("ПО ЯЗЫКУ", style: TextStyle(fontWeight: FontWeight.bold, color: FluentTheme.of(context).cardColor.withOpacity(.6), fontSize: 12),),
+              Text("ПО ЯЗЫКУ"),
               AppConsts.smallVSpacer,
               SizedBox(
                 width: 136 * (RadioLanguage.values.length - 1),
@@ -181,28 +176,22 @@ class RadioChangeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HoverButton(
-      onPressed: () => voidCallback(),
-      builder: (p0, state) {
-        return AnimatedScale(
-          scale: state.isPressing
-              ? .8
-              : state.isHovering
-                  ? .9
-                  : 1,
-          duration: AppConsts.defaultAnimation,
+    return InkWell(
+      onTap: () => voidCallback(),
+      child: AnimatedScale(
+        scale:1,
+        duration: AppConsts.defaultAnimation,
+        curve: AppConsts.defaultCurve,
+        child: AnimatedContainer(
+          width: 120,
+          margin: const EdgeInsets.only(left: 8, right: 8),
+          duration: AppConsts.slowAnimation,
           curve: AppConsts.defaultCurve,
-          child: AnimatedContainer(
-            width: 120,
-            margin: const EdgeInsets.only(left: 8, right: 8),
-            duration: AppConsts.slowAnimation,
-            curve: AppConsts.defaultCurve,
-            decoration: BoxDecoration(
-                color: selected ? FluentTheme.of(context).accentColor : const Color.fromRGBO(50, 50, 50, 1), borderRadius: BorderRadius.circular(24)),
-            child: Center(child: Text(title)),
-          ),
-        );
-      },
+          decoration: BoxDecoration(
+              color: selected ? Theme.of(context).colorScheme.primaryContainer : const Color.fromRGBO(50, 50, 50, 1), borderRadius: BorderRadius.circular(24)),
+          child: Center(child: Text(title)),
+        ),
+      ),
     );
   }
 }

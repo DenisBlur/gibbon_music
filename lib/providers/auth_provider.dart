@@ -1,9 +1,9 @@
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:gibbon_music/domain/models/data_model.dart';
 import 'package:puppeteer/puppeteer.dart' as p;
 
 class AuthProvider extends ChangeNotifier {
-
   p.Browser? browser;
   p.Page? authPage;
 
@@ -14,7 +14,9 @@ class AuthProvider extends ChangeNotifier {
   bool error = false;
   bool phoneCode = false;
   bool loading = false;
-  bool waitBrowser = true;
+  bool waitBrowser = false;
+
+  String? localToken;
 
   AuthProvider() {
     launchBrowser();
@@ -26,29 +28,37 @@ class AuthProvider extends ChangeNotifier {
 
   ///Запуск браузера
   launchBrowser() async {
-    waitBrowser = true;
-    notifyListeners();
+    localToken = await DataModel().readStringData("token");
+    if (localToken == "null") {
+      waitBrowser = true;
+      notifyListeners();
+      print("Start browser");
 
-    print("Start browser");
+      browser = await p.puppeteer.launch(headless: false);
+      authPage = await browser!.newPage();
 
-    browser = await p.puppeteer.launch(headless: false);
-    authPage = await browser!.newPage();
+      await authPage!
+          .goto('https://oauth.yandex.ru/authorize?response_type=token&client_id=23cabbbdc6cd418abb4b39c32c41195d', wait: p.Until.networkIdle);
 
-    await authPage!
-        .goto('https://oauth.yandex.ru/authorize?response_type=token&client_id=23cabbbdc6cd418abb4b39c32c41195d', wait: p.Until.networkIdle);
+      print("Browser open");
 
-    print("Browser open");
+      waitBrowser = false;
+      notifyListeners();
 
-    waitBrowser = false;
-    notifyListeners();
+      authPage!.onFrameNavigated.listen((event) {
+        if (event.url.contains("#access_token=")) {
+          String token = event.url.substring(event.url.indexOf("#access_token=") + 14, event.url.indexOf("&token_type=bearer"));
 
-    authPage!.onFrameNavigated.listen((event) {
-      if(event.url.contains("#access_token=")) {
-        print(event.url);
-        closeBrowser();
-      }
-    });
+          print(token);
+          print(event.url);
 
+          DataModel().writeStringData("token", token);
+          notifyListeners();
+
+          closeBrowser();
+        }
+      });
+    }
   }
 
   ///Закрывает браузер
@@ -77,13 +87,13 @@ class AuthProvider extends ChangeNotifier {
 
     Future.delayed(
       const Duration(milliseconds: 650),
-          () async {
+      () async {
         var errorWidget = await authPage!.evaluate('document.querySelector(".Textinput-Hint.Textinput-Hint_state_error")');
         if (errorWidget == null) {
           error = false;
           Future.delayed(
             const Duration(seconds: 2),
-                () async {
+            () async {
               var check = await authPage!.waitForSelector('#passp-field-phoneCode');
               if (check != null) {
                 animatePage(1);
@@ -112,15 +122,18 @@ class AuthProvider extends ChangeNotifier {
       await authPage!.keyboard.press(p.Key.control, text: element);
     }
 
-    Future.delayed(const Duration(seconds: 2), () async {
-      if(browser != null) {
-        var check  = await authPage!.$(".Accounts-list");
-        print("Choose Account");
-        var accounts = await check.$$(".AccountsListItem-account.AccountsListItem-account_v2");
-        var f = await accounts[0].jsonValue;
-        print(f);
-      }
-    },);
+    Future.delayed(
+      const Duration(seconds: 2),
+      () async {
+        if (browser != null) {
+          var check = await authPage!.$(".Accounts-list");
+          print("Choose Account");
+          var accounts = await check.$$(".AccountsListItem-account.AccountsListItem-account_v2");
+          var f = await accounts[0].jsonValue;
+          print(f);
+        }
+      },
+    );
   }
 
   anotherLogin() async {
@@ -128,22 +141,27 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
     var button = await authPage!.$(".Button2.Button2_size_xxl.Button2_view_clear.Button2_width_max.UserEntryFlow__sign-in-with-yandex-btn");
     button.click(delay: const Duration(milliseconds: 150));
-    Future.delayed(const Duration(seconds: 2), () => qrCode(),);
+    Future.delayed(
+      const Duration(seconds: 2),
+      () => qrCode(),
+    );
   }
 
   qrCode() async {
     var qrCode = await authPage!.$(".AuthSocialBlock-provider.AuthSocialBlock-provider_code_qr");
     qrCode.click(delay: const Duration(milliseconds: 150));
 
-    Future.delayed(const Duration(seconds: 2), () async {
-      var qrImage = await authPage!.$(".MagicField-qr");
-      var image = await qrImage.screenshot(format: p.ScreenshotFormat.png);
-      byteImage = Uint8List.fromList(image);
-      animatePage(2);
-      loading = false;
-      notifyListeners();
-    },);
-
+    Future.delayed(
+      const Duration(seconds: 2),
+      () async {
+        var qrImage = await authPage!.$(".MagicField-qr");
+        var image = await qrImage.screenshot(format: p.ScreenshotFormat.png);
+        byteImage = Uint8List.fromList(image);
+        animatePage(2);
+        loading = false;
+        notifyListeners();
+      },
+    );
   }
 
   void restartAuth() {
@@ -151,5 +169,4 @@ class AuthProvider extends ChangeNotifier {
     closeBrowser();
     launchBrowser();
   }
-
 }

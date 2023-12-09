@@ -1,5 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gibbon_music/constants/style_consts.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/router.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -14,8 +13,8 @@ class PromotionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HoverButton(
-      onPressed: () {
+    return InkWell(
+      onTap: () {
         if (data.url!.contains("playlist")) {
           String url = data.url!;
           String uid = url.substring(7, url.indexOf("/playlists/"));
@@ -28,17 +27,9 @@ class PromotionCard extends StatelessWidget {
           AppRouter().gotoAlbum(context, int.parse(uid));
         }
       },
-      builder: (p0, state) {
-        double imageState = 1.0;
-        if (state.isPressing) {
-          imageState = 0.9;
-        } else if (state.isHovering) {
-          imageState = 0.98;
-        } else {
-          imageState = 1;
-        }
-
-        return ClipRRect(borderRadius: BorderRadius.circular(8), child: SizedBox(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: SizedBox(
           width: AppConsts.wideCardWidth,
           height: AppConsts.wideCardHeight,
           child: Stack(
@@ -53,36 +44,36 @@ class PromotionCard extends StatelessWidget {
               Container(
                 width: AppConsts.wideCardWidth,
                 height: AppConsts.wideCardHeight,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(colors: [
-                    Color.fromRGBO(34, 34, 34, 1),
-                    Color.fromRGBO(34, 34, 34, 0),
+                    Theme.of(context).colorScheme.secondaryContainer,
+                    Theme.of(context).colorScheme.secondaryContainer.withOpacity(0),
                   ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
                 ),
               ),
               AnimatedScale(
-                scale: imageState + 0.01,
+                scale: 1,
                 duration: AppConsts.defaultAnimation,
                 curve: AppConsts.defaultCurve,
                 child: Container(
                   padding: const EdgeInsets.only(bottom: 0, right: 16, left: 16),
                   width: AppConsts.wideCardWidth,
-                  height: AppConsts.wideCardHeight-16,
+                  height: AppConsts.wideCardHeight - 16,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(data.title!, style: AppStyle.prTitle(context), maxLines: 1, overflow: TextOverflow.ellipsis),
-                      Text(data.subtitle!, style: AppStyle.prSubTitle(context), maxLines: 1, overflow: TextOverflow.ellipsis),
-                      Text(data.heading!.toUpperCase(), style: AppStyle.prHeading(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Text(data.title!, maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Text(data.subtitle!, maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Text(data.heading!.toUpperCase(), maxLines: 1, overflow: TextOverflow.ellipsis),
                     ],
                   ),
                 ),
               ),
             ],
           ),
-        ),);
-      },
+        ),
+      ),
     );
   }
 }

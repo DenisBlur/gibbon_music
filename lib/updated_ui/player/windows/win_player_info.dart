@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/extensions/string.dart';
@@ -24,7 +24,6 @@ class PlayerInfo extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 28),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: FluentTheme.of(context).scaffoldBackgroundColor,
                 boxShadow: [BoxShadow(color: Colors.black.withOpacity(.15), offset: const Offset(0, 8), blurRadius: 5)]),
             child: ImageThumbnail(
               url: track!.coverUri != null ? track.coverUri!.linkImage(400) : AppConsts.imageEmptyLink,

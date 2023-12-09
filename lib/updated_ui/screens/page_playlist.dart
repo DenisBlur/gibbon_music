@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:darq/darq.dart';
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
@@ -108,11 +108,6 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
           Container(
             width: MediaQuery.of(context).size.width,
             height: expandedHeight,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-              FluentTheme.of(context).inactiveBackgroundColor.withOpacity(shrinkOffset / expandedHeight),
-              FluentTheme.of(context).inactiveBackgroundColor.withOpacity(lerpDouble(0.5, 1.0, shrinkOffset / expandedHeight)!.toDouble())
-            ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
           ),
           Positioned(
             bottom: AppConsts.pageOffset.horizontal / 2,
@@ -121,7 +116,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
               offset: Offset(0, lerpDouble(0, -100, shrinkOffset / expandedHeight)!.toDouble()),
               child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
                 const Text("Плейлист", maxLines: 1, ),
-                Text(info.title!, maxLines: 1, style: AppStyle.title(context)),
+                Text(info.title!, maxLines: 1, ),
                 Text("Создатель: ${info.owner!.name}", maxLines: 1,),
               ]),
             ),
@@ -134,7 +129,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
               child: Transform.translate(
                 offset: Offset(0, lerpDouble(200, 0, shrinkOffset / expandedHeight)!.toDouble()),
                 child: Row(
-                  children: [Text(info.title!, maxLines: 1, style: AppStyle.title(context))],
+                  children: [Text(info.title!, maxLines: 1, )],
                 ),
               ),
             ),

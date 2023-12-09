@@ -1,4 +1,5 @@
-import 'package:fluent_ui/fluent_ui.dart';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
@@ -19,9 +20,8 @@ class CustomScaffold extends StatelessWidget {
     ));
 
     return SafeArea(
-      child: ScaffoldPage(
-        padding: AppConsts.pageInsets(context),
-        content: CustomScroller(
+      child: Scaffold(
+        body: CustomScroller(
           slivers: children,
         ),
       ),

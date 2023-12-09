@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/extensions/string.dart';
@@ -51,48 +51,47 @@ class ContextWidget extends StatelessWidget {
                         ),
                         AppConsts.defaultHSpacer,
                         Expanded(
-                          child: Text(track.title.toString(), style: AppStyle.subTitle(context), maxLines: 1),
+                          child: Text(track.title.toString(), maxLines: 1),
                         ),
                       ],
                     ),
                     AppConsts.defaultVSpacer,
-                    Button(
+                    FilledButton(
                         onPressed: () {
                           Navigator.pop(context);
                           context.read<NewPlaylist>().removeTrack(track);
                         },
                         child: const Text("Удалить из очереди")),
                     AppConsts.smallVSpacer,
-                    Button(
+                    FilledButton(
                         onPressed: () {
                           Navigator.pop(context);
                           context.read<NewPlaylist>().addTrackToEnd(track);
                         },
                         child: const Text("Добавить в конец")),
                     AppConsts.smallVSpacer,
-                    Button(
+                    FilledButton(
                         onPressed: () {
                           Navigator.pop(context);
                           context.read<NewPlaylist>().addTrackAfterCurrent(track);
                         },
                         child: const Text("Добавить после текущего")),
                     AppConsts.smallVSpacer,
-                    Button(
+                    FilledButton(
                         onPressed: () {
                           Navigator.pop(context);
                           context.read<NewPlaylist>().startRadio(station: "track:${track.albums![0].id}");
                         },
                         child: const Text("Моя волна по треку")),
                     AppConsts.smallVSpacer,
-                    Text(
+                    const Text(
                       "Исполнители",
-                      style: AppStyle.subTitle(context),
                     ),
                     AppConsts.smallVSpacer,
                     for (var e in track.artists!)
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8),
-                        child: Button(
+                        child: FilledButton(
                             onPressed: () {
                               Navigator.pop(context);
                               AppRouter().gotoArtist(context, e.id);
@@ -100,15 +99,14 @@ class ContextWidget extends StatelessWidget {
                             child: Text(e.name!)),
                       ),
                     AppConsts.smallVSpacer,
-                    Text(
+                    const Text(
                       "Альбомы",
-                      style: AppStyle.subTitle(context),
                     ),
                     AppConsts.smallVSpacer,
                     for (var e in track.albums!)
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8),
-                        child: Button(
+                        child: FilledButton(
                             onPressed: () {
                               Navigator.pop(context);
                               AppRouter().gotoAlbum(context, e.id!.toInt());

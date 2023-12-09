@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -11,7 +11,7 @@ class ImageThumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(16),
       child: AnimatedContainer(
         duration: AppConsts.defaultAnimation,
         curve: AppConsts.defaultCurve,

@@ -1,4 +1,5 @@
-import 'package:fluent_ui/fluent_ui.dart';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../constants/app_consts.dart';
@@ -10,12 +11,12 @@ class LoadingRing extends StatelessWidget {
   Widget build(BuildContext context) {
     Size pageSize = MediaQuery.of(context).size;
 
-    return ScaffoldPage(
-      content: SizedBox(
+    return Scaffold(
+      body: SizedBox(
           height: pageSize.height,
           width: pageSize.width,
           child: const Center(
-            child: ProgressRing(),
+            child: CircularProgressIndicator(),
           )
               .animate()
               .fadeIn(duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve)
