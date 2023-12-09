@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
@@ -26,10 +24,9 @@ class UPlaylistWidget extends StatelessWidget {
             duration: AppConsts.defaultAnimation,
             curve: AppConsts.defaultCurve,
             child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: Theme.of(context).colorScheme.primaryContainer,
-              ),
+              decoration: BoxDecoration(color: Theme.of(context).colorScheme.secondaryContainer, borderRadius: BorderRadius.circular(16), boxShadow: [
+                BoxShadow(color: Colors.black.withOpacity(.5), offset: Offset(0,4), blurRadius: 10)
+              ]),
               margin: EdgeInsets.only(right: 16, bottom: 32, top: AppConsts.pageSize(context).height / 4),
               child: Column(
                 children: [
@@ -48,31 +45,24 @@ class UPlaylistWidget extends StatelessWidget {
                       width: uxProvider.isFullscreen ? AppConsts.pageSize(context).width - 32 : 450,
                       padding: const EdgeInsets.all(8),
                       child: tracks.isNotEmpty
-                          ? ImprovedScrolling(
+                          ? ReorderableListView.builder(
+                              onReorder: (int oldIndex, int newIndex) {
+                                playListProvider.reorder(oldIndex, newIndex < oldIndex ? newIndex : newIndex - 1);
+                              },
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                    key: ValueKey(index),
+                                    padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4, right: 32),
+                                    child: TrackCard(
+                                      track: tracks[index]!,
+                                      onPressed: () {
+                                        playListProvider.currentTrackIndex = index;
+                                      },
+                                    ));
+                              },
+                              itemCount: tracks.length,
                               scrollController: controller,
-                              enableCustomMouseWheelScrolling: true,
-                              customMouseWheelScrollConfig: const CustomMouseWheelScrollConfig(
-                                scrollAmountMultiplier: AppConsts.scrollMultiplier,
-                              ),
-                              child: ReorderableListView.builder(
-                                onReorder: (int oldIndex, int newIndex) {
-                                  playListProvider.reorder(oldIndex, newIndex < oldIndex ? newIndex : newIndex - 1);
-                                },
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                      key: ValueKey(index),
-                                      padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4, right: 32),
-                                      child: TrackCard(
-                                        track: tracks[index]!,
-                                        onPressed: () {
-                                          playListProvider.currentTrackIndex = index;
-                                        },
-                                      ));
-                                },
-                                itemCount: tracks.length,
-                                scrollController: controller,
-                                physics: !context.watch<UxProvider>().smoothScroll ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
-                              ),
+                              physics: !context.watch<UxProvider>().smoothScroll ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
                             )
                           : const Center(child: Text("Ничего нет :(")),
                     ),

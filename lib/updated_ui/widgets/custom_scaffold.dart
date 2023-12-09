@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_improved_scrolling/flutter_improved_scrolling.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
 import 'package:provider/provider.dart';
@@ -37,22 +36,15 @@ class CustomScroller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ImprovedScrolling(
-      scrollController: controller,
-      enableCustomMouseWheelScrolling: true,
-      customMouseWheelScrollConfig: const CustomMouseWheelScrollConfig(
-        scrollAmountMultiplier: AppConsts.scrollMultiplier,
-      ),
-      child: Padding(
-        padding: AppConsts.pagePadding(context),
-        child: CustomScrollView(
-                controller: controller,
-                physics: !context.watch<UxProvider>().smoothScroll ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
-                slivers: widgetsToSliver(slivers))
-            .animate(delay: 450.ms)
-            .fadeIn(duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve)
-            .moveY(begin: 150, end: 0, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve),
-      ),
+    return Padding(
+      padding: AppConsts.pagePadding(context),
+      child: CustomScrollView(
+          controller: controller,
+          physics: !context.watch<UxProvider>().smoothScroll ? const ScrollPhysics() : const NeverScrollableScrollPhysics(),
+          slivers: widgetsToSliver(slivers))
+          .animate(delay: 450.ms)
+          .fadeIn(duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve)
+          .moveY(begin: 150, end: 0, duration: AppConsts.defaultAnimation, curve: AppConsts.defaultCurve),
     );
   }
 }

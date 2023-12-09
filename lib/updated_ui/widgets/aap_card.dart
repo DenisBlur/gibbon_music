@@ -104,13 +104,14 @@ class CardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      borderRadius: BorderRadius.circular(16),
         onTap: () => onPressed(),
         child: AnimatedScale(
           scale: 1,
           duration: Animate.defaultDuration,
           curve: AppConsts.defaultCurve,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(16),
             child: Container(
               height: AppConsts.defaultCardHeight,
               width: AppConsts.defaultCardWidth,

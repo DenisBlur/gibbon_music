@@ -16,7 +16,6 @@ dependencies:
   transparent_image: ^2.0.0
   provider: ^6.0.2
   path_provider: ^2.0.10
-  flutter_improved_scrolling: ^0.0.3
   darq: ^2.0.0
   flutter_sticky_header: ^0.6.5
   wave: ^0.2.2

@@ -188,7 +188,7 @@ class RadioChangeButton extends StatelessWidget {
           duration: AppConsts.slowAnimation,
           curve: AppConsts.defaultCurve,
           decoration: BoxDecoration(
-              color: selected ? Theme.of(context).colorScheme.primaryContainer : const Color.fromRGBO(50, 50, 50, 1), borderRadius: BorderRadius.circular(24)),
+              color: selected ? Theme.of(context).colorScheme.primaryContainer : Theme.of(context).colorScheme.background, borderRadius: BorderRadius.circular(24)),
           child: Center(child: Text(title)),
         ),
       ),
