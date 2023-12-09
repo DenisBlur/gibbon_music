@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 import 'package:gibbon_music/updated_ui/widgets/loading_ring.dart';
 

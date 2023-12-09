@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/enums/e_list_typer.dart';
 import 'package:gibbon_music/main.dart';
@@ -13,7 +12,6 @@ import 'package:provider/provider.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import 'package:yam_api/enums.dart';
-import 'package:yam_api/radio/setting2.dart';
 
 import '../../constants/app_consts.dart';
 import '../../providers/landing_provider.dart';

@@ -10,7 +10,6 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:yam_api/enums.dart';
 import 'package:yam_api/playlist/playlist.dart';
 
-import '../../constants/style_consts.dart';
 import '../../constants/app_consts.dart';
 import '../../providers/audio_provider.dart';
 import '../../providers/playlist_page_provider.dart';
@@ -105,7 +104,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
               ),
             ),
           ),
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width,
             height: expandedHeight,
           ),

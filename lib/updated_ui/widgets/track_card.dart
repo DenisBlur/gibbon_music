@@ -15,7 +15,6 @@ import 'package:provider/provider.dart';
 import 'package:yam_api/track/track.dart';
 import 'package:yam_api/yam_api.dart';
 
-import '../../constants/style_consts.dart';
 import '../../domain/models/playlist.dart';
 import '../../providers/yandex_provider.dart';
 import '../other/music_visualizer.dart';

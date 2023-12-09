@@ -103,7 +103,7 @@ class RadioWidget extends StatelessWidget {
                     ],
                   )),
               AppConsts.defaultVSpacer,
-              Text("ПО ХАРАКТЕРУ"),
+              const Text("ПО ХАРАКТЕРУ"),
               AppConsts.smallVSpacer,
               SizedBox(
                 width: 136 * (RadioDiversity.values.length - 1),
@@ -122,7 +122,7 @@ class RadioWidget extends StatelessWidget {
                     scrollDirection: Axis.horizontal),
               ),
               AppConsts.defaultVSpacer,
-              Text("ПОД НАСТРОЕНИЕ"),
+              const Text("ПОД НАСТРОЕНИЕ"),
               AppConsts.smallVSpacer,
               SizedBox(
                 width: 136 * (RadioMoodEnergy.values.length - 1),
@@ -141,7 +141,7 @@ class RadioWidget extends StatelessWidget {
                     scrollDirection: Axis.horizontal),
               ),
               AppConsts.defaultVSpacer,
-              Text("ПО ЯЗЫКУ"),
+              const Text("ПО ЯЗЫКУ"),
               AppConsts.smallVSpacer,
               SizedBox(
                 width: 136 * (RadioLanguage.values.length - 1),

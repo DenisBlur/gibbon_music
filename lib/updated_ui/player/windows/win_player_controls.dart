@@ -109,6 +109,7 @@ class PlayerMainControl extends StatelessWidget {
                         AppConsts.defaultHSpacer,
                         Expanded(
                           child: SizedBox(
+                            height: 16,
                             child: Slider(
                               label: data.toHms(),
                               min: 0,
@@ -118,7 +119,6 @@ class PlayerMainControl extends StatelessWidget {
                                 provider.setSeek(value);
                               },
                             ),
-                            height: 16,
                           )
                         ),
                         AppConsts.defaultHSpacer,

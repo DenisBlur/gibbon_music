@@ -9,7 +9,6 @@ import 'package:gibbon_music/updated_ui/screens/page_init.dart';
 import 'package:gibbon_music/updated_ui/widgets/header.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class PageAuth extends StatelessWidget {
@@ -66,7 +65,7 @@ class PageAuth extends StatelessWidget {
 
   Widget tokenAuth(AuthProvider ap, BuildContext context) {
 
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 5), () {
       if(ap.localToken != "null") {
         Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (context) => PageInit(token: ap.localToken!),));

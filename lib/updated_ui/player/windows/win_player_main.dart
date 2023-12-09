@@ -26,7 +26,7 @@ class PlayerMain extends StatelessWidget {
             width: AppConsts.pageSize(context).width,
             height: AppConsts.playerHeight,
             decoration: BoxDecoration(color: Theme.of(context).colorScheme.secondaryContainer, borderRadius: BorderRadius.circular(16), boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(.5), offset: Offset(0,4), blurRadius: 10)
+              BoxShadow(color: Colors.black.withOpacity(.5), offset: const Offset(0,4), blurRadius: 10)
             ]),
             child: Stack(
               children: [

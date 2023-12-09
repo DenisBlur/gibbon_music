@@ -25,7 +25,7 @@ class UPlaylistWidget extends StatelessWidget {
             curve: AppConsts.defaultCurve,
             child: Container(
               decoration: BoxDecoration(color: Theme.of(context).colorScheme.secondaryContainer, borderRadius: BorderRadius.circular(16), boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(.5), offset: Offset(0,4), blurRadius: 10)
+                BoxShadow(color: Colors.black.withOpacity(.5), offset: const Offset(0,4), blurRadius: 10)
               ]),
               margin: EdgeInsets.only(right: 16, bottom: 32, top: AppConsts.pageSize(context).height / 4),
               child: Column(

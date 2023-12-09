@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
-import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/updated_ui/widgets/overlay_container.dart';
 import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';

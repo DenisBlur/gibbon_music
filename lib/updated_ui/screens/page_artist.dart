@@ -1,10 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/main.dart';
-import 'package:gibbon_music/updated_ui/widgets/Image_thumbnail.dart';
 import 'package:gibbon_music/updated_ui/widgets/custom_scaffold.dart';
 import 'package:gibbon_music/updated_ui/widgets/dynamic_list.dart';
 import 'package:gibbon_music/updated_ui/widgets/loading_ring.dart';
@@ -48,7 +46,7 @@ class PageArtist extends StatelessWidget {
               delegate: ScrollHeader(
                   expandedHeight: 200, info: mPageArtist.briefInfo!, stats: mPageArtist.stats!.lastMonthListeners.toString().spaceSeparateNumbers()),
             ),
-            Text(
+            const Text(
               "Популярные треки",
             ),
             AppConsts.defaultVSpacer,
@@ -134,7 +132,7 @@ class ScrollHeader extends SliverPersistentHeaderDelegate {
               ),
             ),
           ),
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width,
             height: expandedHeight,
           ),

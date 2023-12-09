@@ -7,7 +7,6 @@ import 'package:gibbon_music/router.dart';
 import 'package:gibbon_music/updated_ui/utils/dynamic_data.dart';
 import 'package:flutter/material.dart' as m;
 
-import '../../constants/style_consts.dart';
 
 class DynamicListWidget extends StatefulWidget {
   const DynamicListWidget(

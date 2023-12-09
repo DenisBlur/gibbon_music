@@ -9,16 +9,10 @@ import 'package:gibbon_music/updated_ui/widgets/Image_thumbnail.dart';
 import 'package:gibbon_music/updated_ui/widgets/playlist_widget.dart';
 import 'package:gibbon_music/updated_ui/widgets/track_card.dart';
 import 'package:provider/provider.dart';
-import 'package:wave/config.dart';
-import 'package:wave/wave.dart';
 import 'package:yam_api/track/track.dart';
 
-import '../../constants/style_consts.dart';
 import '../../domain/models/playlist.dart';
-import '../../main.dart';
-import '../../providers/audio_provider.dart';
 import '../widgets/header.dart';
-import '../widgets/lyric_widget.dart';
 
 class PageFullscreen extends StatelessWidget {
   const PageFullscreen({Key? key}) : super(key: key);

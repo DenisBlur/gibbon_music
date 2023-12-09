@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/playlist.dart';
 import 'package:gibbon_music/extensions/string.dart';
 import 'package:gibbon_music/router.dart';

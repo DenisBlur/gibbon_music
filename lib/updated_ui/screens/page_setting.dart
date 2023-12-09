@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:gibbon_music/constants/app_consts.dart';
-import 'package:gibbon_music/constants/style_consts.dart';
 import 'package:gibbon_music/domain/models/data_model.dart';
 import 'package:gibbon_music/main.dart';
 import 'package:gibbon_music/providers/ux_provider.dart';
